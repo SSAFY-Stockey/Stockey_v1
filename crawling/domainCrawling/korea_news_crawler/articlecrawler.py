@@ -30,7 +30,7 @@ class ArticleCrawler(object):
     def set_date_range(self, start_date:str, end_date:str):
         start = list(map(int, start_date.split("-")))
         end = list(map(int, end_date.split("-")))
-        
+
         # Setting Start Date
         if len(start) == 1: # Input Only Year
             start_year = start[0]
@@ -41,7 +41,7 @@ class ArticleCrawler(object):
             start_day = 1
         elif len(start) == 3: # Input Year, month and day
             start_year, start_month, start_day = start
-        
+
         # Setting End Date
         if len(end) == 1: # Input Only Year
             end_year = end[0]
@@ -112,7 +112,7 @@ class ArticleCrawler(object):
                         month = "0" + str(month)
                     if len(str(day)) == 1:
                         day = "0" + str(day)
-                        
+
                     # 날짜별로 Page Url 생성
                     url = category_url + str(year) + str(month) + str(day)
 
@@ -136,7 +136,7 @@ class ArticleCrawler(object):
 
     def crawling(self, category_name):
         # Multi Process PID
-        print(category_name + " PID: " + str(os.getpid()))    
+        print(category_name + " PID: " + str(os.getpid()))
 
         writer = Writer(category='Article', article_category=category_name, date=self.date)
         # 기사 url 형식
@@ -147,6 +147,7 @@ class ArticleCrawler(object):
 
         print(f'{category_name} is collecting ...')
         for url in target_urls:
+            print(url)
             request = self.get_url_data(url)
             document = BeautifulSoup(request.content, 'html.parser')
 
@@ -154,7 +155,7 @@ class ArticleCrawler(object):
             # 각 페이지에 있는 기사들 가져오기
             temp_post = document.select('.newsflash_body .type06_headline li dl')
             temp_post.extend(document.select('.newsflash_body .type06 li dl'))
-            
+
             # 각 페이지에 있는 기사들의 url 저장
             post_urls = []
             for line in temp_post:
@@ -165,7 +166,7 @@ class ArticleCrawler(object):
             for content_url in post_urls:  # 기사 url
                 # 크롤링 대기 시간
                 sleep(0.01)
-                
+
                 # 기사 HTML 가져옴
                 request_content = self.get_url_data(content_url)
 
@@ -173,59 +174,88 @@ class ArticleCrawler(object):
                     document_content = BeautifulSoup(request_content.content, 'html.parser')
                 except:
                     continue
+
                 try:
                     # 기사 제목 가져옴
-                    tag_headline = document_content.find_all('h2',  {'class': 'media_end_head_headline'})
+                    # tag_headline = document_content.find_all('h3', {'id': 'articleTitle'}, {'class': 'tts_head'})
+                    tag_headline = document_content.find_all('h2', {'id': 'title_area'}, {'class': 'media_end_head_headline'})
+                    # print(tag_headline)
                     # 뉴스 기사 제목 초기화
                     text_headline = ''
                     text_headline = text_headline + ArticleParser.clear_headline(str(tag_headline[0].find_all(text=True)))
                     # 공백일 경우 기사 제외 처리
                     if not text_headline:
                         continue
-                    #<div class="go_trans _article_content" id="dic_area">
+
 
                     # 기사 본문 가져옴
                     tag_content = document_content.find_all('div', {'id': 'dic_area'})
                     # 뉴스 기사 본문 초기화
+                    # print(tag_content)
                     text_sentence = ''
-                    text_sentence = text_sentence + ArticleParser.clear_content(str(tag_content[0].find_all(text=True)))
+                    if(tag_content):
+                        text_sentence = text_sentence + ArticleParser.clear_content(str(tag_content[0].find_all(text=True)))
+
                     # 공백일 경우 기사 제외 처리
                     if not text_sentence:
                         continue
 
+                    # 기사 소제목 가져옴
+                    tag_subtitle = document_content.find_all('strong',{'class':'media_end_summary'})
+                    text_subtitle = ''
+                    if(tag_subtitle):
+                        text_subtitle = text_subtitle + ArticleParser.clear_headline(str(tag_subtitle[0].find_all(text=True)))
+
                     # 기사 언론사 가져옴
-                    tag_content = document_content.find_all('meta', {'property': 'og:article:author'})
+                    tag_company = document_content.find_all('meta', {'name': 'twitter:creator'})
+
                     # 언론사 초기화
                     text_company = ''
-                    text_company = text_company + tag_content[0]['content'].split("|")[0]
+                    text_company = text_company + str(tag_company[0].get('content'))
+
 
                     # 공백일 경우 기사 제외 처리
                     if not text_company:
                         continue
-                    
-                    # 기사 시간대 가져옴
-                    time = document_content.find_all('span',{'class':"media_end_head_info_datestamp_time _ARTICLE_DATE_TIME"})[0]['data-date-time']
 
+                    # 기사 시간대 가져옴
+                    time =  document_content.find_all('span', {'class': 'media_end_head_info_datestamp_time'})[0]["data-date-time"]
                     # CSV 작성
-                    writer.write_row([time, category_name, text_company, text_headline, text_sentence, content_url])
+                    # writer.write_row([time, category_name, text_company, text_headline, text_subtitle,text_sentence, content_url])
+                    writer.write_row([time, category_name, text_company, text_headline, text_subtitle,text_sentence, content_url])
 
                     del time
-                    del text_company, text_sentence, text_headline
-                    del tag_company 
+                    del text_company, text_subtitle,text_sentence, text_headline
+                    del tag_company
                     del tag_content, tag_headline
                     del request_content, document_content
 
                 # UnicodeEncodeError
                 except Exception as ex:
+                    print("ERROR", ex)
                     del request_content, document_content
                     pass
         writer.close()
 
     def start(self):
         # MultiProcess 크롤링 시작
+        dir_path = r"C:/Users/SSAFY/Desktop/output" # replace with your directory path
+
+        # iterate over the files in the directory and delete each file
+        for file_name in os.listdir(dir_path):
+            file_path = os.path.join(dir_path, file_name)
+            try:
+                if os.path.isfile(file_path):
+                    os.unlink(file_path)
+            except Exception as e:
+                print(f"Error deleting file: {file_path} - {e}")
+
+        print("START")
+        print(self.selected_categories)
         for category_name in self.selected_categories:
-            proc = Process(target=self.crawling, args=(category_name,))
-            proc.start()
+            # proc = Process(target=self.crawling, args=(category_name,))
+            # proc.start()
+            self.crawling(category_name)
 
 
 if __name__ == "__main__":
