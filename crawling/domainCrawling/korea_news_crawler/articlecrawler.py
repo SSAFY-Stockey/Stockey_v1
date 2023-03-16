@@ -146,8 +146,10 @@ class ArticleCrawler(object):
         print(f'{category_name} Urls are generated')
 
         print(f'{category_name} is collecting ...')
+        p = 0
         for url in target_urls:
-            print(url)
+
+            # print(url)
             request = self.get_url_data(url)
             document = BeautifulSoup(request.content, 'html.parser')
 
@@ -159,6 +161,10 @@ class ArticleCrawler(object):
             # 각 페이지에 있는 기사들의 url 저장
             post_urls = []
             for line in temp_post:
+
+                p+=1
+                if p%5 !=0 :
+                    continue
                 # 해당되는 page에서 모든 기사들의 URL을 post_urls 리스트에 넣음
                 post_urls.append(line.a.get('href'))
             del temp_post
@@ -218,6 +224,7 @@ class ArticleCrawler(object):
                     if not text_company:
                         continue
 
+
                     # 기사 시간대 가져옴
                     time =  document_content.find_all('span', {'class': 'media_end_head_info_datestamp_time'})[0]["data-date-time"]
                     # CSV 작성
@@ -232,7 +239,7 @@ class ArticleCrawler(object):
 
                 # UnicodeEncodeError
                 except Exception as ex:
-                    print("ERROR", ex)
+                    # print("ERROR", ex)
                     del request_content, document_content
                     pass
         writer.close()
@@ -241,14 +248,22 @@ class ArticleCrawler(object):
         # MultiProcess 크롤링 시작
         dir_path = r"C:/Users/SSAFY/Desktop/output" # replace with your directory path
 
+        current_dir = os.getcwd()
+        print(current_dir)
+
+        # dir_name = 'output'
+        # if not os.path.exists(dir_name):
+        #     os.makedirs(dir_name)
+
+
         # iterate over the files in the directory and delete each file
-        for file_name in os.listdir(dir_path):
-            file_path = os.path.join(dir_path, file_name)
-            try:
-                if os.path.isfile(file_path):
-                    os.unlink(file_path)
-            except Exception as e:
-                print(f"Error deleting file: {file_path} - {e}")
+        # for file_name in os.listdir(dir_path):
+        #     file_path = os.path.join(dir_path, file_name)
+        #     try:
+        #         if os.path.isfile(file_path):
+        #             os.unlink(file_path)
+        #     except Exception as e:
+        #         print(f"Error deleting file: {file_path} - {e}")
 
         print("START")
         print(self.selected_categories)

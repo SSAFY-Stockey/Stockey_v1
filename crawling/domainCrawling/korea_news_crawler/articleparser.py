@@ -10,7 +10,7 @@ class ArticleParser(object):
     @classmethod
     def clear_content(cls, text):
         # 기사 본문에서 필요없는 특수문자 및 본문 양식 등을 다 지움
-        newline_symbol_removed_text = text.replace('\\n', '').replace('\\t', '').replace('\\r', '')
+        newline_symbol_removed_text = text.replace('\\n', '').replace('\\t', '').replace('\\r', '').replace('\\xa9',' ').replace('\\u2027','').replace('\\u2219','')
         special_symbol_removed_content = re.sub(cls.special_symbol, ' ', newline_symbol_removed_text)
         end_phrase_removed_content = re.sub(cls.content_pattern, '', special_symbol_removed_content)
         blank_removed_content = re.sub(' +', ' ', end_phrase_removed_content).lstrip()  # 공백 에러 삭제
@@ -26,7 +26,7 @@ class ArticleParser(object):
     @classmethod
     def clear_headline(cls, text):
         # 기사 제목에서 필요없는 특수문자들을 지움
-        newline_symbol_removed_text = text.replace('\\n', '').replace('\\t', '').replace('\\r', '')
+        newline_symbol_removed_text = text.replace('\\n', '').replace('\\t', '').replace('\\r', '').replace('\\xa9',' ').replace('\\u2027','').replace('\\u2219','')
         special_symbol_removed_headline = re.sub(cls.special_symbol, '', newline_symbol_removed_text)
         return special_symbol_removed_headline
 
