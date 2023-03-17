@@ -139,6 +139,8 @@ class ArticleCrawler(object):
         print(category_name + " PID: " + str(os.getpid()))
 
         writer = Writer(category='Article', article_category=category_name, date=self.date)
+        print("날짜 : ",self.date )
+
         # 기사 url 형식
         url_format = f'http://news.naver.com/main/list.nhn?mode=LSD&mid=sec&sid1={self.categories.get(category_name)}&date='
         # start_year년 start_month월 start_day일 부터 ~ end_year년 end_month월 end_day일까지 기사를 수집합니다.
@@ -147,7 +149,11 @@ class ArticleCrawler(object):
 
         print(f'{category_name} is collecting ...')
         p = 0
+
+
         for url in target_urls:
+            # writer = Writer(category='Article', article_category=category_name, date=self.date)
+            print(url)
 
             # print(url)
             request = self.get_url_data(url)
@@ -163,7 +169,7 @@ class ArticleCrawler(object):
             for line in temp_post:
 
                 p+=1
-                if p%5 !=0 :
+                if p%50 !=0 :
                     continue
                 # 해당되는 page에서 모든 기사들의 URL을 post_urls 리스트에 넣음
                 post_urls.append(line.a.get('href'))
@@ -239,7 +245,7 @@ class ArticleCrawler(object):
 
                 # UnicodeEncodeError
                 except Exception as ex:
-                    # print("ERROR", ex)
+                    print("ERROR", ex)
                     del request_content, document_content
                     pass
         writer.close()
