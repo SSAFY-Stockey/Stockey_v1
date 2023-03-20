@@ -19,7 +19,7 @@ const router = createBrowserRouter([
     element: <StockMainPage />,
   },
   {
-    path: "/stock/:stock_name",
+    path: "/stock/:stockName",
     element: <StockDetailPage />,
   },
   // 산업 별 종목 페이지
@@ -28,7 +28,7 @@ const router = createBrowserRouter([
     element: <IndustryMainPage />,
   },
   {
-    path: "/industry/:industry_name",
+    path: "/industry/:industryName",
     element: <IndustryDetailPage />,
   },
 ])
