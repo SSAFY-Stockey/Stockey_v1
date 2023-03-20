@@ -6,6 +6,10 @@ import reportWebVitals from "./reportWebVitals"
 import { RecoilRoot } from "recoil"
 import { QueryClient, QueryClientProvider } from "react-query"
 
+// 스타일 적용
+import Grid from "@mui/material/Grid"
+import MainSection from "./components/common/Background/MainSection"
+
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 const queryClient = new QueryClient()
 
@@ -13,7 +17,16 @@ root.render(
   <React.StrictMode>
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>
-        <App />
+        <Grid container spacing={1}>
+          <Grid item xs={2}>
+            <div>Navbar</div>
+          </Grid>
+          <Grid item xs={10}>
+            <MainSection>
+              <App />
+            </MainSection>
+          </Grid>
+        </Grid>
       </QueryClientProvider>
     </RecoilRoot>
   </React.StrictMode>

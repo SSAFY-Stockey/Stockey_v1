@@ -1,9 +1,8 @@
 const MyPage = () => {
   return (
     <>
-      <div>Mypage</div>
+      <div>MyPage</div>
     </>
   )
 }
-
 export default MyPage
