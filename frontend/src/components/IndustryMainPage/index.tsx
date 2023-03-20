@@ -1,4 +1,4 @@
-import IndustrySelector from "./IndustrySelector/IndustrySelector"
+import IndustrySelector from "./IndustrySelector"
 import IndustryMarketCapInfoArea from "./IndustryMarketCapInfoArea/IndustryMarketCapInfoArea"
 import FavoriteIndustryInfoArea from "./FavoriteIndustryInfoArea/FavoriteIndustryInfoArea"
 
