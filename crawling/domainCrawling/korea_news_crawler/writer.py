@@ -28,7 +28,7 @@ class Writer(object):
 
         user_os = str(platform.system())
         if user_os == "Windows":
-            self.file = open(file_name, 'w', encoding='euc-kr', newline='')
+            self.file = open(file_name, 'w', encoding='utf-8', newline='')
         # Other OS uses utf-8
         else:
             self.file = open(file_name, 'w', encoding='utf-8', newline='')
