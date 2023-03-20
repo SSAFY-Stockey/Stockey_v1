@@ -9,6 +9,7 @@ import { QueryClient, QueryClientProvider } from "react-query"
 // 스타일 적용
 import Grid from "@mui/material/Grid"
 import MainSection from "./components/common/Background/MainSection"
+import Navbar from "./components/common/Navbar/Navbar"
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 const queryClient = new QueryClient()
@@ -19,7 +20,7 @@ root.render(
       <QueryClientProvider client={queryClient}>
         <Grid container spacing={1}>
           <Grid item xs={2}>
-            <div>Navbar</div>
+            <Navbar />
           </Grid>
           <Grid item xs={10}>
             <MainSection>
