@@ -13,8 +13,7 @@ const IndustrySelector = () => {
 export default IndustrySelector
 
 const IndustrySelectorDiv = styled.div`
-  height: calc(100vh - 204px);
-  grid-area: select;
+  height: calc(100vh - 192px);
   display: flex;
   flex-direction: column;
   align-items: flex-start;

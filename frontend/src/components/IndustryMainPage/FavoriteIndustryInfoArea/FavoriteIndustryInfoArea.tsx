@@ -13,6 +13,6 @@ const FavoriteIndustryInfoArea = () => {
 export default FavoriteIndustryInfoArea
 
 const FavoriteIndustryInfoAreaDiv = styled.div`
-  grid-area: favorite;
   border: 1px dashed black;
+  height: 100%;
 `

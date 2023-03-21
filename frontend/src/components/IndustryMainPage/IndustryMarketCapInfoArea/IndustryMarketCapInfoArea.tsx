@@ -11,6 +11,6 @@ const IndustryMarketCapInfoArea = () => {
 export default IndustryMarketCapInfoArea
 
 const IndustryMarketCapInfoAreaDiv = styled.div`
-  grid-area: market;
   border: 1px dashed black;
+  height: 100%;
 `
