@@ -8,15 +8,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResponseDto {
-    private int status;
     private String message;
-    private String code;
 
-    // 성공
+    private Object data;
 
-
-    // 실패
-
-    //예외
 
 }
