@@ -8,21 +8,50 @@ import requests
 import re
 import datetime
 from tqdm import tqdm
-import sys
 from datetime import datetime
 import pandas as pd
+import random
+import sys
+
 
 # 1.1 사용할 변수들
 
 # ConnectionError방지
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/98.0.4758.102"}
 ZERO_TOLERANCE = 3  # 끝 페이지를 판단하기 위해서 쓰는 변수. 세번 이상 아무 데이터가 나오지 않으면 다음 날짜로 바꾸기
+MOD_NUM = 2  # 페이지당 뉴스기사 두개중 하나씩 뽑기
 
-# 검색어 리스트
-keywords = ["하이닉스", "LG"]
+target_year = -1
+target_month = -1
+target_start_day = -1
+target_end_day = -1
+
+print(sys.argv)
+
+if len(sys.argv) != 5:
+    print("Usage: python news_crawling_complete.py {year} {month} 1 {month_last_day}")
+    exit(1)
+else:
+    target_year = int(sys.argv[1])
+    target_month = int(sys.argv[2])
+    target_start_day = int(sys.argv[3])
+    target_end_day = int(sys.argv[4])
+
+    if target_year < 0 or target_month < 0 or target_start_day < 0 or target_end_day < 0:
+        print("Usage: python news_crawling_complete.py {year} {month} 1 {month_last_day}")
+        exit(1)
+
+# 검색 목록을 csv 파일로 받는다 (하나의 컬럼으로 된 csv파일, 컬럼 명은 상관 없지만 있어야 함)
+input_csv_path = 'input/Top100CompaniesTest.csv'
 
 # output dir
 output_dir = './output'
+
+#################################################################################################
+
+# 1.2 검색할 리스트 만들기
+df = pd.read_csv(input_csv_path, encoding='cp949')
+keywords = df.iloc[:, 0].tolist()
 
 
 # 2. 크롤링 시 필요한 함수 만들기
@@ -42,7 +71,7 @@ def makeUrlTest(search, start_pg, end_pg):
         start_page = makePgNum(start_pg)
         url = "https://search.naver.com/search.naver?where=news&sm=tab_pge&query=" + search + "&start=" + str(
             start_page)
-        print("생성url: ", url)
+        # print("생성url: ", url)
         return url
     else:
         urls = []
@@ -50,7 +79,7 @@ def makeUrlTest(search, start_pg, end_pg):
             page = makePgNum(i)
             url = "https://search.naver.com/search.naver?where=news&sm=tab_pge&query=" + search + "&start=" + str(page)
             urls.append(url)
-        print("생성url: ", urls)
+        # print("생성url: ", urls)
         return urls
 
 
@@ -150,6 +179,16 @@ def run_crawl_by_date(year, month, start_day, end_day):
                     else:
                         pass
 
+                # 데이터 볼륨 축소를 위해 일부 뉴스만 남기기
+                final_url_len = len(final_urls)
+
+                news_sample_cnt = int(final_url_len/MOD_NUM)  # 있다면 일부만 크롤링
+                if news_sample_cnt == 0:  # 크롤링 대상이 너무 적다면 샘플링 하지 않고 그대로 진행
+                    pass
+                else:
+                    final_urls = random.sample(final_urls, news_sample_cnt)  # 그렇지 않다면 샘플링 진행
+
+
                 # 4.뉴스 본문 및 날짜 크롤링하기
                 # 뉴스 내용 크롤링
 
@@ -208,24 +247,27 @@ def run_crawl_by_date(year, month, start_day, end_day):
 
                 print(f'day: {day}')
                 print('news_title: ', len(news_titles))
-                print('news_url: ', len(final_urls))
-                print('news_contents: ', len(news_contents))
-                print('news_dates: ', len(news_dates))
+                # print('news_url: ', len(final_urls))
+                # print('news_contents: ', len(news_contents))
+                # print('news_dates: ', len(news_dates))
 
                 if len(news_titles) == 0 and len(final_urls) == 0:
                     zero_cnt += 1
                     if zero_cnt > ZERO_TOLERANCE:
                         break
 
+                domain_column = [keyword] * len(news_titles)
+
                 # 데이터 프레임 만들기
                 news_df = pd.DataFrame(
-                    {'date': news_dates, 'title': news_titles, 'link': final_urls, 'content': news_contents})
+                    {'date': news_dates, 'domain': domain_column, 'title': news_titles,
+                     'content': news_contents, 'url': final_urls})
                 # news_df
-                print(news_df[['date', 'title']])
+                # print(news_df[['date', 'title']])
 
                 # 중복 행 지우기
                 news_df = news_df.drop_duplicates(keep='first', ignore_index=True)
-                print("중복 제거 후 행 개수: ", len(news_df))
+                # print("중복 제거 후 행 개수: ", len(news_df))
 
                 # 데이터 프레임 저장
                 # now = datetime.datetime.now()
@@ -246,4 +288,4 @@ def run_crawl_by_date(year, month, start_day, end_day):
                 time.sleep(1.1)
 
 
-run_crawl_by_date(year=2022, month=1, start_day=1, end_day=2)
+run_crawl_by_date(year=target_year, month=target_month, start_day=target_start_day, end_day=target_end_day)
