@@ -12,7 +12,7 @@ const MainSection = styled.div`
   padding: 36px 36px 0px 36px;
 
   // 세로 크기
-  height: 95vh;
+  height: calc(99.5vh - 32px);
 `
 
 export default MainSection
