@@ -1,30 +1,37 @@
 import styled from "@emotion/styled"
 import Box from "@mui/material/Box"
 import Card from "@mui/material/Card"
-import CardContent from "@mui/material/CardContent"
 import CardMedia from "@mui/material/CardMedia"
 import { CardActionArea } from "@mui/material"
 import sampleImg from "./responsive-design.png"
 
 const IndustryCard = () => {
+  const onClickIndustryCard = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    console.log("산업 카드 클릭🙏")
+    console.log(e)
+  }
+
   return (
     <IndustryCardWrapper>
-      <IndustryCardActionArea>
-        <IndustryCardBody>
-          <CardMedia
-            component="img"
-            src={sampleImg}
-            alt="thumbnail"
-            sx={{
-              borderRadius: "50%",
-              height: "84px",
-              width: "84px",
-            }}
-          />
-        </IndustryCardBody>
-        <IndustryCardNameArea>
-          <NameTagP>IndustryName</NameTagP>
-        </IndustryCardNameArea>
+      <IndustryCardActionArea onClick={onClickIndustryCard}>
+        <IndustryCardContent>
+          <IndustryCardBody>
+            <CardMedia
+              component="img"
+              src={sampleImg}
+              alt="thumbnail"
+              sx={{
+                borderRadius: "50%",
+                height: "84px",
+                width: "84px",
+              }}
+            />
+          </IndustryCardBody>
+          <IndustryCardNameArea>
+            <NameTagP>IndustryName</NameTagP>
+          </IndustryCardNameArea>
+        </IndustryCardContent>
       </IndustryCardActionArea>
     </IndustryCardWrapper>
   )
@@ -33,15 +40,24 @@ const IndustryCard = () => {
 export default IndustryCard
 
 const IndustryCardWrapper = styled(Card)({
-  width: 108,
-  height: 180,
+  width: "calc((100% - 72px)/3)",
   borderRadius: "24px",
   filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))",
 })
 
 const IndustryCardActionArea = styled(CardActionArea)({
   width: "100%",
+  height: "0px",
+  paddingBottom: "166.66666667%",
+  position: "relative",
+})
+
+const IndustryCardContent = styled(Box)({
+  width: "100%",
   height: "100%",
+  position: "absolute",
+  top: 0,
+  left: 0,
   display: "flex",
   flexDirection: "column",
 })
@@ -54,10 +70,10 @@ const IndustryCardBody = styled(Box)({
   alignItems: "center",
 })
 
-const IndustryCardNameArea = styled(CardContent)({
-  padding: 0,
+const IndustryCardNameArea = styled(Box)({
+  padding: "0px",
   width: "100%",
-  height: 48,
+  height: "26.66666667%",
   background: "linear-gradient(92.18deg, #FF996C 1.48%, #FE7598 98.93%)",
   borderRadius: "0px 0px 24px 24px",
   display: "flex",

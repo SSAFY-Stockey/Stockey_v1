@@ -1,5 +1,16 @@
+import styled from "@emotion/styled"
+
 const IndustryMarketCapInfoArea = () => {
-  return <div>IndustryMarketCapInfoArea</div>
+  return (
+    <IndustryMarketCapInfoAreaDiv>
+      IndustryMarketCapInfoArea
+    </IndustryMarketCapInfoAreaDiv>
+  )
 }
 
 export default IndustryMarketCapInfoArea
+
+const IndustryMarketCapInfoAreaDiv = styled.div`
+  grid-area: market;
+  border: 1px dashed black;
+`
