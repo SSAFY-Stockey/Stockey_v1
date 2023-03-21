@@ -103,10 +103,7 @@ def makeUrl(keyword, target_date, ds_de, start_pg, end_pg, sort=0):
 def news_attrs_crawler(articles, attrs):
     attrs_content = []
     for i in articles:
-        attrs_content.append(i.attrs[attrs])  #
-
-    # print("dddddddddddddddddddd")
-    # print(attrs_content)
+        attrs_content.append(i.attrs[attrs])
     return attrs_content
 
 
@@ -136,10 +133,6 @@ def run_crawl_by_date(year, month, start_day, end_day):
     for keyword in keywords:
         for day in tqdm(range(start_day, end_day + 1)):
             zero_cnt = 0  # 정보가 나오지 않는 카운트. ZERO_TOLERANCE를 넘기면 끝 페이지라고 판단하고 다음 날짜로 간다
-
-            # title_set = set() # 중복 title이 있다면 맨 끝 page까지 간거니까 다음 날짜로 가겠다
-
-            # trigger = False # for loop 두개를 break 하기위한 변수
 
             # 특정 day범위에 대해 page 단위로 가져와
 
@@ -235,21 +228,8 @@ def run_crawl_by_date(year, month, start_day, end_day):
                     # 날짜 가져오기
                     news_dates.append(news_date)
 
-                # if trigger: # 중복 내용이 있으면 csv로 저장하지 않고 다음 날짜로 진행
-                #     break
-
-                # print("\n[뉴스 제목]")
-                # print(news_titles)
-                # print("\n[뉴스 링크]")
-                # print(final_urls)
-                # print("\n[뉴스 내용]")
-                # print(news_contents)
-
                 print(f'day: {day}')
                 print('news_title: ', len(news_titles))
-                # print('news_url: ', len(final_urls))
-                # print('news_contents: ', len(news_contents))
-                # print('news_dates: ', len(news_dates))
 
                 if len(news_titles) == 0 and len(final_urls) == 0:
                     zero_cnt += 1
@@ -262,15 +242,11 @@ def run_crawl_by_date(year, month, start_day, end_day):
                 news_df = pd.DataFrame(
                     {'date': news_dates, 'domain': domain_column, 'title': news_titles,
                      'content': news_contents, 'url': final_urls})
-                # news_df
-                # print(news_df[['date', 'title']])
 
                 # 중복 행 지우기
                 news_df = news_df.drop_duplicates(keep='first', ignore_index=True)
-                # print("중복 제거 후 행 개수: ", len(news_df))
 
                 # 데이터 프레임 저장
-                # now = datetime.datetime.now()
                 now = datetime.now()
 
                 cur_output_dir = os.path.join(output_dir, keyword)
@@ -280,9 +256,6 @@ def run_crawl_by_date(year, month, start_day, end_day):
                     os.makedirs(cur_output_dir)
 
                 save_path = os.path.join(cur_output_dir, f'{now.strftime("%Y%m%d_%H시%M분%S초")}.csv')
-
-                # news_df.to_csv('{}_{}.csv'.format(keyword, now.strftime('%Y%m%d_%H시%M분%S초')), encoding='utf-8-sig',
-                #                index=False)
 
                 news_df.to_csv(save_path, encoding='utf-8-sig', index=False)
                 time.sleep(1.1)
