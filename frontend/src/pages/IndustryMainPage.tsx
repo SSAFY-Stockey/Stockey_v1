@@ -20,7 +20,7 @@ const IndustryMainPage = () => {
     // </IndustryMainPageBody>
 
     <Grid container spacing={4.5} height="calc(100vh - 36px)">
-      <Grid item xs={12} container spacing={3} height="48px">
+      <Grid item container spacing={3} height="48px">
         <Grid item xs="auto">
           <TitleP>산업별 정보</TitleP>
         </Grid>
