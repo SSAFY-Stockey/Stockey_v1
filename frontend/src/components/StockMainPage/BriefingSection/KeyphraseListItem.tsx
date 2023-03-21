@@ -26,5 +26,7 @@ const StyledPaper = styled(Paper)<{ backgroundColor: string; rank: number }>`
     padding: 5%;
     margin-right: -3%;
     z-index: ${(props) => 4 - props.rank};
+    font-weight: bold;
+    font-size: 1.35rem;
   }
 `

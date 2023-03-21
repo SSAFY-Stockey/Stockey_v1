@@ -32,11 +32,10 @@ const KewordBarGraph = () => {
       crosshair: true,
       labels: {
         style: {
-          fontSize: "15px",
+          fontSize: "1.4rem",
           color: "black",
           fontWeight: "bold",
         },
-        reserveSpace: true,
       },
     },
     yAxis: {
