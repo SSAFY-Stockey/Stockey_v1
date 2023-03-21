@@ -18,8 +18,9 @@ const IndustryMainPage = () => {
     //   <IndustryMarketCapInfoArea />
     //   <FavoriteIndustryInfoArea />
     // </IndustryMainPageBody>
-    <Grid container spacing={4.5} width="100%" height="100%">
-      <Grid item xs={12} container spacing={3}>
+
+    <Grid container spacing={4.5} height="calc(100vh - 36px)">
+      <Grid item xs={12} container spacing={3} height="48px">
         <Grid item xs="auto">
           <TitleP>산업별 정보</TitleP>
         </Grid>
@@ -29,15 +30,15 @@ const IndustryMainPage = () => {
           </PageDescriptionP>
         </Grid>
       </Grid>
-      <Grid item xs={12} container spacing={4.5}>
+      <Grid item container spacing={4.5} height="auto">
         <Grid item xs={5}>
           <IndustrySelector />
         </Grid>
         <Grid item xs={7} container direction="column" spacing={4.5}>
-          <Grid item>
+          <Grid item xs>
             <IndustryMarketCapInfoArea />
           </Grid>
-          <Grid item>
+          <Grid item xs>
             <FavoriteIndustryInfoArea />
           </Grid>
         </Grid>
