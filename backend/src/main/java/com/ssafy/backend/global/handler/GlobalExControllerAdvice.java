@@ -1,7 +1,11 @@
 package com.ssafy.backend.global.handler;
 
 import com.ssafy.backend.global.dto.ErrorResultDto;
+import com.ssafy.backend.global.dto.ResponseDto;
+import com.ssafy.backend.global.exception.BaseException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -25,4 +29,13 @@ public class GlobalExControllerAdvice {
     }
 
 
+    @ExceptionHandler
+    public ResponseEntity<ResponseDto> handleBaseEx(BaseException exception){
+        log.error("BaseException errorMessage(): {}",exception.getExceptionType().getErrorMessage());
+        log.error("BaseException HttpStatus(): {}",exception.getExceptionType().getHttpStatus());
+        ResponseDto responseDTO = ResponseDto.builder()
+                .message(exception.getExceptionType().getErrorMessage())
+                .build();
+        return new ResponseEntity<>(responseDTO, exception.getExceptionType().getHttpStatus());
+    }
 }
