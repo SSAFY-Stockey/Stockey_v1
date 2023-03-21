@@ -22,6 +22,7 @@ const StyledDiv = styled.div`
   align-items: left;
   padding: 0% 3%;
   border-radius: 24px;
+  height: 100%;
 `
 const StyledTitle = styled.p`
   font-size: 2rem;

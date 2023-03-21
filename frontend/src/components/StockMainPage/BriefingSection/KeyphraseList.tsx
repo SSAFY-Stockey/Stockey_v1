@@ -29,4 +29,18 @@ const StyledDiv = styled.div`
   width: 100%;
   background-color: white;
   border-radius: 36px;
+  position: relative;
+  ::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border: 1.5em solid transparent;
+    border-top-color: #ffffff;
+    border-bottom: 0;
+    margin-left: -1.5em;
+    margin-bottom: -1.5em;
+  }
 `
