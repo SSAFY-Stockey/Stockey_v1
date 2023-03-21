@@ -13,7 +13,7 @@ type PageLinkBtnProps = {
 }
 
 const PageLinkBtn = ({ name, selected }: PageLinkBtnProps) => {
-  // 이동함수 작성
+  // 페이지 이동 함수 작성
   const navigate = useNavigate()
   const handleBtnClick = () => {
     navigate(
@@ -61,6 +61,7 @@ const BtnHoverAnime = keyframes`
   }
 `
 
+// 버튼 styled
 const PageLinkBtnDiv = styled.div`
   // 레이아웃
   display: flex;
@@ -70,7 +71,7 @@ const PageLinkBtnDiv = styled.div`
   gap: 10px;
 
   // 크기
-  width: 80%;
+  width: 100%;
 
   // 형태
   border-radius: 100px;
@@ -104,6 +105,7 @@ const PageLinkBtnDiv = styled.div`
   }
 `
 
+// 버튼 내 text style
 const PageLinkText = styled.div`
   color: inherit;
   text-align: center;
