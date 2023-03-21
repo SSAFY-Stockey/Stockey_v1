@@ -1,24 +1,48 @@
-import Grid from "@mui/material/Unstable_Grid2"
-import Box from "@mui/material/Box"
-
 import { IndustrySelector } from "../components/IndustryMainPage"
 import { IndustryMarketCapInfoArea } from "../components/IndustryMainPage"
 import { FavoriteIndustryInfoArea } from "../components/IndustryMainPage"
+import Box from "@mui/material/Box"
 import styled from "@emotion/styled"
+import Grid from "@mui/material/Grid"
 
 const IndustryMainPage = () => {
   return (
-    <IndustryMainPageBody>
-      <HeaderBox>
-        <TitleP>산업별 정보</TitleP>
-        <PageDescriptionP>
-          주식의 기초를 다질 수 있는 공간입니다
-        </PageDescriptionP>
-      </HeaderBox>
-      <IndustrySelector />
-      <IndustryMarketCapInfoArea />
-      <FavoriteIndustryInfoArea />
-    </IndustryMainPageBody>
+    // <IndustryMainPageBody>
+    //   <HeaderBox>
+    //     <TitleP>산업별 정보</TitleP>
+    //     <PageDescriptionP>
+    //       주식의 기초를 다질 수 있는 공간입니다
+    //     </PageDescriptionP>
+    //   </HeaderBox>
+    //   <IndustrySelector />
+    //   <IndustryMarketCapInfoArea />
+    //   <FavoriteIndustryInfoArea />
+    // </IndustryMainPageBody>
+    <Grid container spacing={4.5} width="100%" height="100%">
+      <Grid item xs={12} container spacing={3}>
+        <Grid item xs="auto">
+          <TitleP>산업별 정보</TitleP>
+        </Grid>
+        <Grid item xs display="flex" alignItems="end">
+          <PageDescriptionP>
+            주식의 기초를 다질 수 있는 공간입니다
+          </PageDescriptionP>
+        </Grid>
+      </Grid>
+      <Grid item xs={12} container spacing={4.5}>
+        <Grid item xs={5}>
+          <IndustrySelector />
+        </Grid>
+        <Grid item xs={7} container direction="column" spacing={4.5}>
+          <Grid item>
+            <IndustryMarketCapInfoArea />
+          </Grid>
+          <Grid item>
+            <FavoriteIndustryInfoArea />
+          </Grid>
+        </Grid>
+      </Grid>
+    </Grid>
   )
 }
 
@@ -38,13 +62,13 @@ const IndustryMainPageBody = styled(Box)({
 })
 
 const HeaderBox = styled(Box)({
-  gridArea: "header",
   display: "flex",
   flexDirection: "row",
   alignItems: "flex-end",
   padding: "0px",
   gap: "25px",
   height: "48px",
+  width: "100%",
 })
 
 const TitleP = styled.p`
@@ -56,8 +80,7 @@ const TitleP = styled.p`
   letter-spacing: 0.1px;
   color: #000000;
 
-  display: flex;
-  align-items: center;
+  bottom: 0px;
   margin: 0px;
 `
 

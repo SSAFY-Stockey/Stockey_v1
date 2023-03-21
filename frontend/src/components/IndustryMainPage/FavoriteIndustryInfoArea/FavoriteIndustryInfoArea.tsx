@@ -1,9 +1,11 @@
 import styled from "@emotion/styled"
+import FavoriteIndustryCard from "./FavoriteIndustryCard"
 
 const FavoriteIndustryInfoArea = () => {
   return (
     <FavoriteIndustryInfoAreaDiv>
       FavoriteIndustryInfoArea
+      <FavoriteIndustryCard />
     </FavoriteIndustryInfoAreaDiv>
   )
 }
