@@ -231,26 +231,11 @@ class ArticleCrawler(object):
 
     def start(self):
         # MultiProcess 크롤링 시작
-        dir_path = r"C:/Users/SSAFY/Desktop/output" # replace with your directory path
+        # dir_path = r"C:/Users/SSAFY/Desktop/output" # replace with your directory path
 
         current_dir = os.getcwd()
         print(current_dir)
 
-        # dir_name = 'output'
-        # if not os.path.exists(dir_name):
-        #     os.makedirs(dir_name)
-
-
-        # iterate over the files in the directory and delete each file
-        # for file_name in os.listdir(dir_path):
-        #     file_path = os.path.join(dir_path, file_name)
-        #     try:
-        #         if os.path.isfile(file_path):
-        #             os.unlink(file_path)
-        #     except Exception as e:
-        #         print(f"Error deleting file: {file_path} - {e}")
-
-        print("START")
         print(self.selected_categories)
         for category_name in self.selected_categories:
             # proc = Process(target=self.crawling, args=(category_name,))
@@ -260,6 +245,4 @@ class ArticleCrawler(object):
 
 if __name__ == "__main__":
     Crawler = ArticleCrawler()
-    Crawler.set_category('생활문화')
-    Crawler.set_date_range('2018-01', '2018-02')
     Crawler.start()

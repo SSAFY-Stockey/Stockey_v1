@@ -14,7 +14,7 @@ class Writer(object):
         self.csv_writer = csv.writer(self.file)
 
     def initialize_file(self, category, article_category):
-        output_path = f'../output'
+        output_path = f'./output'
         if os.path.exists(output_path) is not True:
             os.mkdir(output_path)
 
