@@ -74,7 +74,7 @@ const IndustryCardNameArea = styled(Box)({
   padding: "0px",
   width: "100%",
   height: "26.66666667%",
-  background: "linear-gradient(92.18deg, #FF996C 1.48%, #FE7598 98.93%)",
+  background: "var(--custom-gradient-pink)",
   borderRadius: "0px 0px 24px 24px",
   display: "flex",
   alignItems: "center",

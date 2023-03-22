@@ -4,7 +4,7 @@ import IndustryCardList from "./IndustryCardList"
 const IndustrySelector = () => {
   return (
     <IndustrySelectorDiv>
-      <IndustrySelectorTitleP>산업 분류 선택</IndustrySelectorTitleP>
+      <IndustrySelectorTitleDiv>산업 분류 선택</IndustrySelectorTitleDiv>
       <IndustryCardList />
     </IndustrySelectorDiv>
   )
@@ -13,8 +13,7 @@ const IndustrySelector = () => {
 export default IndustrySelector
 
 const IndustrySelectorDiv = styled.div`
-  height: calc(100vh - 204px);
-  grid-area: select;
+  height: calc(100vh - 192px);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -28,7 +27,7 @@ const IndustrySelectorDiv = styled.div`
     0px 1px 3px rgba(0, 0, 0, 0.3);
   border-radius: 24px;
 `
-const IndustrySelectorTitleP = styled.p`
+const IndustrySelectorTitleDiv = styled.div`
   width: 100%;
   height: 24px;
   margin: 0px;
