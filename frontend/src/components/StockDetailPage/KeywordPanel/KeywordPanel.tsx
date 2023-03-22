@@ -1,5 +1,9 @@
 import styled from "styled-components"
 import KeywordDefinition from "./KeywordDefinition"
+import KeywordChart from "./KeywordChart"
+import HighlyRelatedStockList from "./HighlyRelatedStockList"
+import NewsSummaryList from "./NewsSummaryList"
+import NewsList from "./NewsList"
 
 interface Props {
   keyword: string
@@ -10,6 +14,10 @@ const KeywordPanel = ({ keyword }: Props) => {
     <StyledPanel>
       <StyledTitle>{keyword}</StyledTitle>
       <KeywordDefinition />
+      <KeywordChart />
+      <HighlyRelatedStockList />
+      <NewsSummaryList />
+      <NewsList />
     </StyledPanel>
   )
 }
