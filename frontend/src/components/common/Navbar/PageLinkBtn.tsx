@@ -78,7 +78,7 @@ const PageLinkBtnDiv = styled.div`
 
   // 글자
   font-weight: bold;
-  font-size: calc(12px + 0.4vw);
+  font-size: 2rem;
   color: white;
 
   // 마진
