@@ -39,6 +39,8 @@ dependencies {
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
     // Swagger(OpenAPI)
     implementation 'org.springdoc:springdoc-openapi-ui:1.6.9'
+    // test in-memory db
+    implementation 'com.h2database:h2'
 
 }
 
