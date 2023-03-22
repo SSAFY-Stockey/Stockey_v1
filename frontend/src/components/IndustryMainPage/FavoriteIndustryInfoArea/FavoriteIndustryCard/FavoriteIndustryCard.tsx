@@ -1,10 +1,28 @@
-import styled from "@emotion/styled";
+import styled from "@emotion/styled"
 
-const FavoriteIndustryCard = () => {
-  return <CardDiv></CardDiv>;
-};
+interface CardProps {
+  imgUrl: string
+  industryName: string
+  marketCapFluctuationRate: number
+}
 
-export default FavoriteIndustryCard;
+const FavoriteIndustryCard = ({
+  imgUrl,
+  industryName,
+  marketCapFluctuationRate,
+}: CardProps) => {
+  return (
+    <CardDiv>
+      <IndustryLogoImg src={imgUrl} alt="logo" />
+      <IndustryNameDiv>{industryName}</IndustryNameDiv>
+      <FluctuationDiv value={marketCapFluctuationRate}>
+        {marketCapFluctuationRate}
+      </FluctuationDiv>
+    </CardDiv>
+  )
+}
+
+export default FavoriteIndustryCard
 
 const CardDiv = styled.div`
   display: flex;
@@ -20,4 +38,38 @@ const CardDiv = styled.div`
   background: rgba(255, 255, 255, 0.7);
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 24px;
-`;
+`
+
+const IndustryLogoImg = styled.img`
+  width: 36px;
+  height: 36px;
+`
+
+const IndustryNameDiv = styled.div`
+  width: auto;
+  height: 1rem;
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.5rem;
+  line-height: 1.5rem;
+  display: flex;
+  align-items: center;
+`
+
+const FluctuationDiv = styled.div<{ value: number }>`
+  width: auto;
+  height: 1.5rem;
+
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.4rem;
+  line-height: 1.5rem;
+  display: flex;
+  align-items: center;
+  text-align: right;
+
+  color: ${({ value }) =>
+    value > 0 ? "FF0000" : value < 0 ? "#4537FF" : "#000000"};
+`
