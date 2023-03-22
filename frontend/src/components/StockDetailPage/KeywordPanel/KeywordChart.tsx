@@ -1,11 +1,10 @@
 import * as Highcharts from "highcharts"
 import HighchartsReact from "highcharts-react-official"
 import dayjs from "dayjs"
+import styled from "styled-components"
 
 const today = dayjs().endOf("day")
 const aMonthAgo = dayjs().subtract(1, "month").subtract(1, "day").startOf("day")
-console.log(aMonthAgo, today)
-console.log(dayjs(today.valueOf()).format("MM월 DD일"))
 
 interface HighchartsOptions {
   // chart?: Highcharts.ChartOptions
@@ -183,6 +182,14 @@ const KeywordChart = () => {
     },
   }
 
-  return <HighchartsReact highcharts={Highcharts} options={options} />
+  return (
+    <ChartWrapper>
+      <HighchartsReact highcharts={Highcharts} options={options} />
+    </ChartWrapper>
+  )
 }
 export default KeywordChart
+
+const ChartWrapper = styled.div`
+  align-items: center;
+`

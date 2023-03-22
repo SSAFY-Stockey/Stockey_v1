@@ -14,8 +14,10 @@ const KeywordPanel = ({ keyword }: Props) => {
     <StyledPanel>
       <StyledTitle>{keyword}</StyledTitle>
       <KeywordDefinition />
-      <KeywordChart />
-      <HighlyRelatedStockList />
+      <ChartSection>
+        <KeywordChart />
+        <HighlyRelatedStockList />
+      </ChartSection>
       <NewsSummaryList />
       <NewsList />
     </StyledPanel>
@@ -45,4 +47,10 @@ const StyledPanel = styled.div`
 const StyledTitle = styled.p`
   font-size: 2rem;
   font-weight: bold;
+`
+
+const ChartSection = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 `
