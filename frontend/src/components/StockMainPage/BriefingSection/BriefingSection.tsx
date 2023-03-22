@@ -7,7 +7,7 @@ const BriefingSection = () => {
       <Grid item xs={8} md={8} lg={9}>
         <KeywordBoard />
       </Grid>
-      <Grid item xs={4} md={4} lg={3}>
+      <Grid item xs={3} md={3} lg={3}>
         <MyStockList />
       </Grid>
     </Grid>
