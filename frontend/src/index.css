@@ -1,3 +1,30 @@
+html {
+  font-size: 10px;
+  --custom-pink-1: #ff6f9d;
+  --custom-pink-2: #ff96b8;
+  --custom-pink-3: #ffb3cb;
+  --custom-pink-4: #ffd8e5;
+  --custom-orange-1: #ff9d6a;
+  --custom-orange-2: #ffb38a;
+  --custom-orange-3: #ffc4a1;
+  --custom-orange-4: #ffe0d0;
+  --custom-purple-1: #a68aff;
+  --custom-purple-2: #bfa0ff;
+  --custom-purple-3: #d0bcff;
+  --custom-purple-4: #e0d0ff;
+  --custom-yellow-1: #fcd853;
+  --custom-yellow-2: #ffe68a;
+  --custom-yellow-3: #fff1a1;
+  --custom-yellow-4: #fff5cd;
+  --custom-green-1: #4dc19f;
+  --custom-green-2: #7ed1b9;
+  --custom-green-3: #9edfc9;
+  --custom-green-4: #d3f4ce;
+  --custom-mint: #68e3be;
+  --custom-black: #1b1f24;
+  --custom-background: #faf5f7;
+}
+
 body {
   margin: 0;
   /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -7,6 +34,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #241b23;
+  color: var(--custom-black);
 }
 body * {
   box-sizing: border-box;
