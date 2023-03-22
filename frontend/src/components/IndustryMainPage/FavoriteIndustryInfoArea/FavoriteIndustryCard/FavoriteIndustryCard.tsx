@@ -1,4 +1,4 @@
-import styled from "@emotion/styled"
+import styled, { keyframes } from "styled-components"
 
 interface CardProps {
   imgUrl: string
@@ -13,11 +13,14 @@ const FavoriteIndustryCard = ({
 }: CardProps) => {
   return (
     <CardDiv>
-      <IndustryLogoImg src={imgUrl} alt="logo" />
-      <IndustryNameDiv>{industryName}</IndustryNameDiv>
-      <FluctuationDiv value={marketCapFluctuationRate}>
-        {marketCapFluctuationRate}
-      </FluctuationDiv>
+      <DefaultContentDiv>
+        <IndustryLogoImg src={imgUrl} alt="logo" />
+        <IndustryNameDiv>{industryName}</IndustryNameDiv>
+        <FluctuationDiv value={marketCapFluctuationRate}>
+          {marketCapFluctuationRate}
+        </FluctuationDiv>
+      </DefaultContentDiv>
+      <FluctuationChart id="chart" />
     </CardDiv>
   )
 }
@@ -26,18 +29,31 @@ export default FavoriteIndustryCard
 
 const CardDiv = styled.div`
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 6px 12px 6px 6px;
-  margin: 0px;
-  gap: 12px;
-
+  flex-direction: column;
   width: calc((100% - 24px) / 2);
   height: 48px;
 
   background: rgba(255, 255, 255, 0.7);
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 24px;
+
+  // 카드 확장 애니메이션
+  transition: height 0.5s;
+  &:hover {
+    height: 192px;
+    #chart {
+      display: block;
+    }
+  }
+`
+
+const DefaultContentDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 6px 12px 6px 6px;
+  margin: 0px;
+  gap: 12px;
 `
 
 const IndustryLogoImg = styled.img`
@@ -72,4 +88,11 @@ const FluctuationDiv = styled.div<{ value: number }>`
 
   color: ${({ value }) =>
     value > 0 ? "FF0000" : value < 0 ? "#4537FF" : "#000000"};
+`
+
+const FluctuationChart = styled.div`
+  padding: 24px;
+  flex-grow: 1;
+  border: 1px dashed black;
+  display: none;
 `
