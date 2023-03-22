@@ -34,13 +34,13 @@ const PageLinkBtn = ({ name, selected }: PageLinkBtnProps) => {
         onClick={handleBtnClick}
       >
         {name === "주식 종목" ? (
-          <QueryStatsRoundedIcon fontSize="large" />
+          <QueryStatsRoundedIcon />
         ) : name === "산업별 정보" ? (
-          <AppsRoundedIcon fontSize="large" />
+          <AppsRoundedIcon />
         ) : name === "키워드" ? (
-          <ArticleRoundedIcon fontSize="large" />
+          <ArticleRoundedIcon />
         ) : (
-          <HomeRoundedIcon fontSize="large" />
+          <HomeRoundedIcon />
         )}
         <PageLinkText>{name}</PageLinkText>
       </PageLinkBtnDiv>

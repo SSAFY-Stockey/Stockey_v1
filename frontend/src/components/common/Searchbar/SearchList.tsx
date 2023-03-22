@@ -14,7 +14,7 @@ const SearchList = ({ page, value }: SearchListProps) => {
 
   // 입력값이 바뀔 때, 검색 결과 데이터를 갱신
   useEffect(() => {
-    // page = "stock"
+    // page = "stock" or "industry" 일 때 탐색 함수
     const saveSearchResult = () => {
       const sampleResult = SampleStock.filter((item: string) =>
         item
