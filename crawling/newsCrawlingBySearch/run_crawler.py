@@ -20,4 +20,5 @@ else:
         for cur_month in range(1, 13):
             cur_month_last_day = calendar.monthrange(cur_year, cur_month)[1]
             # year month start end
-            sp.call(f'python news_crawling_complete.py {cur_year} {cur_month} 1 {cur_month_last_day}')
+            # sp.call(f'python news_crawling_complete.py {cur_year} {cur_month} 1 {cur_month_last_day}')
+            sp.call(['python', 'news_crawling_complete.py', str(cur_year), str(cur_month), '1', str(cur_month_last_day)])
