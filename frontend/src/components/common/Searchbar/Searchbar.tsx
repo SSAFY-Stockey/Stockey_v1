@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import SearchIcon from "@mui/icons-material/Search"
 
 type SearchbarProps = {
+  // 사용하는 page 구분(stock & keyword)
   page: string
 }
 
@@ -37,10 +38,6 @@ const Searchbar = ({ page }: SearchbarProps) => {
     setIsHovering(false)
   }
 
-  useEffect(() => {
-    console.log(isHovering)
-  }, [isHovering])
-
   return (
     <>
       <SearchbarWrapper>
@@ -54,7 +51,11 @@ const Searchbar = ({ page }: SearchbarProps) => {
               onFocus={handleFocus}
               onBlur={handleFocus}
               onChange={handleInput}
-              placeholder="주식 종목을 검색하세요"
+              placeholder={
+                page === "stock"
+                  ? "주식 종목을 검색하세요"
+                  : "키워드를 검색하세요"
+              }
             />
             <SearchIcon fontSize="large" />
           </IconDiv>
