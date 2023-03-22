@@ -12,25 +12,33 @@ const FavoriteIndustryCard = ({
   marketCapFluctuationRate,
 }: CardProps) => {
   return (
-    <CardDiv>
-      <DefaultContentDiv>
-        <IndustryLogoImg src={imgUrl} alt="logo" />
-        <IndustryNameDiv>{industryName}</IndustryNameDiv>
-        <FluctuationDiv value={marketCapFluctuationRate}>
-          {marketCapFluctuationRate}
-        </FluctuationDiv>
-      </DefaultContentDiv>
-      <FluctuationChart id="chart" />
-    </CardDiv>
+    <LocationDiv>
+      <CardDiv>
+        <DefaultContentDiv>
+          <IndustryLogoImg src={imgUrl} alt="logo" />
+          <IndustryNameDiv>{industryName}</IndustryNameDiv>
+          <FluctuationDiv value={marketCapFluctuationRate}>
+            {marketCapFluctuationRate}
+          </FluctuationDiv>
+        </DefaultContentDiv>
+        <FluctuationChart id="chart" />
+      </CardDiv>
+    </LocationDiv>
   )
 }
 
 export default FavoriteIndustryCard
 
+const LocationDiv = styled.div`
+  display: flex;
+  width: calc((100% - 24px) / 2);
+  height: 48px;
+`
+
 const CardDiv = styled.div`
   display: flex;
   flex-direction: column;
-  width: calc((100% - 24px) / 2);
+  width: 100%;
   height: 48px;
 
   background: rgba(255, 255, 255, 0.7);
@@ -40,7 +48,10 @@ const CardDiv = styled.div`
   // 카드 확장 애니메이션
   transition: height 0.5s;
   &:hover {
+    position: relative;
+    z-index: 1;
     height: 192px;
+    background: rgba(255, 255, 255, 1);
     #chart {
       display: block;
     }

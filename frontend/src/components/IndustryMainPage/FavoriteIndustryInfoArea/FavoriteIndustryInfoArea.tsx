@@ -1,5 +1,5 @@
-import styled from "@emotion/styled";
-import FavoriteIndustryCardList from "./FavoriteIndustryCardList";
+import styled from "@emotion/styled"
+import FavoriteIndustryCardList from "./FavoriteIndustryCardList"
 
 const FavoriteIndustryInfoArea = () => {
   return (
@@ -7,10 +7,10 @@ const FavoriteIndustryInfoArea = () => {
       <TitleDiv>FavoriteIndustryInfoArea</TitleDiv>
       <FavoriteIndustryCardList />
     </AreaDiv>
-  );
-};
+  )
+}
 
-export default FavoriteIndustryInfoArea;
+export default FavoriteIndustryInfoArea
 
 const AreaDiv = styled.div`
   width: 100%;
@@ -19,11 +19,11 @@ const AreaDiv = styled.div`
   flex-direction: column;
   gap: 24px;
   padding: 24px 0px;
-  background: #faf5f7;
+  background: var(--custom-background);
   border-radius: 24px;
   box-shadow: 0px 4px 8px 3px rgba(0, 0, 0, 0.15);
   filter: drop-shadow(0px 1px 3px rgba(0, 0, 0, 0.3));
-`;
+`
 
 const TitleDiv = styled.div`
   height: 24px;
@@ -42,4 +42,4 @@ const TitleDiv = styled.div`
   letter-spacing: 0.1px;
 
   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-`;
+`
