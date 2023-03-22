@@ -3,7 +3,7 @@ import Searchbar from "../components/common/Searchbar/Searchbar"
 const KeywordPage = () => {
   return (
     <>
-      <Searchbar />
+      <Searchbar page={"stock"} />
       <div>KeywordPage</div>
     </>
   )
