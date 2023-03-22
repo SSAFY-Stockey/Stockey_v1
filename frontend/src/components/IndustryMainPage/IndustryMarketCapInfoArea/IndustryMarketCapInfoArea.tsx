@@ -53,4 +53,5 @@ const ContentDiv = styled.div`
   width: auto;
   padding: 0px;
   display: flex;
+  gap: 24px;
 `
