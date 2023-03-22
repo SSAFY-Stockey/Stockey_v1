@@ -19,6 +19,7 @@ import sys
 # ConnectionError방지
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/98.0.4758.102"}
 ZERO_TOLERANCE = 3  # 끝 페이지를 판단하기 위해서 쓰는 변수. 세번 이상 아무 데이터가 나오지 않으면 다음 날짜로 바꾸기
+TITLE_DUP_TOLERANCE = 3  # 타이틀 중복이 세번 이상 나오면 다음 날짜로 진행하기 위한 변수
 MOD_NUM = 2  # 페이지당 뉴스기사 두개중 하나씩 뽑기
 
 target_year = -1
@@ -134,6 +135,10 @@ def run_crawl_by_date(year, month, start_day, end_day):
         for day in tqdm(range(start_day, end_day + 1)):
             zero_cnt = 0  # 정보가 나오지 않는 카운트. ZERO_TOLERANCE를 넘기면 끝 페이지라고 판단하고 다음 날짜로 간다
 
+            title_dup_cnt = 0  # 현재 날짜에 중복 title이 몇개 있는지 체크하는 변수
+            title_set = set()  # 특정 날짜의 title
+            title_dup_trigger = False
+
             # 특정 day범위에 대해 page 단위로 가져와
 
             ################ 날짜 범위 정하기 ################
@@ -230,6 +235,21 @@ def run_crawl_by_date(year, month, start_day, end_day):
 
                 print(f'day: {day}')
                 print('news_title: ', len(news_titles))
+
+                # title_set에 title 데이터 넣기
+                for tmp_title in news_titles:
+                    if tmp_title in title_set:  # 타이틀 세트에 이 타이틀이 존재한다면
+                        title_dup_cnt += 1
+                        if title_dup_cnt > TITLE_DUP_TOLERANCE:  # 타이틀 중복이 한도를 넘었다면 다음 날짜로 진행
+                            title_dup_trigger = True
+                            break
+                    else:
+                        title_set.add(tmp_title)
+                        print(f'title_set = {title_set}')
+
+                # 타이틀 중복이 한도를 넘었다면 다음 날짜로 진행
+                if title_dup_trigger:
+                    break
 
                 if len(news_titles) == 0 and len(final_urls) == 0:
                     zero_cnt += 1
