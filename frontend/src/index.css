@@ -10,7 +10,7 @@ html {
   --custom-orange-4: #ffe0d0;
   --custom-purple-1: #a68aff;
   --custom-purple-2: #bfa0ff;
-  --custom-purple-3: #d0bcff;
+  --custom-purple-3: #010101;
   --custom-purple-4: #e0d0ff;
   --custom-yellow-1: #fcd853;
   --custom-yellow-2: #ffe68a;
@@ -21,6 +21,9 @@ html {
   --custom-green-3: #9edfc9;
   --custom-green-4: #d3f4ce;
   --custom-mint: #68e3be;
+  --custom-blue: #a7b3f3;
+  --custom-gradient-violet: linear-gradient(130deg, #99c2ff 0%, #ffa7d1 100%);
+  --custom-gradient-pink: linear-gradient(130deg, #ff996c 0%, #fe7598 100%);
   --custom-black: #1b1f24;
   --custom-background: #faf5f7;
 }
