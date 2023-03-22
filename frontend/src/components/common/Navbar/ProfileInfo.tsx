@@ -31,7 +31,7 @@ const ProfileName = styled.div`
   color: white;
   text-align: center;
 `
-
+// 닉네임 작성 styled
 const ProfileDiv = styled.div`
   // 내부 패딩
   padding: 45px 0px;

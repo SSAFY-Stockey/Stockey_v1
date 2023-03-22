@@ -17,23 +17,23 @@ const StockBlock = ({
 }: Props) => {
   const [state, setState] = useState<"default" | "selected">("default")
   const clickHandler = () => {
-    setState("selected")
+    state === "default" ? setState("selected") : setState("default")
   }
   return (
     <StyledBlock state={state} onClick={clickHandler}>
       <StyledPaper elevation={0} state={state}>
-        <StyledContent state={state}>
-          <StyledLogo src={`logo_images/${companyLogo}.png`} />
-          <StyledInfo>
-            <StyledName>{companyName}</StyledName>
-            <StyledStats>
-              <StyledPrice>{currentPrice.toLocaleString("ko-KR")}</StyledPrice>
-              <StyledChange isIncreasing={priceChange > 0 ? true : false}>
-                {`${priceChange > 0 ? "▲" : "▼"} ${priceChange}%`}
-              </StyledChange>
-            </StyledStats>
-          </StyledInfo>
-        </StyledContent>
+        {/* <StyledContent state={state}> */}
+        <StyledLogo src={`logo_images/${companyLogo}.png`} />
+        <StyledInfo>
+          <StyledName>{companyName}</StyledName>
+          <StyledStats>
+            <StyledPrice>{currentPrice.toLocaleString("ko-KR")}</StyledPrice>
+            <StyledChange isIncreasing={priceChange > 0 ? true : false}>
+              {`${priceChange > 0 ? "▲" : "▼"} ${priceChange}%`}
+            </StyledChange>
+          </StyledStats>
+        </StyledInfo>
+        {/* </StyledContent> */}
       </StyledPaper>
     </StyledBlock>
   )
@@ -43,12 +43,26 @@ export default StockBlock
 
 const StyledBlock = styled.div<{ state: "default" | "selected" }>`
   position: relative;
-  width: 30%;
+  width: ${(props) => (props.state === "default" ? "90%" : "100%")};
+  background-image: ${(props) =>
+    props.state === "default"
+      ? "null"
+      : "linear-gradient(#FAF5F7, #FAF5F7), linear-gradient(130deg, #99C2FF 0%, #FFA7D1 100%)"};
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  border-radius: 40px;
+  border: ${(props) =>
+    props.state === "default" ? "5px solid #f8f8f8" : "5px solid transparent"};
+  margin-bottom: 12px;
   ::after {
     content: "";
     padding-bottom: 100%;
     display: block;
   }
+  // &:hover {
+  //   transform: scale(1.1);
+  //   transform-origin: top left;
+  // }
 `
 
 const StyledPaper = styled(Paper)<{ state: "default" | "selected" }>`
@@ -59,35 +73,18 @@ const StyledPaper = styled(Paper)<{ state: "default" | "selected" }>`
     width: 100%;
     height: 100%;
     border-radius: 40px;
-    border: ${(props) =>
-      props.state === "default"
-        ? "5px solid #f8f8f8"
-        : "5px solid transparent"};
-    background-image: ${(props) =>
-      props.state === "default"
-        ? "null"
-        : "linear-gradient(#FAF5F7, #FAF5F7), linear-gradient(130deg, #99C2FF 0%, #FFA7D1 100%)"};
-    background-origin: border-box;
-    background-clip: content-box, border-box;
-    object-fit: cover;
+    padding: 16%;
+    background-color: ${(props) =>
+      props.state === "default" ? "white" : "#FAF5F7"};
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 `
 
-const StyledContent = styled.div<{ state: "default" | "selected" }>`
-  padding: 20%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  background-color: ${(props) =>
-    props.state === "default" ? "white" : "#FAF5F7"};
-  border-radius: 40px;
-  width: -webkit-fill-available;
-  height: -webkit-fill-available;
-`
-
 const StyledLogo = styled.img`
-  width: 25%;
-  height: 25%;
+  width: 30%;
+  height: 30%;
   max-width: 100px;
   border-radius: 24px;
 `
