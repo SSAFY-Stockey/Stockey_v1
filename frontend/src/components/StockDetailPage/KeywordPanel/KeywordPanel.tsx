@@ -42,6 +42,7 @@ const PanelWrapper = styled.div`
   }
 `
 const PanelTitle = styled.p`
-  font-size: 2rem;
+  font-size: 2.6rem;
   font-weight: bold;
+  letter-spacing: 0.4rem;
 `
