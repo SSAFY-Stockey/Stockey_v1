@@ -2,7 +2,7 @@ package com.ssafy.backend.domain.member.service;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import com.ssafy.backend.domain.member.dto.KakaoMemberDto;
+import com.ssafy.backend.domain.member.dto.OauthMemberDto;
 import com.ssafy.backend.global.exception.member.AuthException;
 import com.ssafy.backend.global.exception.member.AuthExceptionType;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,7 +21,7 @@ public class AuthServiceImpl implements AuthService{
     private String redirect_uri;
 
     // oAuth access token으로 사용자 정보 가져오는 로직
-    public KakaoMemberDto getKakaoMemberInfo(String token) {
+    public OauthMemberDto getKakaoMemberInfo(String token) {
         String reqURL = "https://kapi.kakao.com/v2/user/me";
         //access_token을 이용하여 사용자 정보 조회
         try {
@@ -51,13 +51,13 @@ public class AuthServiceImpl implements AuthService{
             JsonElement element = JsonParser.parseString(result);
             long id = element.getAsJsonObject().get("id").getAsLong();
 
-            KakaoMemberDto kakaoMemberDto = KakaoMemberDto.builder()
+            OauthMemberDto oAuthMemberDto = OauthMemberDto.builder()
                     .id(id)
                     .build();
 
             br.close();
 
-            return kakaoMemberDto;
+            return oAuthMemberDto;
 
         } catch (IOException e) {
             e.printStackTrace();

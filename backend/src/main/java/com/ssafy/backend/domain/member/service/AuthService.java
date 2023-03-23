@@ -1,8 +1,8 @@
 package com.ssafy.backend.domain.member.service;
 
-import com.ssafy.backend.domain.member.dto.KakaoMemberDto;
+import com.ssafy.backend.domain.member.dto.OauthMemberDto;
 
 public interface AuthService {
-    KakaoMemberDto getKakaoMemberInfo(String token);
+    OauthMemberDto getKakaoMemberInfo(String token);
     String getKakaoAccessToken (String code);
 }

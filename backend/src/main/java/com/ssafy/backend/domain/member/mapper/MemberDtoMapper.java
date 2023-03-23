@@ -5,6 +5,6 @@ import com.ssafy.backend.domain.member.dto.MemberDto;
 import org.mapstruct.Mapper;
 
 @Mapper
-public interface UserDtoMapper {
+public interface MemberDtoMapper {
     KakaoLoginResponse toKakaoLoginResponse(MemberDto dto);
 }

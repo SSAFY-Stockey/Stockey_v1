@@ -1,5 +1,6 @@
 package com.ssafy.backend.domain.member.entity;
 
+import com.ssafy.backend.domain.member.enums.OauthType;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -33,7 +34,7 @@ public class Member {
     @Size(max = 50)
     @NotNull
     @Column(name = "oauth_type", nullable = false, length = 50)
-    private String oauthType;
+    private OauthType oauthType;
 
     @ToString.Include
     @NotNull
@@ -50,4 +51,7 @@ public class Member {
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
 }

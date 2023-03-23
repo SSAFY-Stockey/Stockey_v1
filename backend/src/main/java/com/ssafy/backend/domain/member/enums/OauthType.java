@@ -1,5 +1,5 @@
 package com.ssafy.backend.domain.member.enums;
 
-public enum OAuthType {
+public enum OauthType {
     KAKAO;
 }
