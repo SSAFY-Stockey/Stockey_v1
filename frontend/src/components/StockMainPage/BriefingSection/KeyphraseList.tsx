@@ -1,15 +1,20 @@
 import styled from "styled-components"
 import KeyphraseListItem from "./KeyphraseListItem"
 
-const KeyphraseList = () => {
-  const pinkColors: string[] = ["#FF6F9D", "#FF96B8", "#FFB3CB", "#FFD8E5"]
+interface Props {
+  focused: number
+}
+
+const KeyphraseList = ({ focused }: Props) => {
+  const colors: string[] = ["orange", "pink", "purple"]
+  const keyphrases = ["금리 인상", "대출 규제", "부동산 하락", "연준 발표"]
   return (
     <StyledDiv>
-      {pinkColors.map((color, index) => {
+      {keyphrases.map((phrase, index) => {
         return (
           <KeyphraseListItem
-            keyphrase="금리 인상"
-            backgroundColor={color}
+            keyphrase={phrase}
+            backgroundColor={`var(--custom-${colors[focused]}-${index + 1})`}
             rank={index + 1}
           />
         )

@@ -71,6 +71,9 @@ const KeywordChart = () => {
       dateTimeLabelFormats: {
         day: "%m/%d",
       },
+      labels: {
+        step: 7,
+      },
     },
     yAxis: {
       title: {
@@ -134,7 +137,7 @@ const KeywordChart = () => {
         ].map((value, index) => {
           return [today.valueOf() - index * 24 * 3600 * 1000, value]
         }),
-        color: "#2979ff",
+        color: "var(--custom-blue)",
         lineColor: "#2979ff",
         fillColor: {
           linearGradient: { x1: 0, x2: 1, y1: 0, y2: 1 },
@@ -191,5 +194,5 @@ const KeywordChart = () => {
 export default KeywordChart
 
 const ChartWrapper = styled.div`
-  align-items: center;
+  width: 100%;
 `
