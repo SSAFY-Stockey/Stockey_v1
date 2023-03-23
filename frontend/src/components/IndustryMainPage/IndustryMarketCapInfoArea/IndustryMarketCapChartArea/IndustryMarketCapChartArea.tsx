@@ -1,18 +1,104 @@
+import Highcharts from "highcharts"
+import HighchartsReact from "highcharts-react-official"
+import { useSetRecoilState } from "recoil"
+import { clickedIndustryInfoState } from "../../../../store/store"
 import styled from "styled-components"
-import IndustryMarketCapChart from "./IndustryMarketCapChart"
 
-const IndustryMarketCapChartArea = () => {
-  const data = [
-    { name: "IT", y: 61.41, color: "var(--custom-pink-1)" },
-    { name: "반도체", y: 10.85, color: "var(--custom-orange-1)" },
-    { name: "자동차", y: 7.67, color: "var(--custom-purple-1)" },
-    { name: "금융", y: 5.18, color: "var(--custom-green-1)" },
-    { name: "Other", y: 14.89, color: "gray" },
-  ]
+interface DonutChartProps {
+  data: {
+    name: string
+    y: number
+  }[]
+}
 
+const IndustryMarketCapChartArea = ({ data }: DonutChartProps) => {
+  const setClickedIndustryInfo = useSetRecoilState<{
+    clickedIndustryName: string
+    clickedChartColor: string
+  }>(clickedIndustryInfoState)
+
+  const options: Highcharts.Options = {
+    chart: {
+      type: "pie",
+      width: 240,
+      height: 336,
+      backgroundColor: "transparent",
+    },
+    title: {
+      text: "",
+    },
+    tooltip: {
+      pointFormat: "<b>{point.percentage:.1f}%</b>",
+    },
+    plotOptions: {
+      pie: {
+        size: 220,
+        center: ["50%", 90],
+        innerSize: "40%",
+        dataLabels: {
+          enabled: true,
+          format: "{point.name}: {point.percentage:.1f} %",
+          distance: -30,
+          style: {
+            fontWeight: "bold",
+            color: "white",
+          },
+        },
+        showInLegend: true,
+        events: {
+          click: function (event) {
+            // selected가 true면 default 상태로 돌리고 false면 select 효과 적용
+            if (event.point.selected) {
+            }
+            setClickedIndustryInfo((info) => {
+              let newInfo: {
+                clickedIndustryName: string
+                clickedChartColor: string
+              }
+              if (event.point.selected) {
+                newInfo = {
+                  clickedIndustryName: "전체",
+                  clickedChartColor: "var(--custom-black)",
+                }
+              } else {
+                newInfo = { ...info }
+                newInfo.clickedIndustryName = event.point.name
+                if (typeof event.point.color === "string") {
+                  newInfo.clickedChartColor = event.point.color
+                }
+              }
+              return newInfo
+            })
+            event.point.select(!event.point.selected)
+          },
+        },
+      },
+    },
+    series: [
+      {
+        name: "Percentage",
+        data: data,
+        type: "pie",
+      },
+    ],
+    legend: {
+      backgroundColor: "white",
+      borderRadius: 24,
+      maxHeight: 72,
+      align: "left",
+      verticalAlign: "bottom",
+      alignColumns: false,
+      width: "100%",
+      padding: 12,
+      y: -12,
+    },
+    credits: {
+      enabled: false,
+    },
+  }
   return (
     <AreaDiv>
-      <IndustryMarketCapChart data={data} />
+      <HighchartsReact highcharts={Highcharts} options={options} />
     </AreaDiv>
   )
 }
