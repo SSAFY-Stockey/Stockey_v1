@@ -1,13 +1,16 @@
 import KewordBarGraph from "./KewordBarGraph"
 import KeyphraseList from "./KeyphraseList"
 import styled from "styled-components"
+
+const focusedIndex: number = Math.floor(Math.random() * (2 - 0 + 1)) + 0
+console.log(focusedIndex)
 const KeywordBoard = () => {
   return (
     <StyledDiv>
       <StyledTitle>
         <StyledSpan>키워드</StyledSpan>로 보는 이번 주 네이버 소식💌
       </StyledTitle>
-      <KeyphraseList />
+      <KeyphraseList focused={focusedIndex} />
       <KewordBarGraph />
     </StyledDiv>
   )
