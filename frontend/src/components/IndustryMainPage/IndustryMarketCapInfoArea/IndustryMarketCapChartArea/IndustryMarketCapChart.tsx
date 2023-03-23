@@ -1,5 +1,7 @@
 import Highcharts from "highcharts"
 import HighchartsReact from "highcharts-react-official"
+import { useSetRecoilState } from "recoil"
+import { clickedIndustryInfoState } from "../../../../store/store"
 
 interface DonutChartProps {
   data: {
@@ -9,6 +11,11 @@ interface DonutChartProps {
 }
 
 const IndustryMarketCapChart = ({ data }: DonutChartProps) => {
+  const setClickedIndustryInfo = useSetRecoilState<{
+    clickedIndustryName: string
+    clickedChartColor: string
+  }>(clickedIndustryInfoState)
+
   const options: Highcharts.Options = {
     chart: {
       type: "pie",
@@ -37,6 +44,33 @@ const IndustryMarketCapChart = ({ data }: DonutChartProps) => {
           },
         },
         showInLegend: true,
+        events: {
+          click: function (event) {
+            // selected가 true면 default 상태로 돌리고 false면 select 효과 적용
+            if (event.point.selected) {
+            }
+            setClickedIndustryInfo((info) => {
+              let newInfo: {
+                clickedIndustryName: string
+                clickedChartColor: string
+              }
+              if (event.point.selected) {
+                newInfo = {
+                  clickedIndustryName: "전체",
+                  clickedChartColor: "var(--custom-black)",
+                }
+              } else {
+                newInfo = { ...info }
+                newInfo.clickedIndustryName = event.point.name
+                if (typeof event.point.color === "string") {
+                  newInfo.clickedChartColor = event.point.color
+                }
+              }
+              return newInfo
+            })
+            event.point.select(!event.point.selected)
+          },
+        },
       },
     },
     series: [

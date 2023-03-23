@@ -1,12 +1,19 @@
-import styled from "styled-components"
+import styled from "@emotion/styled"
+import Grow from "@mui/material/Grow"
 
 interface CardProps {
   rank: number
   stockName: string
   marketCap: number
+  industryName: string
 }
 
-const MarketCapCard = ({ rank, stockName, marketCap }: CardProps) => {
+const MarketCapCard = ({
+  rank,
+  stockName,
+  marketCap,
+  industryName,
+}: CardProps) => {
   const makePriceFormat = (num: number) => {
     let roundedNum = Math.round(num / 100000000)
     let result = "원"
@@ -26,15 +33,33 @@ const MarketCapCard = ({ rank, stockName, marketCap }: CardProps) => {
   const formattedMarketCap = makePriceFormat(marketCap)
 
   return (
-    <CardDiv>
-      <RankDiv>{rank}</RankDiv>
-      <StockNameDiv>{stockName}</StockNameDiv>
-      <MarketCapDiv>{formattedMarketCap}</MarketCapDiv>
-    </CardDiv>
+    <Grow key={industryName + " " + stockName} in={true} timeout={rank * 300}>
+      <CardDiv>
+        <RankDiv>{rank}</RankDiv>
+        <StockNameDiv>{stockName}</StockNameDiv>
+        <MarketCapDiv>{formattedMarketCap}</MarketCapDiv>
+      </CardDiv>
+    </Grow>
   )
 }
 
 export default MarketCapCard
+
+const CardWrapper = styled(Grow)({
+  height: 48,
+  display: "flex",
+  alignItems: "center",
+  padding: "12px 24px",
+  gap: "12px",
+  textShadow: "0px 3px 4px rgba(0, 0, 0, 0.25)",
+  fontFamily: "Inter",
+  fontStyle: "normal",
+  fontWeight: 700,
+  letterSpacing: "0.1px",
+  background: "rgba(255, 255, 255, 0.5)",
+  boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
+  borderRadius: "24px",
+})
 
 const CardDiv = styled.div`
   height: 48px;

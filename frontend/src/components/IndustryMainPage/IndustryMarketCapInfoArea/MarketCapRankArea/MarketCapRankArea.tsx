@@ -1,14 +1,21 @@
+import { useRecoilValue } from "recoil"
 import styled from "styled-components"
+import { clickedIndustryInfoState } from "../../../../store/store"
 import MarketCapCardList from "./MarketCapCardList"
 
 const MarketCapRankArea = () => {
+  const clickedIndustryInfo = useRecoilValue(clickedIndustryInfoState)
   return (
     <AreaDiv>
       <TitleDiv>
-        {/* 산업명 변수로 받아오기 */}
-        <IndustryNameSpan>반도체</IndustryNameSpan> 종목 시총 순위
+        <IndustryNameSpan nameColor={clickedIndustryInfo.clickedChartColor}>
+          {clickedIndustryInfo.clickedIndustryName}
+        </IndustryNameSpan>{" "}
+        종목 시총 순위
       </TitleDiv>
-      <MarketCapCardList />
+      <MarketCapCardList
+        industryName={clickedIndustryInfo.clickedIndustryName}
+      />
     </AreaDiv>
   )
 }
@@ -34,6 +41,7 @@ const TitleDiv = styled.div`
   letter-spacing: 0.1px;
 `
 
-const IndustryNameSpan = styled.span`
-  color: var(--custom-purple-1);
+const IndustryNameSpan = styled.span<{ nameColor: string }>`
+  font-size: 2rem;
+  color: ${({ nameColor }) => nameColor};
 `
