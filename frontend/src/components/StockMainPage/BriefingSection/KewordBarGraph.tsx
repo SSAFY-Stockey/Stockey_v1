@@ -1,36 +1,46 @@
-import * as Highcharts from "highcharts"
-import HighchartsReact from "highcharts-react-official"
-import styled from "styled-components"
+import * as Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
+import styled from "styled-components";
 
 interface HighchartsOptions {
-  chart?: Highcharts.ChartOptions
-  title?: Highcharts.TitleOptions
-  subtitle?: Highcharts.SubtitleOptions
+  chart?: Highcharts.ChartOptions;
+  title?: Highcharts.TitleOptions;
+  subtitle?: Highcharts.SubtitleOptions;
   // xAxis?: Highcharts.XAxisOptions
-  xAxis?: any
-  yAxis?: Highcharts.YAxisOptions
-  legend?: Highcharts.LegendOptions
+  xAxis?: any;
+  yAxis?: Highcharts.YAxisOptions;
+  legend?: Highcharts.LegendOptions;
   // series?: Highcharts.SeriesOptionsType[]
-  series?: any
-  plotOptions?: Highcharts.PlotOptions
-  tooltip?: Highcharts.TooltipOptions
-  credits?: Highcharts.CreditsOptions
-  exporting?: Highcharts.ExportingOptions
-  colors?: string[]
-  responsive?: Highcharts.ResponsiveOptions
-  accessibility?: Highcharts.AccessibilityOptions
-  events?: Highcharts.ChartEventsOptions
+  series?: any;
+  plotOptions?: Highcharts.PlotOptions;
+  tooltip?: Highcharts.TooltipOptions;
+  credits?: Highcharts.CreditsOptions;
+  exporting?: Highcharts.ExportingOptions;
+  colors?: string[];
+  responsive?: Highcharts.ResponsiveOptions;
+  accessibility?: Highcharts.AccessibilityOptions;
+  events?: Highcharts.ChartEventsOptions;
 }
 
 const KewordBarGraph = () => {
   const options: HighchartsOptions = {
     title: { text: undefined },
-    chart: { type: "column", backgroundColor: "transparent" },
+    chart: {
+      type: "column",
+      backgroundColor: "transparent",
+      alignTicks: false,
+    },
     colors: [
       "var(--custom-orange-1)",
       "var(--custom-pink-1)",
       "var(--custom-purple-2)",
     ],
+    credits: {
+      enabled: false,
+    },
+    legend: {
+      enabled: false,
+    },
     xAxis: {
       type: "category",
       crosshair: true,
@@ -56,19 +66,17 @@ const KewordBarGraph = () => {
         pointPadding: 0,
         dataLabels: {
           enabled: true,
-        },
-        borderRadius: 10,
-      },
-      series: {
-        borderWidth: 0,
-        dataLabels: {
-          enabled: true,
+          inside: true,
           format: "{point.y:.1f}%",
           verticalAlign: "top",
           style: {
             fontSize: "12px",
           },
         },
+        borderRadius: 10,
+      },
+      series: {
+        borderWidth: 0,
       },
     },
     tooltip: {
@@ -93,18 +101,18 @@ const KewordBarGraph = () => {
         ],
       },
     ], // 데이터가 처음엔 비어았다.
-  }
+  };
 
   return (
     <StyledDiv>
       <HighchartsReact highcharts={Highcharts} options={options} />
     </StyledDiv>
-  )
-}
+  );
+};
 
-export default KewordBarGraph
+export default KewordBarGraph;
 
 const StyledDiv = styled.div`
   width: 100%;
   align-items: center;
-`
+`;
