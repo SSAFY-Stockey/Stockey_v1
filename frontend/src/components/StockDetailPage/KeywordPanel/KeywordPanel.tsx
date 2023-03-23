@@ -1,9 +1,9 @@
 import styled from "styled-components"
+import Grid from "@mui/material/Grid"
 import KeywordDefinition from "./KeywordDefinition"
-import KeywordChart from "./KeywordChart"
-import HighlyRelatedStockList from "./HighlyRelatedStockList"
 import NewsSummaryList from "./NewsSummaryList"
 import NewsList from "./NewsList"
+import KeywordChartSection from "./KeywordChartSection"
 
 interface Props {
   keyword: string
@@ -11,22 +11,19 @@ interface Props {
 
 const KeywordPanel = ({ keyword }: Props) => {
   return (
-    <StyledPanel>
-      <StyledTitle>{keyword}</StyledTitle>
+    <PanelWrapper>
+      <PanelTitle>{keyword}</PanelTitle>
       <KeywordDefinition />
-      <ChartSection>
-        <KeywordChart />
-        <HighlyRelatedStockList />
-      </ChartSection>
+      <KeywordChartSection />
       <NewsSummaryList />
       <NewsList />
-    </StyledPanel>
+    </PanelWrapper>
   )
 }
 
 export default KeywordPanel
 
-const StyledPanel = styled.div`
+const PanelWrapper = styled.div`
   background-color: #faf5f7;
   border-radius: 30px 0 0 0;
   display: flex;
@@ -44,13 +41,7 @@ const StyledPanel = styled.div`
     display: none; /* Chrome, Safari, Opera*/
   }
 `
-const StyledTitle = styled.p`
+const PanelTitle = styled.p`
   font-size: 2rem;
   font-weight: bold;
-`
-
-const ChartSection = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
 `

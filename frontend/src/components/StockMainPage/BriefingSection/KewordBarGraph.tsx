@@ -26,7 +26,11 @@ const KewordBarGraph = () => {
   const options: HighchartsOptions = {
     title: { text: undefined },
     chart: { type: "column", backgroundColor: "transparent" },
-    colors: ["#FF9D6A", "#FF6F9D", "#D0BCFF"],
+    colors: [
+      "var(--custom-orange-1)",
+      "var(--custom-pink-1)",
+      "var(--custom-purple-2)",
+    ],
     xAxis: {
       type: "category",
       crosshair: true,
