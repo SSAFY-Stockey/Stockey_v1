@@ -7,7 +7,7 @@ interface Props {
 
 const KeyphraseList = ({ focused }: Props) => {
   const colors: string[] = ["orange", "pink", "purple"]
-  const keyphrases = ["금리 인상", "대출 규제", "부동산 하락", "연준 발표"]
+  const keyphrases: string[] = ["금리 인상", "대출 규제", "부동산 하락", "연준 발표"]
   return (
     <StyledDiv>
       {keyphrases.map((phrase, index) => {

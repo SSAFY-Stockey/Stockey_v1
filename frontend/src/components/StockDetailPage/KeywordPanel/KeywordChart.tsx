@@ -39,6 +39,9 @@ const KeywordChart = () => {
       panKey: "shift",
       backgroundColor: "transparent",
     },
+    credits: {
+      enabled: false,
+    },
     lang: {
       resetZoom: "한 달로 보기",
     },
