@@ -9,6 +9,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
@@ -141,25 +143,38 @@ class IndustryServiceTest {
         Assertions.assertThat(saveIndustry).isEqualTo(findIndustry);
 
     }
-    
     @Test
-    public void 전체top5_테스트() throws Exception{
+    public void 전체top5_개수_테스트() throws Exception{
         //given
         List<Stock> stockList = stockRepository.findAll();
         Collections.sort(stockList,(o1,o2)-> -o1.getMarketCap().compareTo(o2.getMarketCap()));
         //when
-        List<Stock> top5Stocks = stockRepository.findTop5Stocks(industry1);
+        Pageable pageable = PageRequest.of(0,5);
+        List<Stock> top5Stocks = stockRepository.findTop5Stocks(industry1,pageable);
+
+        //then
+        Assertions.assertThat(top5Stocks.size()).isEqualTo(5);
+    }
+    @Test
+    public void 전체top5_동작_테스트() throws Exception{
+        //given
+        List<Stock> stockList = stockRepository.findAll();
+        Collections.sort(stockList,(o1,o2)-> -o1.getMarketCap().compareTo(o2.getMarketCap()));
+        //when
+        Pageable pageable = PageRequest.of(0,5);
+        List<Stock> top5Stocks = stockRepository.findTop5Stocks(industry1,pageable);
 
         //then
         for(int i = 0; i<5;i++){
-         Assertions.assertThat(top5Stocks.get(i)).isEqualTo(stockList.get(i));
+         Assertions.assertThat(top5Stocks.get(i).getMarketCap()).isEqualTo(stockList.get(i).getMarketCap());
         }
     }
     
     @Test
     public void 시가총액_내림차순_테스트() throws Exception{
         //given
-        List<Stock> top5Stocks = stockRepository.findTop5Stocks();
+        Pageable pageable = PageRequest.of(0,5);
+        List<Stock> top5Stocks = stockRepository.findTop5Stocks(pageable);
         //when
         //then
         for(int i = 1;i<5;i++){

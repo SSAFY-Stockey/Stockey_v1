@@ -14,6 +14,8 @@ import com.ssafy.backend.domain.stock.repository.StockRepository;
 import com.ssafy.backend.global.exception.industry.IndustryException;
 import com.ssafy.backend.global.exception.industry.IndustryExceptionType;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -48,7 +50,7 @@ public class IndustryService {
         for (Industry industry : industries) {
             long sum = 0;
             // 해당 산업의 모든 종목들
-            List<Stock> stocks = stockRepository.findTop5Stocks(industry);
+            List<Stock> stocks = stockRepository.findByIndustry(industry);
             for (Stock stock : stocks) {
                 sum += stock.getMarketCap();
             }
@@ -63,16 +65,18 @@ public class IndustryService {
 
     //시가총액 상위 5개 종목
     public List<StockBriefDto> getStockList() {
-        List<Stock> stockList = stockRepository.findTop5Stocks();
+        Pageable pageable = PageRequest.of(0, 5);
+        List<Stock> stockList = stockRepository.findTop5Stocks(pageable);
         return stockMapper.toDto(stockList);
 
     }
 
     //해당 산업의 시가총액 상위 5개 종목
     public List<StockBriefDto> getStockList(Long id) {
+        Pageable pageable = PageRequest.of(0, 5);
         // 단방향 매핑으로 찾기
         Industry industry = getIndustry(id);
-        List<Stock> stockList = stockRepository.findTop5Stocks(industry);
+        List<Stock> stockList = stockRepository.findTop5Stocks(industry,  pageable);
         return stockMapper.toDto(stockList);
     }
 

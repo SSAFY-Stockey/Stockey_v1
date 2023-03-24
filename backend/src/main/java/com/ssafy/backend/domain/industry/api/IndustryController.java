@@ -1,5 +1,6 @@
 package com.ssafy.backend.domain.industry.api;
 
+import com.ssafy.backend.domain.industry.api.response.IndustryCapitalDto;
 import com.ssafy.backend.domain.industry.dto.IndustryDto;
 import com.ssafy.backend.domain.stock.dto.StockBriefDto;
 import com.ssafy.backend.domain.industry.service.IndustryService;
@@ -38,7 +39,7 @@ public class IndustryController {
 
     // 산업 상세 설명
 
-    @Operation(summary = "단일 산업 반환 ",description = "산업 하나의 정보를 반환해주는 메소드입니다.")
+    @Operation(summary = "단일 산업 반환 ", description = "산업 하나의 정보를 반환해주는 메소드입니다.")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "요청 성공"),
@@ -51,15 +52,27 @@ public class IndustryController {
         return new ResponseEntity<>(new ResponseDto("OK", one), HttpStatus.OK);
     }
 
+    @Operation(summary = "산업별 시가총액 리스트", description = "산업별 시가총액 리스트를 반환합니다. 시가총액 순으로 정렬")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "요청 성공"),
+            }
+    )
+    @GetMapping("/marketcap")
+    public ResponseEntity<ResponseDto> getAllMarketCapList() {
+        List<IndustryCapitalDto> allMarketCap = industryService.getAllMarketCap();
+        return new ResponseEntity<>(new ResponseDto("OK", allMarketCap), HttpStatus.OK);
+    }
 
-    @Operation(summary = "전체 종목 top5 ", description = "모든 산업에 대한 리스트입니다.(시가총액 순으로 정렬)")
+
+    @Operation(summary = "종목 시가총액 top5 ", description = "시가총액 순으로 정렬")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "요청 성공"),
             }
     )
     @GetMapping("/stocklist")
-    public ResponseEntity<ResponseDto> getAllMarketCapList() {
+    public ResponseEntity<ResponseDto> getTop5Stocks() {
         List<StockBriefDto> stockList = industryService.getStockList();
         return new ResponseEntity<>(new ResponseDto("OK", stockList), HttpStatus.OK);
     }
