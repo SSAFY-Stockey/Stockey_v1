@@ -1,4 +1,4 @@
-import styled, { keyframes } from "styled-components"
+import styled from "styled-components"
 
 interface CardProps {
   imgUrl: string
@@ -18,7 +18,11 @@ const FavoriteIndustryCard = ({
           <IndustryLogoImg src={imgUrl} alt="logo" />
           <IndustryNameDiv>{industryName}</IndustryNameDiv>
           <FluctuationDiv value={marketCapFluctuationRate}>
-            {marketCapFluctuationRate}
+            {marketCapFluctuationRate > 0
+              ? "+" + marketCapFluctuationRate
+              : marketCapFluctuationRate < 0
+              ? "-" + marketCapFluctuationRate
+              : marketCapFluctuationRate}
           </FluctuationDiv>
         </DefaultContentDiv>
         <FluctuationChart id="chart" />
@@ -62,7 +66,7 @@ const DefaultContentDiv = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 6px 12px 6px 6px;
+  padding: 6px 18px 6px 6px;
   margin: 0px;
   gap: 12px;
 `
@@ -73,32 +77,27 @@ const IndustryLogoImg = styled.img`
 `
 
 const IndustryNameDiv = styled.div`
-  width: auto;
-  height: 1rem;
+  flex-grow: 1;
+  height: 1.5rem;
   font-family: "Roboto";
   font-style: normal;
   font-weight: 400;
   font-size: 1.5rem;
   line-height: 1.5rem;
-  display: flex;
-  align-items: center;
 `
 
 const FluctuationDiv = styled.div<{ value: number }>`
-  width: auto;
+  flex-grow: 1;
   height: 1.5rem;
-
   font-family: "Roboto";
   font-style: normal;
   font-weight: 400;
   font-size: 1.4rem;
   line-height: 1.5rem;
-  display: flex;
-  align-items: center;
   text-align: right;
 
   color: ${({ value }) =>
-    value > 0 ? "FF0000" : value < 0 ? "#4537FF" : "#000000"};
+    value > 0 ? "#FF0000" : value < 0 ? "#4537FF" : "#000000"};
 `
 
 const FluctuationChart = styled.div`

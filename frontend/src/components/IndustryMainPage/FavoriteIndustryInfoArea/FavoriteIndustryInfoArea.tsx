@@ -2,9 +2,10 @@ import styled from "@emotion/styled"
 import FavoriteIndustryCardList from "./FavoriteIndustryCardList"
 
 const FavoriteIndustryInfoArea = () => {
+  const userName = "OOO"
   return (
     <AreaDiv>
-      <TitleDiv>FavoriteIndustryInfoArea</TitleDiv>
+      <TitleDiv>{userName} 님의 관심 산업</TitleDiv>
       <FavoriteIndustryCardList />
     </AreaDiv>
   )
@@ -14,7 +15,7 @@ export default FavoriteIndustryInfoArea
 
 const AreaDiv = styled.div`
   width: 100%;
-  height: calc((100vh - 228px) / 2);
+  height: 60vh;
   display: flex;
   flex-direction: column;
   gap: 24px;
