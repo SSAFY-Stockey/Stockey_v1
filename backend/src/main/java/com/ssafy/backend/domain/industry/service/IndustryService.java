@@ -1,18 +1,22 @@
 package com.ssafy.backend.domain.industry.service;
 
 
+import com.ssafy.backend.domain.industry.api.response.IndustryCapitalDto;
 import com.ssafy.backend.domain.industry.dto.IndustryDto;
 import com.ssafy.backend.domain.industry.entity.Industry;
+import com.ssafy.backend.domain.industry.mapper.IndustryDtoMapper;
 import com.ssafy.backend.domain.industry.mapper.IndustryMapper;
 import com.ssafy.backend.domain.industry.repository.IndustryRepository;
+import com.ssafy.backend.domain.stock.dto.StockBriefDto;
+import com.ssafy.backend.domain.stock.entity.Stock;
+import com.ssafy.backend.domain.stock.mapper.StockMapper;
 import com.ssafy.backend.domain.stock.repository.StockRepository;
 import com.ssafy.backend.global.exception.industry.IndustryException;
 import com.ssafy.backend.global.exception.industry.IndustryExceptionType;
-import com.ssafy.backend.domain.stock.entity.Stock;
 import lombok.RequiredArgsConstructor;
-import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -20,9 +24,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class IndustryService {
     private final IndustryRepository industryRepository;
-
     private final StockRepository stockRepository;
-    private final IndustryMapper industryMapper = Mappers.getMapper(IndustryMapper.class);
+    private final IndustryMapper industryMapper;
+    private final IndustryDtoMapper industryDtoMapper;
+    private final StockMapper stockMapper;
 
     //모든 산업 반환
     public List<IndustryDto> getAll() {
@@ -36,24 +41,46 @@ public class IndustryService {
         return industryMapper.toDto(industry);
     }
 
-     // TODO 현재 산업에 대한 모든 시가총액 리스트 출력 ( Stock이 구현되어야 함)
-    public List<Stock> getStockList(Long id)  {
-        Industry industry = getIndustry(id);
-
-        // 단방향 매핑으로 찾기
-        // TODO StockService 호출해서 DTO 반환하는 것이 더 나은 것 같음
-        List<Stock> stockList = stockRepository.findStocksByIndustry(industry);
-        Collections.sort(stockList,(o1, o2)-> o1.getMarketCap().compareTo(o2.getMarketCap()));
-        return stockList;
+    // 모든 산업에 대하여 시가총액순으로 반환
+    public List<IndustryCapitalDto> getAllMarketCap() {
+        List<Industry> industries = industryRepository.findAll();
+        List<IndustryCapitalDto> results = new ArrayList<>();
+        for (Industry industry : industries) {
+            long sum = 0;
+            // 해당 산업의 모든 종목들
+            List<Stock> stocks = stockRepository.findTop5Stocks(industry);
+            for (Stock stock : stocks) {
+                sum += stock.getMarketCap();
+            }
+            // 시가총액이 존재한다면
+            if (sum > 0) {
+                results.add(industryDtoMapper.toDto(industry, sum));
+            }
+        }
+        Collections.sort(results, ((o1, o2) -> -o1.getSum().compareTo(o2.getSum())));
+        return results;
     }
 
+    //시가총액 상위 5개 종목
+    public List<StockBriefDto> getStockList() {
+        List<Stock> stockList = stockRepository.findTop5Stocks();
+        return stockMapper.toDto(stockList);
+
+    }
+
+    //해당 산업의 시가총액 상위 5개 종목
+    public List<StockBriefDto> getStockList(Long id) {
+        // 단방향 매핑으로 찾기
+        Industry industry = getIndustry(id);
+        List<Stock> stockList = stockRepository.findTop5Stocks(industry);
+        return stockMapper.toDto(stockList);
+    }
 
     // 산업 엔티티 반환
     private Industry getIndustry(Long id) {
         // 존재하지 않을 시 NOT FOUND 예외 발생
         return industryRepository.findById(id).orElseThrow(() -> new IndustryException(IndustryExceptionType.NOT_FOUND));
     }
-
 
 
 }
