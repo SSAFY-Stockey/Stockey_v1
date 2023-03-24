@@ -30,7 +30,7 @@ const IndustryMainPage = () => {
 export default IndustryMainPage
 
 const PageGrid = styled(Grid)({
-  padding: "36px 36px 0px",
+  padding: "36px",
 })
 
 const RightGrid = styled(Grid)({
