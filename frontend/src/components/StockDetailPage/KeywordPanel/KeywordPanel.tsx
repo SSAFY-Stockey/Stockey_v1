@@ -1,5 +1,4 @@
 import styled from "styled-components"
-import Grid from "@mui/material/Grid"
 import KeywordDefinition from "./KeywordDefinition"
 import NewsSection from "./NewsSection"
 import KeywordChartSection from "./KeywordChartSection"
@@ -8,6 +7,12 @@ interface Props {
   keyword: string
 }
 
+const triggerScroll = () => {
+  console.log("triggerScroll")
+  const newsRef = document.getElementById("newsRef")
+  console.log(newsRef)
+  newsRef?.scrollIntoView({ behavior: "smooth" })
+}
 const KeywordPanel = ({ keyword }: Props) => {
   return (
     <PanelWrapper>
@@ -15,8 +20,10 @@ const KeywordPanel = ({ keyword }: Props) => {
       <KeywordDefinition />
       <PanelSubTitle>키워드 등장 추이 보기</PanelSubTitle>
       <KeywordChartSection />
-      <PanelSubTitle>{keyword} 관련 기사 한 눈에 보기</PanelSubTitle>
-      <NewsSection />
+      <PanelSubTitle id="newsRef">
+        {keyword} 관련 기사 한 눈에 보기
+      </PanelSubTitle>
+      <NewsSection triggerScroll={triggerScroll} />
     </PanelWrapper>
   )
 }
@@ -46,6 +53,7 @@ const PanelTitle = styled.p`
   font-size: 2.6rem;
   font-weight: bold;
   letter-spacing: 0.4rem;
+  padding-top: 3px;
 `
 const PanelSubTitle = styled.p`
   font-size: 1.8rem;
