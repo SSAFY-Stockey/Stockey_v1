@@ -1,5 +1,6 @@
 package com.ssafy.backend.domain.member.service;
 
+import com.ssafy.backend.domain.member.dto.MemberDto;
 import com.ssafy.backend.domain.member.dto.OauthMemberDto;
 import com.ssafy.backend.domain.member.entity.Member;
 import com.ssafy.backend.domain.member.enums.OauthType;
@@ -19,12 +20,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 
-    private final MemberMapper memberMapper = Mappers.getMapper(MemberMapper.class);
+    private final MemberMapper memberMapper;
     private final MemberRepository memberRepository;
-//    private final RefreshTokenRepository refreshTokenRepository;
-//    private final JwtUtil jwtUtil;
-//    private final MemberCoinRepository memberCoinRepository;
-//    private final CafeAuthRepository cafeAuthRepository;
+
 
     @Override
     public void checkDuplicatedNickname(String nickName) {
@@ -34,8 +32,11 @@ public class MemberServiceImpl implements MemberService {
         });
     }
 
+
     @Override
-    public String changeNickname(Member member, String newNickname) {
+    public String changeNickname(MemberDto memberDto, String newNickname) {
+        Member member = memberRepository.findById(memberDto.getId())
+                .orElseThrow(() -> new MemberException(MemberExceptionType.NOT_FOUND_MEMBER));
         // 닉네임 유효성 체크 = 받는 dto에서!
         if (member.getNickname().equals(newNickname)) {
             throw new MemberException(MemberExceptionType.SAME_NICKNAME);
@@ -44,23 +45,30 @@ public class MemberServiceImpl implements MemberService {
         return newNickname;
     }
 
+
     @Override
     public Optional<OauthMemberDto> getMember(long oAuthId, OauthType oauthType) {
-        Optional<Member> member = memberRepository.findByOauthIdAndOauthType(oAuthId, oauthType);
-
-        memberMapper.toDto()
-        return memberRepository.findByOauthIdAndOauthType(oAuthId, oauthType);
+        Optional<Member> memberOptional = memberRepository.findByOauthIdAndOauthType(oAuthId, oauthType);
+        if (memberOptional.isEmpty()) {
+            // 가입된 회원이 없다면 null 리턴
+            return Optional.empty();
+        } else {
+            // 가입된 회원이 있다면 회원 정보 리턴
+            return Optional.ofNullable(memberMapper.toAuthDto(memberOptional.get()));
+        }
     }
 
+
     @Override
-    public Member saveMember(long oAuthId, String nickname, OauthType oauthType) {
+    public void saveMember(long oAuthId, String nickname, OauthType oauthType) {
         Member member = Member.oAuthBuilder()
                 .nickname(nickname)
                 .oAuthId(oAuthId)
                 .oAuthType(oauthType)
                 .build();
-        Member savedMember = memberRepository.save(member);
+        memberRepository.save(member);
     }
+
 
 //    @Override
 //    public TokenRespDto tokenRefresh() {

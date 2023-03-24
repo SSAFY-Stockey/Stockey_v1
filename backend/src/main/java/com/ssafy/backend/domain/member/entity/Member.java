@@ -1,17 +1,23 @@
 package com.ssafy.backend.domain.member.entity;
 
 import com.ssafy.backend.domain.member.enums.OauthType;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.util.Assert;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Getter
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "member")
+@EntityListeners(value = { AuditingEntityListener.class })
 public class Member {
     @ToString.Include
     @Id
@@ -31,9 +37,9 @@ public class Member {
     private String imageUrl;
 
     @ToString.Include
-    @Size(max = 50)
     @NotNull
     @Column(name = "oauth_type", nullable = false, length = 50)
+    @Enumerated(EnumType.STRING)
     private OauthType oauthType;
 
     @ToString.Include
@@ -41,15 +47,36 @@ public class Member {
     @Column(name = "oauth_id", nullable = false)
     private Long oauthId;
 
-    @ToString.Include
-    @NotNull
-    @Column(name = "created_at", nullable = false)
-    private Instant createdAt;
+//    @ToString.Include
+//    @Column(name = "created_at", nullable = false)
+//    private LocalDateTime createdAt;
+//
+//    @ToString.Include
+//    @Column(name = "updated_at", nullable = false)
+//    private LocalDateTime updatedAt;
 
     @ToString.Include
-    @NotNull
-    @Column(name = "updated_at", nullable = false)
-    private Instant updatedAt;
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
+
+    @ToString.Include
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+
+    @Builder(builderClassName = "oAuthBuilder", builderMethodName = "oAuthBuilder")
+    public Member(String nickname, Long oAuthId, OauthType oAuthType) {
+        Assert.notNull(nickname, "nickname must not be null");
+        Assert.notNull(oAuthId, "oAuthId must not be null");
+        Assert.notNull(oAuthType, "oAuthType must not be null");
+
+        this.nickname = nickname;
+        this.oauthId = oAuthId;
+        this.oauthType = oAuthType;
+    }
+
 
     public void setNickname(String nickname) {
         this.nickname = nickname;

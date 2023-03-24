@@ -1,12 +1,13 @@
 package com.ssafy.backend.domain.member.dto;
 
-import com.ssafy.backend.domain.member.enums.NicknameType;
 import com.ssafy.backend.domain.member.enums.OauthType;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 
-@Getter
+
 @Builder
+@Getter
 public class OauthMemberDto {
     private final Long id;
     private final Long oauthMemberId;

@@ -5,6 +5,8 @@ import com.google.gson.JsonParser;
 import com.ssafy.backend.domain.member.dto.OauthMemberDto;
 import com.ssafy.backend.global.exception.member.AuthException;
 import com.ssafy.backend.global.exception.member.AuthExceptionType;
+import com.ssafy.backend.global.exception.member.MemberException;
+import com.ssafy.backend.global.exception.member.MemberExceptionType;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +37,7 @@ public class AuthServiceImpl implements AuthService{
             //결과 코드가 200이라면 성공
             int responseCode = conn.getResponseCode();
             if (responseCode != 200) {
-//                throw new MemberException(MemberExceptionType.OAUTH_TOKEN_ERROR);
+                throw new MemberException(MemberExceptionType.OAUTH_TOKEN_ERROR);
             }
 
             //요청을 통해 얻은 JSON타입의 Response 메세지 읽어오기
@@ -67,7 +69,7 @@ public class AuthServiceImpl implements AuthService{
 
     public String getKakaoAccessToken (String code) {
         String access_Token = "";
-        String refresh_Token = "";
+//        String refresh_Token = "";
         String reqURL = "https://kauth.kakao.com/oauth/token";
 
         try {
@@ -108,7 +110,7 @@ public class AuthServiceImpl implements AuthService{
             JsonElement element = parser.parse(result);
 
             access_Token = element.getAsJsonObject().get("access_token").getAsString();
-            refresh_Token = element.getAsJsonObject().get("refresh_token").getAsString();
+//            refresh_Token = element.getAsJsonObject().get("refresh_token").getAsString();
 
             br.close();
             bw.close();

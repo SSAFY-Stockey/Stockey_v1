@@ -2,9 +2,10 @@ package com.ssafy.backend.domain.member.mapper;
 
 import com.ssafy.backend.domain.member.api.response.KakaoLoginResponse;
 import com.ssafy.backend.domain.member.dto.MemberDto;
+import com.ssafy.backend.domain.member.dto.OauthMemberDto;
 import org.mapstruct.Mapper;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface MemberDtoMapper {
-    KakaoLoginResponse toKakaoLoginResponse(MemberDto dto);
+    MemberDto toMemberDto(OauthMemberDto dto);
 }
