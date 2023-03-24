@@ -22,11 +22,11 @@ function App() {
 
   return (
     <>
-      <Grid container spacing={1}>
-        <Grid item xs={curPath === "/user/login" ? 6 : 2}>
+      <MainWrapper>
+        <NavDiv className={curPath === "/user/login" ? "login" : undefined}>
           <Navbar />
-        </Grid>
-        <Grid item xs={curPath === "/user/login" ? 6 : 10}>
+        </NavDiv>
+        <MainDiv className={curPath === "/user/login" ? "login" : undefined}>
           <MainSection>
             <Routes>
               <Route path="/" element={<MyPage />} />
@@ -41,17 +41,42 @@ function App() {
               <Route path="/user/login" element={<Login />} />
             </Routes>
           </MainSection>
-        </Grid>
-      </Grid>
+        </MainDiv>
+      </MainWrapper>
     </>
   )
 }
 
 export default App
 
+const MainWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+`
+
 const NavDiv = styled.div`
-  width: 50vw;
+  // default size
+  width: 16.67vw;
+  height: 100vh;
+  overflow: hidden;
+
+  // transition
+  transition: 0.5s all ease;
+
+  // login & signup
+  &.login {
+    width: 50vw;
+  }
 `
 const MainDiv = styled.div`
-  width: 50vw;
+  // default size
+  width: 83.33vw;
+
+  // transition
+  transition: 0.5s all ease;
+
+  // login & signup
+  &.login {
+    width: 50vw;
+  }
 `
