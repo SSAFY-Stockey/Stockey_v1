@@ -11,8 +11,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface StockRepository extends JpaRepository<Stock,Long> {
-    List<Stock> findAllByIndustry(Industry industry);
-
     @Query("select s from Stock s where s.industry = :industry order by s.marketCap  desc")
     List<Stock> findTop5Stocks(@Param("industry") Industry industry);
     @Query("select s from Stock s order by s.marketCap desc")
