@@ -3,7 +3,7 @@ import NewsSummaryBtn from "./NewsSummaryBtn"
 import NewsList from "./NewsList"
 import { useState } from "react"
 
-const NewsSection = () => {
+const NewsSection = ({ triggerScroll }: any) => {
   const keyphrases: string[] = [
     "금리 인상",
     "대출 규제",
@@ -23,6 +23,7 @@ const NewsSection = () => {
               setSelectedIndex={setSelectedIndex}
               index={index}
               className={selectedIndex === index ? "selected" : "not-selected"}
+              triggerScroll={triggerScroll}
             />
           </Grid>
         ))}

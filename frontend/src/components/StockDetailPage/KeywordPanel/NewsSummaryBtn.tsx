@@ -5,6 +5,7 @@ interface Props {
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>
   index: number
   className: "selected" | "not-selected"
+  triggerScroll: () => void
 }
 
 const NewsSummaryBtn = ({
@@ -12,9 +13,22 @@ const NewsSummaryBtn = ({
   setSelectedIndex,
   index,
   className,
+  triggerScroll,
 }: Props) => {
+  const clickHandler = () => {
+    setSelectedIndex(index)
+
+    // NewsSummaryBtn 컴포넌트를 최초로 클릭하는 경우,스크롤이 내려가지 않는 문제 있음
+    // 원인
+    // NewsList 컴포넌트가 렌더링되기 전에 triggerScroll()이 실행됨
+    // 이미 스크롤이 가장 하단에 위치해 있기 때문에 더 내려갈 곳이 없는 것임
+    // 해결 방안
+    // 백에서 NewsList를 받아와서 렌더링이 완료된 후에 triggerScroll()을 실행하도록 수정
+
+    triggerScroll()
+  }
   return (
-    <BtnDiv className={className} onClick={() => setSelectedIndex(index)}>
+    <BtnDiv className={className} onClick={clickHandler}>
       {keyphrase}
     </BtnDiv>
   )
