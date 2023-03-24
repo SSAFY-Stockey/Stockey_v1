@@ -49,13 +49,13 @@ const PanelWrapper = styled.div`
     display: none; /* Chrome, Safari, Opera*/
   }
 `
-const PanelTitle = styled.p`
+export const PanelTitle = styled.p`
   font-size: 2.6rem;
   font-weight: bold;
-  letter-spacing: 0.4rem;
-  padding-top: 3px;
+  letter-spacing: 0.2rem;
+  margin-block: 12px;
 `
-const PanelSubTitle = styled.p`
+export const PanelSubTitle = styled.p`
   font-size: 1.8rem;
   font-weight: bold;
 `

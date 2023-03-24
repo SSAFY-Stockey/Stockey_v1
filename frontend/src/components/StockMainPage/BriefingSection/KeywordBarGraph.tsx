@@ -28,7 +28,7 @@ interface DataProps {
   rank: number
 }
 
-const KewordBarGraph = () => {
+const KeywordBarGraph = () => {
   const data: DataProps[] = [
     { name: "빅스텝", y: 74.84, rank: 2 },
     { name: "금리", y: 100, rank: 1 },
@@ -39,7 +39,8 @@ const KewordBarGraph = () => {
     title: { text: undefined },
     chart: {
       type: "column",
-      backgroundColor: "transparent",
+      backgroundColor: "var(--custom-background)",
+      borderRadius: 20,
     },
     colors: [
       "var(--custom-orange-1)",
@@ -113,7 +114,7 @@ const KewordBarGraph = () => {
   )
 }
 
-export default KewordBarGraph
+export default KeywordBarGraph
 
 const StyledDiv = styled.div`
   width: 100%;
