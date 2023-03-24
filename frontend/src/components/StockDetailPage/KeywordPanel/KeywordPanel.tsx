@@ -1,8 +1,7 @@
 import styled from "styled-components"
 import Grid from "@mui/material/Grid"
 import KeywordDefinition from "./KeywordDefinition"
-import NewsSummaryList from "./NewsSummaryList"
-import NewsList from "./NewsList"
+import NewsSection from "./NewsSection"
 import KeywordChartSection from "./KeywordChartSection"
 
 interface Props {
@@ -14,9 +13,10 @@ const KeywordPanel = ({ keyword }: Props) => {
     <PanelWrapper>
       <PanelTitle>{keyword}</PanelTitle>
       <KeywordDefinition />
+      <PanelSubTitle>키워드 등장 추이 보기</PanelSubTitle>
       <KeywordChartSection />
-      <NewsSummaryList />
-      <NewsList />
+      <PanelSubTitle>{keyword} 관련 기사 한 눈에 보기</PanelSubTitle>
+      <NewsSection />
     </PanelWrapper>
   )
 }
@@ -33,6 +33,7 @@ const PanelWrapper = styled.div`
   width: 100%;
   height: 100%;
   overflow-y: scroll;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
   /* 스크롤바 숨기기 */
   -ms-overflow-style: none; /* IE and Edge */
@@ -45,4 +46,8 @@ const PanelTitle = styled.p`
   font-size: 2.6rem;
   font-weight: bold;
   letter-spacing: 0.4rem;
+`
+const PanelSubTitle = styled.p`
+  font-size: 1.8rem;
+  font-weight: bold;
 `
