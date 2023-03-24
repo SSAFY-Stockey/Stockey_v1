@@ -11,6 +11,9 @@ const MainSection = styled.div`
   // 세로 크기
   height: 100vh;
 
+  // transition
+  transition: 0.3s all ease;
+
   // 내부 스크롤(스크롤바 없애기)
   overflow-y: scroll;
   -ms-overflow-style: none; /* IE and Edge */
