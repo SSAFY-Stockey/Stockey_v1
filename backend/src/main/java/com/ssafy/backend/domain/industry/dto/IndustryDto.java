@@ -3,10 +3,9 @@ package com.ssafy.backend.domain.industry.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
+@Builder
 @Schema(description = "산업 dto")
 public class IndustryDto {
 
@@ -22,11 +21,4 @@ public class IndustryDto {
     @Schema(description = "대분류",example = "IT" )
     private String category;
 
-    @Builder
-    public IndustryDto(Long id, String name, String description, String category) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.category = category;
-    }
 }

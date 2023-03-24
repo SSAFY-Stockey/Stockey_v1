@@ -1,5 +1,6 @@
 package com.ssafy.backend.domain.industry.entity;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,7 @@ import javax.validation.constraints.Size;
 @Getter
 @Entity
 @Table(name = "industry")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Industry {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "industry_id", nullable = false)
@@ -31,10 +32,9 @@ public class Industry {
     private String category;
 
     @Builder
-    public Industry(String name, String description,String category){
+    public Industry(String name, String description, String category) {
         this.name = name;
         this.description = description;
         this.category = category;
     }
-
 }

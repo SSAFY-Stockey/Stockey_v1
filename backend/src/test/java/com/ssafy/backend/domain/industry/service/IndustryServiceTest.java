@@ -22,12 +22,12 @@ class IndustryServiceTest {
 
     @BeforeEach
     void init(){
-        Industry industry1 = new Industry().builder()
+        Industry industry1 =Industry.builder()
                 .description("산업 설명")
                 .category("대분류 1")
                 .name("IT")
                 .build();
-        Industry industry2 = new Industry().builder()
+        Industry industry2 = Industry.builder()
                 .description("산업 설명2")
                 .category("대분류 2")
                 .name("전자")
@@ -44,7 +44,7 @@ class IndustryServiceTest {
 
         //when
 
-        Industry industry3 = new Industry().builder()
+        Industry industry3 = Industry.builder()
                 .description("산업 설명3")
                 .category("대분류 3")
                 .name("전자")
@@ -60,7 +60,7 @@ class IndustryServiceTest {
     @Test
     public void 산업단일_테스트() throws Exception{
         //given
-        Industry newIndustry = new Industry().builder()
+        Industry newIndustry = Industry.builder()
                 .description("산업 설명3")
                 .category("대분류 3")
                 .name("전자")
