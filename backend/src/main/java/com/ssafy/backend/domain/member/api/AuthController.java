@@ -7,7 +7,7 @@ import com.ssafy.backend.domain.member.enums.NicknameType;
 import com.ssafy.backend.domain.member.enums.OauthType;
 import com.ssafy.backend.domain.member.dto.OauthMemberDto;
 import com.ssafy.backend.domain.member.mapper.MemberDtoMapper;
-import com.ssafy.backend.domain.member.service.AuthServiceImpl;
+import com.ssafy.backend.domain.member.service.AuthService;
 import com.ssafy.backend.domain.member.service.MemberService;
 import com.ssafy.backend.global.dto.ResponseDto;
 import com.ssafy.backend.global.exception.member.MemberException;
@@ -25,7 +25,7 @@ import java.util.Optional;
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final AuthServiceImpl oAuthService;
+    private final AuthService oAuthService;
     private final MemberService memberService;
     private final MemberDtoMapper memberDtoMapper;
 //    private final JwtService jwtService;

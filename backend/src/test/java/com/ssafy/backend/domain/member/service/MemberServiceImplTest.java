@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
 import java.util.Optional;
@@ -30,17 +32,20 @@ class MemberServiceImplTest {
     @Autowired MemberRepository memberRepository;
     @Autowired MemberDtoMapper memberDtoMapper;
 
+    @PersistenceContext
+    private EntityManager entityManager;
 
-//    @Test
-//    void checkDuplicatedNickname() {
-//        // given
+    @Test
+    void checkDuplicatedNickname() {
+        // given
 //        memberService.saveMember(12345, "testjunmo99", OauthType.KAKAO);
-//        // when
-//        // then
-//        assertThrows(RuntimeException.class, ()->{
-//            memberService.saveMember(12345, "testjunmo99", OauthType.KAKAO);
-//        });
-//    }
+//        entityManager.flush();
+        // when
+        // then
+        assertThrows(RuntimeException.class, ()->{
+            memberService.saveMember(12345, "junmo", OauthType.KAKAO);
+        });
+    }
 
     @Test
     void changeNickname() {
@@ -56,6 +61,7 @@ class MemberServiceImplTest {
 
 
     @Test
+    @Rollback(value = false)
     void member_save_get_test() {
         // given
         memberService.saveMember(12345, "junmo", OauthType.KAKAO);
