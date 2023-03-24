@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import BookmarkRoundedIcon from "@mui/icons-material/BookmarkRounded"
 import BookmarkBorderRoundedIcon from "@mui/icons-material/BookmarkBorderRounded"
 
@@ -21,10 +21,6 @@ const Bookmark = ({ isBookmarked, page }: BookmarkProps) => {
   const handleMouseOut = () => {
     setIsHovered(false)
   }
-
-  useEffect(() => {
-    console.log(bookmarked)
-  }, [bookmarked])
 
   // click handling
   const handleClick = () => {
@@ -96,6 +92,7 @@ const IconText = styled.div`
   border-radius: 0.2rem;
 
   text-align: center;
+  cursor: pointer;
 
   // padding
   padding: 0.5rem;
