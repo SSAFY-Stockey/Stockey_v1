@@ -38,4 +38,13 @@ public class GlobalExControllerAdvice {
                 .build();
         return new ResponseEntity<>(responseDTO, exception.getExceptionType().getHttpStatus());
     }
+
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ResponseDto> handleIllegalArgumentEx(IllegalArgumentException exception) {
+        ResponseDto responseDTO = ResponseDto.builder()
+                .message(exception.getMessage())
+                .build();
+        return new ResponseEntity<>(responseDTO, HttpStatus.BAD_REQUEST);
+    }
 }
