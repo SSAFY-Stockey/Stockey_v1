@@ -1,8 +1,8 @@
 package com.ssafy.backend.domain.industry.api;
 
 import com.ssafy.backend.domain.industry.dto.IndustryDto;
+import com.ssafy.backend.domain.stock.dto.StockBriefDto;
 import com.ssafy.backend.domain.industry.service.IndustryService;
-import com.ssafy.backend.domain.stock.entity.Stock;
 import com.ssafy.backend.global.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -12,7 +12,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -21,12 +24,12 @@ import java.util.List;
 @Slf4j
 @RequestMapping("/industry")
 @RequiredArgsConstructor
-@Tag(name = "산업 ",description = "산업 관련 API 입니다.")
+@Tag(name = "산업 ", description = "산업 관련 API 입니다.")
 public class IndustryController {
     private final IndustryService industryService;
 
 
-    @Operation(summary = "산업 리스트 목록 반환 ",description = "산업 리스트를 반환해주는 메소드입니다.")
+    @Operation(summary = "산업 리스트 목록 반환 ", description = "산업 리스트를 반환해주는 메소드입니다.")
     @GetMapping
     public ResponseEntity<ResponseDto> getAll() {
         List<IndustryDto> all = industryService.getAll();
@@ -38,9 +41,8 @@ public class IndustryController {
     @Operation(summary = "단일 산업 반환 ",description = "산업 하나의 정보를 반환해주는 메소드입니다.")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200",description = "요청 성공"),
-                    @ApiResponse(responseCode = "404",description = "해당 산업 없음"
-                    )
+                    @ApiResponse(responseCode = "200", description = "요청 성공"),
+                    @ApiResponse(responseCode = "404", description = "해당 산업 없음")
             }
     )
     @GetMapping("/{id}")
@@ -50,19 +52,30 @@ public class IndustryController {
     }
 
 
-    @Operation(summary = "해당 종목 리스트 반환",description = "해당 산업에 해당하는 종목 리스트들을 반환해주는 리스트입니다.(시가총액 순으로 정렬)")
+    @Operation(summary = "전체 종목 top5 ", description = "모든 산업에 대한 리스트입니다.(시가총액 순으로 정렬)")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200",description = "요청 성공"),
-                    @ApiResponse(responseCode = "404",description = "해당 산업 없음"
+                    @ApiResponse(responseCode = "200", description = "요청 성공"),
+            }
+    )
+    @GetMapping("/stocklist")
+    public ResponseEntity<ResponseDto> getAllMarketCapList() {
+        List<StockBriefDto> stockList = industryService.getStockList();
+        return new ResponseEntity<>(new ResponseDto("OK", stockList), HttpStatus.OK);
+    }
+
+
+    @Operation(summary = "해당 산업 시가총액 top5", description = "해당 산업에 해당하는 종목 리스트들을 반환해주는 리스트입니다.(시가총액 순으로 정렬)")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "요청 성공"),
+                    @ApiResponse(responseCode = "404", description = "해당 산업 없음"
                     )
             }
     )
-    // TODO 주식 구현시 진행
     @GetMapping("/stocklist/{id}")
     public ResponseEntity<ResponseDto> getStockList(@PathVariable Long id) {
-        List<Stock> stockList = industryService.getStockList(id);
-        // TODO StockDto로 변환해야 함
+        List<StockBriefDto> stockList = industryService.getStockList(id);
         return new ResponseEntity<>(new ResponseDto("OK", stockList), HttpStatus.OK);
     }
 
