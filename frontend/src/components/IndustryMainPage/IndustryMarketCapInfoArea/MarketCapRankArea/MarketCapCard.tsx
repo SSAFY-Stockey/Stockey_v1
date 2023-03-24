@@ -45,22 +45,6 @@ const MarketCapCard = ({
 
 export default MarketCapCard
 
-const CardWrapper = styled(Grow)({
-  height: 48,
-  display: "flex",
-  alignItems: "center",
-  padding: "12px 24px",
-  gap: "12px",
-  textShadow: "0px 3px 4px rgba(0, 0, 0, 0.25)",
-  fontFamily: "Inter",
-  fontStyle: "normal",
-  fontWeight: 700,
-  letterSpacing: "0.1px",
-  background: "rgba(255, 255, 255, 0.5)",
-  boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
-  borderRadius: "24px",
-})
-
 const CardDiv = styled.div`
   height: 48px;
   display: flex;

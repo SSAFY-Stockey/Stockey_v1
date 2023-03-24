@@ -40,13 +40,6 @@ const MarketCapCardList = ({ industryName }: CardListProps) => {
 
 export default MarketCapCardList
 
-const CardListDiv = styled.div`
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-`
-
 const CardListWrapper = styled(TransitionGroup)({
   flexGrow: 1,
   display: "flex",
