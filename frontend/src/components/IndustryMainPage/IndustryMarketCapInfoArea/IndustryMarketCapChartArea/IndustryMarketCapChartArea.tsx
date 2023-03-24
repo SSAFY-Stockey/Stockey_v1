@@ -1,7 +1,5 @@
 import Highcharts from "highcharts"
 import HighchartsReact from "highcharts-react-official"
-import { useSetRecoilState } from "recoil"
-import { clickedIndustryInfoState } from "../../../../store/store"
 import styled from "styled-components"
 
 interface DonutChartProps {
@@ -9,14 +7,13 @@ interface DonutChartProps {
     name: string
     y: number
   }[]
+  setClickedIndustryInfo: (name: string, color: string) => void
 }
 
-const IndustryMarketCapChartArea = ({ data }: DonutChartProps) => {
-  const setClickedIndustryInfo = useSetRecoilState<{
-    clickedIndustryName: string
-    clickedChartColor: string
-  }>(clickedIndustryInfoState)
-
+const IndustryMarketCapChartArea = ({
+  data,
+  setClickedIndustryInfo,
+}: DonutChartProps) => {
   const options: Highcharts.Options = {
     chart: {
       type: "pie",
@@ -33,7 +30,7 @@ const IndustryMarketCapChartArea = ({ data }: DonutChartProps) => {
     plotOptions: {
       pie: {
         size: 220,
-        center: ["50%", 90],
+        center: ["50%", "50%"],
         innerSize: "40%",
         dataLabels: {
           enabled: true,
@@ -47,29 +44,26 @@ const IndustryMarketCapChartArea = ({ data }: DonutChartProps) => {
         showInLegend: true,
         events: {
           click: function (event) {
-            // selected가 true면 default 상태로 돌리고 false면 select 효과 적용
-            if (event.point.selected) {
-            }
-            setClickedIndustryInfo((info) => {
-              let newInfo: {
-                clickedIndustryName: string
-                clickedChartColor: string
-              }
-              if (event.point.selected) {
-                newInfo = {
-                  clickedIndustryName: "전체",
-                  clickedChartColor: "var(--custom-black)",
-                }
-              } else {
-                newInfo = { ...info }
-                newInfo.clickedIndustryName = event.point.name
-                if (typeof event.point.color === "string") {
-                  newInfo.clickedChartColor = event.point.color
-                }
-              }
-              return newInfo
-            })
             event.point.select(!event.point.selected)
+
+            let clickedIndustryName: string
+            let clickedChartColor: string
+            const defaultIndustryName = "전체"
+            const defaultChartColor = "var(--custom-black)"
+
+            if (event.point.selected) {
+              clickedIndustryName = event.point.name
+              if (typeof event.point.color === "string") {
+                clickedChartColor = event.point.color
+              } else {
+                clickedChartColor = defaultChartColor
+              }
+            } else {
+              clickedIndustryName = defaultIndustryName
+              clickedChartColor = defaultChartColor
+            }
+
+            setClickedIndustryInfo(clickedIndustryName, clickedChartColor)
           },
         },
       },
@@ -90,7 +84,7 @@ const IndustryMarketCapChartArea = ({ data }: DonutChartProps) => {
       alignColumns: false,
       width: "100%",
       padding: 12,
-      y: -12,
+      y: 8,
     },
     credits: {
       enabled: false,

@@ -1,21 +1,24 @@
-import { useRecoilValue } from "recoil"
 import styled from "styled-components"
-import { clickedIndustryInfoState } from "../../../../store/store"
 import MarketCapCardList from "./MarketCapCardList"
 
-const MarketCapRankArea = () => {
-  const clickedIndustryInfo = useRecoilValue(clickedIndustryInfoState)
+interface clickedIndustryInfoProps {
+  clickedIndustryName: string
+  clickedChartColor: string
+}
+
+const MarketCapRankArea = ({
+  clickedIndustryName,
+  clickedChartColor,
+}: clickedIndustryInfoProps) => {
   return (
     <AreaDiv>
       <TitleDiv>
-        <IndustryNameSpan nameColor={clickedIndustryInfo.clickedChartColor}>
-          {clickedIndustryInfo.clickedIndustryName}
+        <IndustryNameSpan nameColor={clickedChartColor}>
+          {clickedIndustryName}
         </IndustryNameSpan>{" "}
         종목 시총 순위
       </TitleDiv>
-      <MarketCapCardList
-        industryName={clickedIndustryInfo.clickedIndustryName}
-      />
+      <MarketCapCardList industryName={clickedIndustryName} />
     </AreaDiv>
   )
 }
@@ -27,21 +30,23 @@ const AreaDiv = styled.div`
   height: auto;
   display: flex;
   flex-direction: column;
-  gap: 3rem;
+  padding-top: 1rem;
+  gap: 2rem;
 `
 
 const TitleDiv = styled.div`
+  margin-left: 1rem;
   width: 100%;
-  height: 1.8rem;
+  height: 1.6rem;
   font-family: "Inter";
   font-style: normal;
   font-weight: 700;
-  font-size: 1.8rem;
-  line-height: 1.8rem;
+  font-size: 1.6rem;
+  line-height: 1.6rem;
   letter-spacing: 0.1px;
 `
 
 const IndustryNameSpan = styled.span<{ nameColor: string }>`
-  font-size: 2rem;
+  font-size: 1.8rem;
   color: ${({ nameColor }) => nameColor};
 `
