@@ -1,6 +1,6 @@
 package com.ssafy.backend.domain.stock.mapper;
 
-import com.ssafy.backend.domain.industry.dto.StockBriefDto;
+import com.ssafy.backend.domain.stock.dto.StockBriefDto;
 import com.ssafy.backend.domain.stock.entity.Stock;
 import org.mapstruct.Mapper;
 
