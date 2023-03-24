@@ -1,5 +1,4 @@
 import styled from "styled-components"
-import ReactDOM from "react-dom/client"
 
 interface Props {
   keyphrase: string
@@ -33,7 +32,7 @@ const BtnDiv = styled.div`
   justify-content: center;
 
   &.selected {
-    background-color: var(--custom-mint);
+    background-color: #b4f3e0;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     color: var(--custom-black);
     font-weight: bolder;
