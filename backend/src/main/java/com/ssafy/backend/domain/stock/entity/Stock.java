@@ -1,5 +1,6 @@
-package com.ssafy.backend.temp;
+package com.ssafy.backend.domain.stock.entity;
 
+import com.ssafy.backend.temp.Industry;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -35,7 +36,7 @@ public class Stock {
     @Column(name = "stock_count", nullable = false)
     private Long stockCount;
 
-    @NotNull
+//    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "industry_id", nullable = false)
     private Industry industry;
