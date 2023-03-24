@@ -41,7 +41,7 @@ public class AuthController {
             value = {
                     @ApiResponse(responseCode = "200", description = "요청 성공"),
                     @ApiResponse(responseCode = "201", description = "닉네임 변경 필요"),
-                    @ApiResponse(responseCode = "404", description = "잘못된 요청")
+                    @ApiResponse(responseCode = "404", description = "가입 정보 없음")
             }
     )
     @GetMapping("/login/kakao")
@@ -90,8 +90,6 @@ public class AuthController {
     @PutMapping("/nickname")
     public ResponseEntity<ResponseDto> setMemberNickname(
             @Valid @RequestBody SetMemberNicknameRequest setMemberNicknameRequest) {
-        // 서버에서 한번 더 닉네임 중복 체크
-        memberService.checkDuplicatedNickname(setMemberNicknameRequest.getNickname());
         // 가입된 회원 정보 가져오기
         MemberDto memberDto = memberDtoMapper.toMemberDto(memberService
                 .getMember(setMemberNicknameRequest.getOauthId(), OauthType.valueOf(setMemberNicknameRequest.getOauthType()))
