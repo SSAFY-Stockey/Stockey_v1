@@ -12,6 +12,10 @@ import com.ssafy.backend.domain.member.service.MemberService;
 import com.ssafy.backend.global.dto.ResponseDto;
 import com.ssafy.backend.global.exception.member.MemberException;
 import com.ssafy.backend.global.exception.member.MemberExceptionType;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +27,7 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
+@Tag(name = "인증 ", description = "인증 관련 API 입니다.")
 public class AuthController {
 
     private final AuthService oAuthService;
@@ -31,14 +36,20 @@ public class AuthController {
 //    private final JwtService jwtService;
 
 
+    @Operation(summary = "카카오 로그인/회원가입", description = "카카오로 로그인/회원가입 수행")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "요청 성공"),
+                    @ApiResponse(responseCode = "201", description = "닉네임 변경 필요"),
+                    @ApiResponse(responseCode = "404", description = "잘못된 요청")
+            }
+    )
     @GetMapping("/login/kakao")
     public ResponseEntity<ResponseDto> kakaoLogin(@RequestParam String code) {
         // 클라이언트에게 받은 code로 AccessToken 생성
         String kakaoAccessToken = oAuthService.getKakaoAccessToken(code);
-
         // 생성한 AccessToken으로 인증서버로부터 유저 정보 가져오기
         OauthMemberDto oAuthMemberDto = oAuthService.getKakaoMemberInfo(kakaoAccessToken);
-
         // 기존에 등록된 정보가 있는지 우리 db 조회
         Optional<OauthMemberDto> oauthMemberDtoOptional = memberService.getMember(oAuthMemberDto.getId(), OauthType.KAKAO);
 
@@ -68,7 +79,14 @@ public class AuthController {
         return new ResponseEntity<>(ResponseDto, HttpStatus.OK);
     }
 
-    // 회원가입 후 DEFAULT 닉네임을 변경
+
+    @Operation(summary = "회원가입 후 기본 닉네임 변경", description = "회원가입 후 기본 닉네임(NONAMED)을 변경")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "요청 성공"),
+                    @ApiResponse(responseCode = "404", description = "잘못된 요청")
+            }
+    )
     @PutMapping("/nickname")
     public ResponseEntity<ResponseDto> setMemberNickname(
             @Valid @RequestBody SetMemberNicknameRequest setMemberNicknameRequest) {

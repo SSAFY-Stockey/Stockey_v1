@@ -38,13 +38,11 @@ class MemberServiceImplTest {
     @Test
     void checkDuplicatedNickname() {
         // given
-//        memberService.saveMember(12345, "testjunmo99", OauthType.KAKAO);
-//        entityManager.flush();
-        // when
-        // then
-        assertThrows(RuntimeException.class, ()->{
-            memberService.saveMember(12345, "junmo", OauthType.KAKAO);
+        memberService.saveMember(12345, "testjunmo99", OauthType.KAKAO);
+        assertThrows(MemberException.class, ()->{
+            memberService.checkDuplicatedNickname("testjunmo99");
         });
+
     }
 
     @Test
@@ -61,7 +59,6 @@ class MemberServiceImplTest {
 
 
     @Test
-    @Rollback(value = false)
     void member_save_get_test() {
         // given
         memberService.saveMember(12345, "junmo", OauthType.KAKAO);
