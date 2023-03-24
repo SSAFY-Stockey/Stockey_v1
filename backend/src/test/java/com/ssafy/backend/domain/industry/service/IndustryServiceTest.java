@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collections;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 
 @SpringBootTest
 @Transactional
@@ -168,5 +170,15 @@ class IndustryServiceTest {
             Assertions.assertThat(prev.getMarketCap()>= next.getMarketCap()).isTrue();
         }
     
+    }
+    
+
+    @Test
+    public void 산업조회_실패_테스트() throws Exception{
+        //given
+        //when
+        //then
+        assertThrows(RuntimeException.class, ()->industryRepository.findById(0L).get());
+
     }
 }
