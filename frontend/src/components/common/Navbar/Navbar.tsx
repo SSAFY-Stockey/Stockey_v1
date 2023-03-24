@@ -1,5 +1,6 @@
 import ProfileInfo from "./ProfileInfo"
 import PageLinkBtn from "./PageLinkBtn"
+import StockeyLogo from "./StockeyLogo"
 import styled from "styled-components"
 import { useLocation } from "react-router-dom"
 
@@ -22,13 +23,16 @@ const Navbar = () => {
 
   return (
     <>
-      <NavbarDiv>
-        <ProfileInfo />
-        <PageLinkBtn name="주식 종목" selected={isSeleted("주식 종목")} />
-        <PageLinkBtn name="산업별 정보" selected={isSeleted("산업별 정보")} />
-        <PageLinkBtn name="키워드" selected={isSeleted("키워드")} />
-        <PageLinkBtn name="마이페이지" selected={isSeleted("마이페이지")} />
-      </NavbarDiv>
+      <NavWrapper>
+        {curPath === "/user/login" ? <StockeyLogo /> : undefined}
+        <NavbarDiv className={curPath === "/user/login" ? "login" : undefined}>
+          <ProfileInfo />
+          <PageLinkBtn name="주식 종목" selected={isSeleted("주식 종목")} />
+          <PageLinkBtn name="산업별 정보" selected={isSeleted("산업별 정보")} />
+          <PageLinkBtn name="키워드" selected={isSeleted("키워드")} />
+          <PageLinkBtn name="마이페이지" selected={isSeleted("마이페이지")} />
+        </NavbarDiv>
+      </NavWrapper>
     </>
   )
 }
@@ -44,4 +48,21 @@ const NavbarDiv = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  // transition
+  transition: 0.5s all ease;
+  z-index: 5;
+
+  // login Page
+  &.login {
+    opacity: 0;
+    z-index: 1;
+  }
+`
+
+const NavWrapper = styled.div`
+  position: relative;
+
+  height: 100%;
+  width: 100%;
 `
