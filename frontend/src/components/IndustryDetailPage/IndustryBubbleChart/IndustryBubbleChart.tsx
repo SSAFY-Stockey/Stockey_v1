@@ -16,20 +16,21 @@ const IndustryBubbleChart = () => {
     },
     tooltip: {
       useHTML: true,
-      pointFormat: "{point.value}",
+      pointFormat: "시가총액: {point.value} 원",
     },
     plotOptions: {
       packedbubble: {
-        minSize: "30%",
-        maxSize: "80%",
+        minSize: "15%",
+        maxSize: "50%",
+        color: "white",
         layoutAlgorithm: {
-          splitSeries: false,
-          gravitationalConstant: 0.02,
+          splitSeries: true,
+          gravitationalConstant: 0.0002,
         },
         draggable: false,
         dataLabels: {
           enabled: true,
-          format: "{series.name}",
+          format: "{point.name}",
           filter: {
             property: "y",
             operator: ">",
@@ -51,76 +52,68 @@ const IndustryBubbleChart = () => {
         name: "네이버",
         data: [
           {
-            name: "ASEAN",
-            value: 400,
+            name: "네이버",
+            value: 45,
           },
         ],
-        color: {
-          pattern: {
-            image: `${process.env.PUBLIC_URL}/logo_images/naver.png`,
-            width: 20,
-            height: 20,
-          },
+        type: "packedbubble",
+        marker: {
+          symbol: `url(${process.env.PUBLIC_URL}/logo_images/naver.png)`,
         },
-        type: "packedbubble",
       },
       {
-        name: "KOR ",
+        name: "카카오",
         data: [
           {
-            name: "KOR",
-            value: 600,
+            name: "카카오",
+            value: 25,
           },
         ],
-        color: {
-          pattern: {
-            image:
-              "https://upload.wikimedia.org/wikipedia/commons/5/5c/Flag_of_Alabama.svg",
-            width: 60,
-            height: 60,
-          },
+        type: "packedbubble",
+        marker: {
+          symbol:
+            "url(https://t1.kakaocdn.net/kakaocorp/corp_thumbnail/Kakao.png)",
         },
-        type: "packedbubble",
       },
       {
-        name: "CHN ",
+        name: "라인",
         data: [
           {
-            name: "CHN",
-            value: 40,
+            name: "라인",
+            value: 14,
           },
         ],
         type: "packedbubble",
+        marker: {
+          symbol: `url(https://play-lh.googleusercontent.com/74iMObG1vsR3Kfm82RjERFhf99QFMNIY211oMvN636_gULghbRBMjpVFTjOK36oxCbs)`,
+        },
       },
       {
-        name: "ISA ",
+        name: "쿠팡",
         data: [
           {
-            name: "ISA",
-            value: 1000,
+            name: "쿠팡",
+            value: 15,
           },
         ],
         type: "packedbubble",
+        marker: {
+          symbol:
+            "url(https://mblogthumb-phinf.pstatic.net/20160902_185/ppanppane_1472800307580XUbQa_PNG/%C4%ED%C6%CE%B7%CE%B0%ED_%282%29.png?type=w800)",
+        },
       },
       {
-        name: "ANZ ",
+        name: "배민",
         data: [
           {
-            name: "ANZ ",
-            value: 140,
+            name: "배민",
+            value: 7,
           },
         ],
         type: "packedbubble",
-      },
-      {
-        name: "JP ",
-        data: [
-          {
-            name: "JP1",
-            value: 72,
-          },
-        ],
-        type: "packedbubble",
+        marker: {
+          symbol: `url(https://post-phinf.pstatic.net/MjAxODEyMThfODIg/MDAxNTQ1MTE3MTgyMTI0.XhPj48MgFKfn52DFErBasuyh-oOUdPRVj3x3Mvukg5sg.5DX71Wmg2s1sKYgdbF-kYIfy6foyUY69ktk_mhJ263Ug.PNG/23795024_1606638182692820_1675214701801471719_n.png?type=w1200)`,
+        },
       },
     ],
   }
