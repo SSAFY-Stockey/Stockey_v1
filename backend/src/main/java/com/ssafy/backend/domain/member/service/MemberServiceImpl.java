@@ -58,6 +58,14 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
+    @Override
+    public MemberDto getMember(long memberId) {
+        Member member = memberRepository
+                .findById(memberId)
+                .orElseThrow(() -> new MemberException(MemberExceptionType.NOT_FOUND_MEMBER));
+        return memberMapper.toDto(member);
+    }
+
 
     @Override
     public void saveMember(long oAuthId, String nickname, OauthType oauthType) {
