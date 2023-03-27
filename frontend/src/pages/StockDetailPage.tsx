@@ -10,7 +10,7 @@ const StockDetailPage = () => {
         <StockMainPanel />
       </Grid>
       <StyledPanel item xs={6} md={6} lg={6}>
-        {false ? <SubPanel /> : <KeywordPanel keyword="빅스텝" />}
+        {true ? <SubPanel /> : <KeywordPanel keyword="빅스텝" />}
       </StyledPanel>
     </Grid>
   )
