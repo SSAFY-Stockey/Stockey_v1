@@ -10,6 +10,7 @@ import StockDetailPage from "./pages/StockDetailPage"
 import StockMainPage from "./pages/StockMainPage"
 import KeywordPage from "./pages/KeywordPage"
 import Login from "./pages/Login"
+import LoginRedirectPage from "./pages/LoginRedirectPage"
 
 // 스타일 적용
 import Grid from "@mui/material/Grid"
@@ -18,7 +19,6 @@ import Navbar from "./components/common/Navbar/Navbar"
 
 function App() {
   const curPath = useLocation().pathname
-  console.log(curPath)
 
   return (
     <>
@@ -39,6 +39,7 @@ function App() {
               />
               <Route path="/keyword" element={<KeywordPage />} />
               <Route path="/user/login" element={<Login />} />
+              <Route path="//oauth/kakao" element={<LoginRedirectPage />} />
             </Routes>
           </MainSection>
         </MainDiv>
