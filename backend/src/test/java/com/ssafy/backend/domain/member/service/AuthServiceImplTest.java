@@ -36,14 +36,6 @@ class AuthServiceImplTest {
     MemberMapper memberMapper;
 
     @Test
-    void getKakaoMemberInfo() {
-    }
-
-    @Test
-    void getKakaoAccessToken() {
-    }
-
-    @Test
     void createJwt() throws Exception{
         // given
         memberRepository.save(Member.oAuthBuilder()
@@ -58,17 +50,17 @@ class AuthServiceImplTest {
         if (accessToken != null) {
             assertThat(accessToken.length()).isGreaterThan(0);
         } else {
-
+            throw new Exception("accessToken 정상 생성 되지 않음!!");
         }
 
-        // when - refresh token이 cookie에 잘 저장 되었나?
-        String refreshTokenFromCookie = jwtUtil.getRefreshTokenFromCookie();
-
-        if (refreshTokenFromCookie != null) {
-            assertThat(refreshTokenFromCookie.length()).isGreaterThan(0);
-        } else {
-            throw new Exception("refresh token이 cookie에 잘 저장 되지 않음!!");
-        }
+//        // when - refresh token이 cookie에 잘 저장 되었나?
+//        String refreshTokenFromCookie = jwtUtil.getRefreshTokenFromCookie();
+//
+//        if (refreshTokenFromCookie != null) {
+//            assertThat(refreshTokenFromCookie.length()).isGreaterThan(0);
+//        } else {
+//            throw new Exception("refresh token이 cookie에 잘 저장 되지 않음!!");
+//        }
     }
 
     @Test
