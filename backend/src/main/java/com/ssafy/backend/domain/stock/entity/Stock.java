@@ -50,11 +50,11 @@ public class Stock {
 
     @Size(max = 100)
     @Column(name = "credit_rank", length = 100)
-    private String credit_rank;
+    private String creditRank;
 
     @Size(max = 200)
     @Column(name = "basic_info", length = 200)
-    private String basic_info;
+    private String basicInfo;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
