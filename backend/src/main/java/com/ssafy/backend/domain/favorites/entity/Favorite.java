@@ -4,13 +4,17 @@ import com.ssafy.backend.domain.industry.entity.Industry;
 import com.ssafy.backend.domain.member.entity.Member;
 import com.ssafy.backend.domain.stock.entity.Stock;
 import com.ssafy.backend.temp.Keyword;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Getter
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "favorite")
 public class Favorite {
     @Id
@@ -36,5 +40,12 @@ public class Favorite {
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name = "keyword_id", nullable = true)
     private Keyword keyword;
+
+
+    @Builder(builderClassName = "industryBuilder", builderMethodName = "industryBuilder")
+    public Favorite(Member member,Industry industry){
+        this.member = member;
+        this.industry = industry;
+    }
 
 }

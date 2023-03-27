@@ -11,22 +11,19 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class FavoriteServiceImpl implements  FavoriteService{
+public class FavoriteServiceImpl implements FavoriteService {
     private final FavoriteRepository favoriteRepository;
 
 
     // 내 관심 산업
-    public List<Favorite> findByIndustry(Member member){
-        List<Favorite> favoriteList = favoriteRepository.findByIndustry(member);
-        return favoriteList;
+    public List<Favorite> _findByIndustry(Member member) {
+        return favoriteRepository.findByIndustry(member);
     }
 
     // 특정산업 관심여부
-    public boolean existsByMemberAndIndustry (Industry industry,Member member){
-        boolean result = favoriteRepository.existsByMemberAndIndustry(member, industry);
-        return result;
+    public boolean existsByMemberAndIndustry(Industry industry, Member member) {
+        return favoriteRepository.existsByMemberAndIndustry(member, industry);
     }
-
 
 
 }

@@ -15,5 +15,6 @@ public interface FavoriteRepository extends JpaRepository<Favorite,Long> {
     List<Favorite> findByIndustry(@Param("member")Member member);
 
     boolean existsByMemberAndIndustry(Member member, Industry industry);
+    Favorite findByMemberAndIndustry(Member member,Industry industry);
 
 }

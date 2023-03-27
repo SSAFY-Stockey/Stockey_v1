@@ -7,7 +7,7 @@ import com.ssafy.backend.domain.member.entity.Member;
 import java.util.List;
 
 public interface FavoriteService {
-    List<Favorite> findByIndustry(Member member);
+    List<Favorite> _findByIndustry(Member member);
 
     boolean existsByMemberAndIndustry(Industry industry, Member member);
 
