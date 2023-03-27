@@ -8,7 +8,6 @@ const KakaoBtn = () => {
       <a href={KAKAO_AUTH_URL}>
         <img
           src="//k.kakaocdn.net/14/dn/btqCn0WEmI3/nijroPfbpCa4at5EIsjyf0/o.jpg"
-          // width="242"
           alt="카카오 로그인"
           style={{ width: "60%" }}
         />

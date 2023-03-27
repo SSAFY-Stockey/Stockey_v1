@@ -4,7 +4,13 @@ import { useQuery } from "react-query"
 const axios = customAxios()
 
 const fetchUserInfo = ({ queryKey }: { queryKey: string[] }) => {
-  return axios.post("/api/auth/login/kakao", { user_id: queryKey[1] })
+  const code = queryKey[1]
+
+  const params = {
+    code: code,
+  }
+
+  return axios.get(`/api/auth/login/kakao/`, { params })
 }
 
 export const useUserInfo = (userId: string) => {
