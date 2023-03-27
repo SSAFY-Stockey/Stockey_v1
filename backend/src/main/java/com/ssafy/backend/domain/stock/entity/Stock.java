@@ -48,8 +48,8 @@ public class Stock {
     @Column(name = "company_sales", length = 100)
     private String companySales;
 
-    @Size(max = 100)
-    @Column(name = "credit_rank", length = 100)
+    @Size(max = 45)
+    @Column(name = "credit_rank", length = 45)
     private String creditRank;
 
     @Size(max = 200)
