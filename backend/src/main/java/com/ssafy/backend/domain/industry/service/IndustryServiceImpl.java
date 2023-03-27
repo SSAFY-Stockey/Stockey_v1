@@ -2,6 +2,7 @@ package com.ssafy.backend.domain.industry.service;
 
 
 import com.ssafy.backend.domain.favorites.entity.Favorite;
+import com.ssafy.backend.domain.favorites.repository.FavoriteRepository;
 import com.ssafy.backend.domain.favorites.service.FavoriteService;
 import com.ssafy.backend.domain.industry.api.response.IndustryCapitalDto;
 import com.ssafy.backend.domain.industry.dto.IndustryDto;
@@ -14,12 +15,15 @@ import com.ssafy.backend.domain.stock.dto.StockBriefDto;
 import com.ssafy.backend.domain.stock.entity.Stock;
 import com.ssafy.backend.domain.stock.mapper.StockMapper;
 import com.ssafy.backend.domain.stock.repository.StockRepository;
+import com.ssafy.backend.global.exception.favorite.FavoriteException;
+import com.ssafy.backend.global.exception.favorite.FavoriteExceptionType;
 import com.ssafy.backend.global.exception.industry.IndustryException;
 import com.ssafy.backend.global.exception.industry.IndustryExceptionType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,7 +31,8 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class IndustryServiceImpl implements  IndustryService {
+@Transactional(readOnly = true)
+public class IndustryServiceImpl implements IndustryService {
     private final IndustryRepository industryRepository;
     private final StockRepository stockRepository;
     private final IndustryMapper industryMapper;
@@ -35,6 +40,8 @@ public class IndustryServiceImpl implements  IndustryService {
     private final StockMapper stockMapper;
 
     private final FavoriteService favoriteService;
+
+    private final FavoriteRepository favoriteRepository;
 
     //모든 산업 반환
     public List<IndustryDto> getAll() {
@@ -81,27 +88,63 @@ public class IndustryServiceImpl implements  IndustryService {
         Pageable pageable = PageRequest.of(0, 5);
         // 단방향 매핑으로 찾기
         Industry industry = getIndustry(id);
-        List<Stock> stockList = stockRepository.findTop5Stocks(industry,  pageable);
+        List<Stock> stockList = stockRepository.findTop5Stocks(industry, pageable);
         return stockMapper.toDto(stockList);
     }
 
     // 관심  산업 리스트 출력
-    public List<IndustryDto> getMyIndustries(Member member){
-        List<Favorite> favorites = favoriteService.findByIndustry(member);
+    public List<IndustryDto> getMyIndustries(Member member) {
+        List<Favorite> favorites = favoriteService._findByIndustry(member);
         List<Industry> industryList = new ArrayList<>();
-        for(Favorite favorite : favorites){
+        for (Favorite favorite : favorites) {
             industryList.add(favorite.getIndustry());
         }
         return industryMapper.toDto(industryList);
     }
 
-    public boolean checkFavorite(Member member, Long id){
+    // 관심 여부 확인
+    public boolean checkFavorite(Member member, Long id) {
         Industry industry = getIndustry(id);
         boolean result = favoriteService.existsByMemberAndIndustry(industry, member);
         return result;
     }
 
+    // 관심 산업 등록
+    @Transactional
+    public void addFavorite(Member member, Long id) {
+        Industry industry = getIndustry(id);
+        boolean isFavorite = checkFavorite(member, id);
+        //이미 관심등록했다면
+        if(isFavorite){
+            throw new FavoriteException(FavoriteExceptionType.ALREADY_EXIST);
+        }
+        Favorite favorite = Favorite.industryBuilder()
+                .member(member)
+                .industry(industry)
+                .build();
+        favoriteRepository.save(favorite);
 
+    }
+
+    @Transactional
+    public void deleteFavorite(Member member, Long id) {
+        Industry industry = getIndustry(id);
+        boolean isFavorite = checkFavorite(member, id);
+        // 관심 등록하지 않았다면
+        if (!isFavorite) {
+            throw new FavoriteException(FavoriteExceptionType.NOT_FOUND);
+        }
+        Favorite favorite = favoriteRepository.findByMemberAndIndustry(member, industry);
+        checkUser(member, favorite);
+        favoriteRepository.delete(favorite);
+    }
+
+    // 유저가 동일한지 체크
+    private static void checkUser(Member member, Favorite favorite) {
+        if (favorite.getMember() != member) {
+            throw new FavoriteException(FavoriteExceptionType.DIFFERENT_USER);
+        }
+    }
 
     // 산업 엔티티 반환
     private Industry getIndustry(Long id) {

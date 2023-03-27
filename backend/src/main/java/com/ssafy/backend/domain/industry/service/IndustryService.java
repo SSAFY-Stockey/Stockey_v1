@@ -16,6 +16,9 @@ public interface IndustryService {
      List<IndustryDto> getMyIndustries(Member member);
      boolean checkFavorite(Member member,Long id);
 
+     void addFavorite(Member member,Long id);
+     void deleteFavorite(Member member,Long id);
+
 
 
 
