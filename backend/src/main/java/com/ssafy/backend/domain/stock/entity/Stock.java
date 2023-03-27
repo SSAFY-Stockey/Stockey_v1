@@ -40,6 +40,22 @@ public class Stock {
     @Column(name = "stock_count", nullable = false)
     private Long stockCount;
 
+    @Size(max = 45)
+    @Column(name = "company_size", length = 45)
+    private String companySize;
+
+    @Size(max = 100)
+    @Column(name = "company_sales", length = 100)
+    private String companySales;
+
+    @Size(max = 45)
+    @Column(name = "credit_rank", length = 45)
+    private String creditRank;
+
+    @Size(max = 200)
+    @Column(name = "basic_info", length = 200)
+    private String basicInfo;
+
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "industry_id", nullable = false)

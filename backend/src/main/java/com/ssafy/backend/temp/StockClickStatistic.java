@@ -1,5 +1,6 @@
 package com.ssafy.backend.temp;
 
+import com.ssafy.backend.domain.stock.entity.Stock;
 import lombok.Getter;
 
 import javax.persistence.*;
