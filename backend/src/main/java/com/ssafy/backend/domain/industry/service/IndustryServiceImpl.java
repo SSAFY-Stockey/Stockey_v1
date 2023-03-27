@@ -1,12 +1,15 @@
 package com.ssafy.backend.domain.industry.service;
 
 
+import com.ssafy.backend.domain.favorites.entity.Favorite;
+import com.ssafy.backend.domain.favorites.service.FavoriteService;
 import com.ssafy.backend.domain.industry.api.response.IndustryCapitalDto;
 import com.ssafy.backend.domain.industry.dto.IndustryDto;
 import com.ssafy.backend.domain.industry.entity.Industry;
 import com.ssafy.backend.domain.industry.mapper.IndustryDtoMapper;
 import com.ssafy.backend.domain.industry.mapper.IndustryMapper;
 import com.ssafy.backend.domain.industry.repository.IndustryRepository;
+import com.ssafy.backend.domain.member.entity.Member;
 import com.ssafy.backend.domain.stock.dto.StockBriefDto;
 import com.ssafy.backend.domain.stock.entity.Stock;
 import com.ssafy.backend.domain.stock.mapper.StockMapper;
@@ -24,12 +27,14 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class IndustryServiceImpl {
+public class IndustryServiceImpl implements  IndustryService {
     private final IndustryRepository industryRepository;
     private final StockRepository stockRepository;
     private final IndustryMapper industryMapper;
     private final IndustryDtoMapper industryDtoMapper;
     private final StockMapper stockMapper;
+
+    private final FavoriteService favoriteService;
 
     //모든 산업 반환
     public List<IndustryDto> getAll() {
@@ -81,9 +86,19 @@ public class IndustryServiceImpl {
     }
 
     // 관심  산업 리스트 출력
-    public List<IndustryDto> getMyIndustries(){
+    public List<IndustryDto> getMyIndustries(Member member){
+        List<Favorite> favorites = favoriteService.findByIndustry(member);
+        List<Industry> industryList = new ArrayList<>();
+        for(Favorite favorite : favorites){
+            industryList.add(favorite.getIndustry());
+        }
+        return industryMapper.toDto(industryList);
+    }
 
-
+    public boolean checkFavorite(Member member, Long id){
+        Industry industry = getIndustry(id);
+        boolean result = favoriteService.existsByMemberAndIndustry(industry, member);
+        return result;
     }
 
 

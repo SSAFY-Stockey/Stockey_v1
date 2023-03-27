@@ -2,6 +2,8 @@ package com.ssafy.backend.domain.industry.api;
 
 import com.ssafy.backend.domain.industry.api.response.IndustryCapitalDto;
 import com.ssafy.backend.domain.industry.dto.IndustryDto;
+import com.ssafy.backend.domain.member.entity.Member;
+import com.ssafy.backend.domain.member.repository.MemberRepository;
 import com.ssafy.backend.domain.stock.dto.StockBriefDto;
 import com.ssafy.backend.domain.industry.service.IndustryService;
 import com.ssafy.backend.global.dto.ResponseDto;
@@ -13,10 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,6 +27,9 @@ import java.util.List;
 @Tag(name = "산업 ", description = "산업 관련 API 입니다.")
 public class IndustryController {
     private final IndustryService industryService;
+
+    //TODO
+    private final MemberRepository memberRepository;
 
 
     @Operation(summary = "산업 리스트 목록 반환 ", description = "산업 리스트를 반환해주는 메소드입니다.")
@@ -93,5 +95,24 @@ public class IndustryController {
     }
 
     // TODO 관심 산업 추가 기능
+    @GetMapping("stocklist/my")
+    public ResponseEntity<ResponseDto> getMyIndustries() {
+        Member member = memberRepository.findByNickname("진호").get();
+        List<IndustryDto> myIndustries = industryService.getMyIndustries(member);
+        return new ResponseEntity<>(new ResponseDto("OK", myIndustries), HttpStatus.OK);
+
+    }
+
+    @GetMapping("stocklist/my/{id}")
+    public ResponseEntity<ResponseDto> checkFavorite(@PathVariable Long id) {
+        Member member = memberRepository.findByNickname("진호").get();
+        boolean result = industryService.checkFavorite(member, id);
+        return new ResponseEntity<>(new ResponseDto("OK", result), HttpStatus.OK);
+    }
+
+
+
+
+
 
 }
