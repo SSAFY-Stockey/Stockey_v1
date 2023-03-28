@@ -6,7 +6,7 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://mysql-container/stockey?serverTimezone=Asia/Seoul
+    url: jdbc:mysql://j8a508.p.ssafy.io:3306/stockey?serverTimezone=Asia/Seoul
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
 
@@ -26,7 +26,7 @@ spring:
         max-idle: 10
         min-idle: 2
     port: 6379
-    host: 'redis-container'
+    host: 'j8a508.p.ssafy.io'
     password: 'ssafy'
 
 logging:
