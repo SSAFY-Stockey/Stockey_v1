@@ -7,12 +7,6 @@ interface CardListProps {
   industryName: string
 }
 
-interface StockType {
-  rank: number
-  name: string
-  marketCap: number
-}
-
 const MarketCapCardList = ({ industryName }: CardListProps) => {
   const [stockCardList, setStockCardList] = useState<JSX.Element[] | null>(null)
 

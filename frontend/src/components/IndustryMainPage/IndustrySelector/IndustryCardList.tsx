@@ -2,7 +2,6 @@ import styled from "@emotion/styled"
 import IndustryCard from "./IndustryCard"
 
 const IndustryCardList = () => {
-  // 추후 산업 목록 데이터 받아와서 map하는 코드로 변경
   return (
     <IndustryCardListDiv>
       {dummydata.map((industryName) => (
