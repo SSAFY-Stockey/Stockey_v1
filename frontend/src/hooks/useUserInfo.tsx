@@ -10,19 +10,20 @@ const fetchUserInfo = ({ queryKey }: { queryKey: string[] }) => {
     code: code,
   }
 
-  return axios.get(`/api/auth/login/kakao/`, { params })
+  return axios.get(`/auth/login/kakao/`, { params })
 }
 
 export const useUserInfo = (userId: string) => {
   return useQuery(["userInfo", userId], fetchUserInfo, {
-    staleTime: 0,
+    staleTime: 10000,
     select,
     onError,
+    refetchOnWindowFocus: false,
   })
 }
 
 const select = (response: any) => {
-  return response.data
+  return response
 }
 
 const onError = (err: any) => {
