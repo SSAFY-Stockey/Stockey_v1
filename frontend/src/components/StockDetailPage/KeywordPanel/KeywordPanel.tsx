@@ -56,6 +56,6 @@ export const PanelTitle = styled.p`
   margin-block: 12px;
 `
 export const PanelSubTitle = styled.p`
-  font-size: 1.8rem;
+  font-size: 2.2rem;
   font-weight: bold;
 `

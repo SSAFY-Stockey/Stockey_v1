@@ -2,7 +2,7 @@ import * as Highcharts from "highcharts"
 import HighchartsReact from "highcharts-react-official"
 import styled from "styled-components"
 
-interface HighchartsOptions {
+export interface HighchartsOptions {
   chart?: Highcharts.ChartOptions
   title?: Highcharts.TitleOptions
   subtitle?: Highcharts.SubtitleOptions

@@ -6,10 +6,10 @@ import styled from "styled-components"
 const StockDetailPage = () => {
   return (
     <Grid container height={"100%"}>
-      <Grid item xs={6} md={6} lg={6}>
+      <Grid item xs={7}>
         <StockMainSection />
       </Grid>
-      <Grid item xs={6} md={6} lg={6}>
+      <Grid item xs={5}>
         {false ? <SubPanel /> : <KeywordPanel keyword="빅스텝" />}
       </Grid>
     </Grid>
