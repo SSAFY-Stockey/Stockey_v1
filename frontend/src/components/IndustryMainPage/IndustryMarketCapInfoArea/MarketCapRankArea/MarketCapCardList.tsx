@@ -14,28 +14,25 @@ interface StockType {
 }
 
 const MarketCapCardList = ({ industryName }: CardListProps) => {
-  const [stockList, setStockList] = useState<StockType[]>(dummyData[0].stocks)
+  const [stockCardList, setStockCardList] = useState<JSX.Element[] | null>(null)
 
   useEffect(() => {
-    setStockList(
-      dummyData.filter((data) => data.industryName === industryName)[0].stocks
+    const stocks = dummyData.filter(
+      (data) => data.industryName === industryName
+    )[0].stocks
+    setStockCardList(
+      stocks.map((stock) => (
+        <MarketCapCard
+          key={industryName + "-" + stock.name}
+          rank={stock.rank}
+          stockName={stock.name}
+          marketCap={stock.marketCap}
+        />
+      ))
     )
   }, [industryName])
 
-  return (
-    <CardListWrapper>
-      {stockList.map((stock) => {
-        return (
-          <MarketCapCard
-            industryName={industryName}
-            rank={stock.rank}
-            stockName={stock.name}
-            marketCap={stock.marketCap}
-          />
-        )
-      })}
-    </CardListWrapper>
-  )
+  return <CardListWrapper>{stockCardList}</CardListWrapper>
 }
 
 export default MarketCapCardList

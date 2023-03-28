@@ -4,12 +4,17 @@ import Card from "@mui/material/Card"
 import CardMedia from "@mui/material/CardMedia"
 import { CardActionArea } from "@mui/material"
 import sampleImg from "./responsive-design.png"
+import { useNavigate } from "react-router-dom"
 
-const IndustryCard = () => {
+interface CardProps {
+  industryName: string
+}
+
+const IndustryCard = ({ industryName }: CardProps) => {
+  const navigate = useNavigate()
   const onClickIndustryCard = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-    console.log("산업 카드 클릭🙏")
-    console.log(e)
+    navigate(`/industry/${industryName}`)
   }
 
   return (
@@ -28,7 +33,7 @@ const IndustryCard = () => {
             />
           </IndustryCardBody>
           <IndustryCardNameArea>
-            <NameTagP>IndustryName</NameTagP>
+            <NameTagP>{industryName}</NameTagP>
           </IndustryCardNameArea>
         </IndustryCardContent>
       </IndustryCardActionArea>
@@ -77,6 +82,7 @@ const IndustryCardNameArea = styled(Box)({
   borderRadius: "0px 0px 24px 24px",
   display: "flex",
   alignItems: "center",
+  justifyContent: "center",
 })
 
 const NameTagP = styled.p`
@@ -85,8 +91,7 @@ const NameTagP = styled.p`
   font-family: "Inter";
   font-style: normal;
   font-weight: 700;
-  font-size: 15px;
-  line-height: 20px;
+  font-size: 1.2rem;
 
   display: flex;
   align-items: center;
