@@ -9,14 +9,20 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.ssafy.backend.domain.member.dto.MemberDto;
 import com.ssafy.backend.global.exception.jwt.JwtException;
 import com.ssafy.backend.global.exception.jwt.JwtExceptionType;
-import com.ssafy.backend.global.jwt.dto.JwtTokenDto;
 import com.ssafy.backend.global.redis.RefreshToken;
 import com.ssafy.backend.global.redis.RefreshTokenRepository;
+import com.ssafy.backend.global.redis.dto.RefreshTokenDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.util.WebUtils;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -34,8 +40,8 @@ public class JwtUtil {
     private long refreshTokenValidityInMinutes;
     private final RefreshTokenRepository refreshTokenRepository;
 
-    static final String ACCESS_TOKEN_SUBJECT = "AccessToken";
-    static final String REFRESH_TOKEN_SUBJECT = "RefreshToken";
+    public static final String ACCESS_TOKEN_SUBJECT = "AccessToken";
+    public static final String REFRESH_TOKEN_SUBJECT = "RefreshToken";
     static final String NICKNAME_CLAIM = "nickname";
     static final String BEARER = "Bearer ";
 
@@ -46,7 +52,7 @@ public class JwtUtil {
     }
 
 
-    public JwtTokenDto createJwt(MemberDto memberDto) {
+    public String createJwt(MemberDto memberDto) {
         // 토큰 발급
         String accessToken = getAccessToken(memberDto);
         String refreshToken = getRefreshToken(memberDto);
@@ -54,15 +60,15 @@ public class JwtUtil {
         // 리프레쉬 토큰을 redis에 저장
         RefreshToken savedRefreshToken = refreshTokenRepository.save(new RefreshToken(refreshToken, memberDto.getId()));
 
+        // cookie에 Refresh token 담기
+        setRefreshTokenToCookie(refreshToken);
+
         if (refreshTokenRepository.findById(savedRefreshToken.getRefreshToken()).isEmpty()) {
             throw new JwtException(JwtExceptionType.TOKEN_SAVE_FAIL);
         }
 
-        // Access token + refresh token을 리턴
-        return JwtTokenDto.builder()
-                .AccessToken(accessToken)
-                .RefreshToken(refreshToken)
-                .build();
+        // Access token 리턴
+        return accessToken;
     }
 
 
@@ -139,6 +145,46 @@ public class JwtUtil {
         } catch (JWTDecodeException e) {
             throw new JwtException(JwtExceptionType.DECODE_FAIL);
         }
+    }
+
+
+    public void setRefreshTokenToCookie(String refreshToken) {
+        HttpServletRequest request
+                = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        HttpServletResponse response
+                = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
+
+        Cookie refreshTokenCookie = new Cookie(REFRESH_TOKEN_SUBJECT, refreshToken);
+        refreshTokenCookie.setMaxAge(((int)refreshTokenValidityInMinutes) * 60);
+        refreshTokenCookie.setHttpOnly(true);
+        refreshTokenCookie.setSecure(request.isSecure()); // true로 하면 항상 https만 가능
+        refreshTokenCookie.setPath("/");
+
+        assert response != null;
+        response.addCookie(refreshTokenCookie);
+    }
+
+
+    public String getRefreshTokenFromCookie() {
+        HttpServletRequest request
+                = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        Cookie refreshTokenCookie = WebUtils.getCookie(request, REFRESH_TOKEN_SUBJECT);
+        if (refreshTokenCookie != null) {
+            return refreshTokenCookie.getValue();
+        } else {
+            throw new JwtException(JwtExceptionType.TOKEN_NULL);
+        }
+    }
+
+    public RefreshTokenDto getRefreshTokenFromRedis(String refreshToken) {
+        RefreshToken rt = refreshTokenRepository
+                .findById(refreshToken)
+                .orElseThrow(() -> new JwtException(JwtExceptionType.TOKEN_EXPIRED));
+        return RefreshTokenDto.builder().refreshToken(rt.getRefreshToken()).memberId(rt.getMemberId()).build();
+    }
+
+    public void deleteRefreshToken(String refreshToken) {
+        refreshTokenRepository.deleteById(refreshToken);
     }
 }
 
