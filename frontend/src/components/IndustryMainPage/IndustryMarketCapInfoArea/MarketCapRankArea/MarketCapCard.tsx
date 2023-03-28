@@ -1,19 +1,16 @@
-import styled from "@emotion/styled"
 import Grow from "@mui/material/Grow"
+import { useNavigate } from "react-router-dom"
+import styled from "styled-components"
 
 interface CardProps {
   rank: number
   stockName: string
   marketCap: number
-  industryName: string
 }
 
-const MarketCapCard = ({
-  rank,
-  stockName,
-  marketCap,
-  industryName,
-}: CardProps) => {
+const MarketCapCard = ({ rank, stockName, marketCap }: CardProps) => {
+  const navigate = useNavigate()
+
   const makePriceFormat = (num: number) => {
     let roundedNum = Math.round(num / 100000000)
     let result = "원"
@@ -32,34 +29,39 @@ const MarketCapCard = ({
 
   const formattedMarketCap = makePriceFormat(marketCap)
 
+  const handleCardClick = () => {
+    navigate(`/stock/${stockName}`)
+  }
+
   return (
-    <Grow key={industryName + " " + stockName} in={true} timeout={rank * 300}>
-      <CardDiv>
-        <RankDiv>{rank}</RankDiv>
-        <StockNameDiv>{stockName}</StockNameDiv>
-        <MarketCapDiv>{formattedMarketCap}</MarketCapDiv>
-      </CardDiv>
-    </Grow>
+    <CardWrapper>
+      <Grow in={true} timeout={rank * 300} onClick={handleCardClick}>
+        <CardDiv>
+          <RankDiv>{rank}</RankDiv>
+          <StockNameDiv>{stockName}</StockNameDiv>
+          <MarketCapDiv>{formattedMarketCap}</MarketCapDiv>
+        </CardDiv>
+      </Grow>
+    </CardWrapper>
   )
 }
 
 export default MarketCapCard
 
-const CardWrapper = styled(Grow)({
-  height: 48,
-  display: "flex",
-  alignItems: "center",
-  padding: "12px 24px",
-  gap: "12px",
-  textShadow: "0px 3px 4px rgba(0, 0, 0, 0.25)",
-  fontFamily: "Inter",
-  fontStyle: "normal",
-  fontWeight: 700,
-  letterSpacing: "0.1px",
-  background: "rgba(255, 255, 255, 0.5)",
-  boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
-  borderRadius: "24px",
-})
+const CardWrapper = styled.div`
+  height: 48px;
+
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 24px;
+
+  transition: all 0.25s ease;
+
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.05, 1.05);
+  }
+`
 
 const CardDiv = styled.div`
   height: 48px;
@@ -74,8 +76,6 @@ const CardDiv = styled.div`
   font-weight: 700;
   letter-spacing: 0.1px;
 
-  background: rgba(255, 255, 255, 0.5);
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
   border-radius: 24px;
 `
 
