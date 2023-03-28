@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom"
-import NicknameInput from "../components/common/Login/NicknameInput"
+import NicknameInput from "../components/common/Signup/NicknameInput"
 
 const SignupPage = () => {
   const location = useLocation()
