@@ -3,9 +3,6 @@ import HighchartsReact from "highcharts-react-official"
 import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
 
-require("highcharts/highcharts-more")(Highcharts)
-require("highcharts/modules/pattern-fill")(Highcharts)
-
 const IndustryBubbleChart = () => {
   const navigate = useNavigate()
 
@@ -75,9 +72,6 @@ const IndustryBubbleChart = () => {
           },
         ],
         type: "packedbubble",
-        // marker: {
-        //   symbol: `url(${process.env.PUBLIC_URL}/logo_images/삼성전자.png)`,
-        // },
       },
       {
         name: "SK하이닉스",
@@ -88,9 +82,6 @@ const IndustryBubbleChart = () => {
           },
         ],
         type: "packedbubble",
-        // marker: {
-        //   symbol: `url(${process.env.PUBLIC_URL}/logo_images/SK하이닉스.png)`,
-        // },
       },
       {
         name: "naver",
@@ -101,9 +92,6 @@ const IndustryBubbleChart = () => {
           },
         ],
         type: "packedbubble",
-        // marker: {
-        //   symbol: `url(${process.env.PUBLIC_URL}/logo_images/naver.png)`,
-        // },
       },
       {
         name: "롯데케미칼",
@@ -114,9 +102,6 @@ const IndustryBubbleChart = () => {
           },
         ],
         type: "packedbubble",
-        // marker: {
-        //   symbol: `url(${process.env.PUBLIC_URL}/logo_images/롯데케미칼.png)`,
-        // },
       },
       {
         name: "KB금융",
@@ -127,9 +112,6 @@ const IndustryBubbleChart = () => {
           },
         ],
         type: "packedbubble",
-        // marker: {
-        //   symbol: `url(${process.env.PUBLIC_URL}/logo_images/KB금융.png)`,
-        // },
       },
     ],
   }
