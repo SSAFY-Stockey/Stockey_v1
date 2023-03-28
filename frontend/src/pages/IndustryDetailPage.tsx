@@ -1,5 +1,6 @@
 import styled from "styled-components"
 import IndustryBubbleChart from "../components/IndustryDetailPage/IndustryBubbleChart/IndustryBubbleChart"
+import IndustryCandleChart from "../components/IndustryDetailPage/IndustryCandleChart/IndustryCandleChart"
 
 const IndustryDetailPage = () => {
   return (
@@ -7,7 +8,7 @@ const IndustryDetailPage = () => {
       <div>BUTTON</div>
       <ContentWrapper>
         <ContentBox>
-          <div>평균 시세 차트</div>
+          <IndustryCandleChart />
           <div>연관 키워드 차트</div>
         </ContentBox>
         <ContentBox>
