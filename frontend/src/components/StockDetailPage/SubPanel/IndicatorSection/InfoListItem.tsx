@@ -38,6 +38,9 @@ const InfoDiv = styled.div`
   border: 5px solid white;
   padding-block: 3%;
   width: 100%;
+  & > img {
+    // scale: 0.9;
+  }
 `
 
 const InfoDetailDiv = styled.div`
@@ -56,7 +59,7 @@ const InfoType = styled.p`
   color: rgba(151, 151, 151, 1);
 `
 const InfoValue = styled.p`
-  font-size: 4.2rem;
+  font-size: 3.6rem;
   color: black;
 `
 const SubDescription = styled.span`
