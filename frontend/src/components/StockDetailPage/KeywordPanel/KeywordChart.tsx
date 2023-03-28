@@ -1,37 +1,34 @@
-import * as Highcharts from "highcharts";
-import HighchartsReact from "highcharts-react-official";
-import dayjs from "dayjs";
-import styled from "styled-components";
+import * as Highcharts from "highcharts"
+import HighchartsReact from "highcharts-react-official"
+import dayjs from "dayjs"
+import styled from "styled-components"
 
-const today = dayjs().endOf("day");
-const aMonthAgo = dayjs()
-  .subtract(1, "month")
-  .subtract(1, "day")
-  .startOf("day");
+const today = dayjs().endOf("day")
+const aMonthAgo = dayjs().subtract(1, "month").subtract(1, "day").startOf("day")
 
 interface HighchartsOptions {
   // chart?: Highcharts.ChartOptions
-  chart?: any;
-  title?: Highcharts.TitleOptions;
-  subtitle?: Highcharts.SubtitleOptions;
+  chart?: any
+  title?: Highcharts.TitleOptions
+  subtitle?: Highcharts.SubtitleOptions
   // xAxis?: Highcharts.XAxisOptions
-  xAxis?: any;
-  yAxis?: Highcharts.YAxisOptions;
-  legend?: Highcharts.LegendOptions;
+  xAxis?: any
+  yAxis?: Highcharts.YAxisOptions
+  legend?: Highcharts.LegendOptions
   // series?: Highcharts.SeriesOptionsType[]
-  series?: any;
-  plotOptions?: Highcharts.PlotOptions;
-  tooltip?: Highcharts.TooltipOptions;
-  credits?: Highcharts.CreditsOptions;
-  exporting?: Highcharts.ExportingOptions;
-  colors?: string[];
-  responsive?: Highcharts.ResponsiveOptions;
-  accessibility?: Highcharts.AccessibilityOptions;
-  events?: Highcharts.ChartEventsOptions;
-  lang?: Highcharts.LangOptions;
+  series?: any
+  plotOptions?: Highcharts.PlotOptions
+  tooltip?: Highcharts.TooltipOptions
+  credits?: Highcharts.CreditsOptions
+  exporting?: Highcharts.ExportingOptions
+  colors?: string[]
+  responsive?: Highcharts.ResponsiveOptions
+  accessibility?: Highcharts.AccessibilityOptions
+  events?: Highcharts.ChartEventsOptions
+  lang?: Highcharts.LangOptions
 }
 
-console.log(dayjs().valueOf());
+console.log(dayjs().valueOf())
 
 const KeywordChart = () => {
   const options: HighchartsOptions = {
@@ -49,20 +46,10 @@ const KeywordChart = () => {
       resetZoom: "한 달로 보기",
     },
     title: {
-      text: "키워드 언급량 (%)",
+      text: undefined,
       align: "left",
       style: {
         fontSize: "1.6rem",
-        color: "black",
-        fontWeight: "bold",
-      },
-    },
-
-    subtitle: {
-      text: "당일 경제 뉴스 중 키워드가 언급된 기사의 비율",
-      align: "left",
-      style: {
-        fontSize: "1.3rem",
         color: "black",
         fontWeight: "bold",
       },
@@ -90,7 +77,7 @@ const KeywordChart = () => {
       min: 0,
       labels: {
         formatter: function (this: any) {
-          return this.value + "%";
+          return this.value + "%"
         },
       },
     },
@@ -114,7 +101,7 @@ const KeywordChart = () => {
     tooltip: {
       shared: false,
       formatter: function (this: any) {
-        console.log(this);
+        console.log(this)
         if (this.series.index === 0) {
           return (
             "<b>" +
@@ -125,11 +112,11 @@ const KeywordChart = () => {
             "</b> 기사의 <b>" +
             this.point.y +
             "%</b> "
-          );
+          )
         } else {
           return (
             "<b>" + this.series.name + "</b><br/><br/>" + this.point.y + "원"
-          );
+          )
         }
       },
     },
@@ -141,7 +128,7 @@ const KeywordChart = () => {
           29.9, 71.5, 96.4, 79.2, 44.0, 76.0, 35.6, 48.5, 16.4, 54.4, 29.9,
           71.5, 96.4, 79.2, 44.0, 76.0, 35.6, 48.5, 16.4,
         ].map((value, index) => {
-          return [today.valueOf() - index * 24 * 3600 * 1000, value];
+          return [today.valueOf() - index * 24 * 3600 * 1000, value]
         }),
         color: "var(--custom-blue)",
         lineColor: "#2979ff",
@@ -161,7 +148,7 @@ const KeywordChart = () => {
           31.5, 46.4, 19.2, 44.0, 16.0, 21.5, 35.6, 48.5, 36.4, 64.4, 29.9,
           51.5, 16.4, 19.2, 44.0, 26.0, 35.6, 28.5, 16.4,
         ].map((value, index) => {
-          return [today.valueOf() - index * 24 * 3600 * 1000, value];
+          return [today.valueOf() - index * 24 * 3600 * 1000, value]
         }),
         lineWidth: 4,
         lineColor: "#ffd600",
@@ -189,16 +176,16 @@ const KeywordChart = () => {
         opacity: 0.4,
       },
     },
-  };
+  }
 
   return (
     <ChartWrapper>
       <HighchartsReact highcharts={Highcharts} options={options} />
     </ChartWrapper>
-  );
-};
-export default KeywordChart;
+  )
+}
+export default KeywordChart
 
 const ChartWrapper = styled.div`
   width: 100%;
-`;
+`

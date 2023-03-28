@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import LoginBtn from "./LoginBtn"
 
 const ProfileInfo = () => {
   return (
@@ -6,6 +7,7 @@ const ProfileInfo = () => {
       <ProfileDiv>
         <ProfileImg src="https://www.corporatephotographerslondon.com/wp-content/uploads/2021/07/LinkedIn_profile_photo_sample_1-300x300.jpg" />
         <ProfileName>Toby Mojeed</ProfileName>
+        <LoginBtn />
       </ProfileDiv>
     </>
   )

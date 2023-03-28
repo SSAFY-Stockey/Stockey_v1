@@ -145,3 +145,10 @@
   font-weight: 900;
   src: url("./Roboto-BlackItalic.ttf");
 }
+
+@font-face {
+  font-family: "ITC Benguiat Gothic Std";
+  font-style: normal;
+  font-weight: bold;
+  src: url("./BenguiatGothicStd-Bold.otf") format("opentype");
+}
