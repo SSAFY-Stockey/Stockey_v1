@@ -17,7 +17,7 @@ FROM nginx
 RUN rm /etc/nginx/conf.d/default.conf
 
 # host pc 의 nginx.conf 를 아래 경로에 복사
-COPY /home/ubuntu/react/conf.d /etc/nginx/conf.d
+COPY /home/ubuntu/react/default.conf /etc/nginx/conf.d
 
 # Copy the build files to the Nginx web root directory
 COPY --from=0 /build /usr/share/nginx/html
