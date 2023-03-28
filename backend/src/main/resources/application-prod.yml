@@ -49,7 +49,7 @@ kakaoOauth:
 
 jwt:
   # base64로 인코딩된 암호 키, HS512를 사용할 것이기 때문에, 512비트(64바이트) 이상이 되어야 합니다. 길게 써주세요
-  secretKey: ${JWT_KEY}
+  secretKey: ${JWT_SECRET_KEY}
   access:
     expiration: 100
   refresh:
