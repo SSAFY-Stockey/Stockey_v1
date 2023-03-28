@@ -3,7 +3,7 @@ import { Grid } from "@mui/material"
 
 const InfoList = () => {
   return (
-    <Grid container rowSpacing={3} columnSpacing={3}>
+    <Grid container rowSpacing={1} columnSpacing={1} mb={3}>
       <Grid item xs={6}>
         <InfoListItem type="finance" value="1%" />
       </Grid>
