@@ -10,13 +10,8 @@ const DefaultBizBlock = ({ type }: Props) => {
   return (
     <GradientBorderBlock>
       <ContentPaper elevation={0}>
-        <BuisnessTypeDiv>
-          <BuisnessIcon
-            src={`/businessLogos/${type}.png`}
-            alt="buisness icon"
-          />
-          <BuisessType>{type}</BuisessType>
-        </BuisnessTypeDiv>
+        <BuisnessIcon src={`/businessLogos/${type}.png`} alt="buisness icon" />
+        <BuisessType>{type}</BuisessType>
         {}
       </ContentPaper>
     </GradientBorderBlock>
@@ -27,7 +22,6 @@ export default DefaultBizBlock
 
 export const GradientBorderBlock = styled.div`
   position: relative;
-  width: 100%;
   max-width: 170px;
   min-width: 130px;
   background-image: linear-gradient(#faf5f7, #faf5f7),
@@ -37,10 +31,11 @@ export const GradientBorderBlock = styled.div`
   background-clip: content-box, border-box;
   border: 5px solid transparent;
   border-radius: 50px;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
   ::after {
     content: "";
     padding-bottom: 100%;
-    display: block;
+    display: inline-block;
   }
 `
 
@@ -50,13 +45,13 @@ export const ContentPaper = styled(Paper)`
     top: 0;
     left: 0;
     width: 100%;
-    width: fit-content;
+    // width: fit-content;
     height: 100%;
     border-radius: 45px;
     padding: 16%;
     background-color: white;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
   }

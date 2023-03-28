@@ -28,11 +28,8 @@ const BizBlock = ({ type }: Props) => {
 export default BizBlock
 
 const BizBlockDiv = styled.div<{ isHovered: boolean }>`
-  width: -webkit-fill-available;
-  margin-right: ${(props) => (props.isHovered ? "-12px" : "24px")};
-  margin-left: ${(props) => (props.isHovered ? "-100px" : "0px")};
-  z-index: ${(props) => (props.isHovered ? 2 : 1)};
-  &:hover {
-    transition: all 0.3s ease-out;
-  }
+  position: relative;
+  display: inline-block;
+  margin-right: 48px;
+  vertical-align: top;
 `

@@ -25,20 +25,18 @@ export default ExpandedBizBlock
 
 export const ContentPaper = styled(Paper)`
   && {
-    // position: absolute;
-    // top: 0;
-    // left: 0;
-    // width: 100%;
+    position: relative;
     width: fit-content;
-    height: 100%;
+    height: 130px;
     border-radius: 30px;
     background-color: var(--custom-purple-3);
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    z-index: 2;
-    padding-inline: 8% 5%;
+    padding-inline: 10% 15%;
+    text-align: left;
+    box-shadow: 10px 10px 10px 0px rgba(0, 0, 0, 0.2);
   }
 `
 
