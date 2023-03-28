@@ -1,7 +1,9 @@
 package com.ssafy.backend.domain.industry.api;
 
+import com.ssafy.backend.domain.industry.api.response.GetIndustryResponse;
 import com.ssafy.backend.domain.industry.api.response.IndustryCapitalDto;
 import com.ssafy.backend.domain.industry.dto.IndustryDto;
+import com.ssafy.backend.domain.industry.mapper.IndustryDtoMapper;
 import com.ssafy.backend.domain.member.entity.Member;
 import com.ssafy.backend.domain.member.repository.MemberRepository;
 import com.ssafy.backend.domain.stock.dto.StockBriefDto;
@@ -30,6 +32,7 @@ public class IndustryController {
 
     //TODO
     private final MemberRepository memberRepository;
+    private final IndustryDtoMapper dtoMapper;
 
 
     @Operation(summary = "산업 리스트 목록 반환 ", description = "산업 리스트를 반환해주는 메소드입니다.")
@@ -105,12 +108,13 @@ public class IndustryController {
     public ResponseEntity<ResponseDto> getMyIndustries() {
         Member member = memberRepository.findByNickname("진호").get();
         List<IndustryDto> myIndustries = industryService.getMyIndustries(member);
-        return new ResponseEntity<>(new ResponseDto("OK", myIndustries), HttpStatus.OK);
+        List<GetIndustryResponse> getIndustryResponses = dtoMapper.toGetResponse(myIndustries);
+        return new ResponseEntity<>(new ResponseDto("OK", getIndustryResponses), HttpStatus.OK);
 
     }
 
     // 관심 여부 확인
-    @Operation(summary = "관심 산업 리스트", description = "내 관심 산업 리스트를 출력합니다.")
+    @Operation(summary = "산업 관심 여부 체크", description = "해당 산업이 관심등록 했는지 체크합니다.")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "요청 성공"),
@@ -138,7 +142,7 @@ public class IndustryController {
     public ResponseEntity<ResponseDto> addFavorite(@PathVariable Long id){
         Member member = memberRepository.findByNickname("진호").get();
         industryService.addFavorite(member,id);
-        return new ResponseEntity<>(new ResponseDto("OK","CREATED"),HttpStatus.CREATED);
+        return new ResponseEntity<>(new ResponseDto("CREATED",null),HttpStatus.CREATED);
     }
 
     // 관심 산업 삭제
@@ -154,7 +158,7 @@ public class IndustryController {
     public ResponseEntity<ResponseDto> deleteFavorite(@PathVariable Long id){
         Member member = memberRepository.findByNickname("진호").get();
         industryService.deleteFavorite(member,id);
-        return new ResponseEntity<>(new ResponseDto("OK","DELETED"),HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseDto("DELETED",null),HttpStatus.OK);
     }
 
 
