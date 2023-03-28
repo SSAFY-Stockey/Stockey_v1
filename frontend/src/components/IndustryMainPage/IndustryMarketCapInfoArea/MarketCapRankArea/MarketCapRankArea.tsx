@@ -18,7 +18,10 @@ const MarketCapRankArea = ({
         </IndustryNameSpan>{" "}
         종목 시총 순위
       </TitleDiv>
-      <MarketCapCardList industryName={clickedIndustryName} />
+      <MarketCapCardList
+        key={clickedIndustryName}
+        industryName={clickedIndustryName}
+      />
     </AreaDiv>
   )
 }
