@@ -3,6 +3,8 @@ import HighchartsReact from "highcharts-react-official"
 import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
 
+require("highcharts/highcharts-more")(Highcharts)
+
 const IndustryBubbleChart = () => {
   const navigate = useNavigate()
 
