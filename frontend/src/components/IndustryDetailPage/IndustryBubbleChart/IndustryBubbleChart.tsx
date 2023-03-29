@@ -139,7 +139,6 @@ const AreaDiv = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding: 0px 12px;
 `
 
 const TitleDiv = styled.div`
