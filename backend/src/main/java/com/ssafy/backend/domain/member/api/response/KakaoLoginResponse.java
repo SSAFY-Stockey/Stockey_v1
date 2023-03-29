@@ -1,8 +1,8 @@
 package com.ssafy.backend.domain.member.api.response;
 
-import lombok.Builder;
+import lombok.Data;
 
-@Builder
+@Data
 public class KakaoLoginResponse {
     private final String accessToken;
 }
