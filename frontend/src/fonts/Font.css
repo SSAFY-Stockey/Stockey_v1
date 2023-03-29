@@ -150,5 +150,7 @@
   font-family: "ITC Benguiat Gothic Std";
   font-style: normal;
   font-weight: bold;
-  src: url("./BenguiatGothicStd-Bold.otf") format("opentype");
+  src: url("./BenguiatGothicStd-Bold.otf") format("woff2"),
+    url("./BenguiatGothicStd-Bold.otf") format("woff"),
+    url("./BenguiatGothicStd-Bold.otf") format("truetype");
 }

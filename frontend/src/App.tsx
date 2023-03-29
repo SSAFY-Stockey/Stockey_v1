@@ -25,10 +25,22 @@ function App() {
   return (
     <>
       <MainWrapper>
-        <NavDiv className={curPath === "/user/login" ? "login" : undefined}>
+        <NavDiv
+          className={
+            curPath === "/user/login" || curPath === "/user/signup"
+              ? "login"
+              : undefined
+          }
+        >
           <Navbar />
         </NavDiv>
-        <MainDiv className={curPath === "/user/login" ? "login" : undefined}>
+        <MainDiv
+          className={
+            curPath === "/user/login" || curPath === "/user/signup"
+              ? "login"
+              : undefined
+          }
+        >
           <MainSection>
             <Routes>
               <Route path="/" element={<MyPage />} />
@@ -69,7 +81,7 @@ const NavDiv = styled.div`
 
   // login & signup
   &.login {
-    width: 50vw;
+    width: 45vw;
   }
 `
 const MainDiv = styled.div`
@@ -81,6 +93,6 @@ const MainDiv = styled.div`
 
   // login & signup
   &.login {
-    width: 50vw;
+    width: 55vw;
   }
 `
