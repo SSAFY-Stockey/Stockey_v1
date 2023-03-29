@@ -1,76 +1,190 @@
-import Highcharts from "highcharts/highstock"
+import * as Highcharts from "highcharts"
 import HighchartsReact from "highcharts-react-official"
+import highchartsStock from "highcharts/modules/stock"
+import BrandLight from "highcharts/themes/brand-light"
 import styled from "styled-components"
+import { sampleData } from "./dummyData"
+import { useState } from "react"
 
-import { makedummyData } from "./dummyData"
-import { useEffect, useState } from "react"
+highchartsStock(Highcharts)
+Highcharts.setOptions({
+  lang: {
+    rangeSelectorZoom: "",
+    shortMonths: [
+      "1월",
+      "2월",
+      "3월",
+      "4월",
+      "5월",
+      "6월",
+      "7월",
+      "8월",
+      "9월",
+      "10월",
+      "11월",
+      "12월",
+    ],
+    weekdays: ["일", "월", "화", "수", "목", "금", "토"],
+    rangeSelectorTo: "⁓",
+  },
+})
+
+BrandLight(Highcharts)
 
 const IndustryCandleChart = () => {
-  const dummyData = makedummyData(36)
-  const [viewRange, setViewRange] = useState<number>(36)
-  const [chartType, setChartType] = useState<string>("candlestick")
-  const [series, setSeries] = useState<any>()
+  const dummyData = sampleData
 
-  useEffect(() => {
-    if (viewRange > 20) {
-      setChartType("spline")
-    } else {
-      setChartType("candlestick")
-    }
-  }, [viewRange])
-
-  const options: Highcharts.Options = {
+  const [options, setOptions] = useState<Highcharts.Options>({
     chart: {
-      type: chartType,
-      height: "60%",
+      borderColor: "var(--custom-background)",
+      borderRadius: 20,
+      borderWidth: 2,
+      margin: 20,
       backgroundColor: "transparent",
-      borderRadius: 24,
     },
-    title: {
-      text: "",
-    },
-    tooltip: {},
     credits: {
       enabled: false,
     },
     navigator: {
       enabled: true,
-      series: {
-        type: "areaspline",
-        data: dummyData,
-        fillOpacity: 0.05,
-        lineWidth: 1,
-        marker: {
-          enabled: false,
+      handles: {
+        backgroundColor: "var(--custom-purple-2)",
+        borderColor: "var(--custom-black)",
+        height: 20,
+      },
+      height: 60,
+      margin: 30,
+      maskFill: "rgba(212, 193, 255, 0.4)",
+    },
+    plotOptions: {},
+    rangeSelector: {
+      allButtonsEnabled: false,
+      buttons: [
+        {
+          type: "day",
+          count: 1,
+          text: "1일",
+        },
+        {
+          type: "week",
+          count: 1,
+          text: "1주",
+        },
+        {
+          type: "month",
+          count: 1,
+          text: "1개월",
+        },
+        {
+          type: "year",
+          count: 1,
+          text: "1년",
+        },
+        {
+          type: "all",
+          text: "전체",
+        },
+      ],
+      selected: 5,
+      inputDateFormat: "%Y.%m.%d",
+      inputEditDateFormat: "%Y.%m.%d",
+      inputBoxHeight: 20,
+      inputStyle: {
+        color: "var(--custom-black)",
+        fontSize: "1.4rem",
+        fontWeight: "bold",
+      },
+      buttonTheme: {
+        width: 40,
+        r: 8,
+        style: {
+          color: "var(--custom-black)",
+          fontWeight: "bold",
+        },
+        states: {
+          select: {
+            fill: "#D1F7EB",
+          },
         },
       },
     },
-    plotOptions: {
-      candlestick: {
-        showInLegend: false,
-        showInNavigator: true,
-      },
-    },
-    xAxis: {
-      events: {
-        afterSetExtremes: function (event) {
-          setViewRange(event.max - event.min)
-        },
-      },
+    scrollbar: {
+      enabled: false,
     },
     series: [
       {
-        type: "candlestick",
         name: "삼성전자",
+        type: "line",
         data: dummyData,
+        color: "var(--custom-mint)",
+        compare: "percent",
       },
     ],
+    title: {
+      text: "",
+    },
+    tooltip: {
+      split: false,
+      valueDecimals: 2,
+      valueSuffix: "원",
+      dateTimeLabelFormats: {
+        day: "%Y년 %m월 %d일",
+      },
+      pointFormat:
+        '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> ({point.change}%)<br/>',
+    },
+    xAxis: {
+      type: "datetime",
+      labels: {
+        step: 1,
+      },
+    },
+    yAxis: {
+      type: "linear",
+    },
+  })
+
+  const changeChartType = (event: React.MouseEvent<HTMLButtonElement>) => {
+    switch ((event.target as HTMLButtonElement).value) {
+      case "candlestick":
+        setOptions({
+          series: [
+            {
+              type: "candlestick",
+              color: undefined,
+            },
+          ],
+        })
+        break
+      case "line":
+        setOptions({
+          series: [
+            {
+              type: "line",
+              color: "var(--custom-mint)",
+            },
+          ],
+        })
+        break
+      default:
+    }
   }
+
   return (
     <AreaDiv>
       <TitleDiv>산업 내 시가총액 TOP 5</TitleDiv>
       <ChartWrapper>
-        <HighchartsReact highcharts={Highcharts} options={options} />
+        <button onClick={changeChartType} value="line">
+          간단히
+        </button>
+        <button onClick={changeChartType} value="candlestick">
+          자세히
+        </button>
+        <HighchartsReact
+          highcharts={Highcharts}
+          constructorType={"stockChart"}
+          options={options}
+        />
       </ChartWrapper>
     </AreaDiv>
   )
