@@ -1,4 +1,4 @@
-import KewordBarGraph from "./KewordBarGraph"
+import KeywordBarGraph from "./KeywordBarGraph"
 import KeyphraseList from "./KeyphraseList"
 import styled from "styled-components"
 
@@ -11,7 +11,7 @@ const KeywordBoard = () => {
         <StyledSpan>키워드</StyledSpan>로 보는 이번 주 네이버 소식💌
       </StyledTitle>
       <KeyphraseList focused={focusedIndex} />
-      <KewordBarGraph />
+      <KeywordBarGraph />
     </StyledDiv>
   )
 }
