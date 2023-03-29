@@ -46,7 +46,7 @@ public class MemberServiceImpl implements MemberService {
         Member member = memberRepository.findById(memberDto.getId())
                 .orElseThrow(() -> new MemberException(MemberExceptionType.NOT_FOUND_MEMBER));
         // 닉네임 중복검사
-        checkDuplicatedNickname(member.getNickname());
+        checkDuplicatedNickname(newNickname);
         member.setNickname(newNickname);
         return newNickname;
     }
