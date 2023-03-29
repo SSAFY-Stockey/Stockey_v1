@@ -1,21 +1,25 @@
 import styled from "styled-components"
 import { useState, useEffect, useCallback } from "react"
-import { CheckNickname } from "./CheckNickname"
 import debounceFunction from "../Debouncer/Debouncer"
+import customAxios from "../../../utils/customAxios"
 
 // recoil
-import { useRecoilState } from "recoil"
+import { useSetRecoilState } from "recoil"
 import { nicknameValidState } from "../../../stores/atoms"
 
-const NicknameInput = () => {
-  const [nickname, setNickname] = useState<string | undefined>("")
-  const [isDuplicated, setIsDuplicated] = useRecoilState(nicknameValidState)
+type props = {
+  nickname: string | undefined
+  getNickname: Function
+}
+
+const NicknameInput = ({ nickname, getNickname }: props) => {
+  const setIsDuplicated = useSetRecoilState(nicknameValidState)
   const [isValid, setIsValid] = useState<boolean>(false)
 
   // debouncer를 통한 타이핑 완료 후 닉네임 저장
   const printValue = useCallback(
     debounceFunction((value: string | undefined) => {
-      setNickname(value)
+      getNickname(value)
     }, 500),
     []
   )
@@ -46,16 +50,37 @@ const NicknameInput = () => {
     setIsValid(validity)
   }, [nickname])
 
+  // nickname이 유효하다면(isValid === true) 중복성 검사
   useEffect(() => {
-    if (isValid) {
-      const validity = CheckNickname(nickname)
-      setIsDuplicated(validity)
+    const axios = customAxios()
+    // 서버에 닉네임을 송신하는 코드
+    const checkNickname = async () => {
+      try {
+        const validity = await axios
+          .get("/member/nickname", { params: { nickname: nickname } })
+          .then((response) => {
+            return response.status
+          })
+          .catch((error) => {
+            return error.status
+          })
+
+        // 닉네임 중복 검사 유효할 경우
+        if (validity === 200) {
+          setIsDuplicated(true)
+        }
+      } catch (error) {
+        console.log(error)
+      }
     }
-  }, [isValid])
+    if (isValid) {
+      checkNickname()
+    }
+  }, [isValid, setIsDuplicated])
+
   return (
     <>
       <CustomInput onChange={handleChange} />
-      <div>{nickname}</div>
     </>
   )
 }
@@ -63,3 +88,5 @@ const NicknameInput = () => {
 export default NicknameInput
 
 const CustomInput = styled.input``
+
+const ErrorDiv = styled.div``

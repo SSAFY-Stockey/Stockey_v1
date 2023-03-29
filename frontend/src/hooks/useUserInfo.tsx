@@ -19,6 +19,7 @@ export const useUserInfo = (userId: string) => {
     select,
     onError,
     refetchOnWindowFocus: false,
+    retry: false,
   })
 }
 
