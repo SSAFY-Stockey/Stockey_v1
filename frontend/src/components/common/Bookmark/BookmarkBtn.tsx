@@ -8,7 +8,7 @@ type BookmarkProps = {
   page: string
 }
 
-const Bookmark = ({ isBookmarked, page }: BookmarkProps) => {
+const BookmarkBtn = ({ isBookmarked, page }: BookmarkProps) => {
   // bookmark state
   const [bookmarked, setBookmarked] = useState(isBookmarked)
   // hover state
@@ -66,7 +66,7 @@ const Bookmark = ({ isBookmarked, page }: BookmarkProps) => {
   )
 }
 
-export default Bookmark
+export default BookmarkBtn
 
 // icon relative span
 const IconSpan = styled.span`

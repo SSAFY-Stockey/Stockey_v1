@@ -14,7 +14,6 @@ api.interceptors.request.use((config) => {
 
   if (accessToken) {
     config.headers["Autorization"] = "Bearer " + accessToken
-    config.withCredentials = true
   }
   return config
 })
