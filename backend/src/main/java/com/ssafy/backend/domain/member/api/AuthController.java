@@ -68,7 +68,7 @@ public class AuthController {
 
         // JWT token 생성 및 리턴
         String accessToken = oAuthService.createJwt(memberDtoMapper.toMemberDto(oAuthMemberDto));
-        KakaoLoginResponse kakaoLoginResponse = KakaoLoginResponse.builder().accessToken(accessToken).build();
+        KakaoLoginResponse kakaoLoginResponse = new KakaoLoginResponse(accessToken);
         return new ResponseEntity<>(new ResponseDto("로그인 완료!", kakaoLoginResponse), HttpStatus.OK);
     }
 
@@ -93,9 +93,8 @@ public class AuthController {
         // 새로운 memberDto 생성
         MemberDto newMemberDto = MemberDto.builder().id(memberDto.getId()).nickname(changedNickname).build();
         // JWT token 생성 및 리턴
-        return new ResponseEntity<>(new ResponseDto("로그인 완료!",
-                KakaoLoginResponse.builder().accessToken(oAuthService.createJwt(newMemberDto)).build()),
-                HttpStatus.OK);
+        String accessToken = oAuthService.createJwt(newMemberDto);
+        return new ResponseEntity<>(new ResponseDto("로그인 완료!", new KakaoLoginResponse(accessToken)), HttpStatus.OK);
     }
 
 
