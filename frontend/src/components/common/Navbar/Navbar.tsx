@@ -24,8 +24,14 @@ const Navbar = () => {
   return (
     <>
       <NavWrapper>
-        {curPath === "/user/login" ? <StockeyLogo /> : undefined}
-        <NavbarDiv className={curPath === "/user/login" ? "login" : undefined}>
+        <StockeyLogo />
+        <NavbarDiv
+          className={
+            curPath === "/user/login" || curPath === "/user/signup"
+              ? "login"
+              : undefined
+          }
+        >
           <ProfileInfo />
           <PageLinkBtn name="주식 종목" selected={isSeleted("주식 종목")} />
           <PageLinkBtn name="산업별 정보" selected={isSeleted("산업별 정보")} />
@@ -40,6 +46,7 @@ const Navbar = () => {
 export default Navbar
 
 const NavbarDiv = styled.div`
+  position: relative;
   // 내부 패딩
   padding: 24px;
 
