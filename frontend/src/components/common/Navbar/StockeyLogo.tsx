@@ -6,8 +6,17 @@ const StockeyLogo = () => {
 
   return (
     <>
-      <LogoDiv className={curPath === "/user/login" ? "login" : undefined}>
-        STOCKEY
+      <LogoDiv
+        className={
+          curPath === "/user/login" || curPath === "/user/signup"
+            ? "login"
+            : undefined
+        }
+      >
+        <LogoSpan>STOCKEY</LogoSpan>
+        <TextDiv className="main">어려운 주식을 키워드로 쉽게</TextDiv>
+        <TextDiv>10만건의 뉴스로부터 뽑아낸 키워드들로</TextDiv>
+        <TextDiv>각 주식의 숨겨진 데이터를 찾아보세요</TextDiv>
       </LogoDiv>
     </>
   )
@@ -19,28 +28,59 @@ const LogoDiv = styled.div`
   // position
   position: absolute;
 
+  z-index: 1;
+  opacity: 0;
+
   // size
   width: 100%;
   height: 100%;
-
-  // font
-  color: white;
-  font-family: ITC-Benguiat-Gothic-Std;
-  font-size: 3rem;
-  font-weight: bold;
 
   // flex-box
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1;
+  flex-direction: column;
+  gap: 15px;
 
-  // // transition
-  // transition: 0.5s all ease;
-  // opacity: 1;
+  // 드래그 방지
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 
-  // &.login {
-  //   z-index: 3;
-  //   opacity: 1;
-  // }
+  // transition
+  transition: all 0.3s ease-in-out;
+
+  &.login {
+    z-index: 1;
+    opacity: 1;
+  }
+`
+
+const LogoSpan = styled.span`
+  // font
+  font-family: ITC Benguiat Gothic Std;
+  font-size: 8rem;
+  font-weight: bold;
+
+  // margin
+  // margin-bottom: 10px;
+
+  // font-gradient 적용
+  background: var(--custom-gradient-pink);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+`
+
+const TextDiv = styled.div`
+  // font
+  font-family: Inter;
+  font-size: 1.4rem;
+  color: white;
+
+  &.main {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
 `
