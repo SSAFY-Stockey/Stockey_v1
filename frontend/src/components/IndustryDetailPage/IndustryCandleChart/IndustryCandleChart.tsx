@@ -172,7 +172,7 @@ const IndustryCandleChart = () => {
 
   return (
     <AreaDiv>
-      <TitleDiv>산업 내 시가총액 TOP 5</TitleDiv>
+      <TitleDiv>산업 규모</TitleDiv>
       <ChartWrapper>
         <button onClick={changeChartType} value="line">
           간단히

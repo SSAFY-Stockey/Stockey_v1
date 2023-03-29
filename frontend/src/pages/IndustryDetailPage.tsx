@@ -1,11 +1,12 @@
 import IndustryBubbleChart from "../components/IndustryDetailPage/IndustryBubbleChart/IndustryBubbleChart"
 import IndustryCandleChart from "../components/IndustryDetailPage/IndustryCandleChart/IndustryCandleChart"
-import Grid from "@mui/material/Grid"
-// import styled from "@emotion/styled"
-import styled, { keyframes } from "styled-components"
-import KeywordPanel from "../components/StockDetailPage/KeywordPanel/KeywordPanel"
+import IndustryOverall from "../components/IndustryDetailPage/IndustryOverall/IndustryOverall"
 import { IndustrySelector } from "../components/IndustryMainPage"
+import KeywordPanel from "../components/StockDetailPage/KeywordPanel/KeywordPanel"
+import Grid from "@mui/material/Grid"
+import styled, { keyframes } from "styled-components"
 import { useState } from "react"
+import BookmarkBtn from "../components/common/Bookmark/BookmarkBtn"
 
 const IndustryDetailPage = () => {
   const [mode, setMode] = useState<string>("default")
@@ -26,12 +27,19 @@ const IndustryDetailPage = () => {
 
   const defaultLayout = (
     <>
-      <Grid item xs={7}>
+      <Grid item xs={12} marginLeft={4.5}>
         <ButtonDiv className="fade-in">
           <button onClick={changeLayout}>keywordPanel</button>
           <button onClick={changeLayout}>industrySelector</button>
         </ButtonDiv>
+      </Grid>
+      <Grid item xs={7}>
         <LeftSection className="fade-in">
+          <TitleDiv>
+            에너지
+            <BookmarkBtn isBookmarked={false} page="stock" />
+          </TitleDiv>
+          <IndustryOverall />
           <IndustryCandleChart />
           <div>연관 키워드 차트</div>
         </LeftSection>
@@ -48,11 +56,16 @@ const IndustryDetailPage = () => {
   const onKeywordPanelLayout = (
     <>
       <Grid item xs={7}>
-        <ButtonDiv className="fade-in">
-          <button onClick={changeLayout}>default</button>
-          <button onClick={changeLayout}>industrySelector</button>
-        </ButtonDiv>
         <LeftSection className="fade-in">
+          <ButtonDiv className="fade-in">
+            <button onClick={changeLayout}>default</button>
+            <button onClick={changeLayout}>industrySelector</button>
+          </ButtonDiv>
+          <TitleDiv>
+            에너지
+            <BookmarkBtn isBookmarked={false} page="stock" />
+          </TitleDiv>
+          <IndustryOverall />
           <IndustryCandleChart />
           <div>연관 키워드 차트</div>
           <IndustryBubbleChart />
@@ -67,13 +80,18 @@ const IndustryDetailPage = () => {
 
   const onIndustrySelectorLayout = (
     <>
-      <Grid item xs={5}>
+      <Grid item xs={5} marginTop={4.5}>
         <LeftSection className="fade-in">
           <IndustrySelector />
         </LeftSection>
       </Grid>
-      <Grid item xs={7}>
+      <Grid item xs={7} marginTop={4.5}>
         <RightSection className="fade-in">
+          <TitleDiv>
+            에너지
+            <BookmarkBtn isBookmarked={false} page="stock" />
+          </TitleDiv>
+          <IndustryOverall />
           <IndustryCandleChart />
           <div>연관 키워드 차트</div>
           <IndustryBubbleChart />
@@ -119,7 +137,7 @@ to {
 `
 
 const ButtonDiv = styled.div`
-  padding: 24px 0px 0px 36px;
+  padding: 24px 0px 0px 0px;
 
   &.fade-in {
     animation: ${FadeIn} 1s 0s ease 1 forwards;
@@ -129,11 +147,17 @@ const ButtonDiv = styled.div`
   }
 `
 
+const TitleDiv = styled.div`
+  font-size: 2.6rem;
+  font-weight: bold;
+  letter-spacing: 0.2rem;
+`
+
 const LeftSection = styled.div`
-  padding: 24px 0px 36px 36px;
+  padding: 0px 0px 36px 36px;
   display: flex;
   flex-direction: column;
-  gap: 36px;
+  gap: 24px;
 
   transition: all 0.5s ease;
 
@@ -146,10 +170,10 @@ const LeftSection = styled.div`
 `
 
 const RightSection = styled.div`
-  padding: 24px 36px 36px 0px;
+  padding: 0px 36px 36px 0px;
   display: flex;
   flex-direction: column;
-  gap: 36px;
+  gap: 24px;
 
   transition: all 0.5s ease;
 

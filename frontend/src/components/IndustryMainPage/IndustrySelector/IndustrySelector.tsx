@@ -1,11 +1,18 @@
 import styled from "styled-components"
 import IndustryCardList from "./IndustryCardList"
+import { useIndustryList } from "../../../hooks/useIndustryList"
+import Spinner from "../../common/Spinner/Spinner"
+import { Suspense } from "react"
 
 const IndustrySelector = () => {
+  const { data: industryList } = useIndustryList()
+  console.log(industryList)
   return (
     <IndustrySelectorDiv>
       <IndustrySelectorTitleDiv>산업 분류 선택</IndustrySelectorTitleDiv>
-      <IndustryCardList />
+      <Suspense fallback={<Spinner />}>
+        <IndustryCardList industryList={industryList} />
+      </Suspense>
     </IndustrySelectorDiv>
   )
 }
