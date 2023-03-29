@@ -6,7 +6,7 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface StockDtoMapper {
-
     GetStockResponse toGetStockResponse(StockDto stockDto);
+
 
 }

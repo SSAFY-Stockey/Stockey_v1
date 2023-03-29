@@ -1,12 +1,15 @@
 package com.ssafy.backend.domain.stock.dto;
 
-import com.ssafy.backend.temp.Industry;
+import com.ssafy.backend.domain.industry.dto.IndustryDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
+@Builder
 public class StockDto {
 
     private Long id;
@@ -15,16 +18,11 @@ public class StockDto {
     private String description;
     private Long marketCap;
     private Long stockCount;
-
+    private String companySize;
+    private String companySales;
+    private String creditRank;
+    private String basicInfo;
     private IndustryDto industry;
-    @Builder
-    public StockDto(Long id, String name, String code, String description, Long marketCap, Long stockCount, IndustryDto industry) {
-        this.id = id;
-        this.name = name;
-        this.code = code;
-        this.description = description;
-        this.marketCap = marketCap;
-        this.stockCount = stockCount;
-        this.industry = industry;
-    }
+    private List<BusinessDto> businesses;
+
 }
