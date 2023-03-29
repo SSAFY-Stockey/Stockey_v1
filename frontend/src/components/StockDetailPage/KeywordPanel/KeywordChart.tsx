@@ -2,36 +2,19 @@ import * as Highcharts from "highcharts"
 import HighchartsReact from "highcharts-react-official"
 import dayjs from "dayjs"
 import styled from "styled-components"
+import { HighchartsOptions } from "../../StockMainPage/BriefingSection/KeywordBarGraph"
+
+Highcharts.setOptions({
+  lang: {
+    resetZoom: "한 달로 보기",
+  },
+})
 
 const today = dayjs().endOf("day")
 const aMonthAgo = dayjs().subtract(1, "month").subtract(1, "day").startOf("day")
 
-interface HighchartsOptions {
-  // chart?: Highcharts.ChartOptions
-  chart?: any
-  title?: Highcharts.TitleOptions
-  subtitle?: Highcharts.SubtitleOptions
-  // xAxis?: Highcharts.XAxisOptions
-  xAxis?: any
-  yAxis?: Highcharts.YAxisOptions
-  legend?: Highcharts.LegendOptions
-  // series?: Highcharts.SeriesOptionsType[]
-  series?: any
-  plotOptions?: Highcharts.PlotOptions
-  tooltip?: Highcharts.TooltipOptions
-  credits?: Highcharts.CreditsOptions
-  exporting?: Highcharts.ExportingOptions
-  colors?: string[]
-  responsive?: Highcharts.ResponsiveOptions
-  accessibility?: Highcharts.AccessibilityOptions
-  events?: Highcharts.ChartEventsOptions
-  lang?: Highcharts.LangOptions
-}
-
-console.log(dayjs().valueOf())
-
 const KeywordChart = () => {
-  const options: HighchartsOptions = {
+  const options = {
     chart: {
       type: "areaspline",
       zoomType: "x",
@@ -41,9 +24,6 @@ const KeywordChart = () => {
     },
     credits: {
       enabled: false,
-    },
-    lang: {
-      resetZoom: "한 달로 보기",
     },
     title: {
       text: undefined,
@@ -186,6 +166,6 @@ const KeywordChart = () => {
 }
 export default KeywordChart
 
-const ChartWrapper = styled.div`
+export const ChartWrapper = styled.div`
   width: 100%;
 `
