@@ -30,7 +30,7 @@ const KeywordPanel = ({ keyword }: Props) => {
 
 export default KeywordPanel
 
-const PanelWrapper = styled.div`
+export const PanelWrapper = styled.div`
   background-color: #faf5f7;
   border-radius: 30px 0 0 0;
   display: flex;
