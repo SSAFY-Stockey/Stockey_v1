@@ -20,28 +20,30 @@ const StockBlock = ({
     state === "default" ? setState("selected") : setState("default")
   }
   return (
-    <StyledBlock state={state} onClick={clickHandler}>
-      <StyledPaper elevation={0} state={state}>
+    <GradientBorderBlock state={state} onClick={clickHandler}>
+      <ContentPaper elevation={0} state={state}>
         {/* <StyledContent state={state}> */}
-        <StyledLogo src={`logo_images/${companyLogo}.png`} />
-        <StyledInfo>
-          <StyledName>{companyName}</StyledName>
-          <StyledStats>
-            <StyledPrice>{currentPrice.toLocaleString("ko-KR")}</StyledPrice>
-            <StyledChange isIncreasing={priceChange > 0 ? true : false}>
+        <LogoImg src={`logo_images/${companyLogo}.png`} />
+        <StockInfoDiv>
+          <StockName>{companyName}</StockName>
+          <StockStatDiv>
+            <StockPrice>{currentPrice.toLocaleString("ko-KR")}</StockPrice>
+            <PriceChange isIncreasing={priceChange > 0 ? true : false}>
               {`${priceChange > 0 ? "▲" : "▼"} ${priceChange}%`}
-            </StyledChange>
-          </StyledStats>
-        </StyledInfo>
+            </PriceChange>
+          </StockStatDiv>
+        </StockInfoDiv>
         {/* </StyledContent> */}
-      </StyledPaper>
-    </StyledBlock>
+      </ContentPaper>
+    </GradientBorderBlock>
   )
 }
 
 export default StockBlock
 
-const StyledBlock = styled.div<{ state: "default" | "selected" }>`
+export const GradientBorderBlock = styled.div<{
+  state: "default" | "selected"
+}>`
   position: relative;
   width: ${(props) => (props.state === "default" ? "90%" : "100%")};
   background-image: ${(props) =>
@@ -65,7 +67,7 @@ const StyledBlock = styled.div<{ state: "default" | "selected" }>`
   // }
 `
 
-const StyledPaper = styled(Paper)<{ state: "default" | "selected" }>`
+export const ContentPaper = styled(Paper)<{ state: "default" | "selected" }>`
   && {
     position: absolute;
     top: 0;
@@ -82,38 +84,38 @@ const StyledPaper = styled(Paper)<{ state: "default" | "selected" }>`
   }
 `
 
-const StyledLogo = styled.img`
+const LogoImg = styled.img`
   width: 30%;
   height: 30%;
   max-width: 100px;
   border-radius: 24px;
 `
 
-const StyledInfo = styled.div`
+const StockInfoDiv = styled.div`
   display: flex;
   flex-direction: column;
 `
 
-const StyledName = styled.p`
+const StockName = styled.p`
   color: black;
   font-size: 24px;
   font-weight: Bold;
   margin-bottom: 5%;
 `
 
-const StyledStats = styled.div`
+const StockStatDiv = styled.div`
   display: flex;
   flex-direction: row;
   align-items: flex-end;
 `
 
-const StyledPrice = styled.p`
+const StockPrice = styled.p`
   color: #8a8a8a;
   font-size: 18px;
   margin-right: 10px;
   margin-block: 0px;
 `
-const StyledChange = styled.p<{ isIncreasing: boolean }>`
+const PriceChange = styled.p<{ isIncreasing: boolean }>`
   font-size: 14px;
   margin-block: 0px;
   color: ${(props) => (props.isIncreasing ? "#FB6F6F" : "#72A6FA")};
