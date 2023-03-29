@@ -3,9 +3,9 @@ import styled from "styled-components"
 interface Props {
   type: string
 }
-const MainBiz = ({ type }: Props) => {
+const BizBlock = ({ type }: Props) => {
   return (
-    <BizBlock>
+    <BlockWrapper>
       <BizTypeBox>
         <BizTypeWrapper type={type}>
           <img src={`/businessLogos/${type}.png`} alt="buisness icon" />
@@ -15,13 +15,13 @@ const MainBiz = ({ type }: Props) => {
       <BizDetailContainer>
         <BizDetail>온라인 검색포털, 모바일 메신저 LINE</BizDetail>
       </BizDetailContainer>
-    </BizBlock>
+    </BlockWrapper>
   )
 }
 
-export default MainBiz
+export default BizBlock
 
-const BizBlock = styled.div`
+const BlockWrapper = styled.div`
   display: inline-block;
   text-align: center;
   width: 100%;
