@@ -3,7 +3,13 @@ import Bookmark from "../components/common/Bookmark/BookmarkBtn"
 import styled from "styled-components"
 import { Grid } from "@mui/material"
 
+import { useRecoilValue } from "recoil"
+import { accessTokenSelector } from "../stores/atoms"
+
 const KeywordPage = () => {
+  const accssToken = useRecoilValue(accessTokenSelector)
+  console.log(accssToken)
+
   return (
     <>
       <PageGrid>
