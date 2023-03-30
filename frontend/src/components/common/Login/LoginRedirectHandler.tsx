@@ -1,10 +1,10 @@
-import { useRecoilState } from "recoil"
 import { useNavigate } from "react-router-dom"
 import { useEffect } from "react"
 
 import Spinner from "../Spinner/Spinner"
 
-import { accessTokenSelector } from "../../../stores/atoms"
+import { useRecoilState, useSetRecoilState } from "recoil"
+import { accessTokenSelector, logInState } from "../../../stores/atoms"
 import { useUserInfo } from "../../../hooks/useUserInfo"
 
 const KAKAO_CODE = new URL(window.location.href).searchParams.get("code")
@@ -13,6 +13,8 @@ const LoginRedirectHandler = () => {
   const navigate = useNavigate()
   // accessToken state
   const [accessToken, setAccessToken] = useRecoilState(accessTokenSelector)
+  // loginState
+  const setLogIn = useSetRecoilState(logInState)
   // react-query 호출
   const {
     isLoading,
@@ -21,10 +23,9 @@ const LoginRedirectHandler = () => {
   } = useUserInfo(KAKAO_CODE ? KAKAO_CODE : "")
 
   useEffect(() => {
-    console.log(userData)
     if (isError) {
       window.alert("로그인 오류 발생")
-      navigate("/login", { replace: true })
+      navigate("/user/login", { replace: true })
     }
     if (userData?.status === 201) {
       navigate("/user/signup", {
@@ -36,6 +37,7 @@ const LoginRedirectHandler = () => {
       })
     } else if (userData?.status === 200) {
       setAccessToken(userData.data.data.accessToken)
+      setLogIn(true)
     }
   }, [userData, isError])
 

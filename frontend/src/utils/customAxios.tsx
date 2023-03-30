@@ -3,6 +3,7 @@ import axios from "axios"
 const api = axios.create({
   baseURL: `${process.env.REACT_APP_SERVER_BASE_URL}`,
   timeout: 2000,
+  withCredentials: true,
 })
 
 api.interceptors.request.use((config) => {
@@ -11,8 +12,8 @@ api.interceptors.request.use((config) => {
   const accessToken = userInfo ? JSON.parse(userInfo) : undefined
 
   // refresh Token 함수 추가
-
   if (accessToken) {
+    console.log(accessToken)
     config.headers["Autorization"] = "Bearer " + accessToken
   }
   return config
