@@ -1,6 +1,7 @@
 package com.ssafy.backend.domain.member.service;
 
 
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.ssafy.backend.domain.member.dto.MemberDto;
 import com.ssafy.backend.domain.member.entity.Member;
 import com.ssafy.backend.domain.member.enums.OauthType;
@@ -15,6 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -34,9 +39,11 @@ class AuthServiceImplTest {
 
     @Autowired
     MemberMapper memberMapper;
+    @Autowired
+    MemberService memberService;
 
     @Test
-    void createJwt() throws Exception{
+    void createJwt(){
         // given
         memberRepository.save(Member.oAuthBuilder()
                 .oAuthId(213L)
@@ -47,20 +54,14 @@ class AuthServiceImplTest {
 
         // when - accessToken 정상 생성?
         String accessToken = jwtUtil.createJwt(memberDto);
-        if (accessToken != null) {
-            assertThat(accessToken.length()).isGreaterThan(0);
-        } else {
-            throw new Exception("accessToken 정상 생성 되지 않음!!");
-        }
 
-//        // when - refresh token이 cookie에 잘 저장 되었나?
-//        String refreshTokenFromCookie = jwtUtil.getRefreshTokenFromCookie();
-//
-//        if (refreshTokenFromCookie != null) {
-//            assertThat(refreshTokenFromCookie.length()).isGreaterThan(0);
-//        } else {
-//            throw new Exception("refresh token이 cookie에 잘 저장 되지 않음!!");
-//        }
+//        accessToken = accessToken.substring(7);
+        DecodedJWT payload = jwtUtil.getDecodedJWT(accessToken);
+        long memberId = Long.parseLong(payload.getAudience().get(0));
+        String nickname = String.valueOf(payload.getClaim("nickname")).replaceAll("\"", "");
+
+        assertThat(memberId).isEqualTo(memberDto.getId());
+        assertThat(nickname).isEqualTo(memberDto.getNickname());
     }
 
     @Test

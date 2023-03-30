@@ -1,8 +1,9 @@
 package com.ssafy.backend.domain.member.api.response;
 
 import lombok.Builder;
+import lombok.Data;
 
-@Builder
+@Data
 public class MemberResponse {
     private final String nickname;
 }
