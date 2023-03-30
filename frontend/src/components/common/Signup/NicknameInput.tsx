@@ -31,7 +31,7 @@ const NicknameInput = ({ nickname, getNickname }: props) => {
   const printValue = useCallback(
     debounceFunction((value: string | undefined) => {
       getNickname(value)
-    }, 500),
+    }, 300),
     []
   )
 

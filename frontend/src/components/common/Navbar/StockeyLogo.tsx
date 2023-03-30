@@ -35,7 +35,7 @@ const LogoDiv = styled.div`
 
   // size
   width: 100%;
-  height: 100%;z
+  height: 100%;
 
   // flex-box
   display: flex;
