@@ -1,18 +1,22 @@
 import { Grid } from "@mui/material"
 import BizBlock from "./BizBlock"
+import { PanelSubTitle } from "../../KeywordPanel/KeywordPanel"
 const MainBizSection = () => {
   return (
-    <Grid container spacing={1}>
-      <Grid item xs={4}>
-        <BizBlock type="플랫폼" />
+    <>
+      <PanelSubTitle>잘 나가는 사업 TOP 3</PanelSubTitle>
+      <Grid container spacing={1}>
+        <Grid item xs={4}>
+          <BizBlock type="플랫폼" />
+        </Grid>
+        <Grid item xs={4}>
+          <BizBlock type="핀테크" />
+        </Grid>
+        <Grid item xs={4}>
+          <BizBlock type="콘텐츠" />
+        </Grid>
       </Grid>
-      <Grid item xs={4}>
-        <BizBlock type="핀테크" />
-      </Grid>
-      <Grid item xs={4}>
-        <BizBlock type="콘텐츠" />
-      </Grid>
-    </Grid>
+    </>
   )
 }
 
