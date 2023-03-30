@@ -1,19 +1,65 @@
 import Highcharts from "highcharts"
 import HighchartsReact from "highcharts-react-official"
+import drilldown from "highcharts/modules/drilldown"
+import { useEffect } from "react"
 import styled from "styled-components"
+import {
+  defaultDataType,
+  drilldownDataType,
+} from "../../../../hooks/useIndustryMarketCapList"
 
 interface DonutChartProps {
-  data: {
-    name: string
-    y: number
-  }[]
-  setClickedIndustryInfo: (name: string, color: string) => void
+  chartData: [defaultDataType, drilldownDataType]
+  handleClickedIndustryInfo: Function
 }
 
+drilldown(Highcharts)
+
 const IndustryMarketCapChartArea = ({
-  data,
-  setClickedIndustryInfo,
+  chartData,
+  handleClickedIndustryInfo,
 }: DonutChartProps) => {
+  const defaultData = chartData[0]
+  const drilldownData = chartData[1]
+
+  useEffect(() => {}, [])
+
+  const handleClickChartPoint = (
+    event: Highcharts.PointInteractionEventObject
+  ) => {
+    // const clickedIndustryInfo = {
+    //     id: event,
+    //     name: clickedIndustryName,
+    //     color: clickedChartColor,
+    //   }
+    //   handleClickedIndustryInfo(clickedIndustryInfo)
+    // if (event.point.options.id !== "0") {
+    //   let clickedIndustryId: string | undefined
+    //   let clickedIndustryName: string
+    //   let clickedChartColor: string
+    //   const defaultIndustryName = "전체"
+    //   const defaultChartColor = "var(--custom-black)"
+    //   if (event.point.selected) {
+    //     clickedIndustryId = event.point.options.id
+    //     clickedIndustryName = event.point.name
+    //     if (typeof event.point.color === "string") {
+    //       clickedChartColor = event.point.color
+    //     } else {
+    //       clickedChartColor = defaultChartColor
+    //     }
+    //   } else {
+    //     clickedIndustryName = defaultIndustryName
+    //     clickedChartColor = defaultChartColor
+    //   }
+    // const clickedIndustryInfo = {
+    //   id: clickedIndustryId,
+    //   name: clickedIndustryName,
+    //   color: clickedChartColor,
+    // }
+    // handleClickedIndustryInfo(clickedIndustryInfo)
+    // }
+  }
+
   const options: Highcharts.Options = {
     chart: {
       type: "pie",
@@ -42,28 +88,18 @@ const IndustryMarketCapChartArea = ({
           },
         },
         showInLegend: true,
-        events: {
-          click: function (event) {
-            event.point.select(!event.point.selected)
-
-            let clickedIndustryName: string
-            let clickedChartColor: string
-            const defaultIndustryName = "전체"
-            const defaultChartColor = "var(--custom-black)"
-
-            if (event.point.selected) {
-              clickedIndustryName = event.point.name
-              if (typeof event.point.color === "string") {
-                clickedChartColor = event.point.color
-              } else {
-                clickedChartColor = defaultChartColor
-              }
-            } else {
-              clickedIndustryName = defaultIndustryName
-              clickedChartColor = defaultChartColor
-            }
-
-            setClickedIndustryInfo(clickedIndustryName, clickedChartColor)
+        // allowPointSelect: true,
+        // events: {
+        //   click: handleClickChartPoint,
+        // },
+        cursor: "pointer",
+      },
+      series: {
+        allowPointSelect: true,
+        point: {
+          events: {
+            select: handleClickChartPoint,
+            // unselect:(event) => {}
           },
         },
       },
@@ -71,10 +107,20 @@ const IndustryMarketCapChartArea = ({
     series: [
       {
         name: "Percentage",
-        data: data,
+        data: defaultData,
         type: "pie",
       },
     ],
+    drilldown: {
+      series: [
+        {
+          id: "기타",
+          name: "기타",
+          type: "pie",
+          data: drilldownData,
+        },
+      ],
+    },
     legend: {
       backgroundColor: "white",
       borderRadius: 24,
@@ -90,9 +136,10 @@ const IndustryMarketCapChartArea = ({
       enabled: false,
     },
   }
+
   return (
     <AreaDiv>
-      <HighchartsReact highcharts={Highcharts} options={options} />
+      <HighchartsReact id="chart" highcharts={Highcharts} options={options} />
     </AreaDiv>
   )
 }

@@ -3,12 +3,17 @@ import customAxios from "../utils/customAxios"
 
 const axios = customAxios()
 
-const fetchIndustryList = () => {
-  return axios.get(`/industry`)
+const fetchMarketCapRank = ({ queryKey }: any) => {
+  const industryId = queryKey[1]
+  if (industryId) {
+    return axios.get(`industry/stocklist/${industryId}`)
+  } else {
+    return axios.get(`/industry/stocklist`)
+  }
 }
 
-export const useIndustryList = () => {
-  return useQuery("industryList", fetchIndustryList, {
+export const useMarketCapRank = (industryId?: string) => {
+  return useQuery(["marketCapRank", industryId], fetchMarketCapRank, {
     staleTime: 5 * 60 * 1000,
     select,
     onError,

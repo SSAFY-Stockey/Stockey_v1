@@ -6,6 +6,9 @@ import styled from "styled-components"
 import { sampleData } from "./dummyData"
 import { useState } from "react"
 
+// 폰트 import 에러 발생 => 추후 확인할 것
+BrandLight(Highcharts)
+console.log(BrandLight)
 highchartsStock(Highcharts)
 Highcharts.setOptions({
   lang: {
@@ -28,8 +31,6 @@ Highcharts.setOptions({
     rangeSelectorTo: "⁓",
   },
 })
-
-BrandLight(Highcharts)
 
 const IndustryCandleChart = () => {
   const dummyData = sampleData

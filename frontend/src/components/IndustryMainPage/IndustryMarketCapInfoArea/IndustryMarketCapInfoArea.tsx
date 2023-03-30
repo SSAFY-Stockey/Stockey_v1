@@ -2,39 +2,44 @@ import styled from "@emotion/styled"
 import IndustryMarketCapChartArea from "./IndustryMarketCapChartArea/IndustryMarketCapChartArea"
 import MarketCapRankArea from "./MarketCapRankArea/MarketCapRankArea"
 import { useState } from "react"
+import { useIndustryMarketCapList } from "../../../hooks/useIndustryMarketCapList"
+import Spinner from "../../common/Spinner/Spinner"
+
+export type ClickedIndustryInfoType = {
+  id: string | undefined
+  name: string
+  color: string
+}
 
 const IndustryMarketCapInfoArea = () => {
-  // dummy data
-  const data = [
-    { name: "IT", y: 61.41, color: "var(--custom-pink-1)" },
-    { name: "반도체", y: 10.85, color: "var(--custom-orange-1)" },
-    { name: "자동차", y: 7.67, color: "var(--custom-purple-1)" },
-    { name: "금융", y: 5.18, color: "var(--custom-green-1)" },
-    { name: "Other", y: 14.89, color: "gray" },
-  ]
-  const defaultIndustryName = "전체"
-  const defaultChartColor = "var(--custom-black)"
-  const [clickedIndustryName, setClickedIndustryName] =
-    useState(defaultIndustryName)
-  const [clickedChartColor, setClickedChartColor] = useState(defaultChartColor)
+  const { data: chartData } = useIndustryMarketCapList()
 
-  const setClickedIndustryInfo = (name: string, color: string) => {
-    setClickedIndustryName(name)
-    setClickedChartColor(color)
+  const [clickedIndustryInfo, setClickedIndustryInfo] =
+    useState<ClickedIndustryInfoType>({
+      id: undefined,
+      name: "전체",
+      color: "var(--custom-black)",
+    })
+
+  const handleClickedIndustryInfo = (
+    clickedIndustryInfo: ClickedIndustryInfoType
+  ) => {
+    setClickedIndustryInfo(clickedIndustryInfo)
   }
 
   return (
     <AreaDiv>
       <TitleDiv>주식시장 내 산업별 비중</TitleDiv>
       <ContentDiv>
-        <IndustryMarketCapChartArea
-          data={data}
-          setClickedIndustryInfo={setClickedIndustryInfo}
-        />
-        <MarketCapRankArea
-          clickedIndustryName={clickedIndustryName}
-          clickedChartColor={clickedChartColor}
-        />
+        {chartData ? (
+          <IndustryMarketCapChartArea
+            chartData={chartData}
+            handleClickedIndustryInfo={handleClickedIndustryInfo}
+          />
+        ) : (
+          <Spinner />
+        )}
+        <MarketCapRankArea clickedIndustryInfo={clickedIndustryInfo} />
       </ContentDiv>
     </AreaDiv>
   )

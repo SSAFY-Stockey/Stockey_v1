@@ -1,5 +1,4 @@
 import styled from "@emotion/styled"
-import { useEffect } from "react"
 import IndustryCard from "./IndustryCard"
 
 interface IndustryListProps {
@@ -12,10 +11,9 @@ interface IndustryListProps {
 }
 
 const IndustryCardList = ({ industryList }: IndustryListProps) => {
-  const data = industryList ? industryList : dummydata
   return (
     <IndustryCardListDiv>
-      {data?.map((industryInfo) => (
+      {industryList?.map((industryInfo) => (
         <IndustryCard key={industryInfo.id} industryName={industryInfo.name} />
       ))}
     </IndustryCardListDiv>
