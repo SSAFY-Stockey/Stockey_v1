@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled, { keyframes } from "styled-components"
 import { useNavigate } from "react-router-dom"
 
 const BackBtn = () => {
@@ -17,9 +17,18 @@ const BackBtn = () => {
 
 export default BackBtn
 
+const PopupAnime = keyframes`
+  0% {
+    opacity: 0
+  }
+  100% {
+    opacity: 1
+  }
+`
+
 const ButtonA = styled.a`
   //font
-  font-size: 1rem;
+  font-size: 1.5rem;
   font-weight: normal;
   color: #6d6666;
   text-decoration: underline;
@@ -27,4 +36,9 @@ const ButtonA = styled.a`
   // margin
   margin-top: 40px;
   cursor: pointer;
+
+  opacity: 0;
+
+  // animation
+  animation: ${PopupAnime} 1s 0.8s 1 ease forwards;
 `

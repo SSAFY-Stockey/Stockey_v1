@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled, { keyframes } from "styled-components"
 import BackBtn from "./BackBtn"
 
 const KakaoBtn = () => {
@@ -8,7 +8,8 @@ const KakaoBtn = () => {
 
   return (
     <ButtonWrapper>
-      <TextDiv>간편하게 로그인하고</TextDiv>
+      <TitleDiv>SNS 로그인</TitleDiv>
+      <TextDiv>간편하게 로그인/회원가입하고</TextDiv>
       <TextDiv>STOCKEY의 서비스를 이용해보세요</TextDiv>
       <ButtonA href={KAKAO_AUTH_URL}>
         <img
@@ -24,6 +25,15 @@ const KakaoBtn = () => {
 
 export default KakaoBtn
 
+const PopupAnime = keyframes`
+  0% {
+    opacity: 0
+  }
+  100% {
+    opacity: 1
+  }
+`
+
 const ButtonWrapper = styled.div`
   // size
   height: 100%;
@@ -32,15 +42,19 @@ const ButtonWrapper = styled.div`
   // flex-box
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   gap: 10px;
 `
-const TextDiv = styled.div`
+
+export const TextDiv = styled.div`
   // font
-  font-size: 2rem;
-  font-weight: bold;
+  font-size: 1.5rem;
   color: var(--custom-black);
+
+  opacity: 0;
+
+  // animation
+  animation: ${PopupAnime} 1s 0.4s 1 ease forwards;
 `
 
 const ButtonA = styled.a`
@@ -49,4 +63,27 @@ const ButtonA = styled.a`
 
   // margin
   margin-top: 40px;
+
+  opacity: 0;
+
+  // animation
+  animation: ${PopupAnime} 1s 0.6s 1 ease forwards;
+`
+
+export const TitleDiv = styled.div`
+  // font
+  font-size: 4.5rem;
+  font-weight: bold;
+  color: valr(--custom-black);
+
+  // margin
+  margin-top: 33vh;
+  margin-bottom: 10px;
+
+  opacity: 0;
+
+  // transition
+  transition: all 0.3s 1s ease-in-out;
+
+  animation: ${PopupAnime} 1s 0.2s 1 ease forwards;
 `
