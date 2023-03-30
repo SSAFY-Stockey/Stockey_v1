@@ -8,7 +8,9 @@ const StockeyLogo = () => {
     <>
       <LogoDiv
         className={
-          curPath === "/user/login" || curPath === "/user/signup"
+          curPath === "/user/login" ||
+          curPath === "/user/signup" ||
+          curPath === "/oauth/kakao"
             ? "login"
             : undefined
         }
@@ -33,7 +35,7 @@ const LogoDiv = styled.div`
 
   // size
   width: 100%;
-  height: 100%;
+  height: 100%;z
 
   // flex-box
   display: flex;
@@ -75,7 +77,7 @@ const LogoSpan = styled.span`
 const TextDiv = styled.div`
   // font
   font-family: Inter;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   color: white;
 
   &.main {

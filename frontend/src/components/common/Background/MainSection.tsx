@@ -1,6 +1,9 @@
 import styled from "styled-components"
 
 const MainSection = styled.div`
+  // position
+  position: relative;
+
   // 색상
   background-color: #ffffff;
   color: #000000;

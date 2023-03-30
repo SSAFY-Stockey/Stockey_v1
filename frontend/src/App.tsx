@@ -19,15 +19,24 @@ import Grid from "@mui/material/Grid"
 import MainSection from "./components/common/Background/MainSection"
 import Navbar from "./components/common/Navbar/Navbar"
 
+// recoil
+import { useRecoilValue } from "recoil"
+import { accessTokenSelector } from "./stores/atoms"
+
 function App() {
   const curPath = useLocation().pathname
+
+  // accessToken 데이터 가져오기
+  const accessToken = useRecoilValue(accessTokenSelector)
 
   return (
     <>
       <MainWrapper>
         <NavDiv
           className={
-            curPath === "/user/login" || curPath === "/user/signup"
+            curPath === "/user/login" ||
+            curPath === "/user/signup" ||
+            curPath === "/oauth/kakao"
               ? "login"
               : undefined
           }
@@ -36,7 +45,9 @@ function App() {
         </NavDiv>
         <MainDiv
           className={
-            curPath === "/user/login" || curPath === "/user/signup"
+            curPath === "/user/login" ||
+            curPath === "/user/signup" ||
+            curPath === "/oauth/kakao"
               ? "login"
               : undefined
           }

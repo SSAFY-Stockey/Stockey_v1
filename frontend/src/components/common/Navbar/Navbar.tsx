@@ -27,7 +27,9 @@ const Navbar = () => {
         <StockeyLogo />
         <NavbarDiv
           className={
-            curPath === "/user/login" || curPath === "/user/signup"
+            curPath === "/user/login" ||
+            curPath === "/user/signup" ||
+            curPath === "/oauth/kakao"
               ? "login"
               : undefined
           }
@@ -60,8 +62,12 @@ const NavbarDiv = styled.div`
   transition: 0.5s all ease;
   z-index: 5;
 
+  // visibility
+  visibility: visible;
+
   // login Page
   &.login {
+    visibility: hidden;
     opacity: 0;
     z-index: 1;
   }

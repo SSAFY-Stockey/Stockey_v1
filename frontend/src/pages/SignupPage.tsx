@@ -1,7 +1,8 @@
-import styled from "styled-components"
+import styled, { keyframes } from "styled-components"
 import { useState, useEffect } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import NicknameInput from "../components/common/Signup/NicknameInput"
+import NicknameLogo from "../components/common/Signup/NicknameLogo"
 import { useSignup } from "../hooks/useSignup"
 
 // recoil
@@ -65,17 +66,89 @@ const SignupPage = () => {
 
   return (
     <>
-      <div>{nickname}</div>
-      <NicknameInput nickname={nickname} getNickname={getNickname} />
-      <NicknameSubmitBtn onClick={handleClick}>hello</NicknameSubmitBtn>
+      <SignupWrapper>
+        <NicknameLogo />
+        <NicknameInput nickname={nickname} getNickname={getNickname} />
+        <NicknameSubmitBtn
+          onClick={handleClick}
+          className={isNicknameValid ? "activate" : undefined}
+        >
+          Stockey 시작하기
+        </NicknameSubmitBtn>
+      </SignupWrapper>
     </>
   )
 }
 
 export default SignupPage
 
+const PopupAnime = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`
+
 const NicknameSubmitBtn = styled.div`
-  padding: 12px;
-  font-size: 1.5rem;
-  background-color: var(--custom-pink-1);
+  // size
+  width: 300px;
+  height: 80px;
+
+  // font
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+
+  // flex-box
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  // border
+  border-radius: 12px;
+
+  // margin
+  margin-top: 40px;
+
+  // color
+  background: #d9d9d9;
+  opacity: 0;
+
+  // animation
+  animation: ${PopupAnime} 1s 0.8s 1 ease forwards;
+
+  // 드래그 방지
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  // transition
+  transition: all 0.2s ease-in-out;
+
+  // activate
+  &.activate {
+    background: var(--custom-gradient-pink);
+
+    cursor: pointer;
+
+    &:hover {
+      font-size: 2.2rem;
+    }
+  }
+`
+
+const SignupWrapper = styled.div`
+  // size
+  width: 100%;
+  height: 100%;
+
+  // flex-box
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 10px;
 `
