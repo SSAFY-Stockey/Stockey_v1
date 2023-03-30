@@ -1,6 +1,7 @@
 package com.ssafy.backend.temp;
 
 import com.ssafy.backend.domain.industry.entity.Industry;
+import com.ssafy.backend.domain.keyword.entity.Keyword;
 import com.ssafy.backend.domain.stock.entity.Stock;
 import lombok.Getter;
 
