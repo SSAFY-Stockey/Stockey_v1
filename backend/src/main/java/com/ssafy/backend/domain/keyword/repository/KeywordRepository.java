@@ -9,15 +9,29 @@ import java.util.List;
 
 public interface KeywordRepository extends JpaRepository<Keyword, Long> {
 
-    @Query(value = "SELECT k.keyword_id, k.name, b.count\n" +
-            "FROM keyword k\n" +
-            "JOIN (SELECT keyword_id,count(*) as count\n" +
-            "FROM news_relation\n" +
-            "WHERE stock_id = :stockId \n" +
-            "GROUP BY keyword_id\n" +
-            "ORDER BY count DESC\n" +
-            "LIMIT 6) as b\n" +
-            "ON k.keyword_id = b.keyword_id\n" +
-            "ORDER BY count DESC;",nativeQuery = true)
+    @Query(value = "SELECT\n" +
+            "        k.keyword_id id,\n" +
+            "        k.name name,\n" +
+            "        b.count count,\n" +
+            "        (SELECT count(*) FROM news_relation WHERE stock_id = :stockId GROUP BY news_id) AS total\n" +
+            "    FROM\n" +
+            "        keyword k \n" +
+            "    JOIN\n" +
+            "        (\n" +
+            "            SELECT\n" +
+            "                keyword_id,\n" +
+            "                count(*) as count\n" +
+            "            FROM\n" +
+            "                news_relation \n" +
+            "            WHERE\n" +
+            "                stock_id = :stockId \n" +
+            "            GROUP BY\n" +
+            "                keyword_id \n" +
+            "            ORDER BY\n" +
+            "                count DESC LIMIT 6\n" +
+            "        ) as b \n" +
+            "            ON k.keyword_id = b.keyword_id \n" +
+            "    ORDER BY\n" +
+            "        count DESC;",nativeQuery = true)
     List<StockKeywordDto> findStockKeywords(Long stockId);
 }

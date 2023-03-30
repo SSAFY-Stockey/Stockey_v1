@@ -1,9 +1,8 @@
 package com.ssafy.backend.domain.stock.mapper;
 
 
-import com.ssafy.backend.domain.stock.dto.StockBriefDto;
-import com.ssafy.backend.domain.stock.dto.StockDto;
-import com.ssafy.backend.domain.stock.dto.StockPreviewDto;
+import com.ssafy.backend.domain.stock.dto.*;
+import com.ssafy.backend.domain.stock.entity.DailyStock;
 import com.ssafy.backend.domain.stock.entity.Stock;
 import org.mapstruct.Mapper;
 
@@ -15,4 +14,7 @@ public interface StockMapper {
     List<StockBriefDto> toDto(List<Stock> stockList);
     List<StockDto> toStockDto(List<Stock> stockList);
     StockDto toStockDto(Stock stock);
+    DailyStockDto toDailyStockDto(DailyStock dailyStock);
+    List<DailyStockDto> toDailyStockDto(List<DailyStock> dailyStock);
+    List<StockSearchDto> toSearchDto(List<Stock> stocks);
 }

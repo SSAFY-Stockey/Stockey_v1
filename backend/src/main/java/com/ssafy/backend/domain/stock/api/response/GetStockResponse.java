@@ -2,6 +2,7 @@ package com.ssafy.backend.domain.stock.api.response;
 
 import com.ssafy.backend.domain.industry.dto.IndustryDto;
 import com.ssafy.backend.domain.stock.dto.BusinessDto;
+import com.ssafy.backend.domain.stock.dto.DailyStockDto;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -26,4 +27,7 @@ public class GetStockResponse {
     private String basicInfo;
     private IndustryDto industry;
     private List<BusinessDto> businesses;
+    private DailyStockDto todayDailyStock;
+    private Integer industryRank;
+    private Float industryAvgChangeRate;
 }

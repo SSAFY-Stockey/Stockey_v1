@@ -24,5 +24,10 @@ public class StockDto {
     private String basicInfo;
     private IndustryDto industry;
     private List<BusinessDto> businesses;
+    private DailyStockDto todayDailyStock;
+
+    private Integer industryRank;
+
+    private Float industryAvgChangeRate;
 
 }

@@ -1,4 +1,4 @@
-package com.ssafy.backend.domain.dailyStock.dto;
+package com.ssafy.backend.domain.stock.dto;
 
 import lombok.Getter;
 import lombok.Setter;
