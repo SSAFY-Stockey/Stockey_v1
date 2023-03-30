@@ -1,21 +1,38 @@
-import { CardPaper, CardImg, CardText } from "./PriceAnalysisCard"
+import {
+  CardPaper,
+  CardImg,
+  CardText,
+  CardWrapper,
+  TextWrapper,
+} from "./PriceAnalysisCard"
 import { Grid } from "@mui/material"
 
-const CapitalAnalysisCard = () => {
+interface Props {
+  stockName: string
+  industry: string
+  industryTotal: number
+  industryRank: number
+}
+
+const CapitalAnalysisCard = ({
+  stockName,
+  industry,
+  industryTotal,
+  industryRank,
+}: Props) => {
   return (
     <CardPaper elevation={2}>
-      <Grid container>
+      <CardWrapper container>
         <Grid item xs={2}>
           <CardImg src="/analysisLogos/rich.png" alt="시가총액 순위" />
         </Grid>
-        <Grid
-          item
-          xs={10}
-          sx={{ display: "flex", alignItems: "center", paddingLeft: "10%" }}
-        >
-          <CardText>IT 산업 중에 시가총액으로 1위에요!</CardText>
-        </Grid>
-      </Grid>
+        <TextWrapper item xs={9}>
+          <CardText>
+            {industry} 종목 {industryTotal}개 중에 시가총액으로 {industryRank}
+            위예요!
+          </CardText>
+        </TextWrapper>
+      </CardWrapper>
     </CardPaper>
   )
 }
