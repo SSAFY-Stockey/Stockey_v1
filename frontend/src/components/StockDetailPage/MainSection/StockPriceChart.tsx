@@ -3,6 +3,7 @@ import { ChartWrapper } from "../KeywordPanel/KeywordChart"
 import * as Highcharts from "highcharts"
 import HighchartsReact from "highcharts-react-official"
 import highchartsStock from "highcharts/modules/stock"
+import dayjs from "dayjs"
 
 highchartsStock(Highcharts)
 Highcharts.setOptions({
@@ -252,9 +253,25 @@ const StockPriceChart = () => {
     },
     xAxis: {
       type: "datetime",
+      dateTimeLabelFormats: {
+        day: "%b %e일",
+        week: "%b %e일",
+        month: "%y년 %b",
+        year: "%Y",
+      },
       labels: {
         step: 1,
       },
+      // plotBands: [
+      //   {
+      //     color: "#D1F7EB",
+      //     // borderColor: "var(--custom-black)",
+      //     borderWidth: 1,
+      //     from: Date.UTC(2017, 5, 1),
+      //     to: Date.UTC(2017, 9, 1),
+      //     draggable: true,
+      //   },
+      // ],
     },
     yAxis: {
       type: "linear",
@@ -301,6 +318,7 @@ const StockPriceChart = () => {
         color: "var(--custom-black)",
         fontSize: "1.4rem",
         fontWeight: "bold",
+        borderWidth: 0,
       },
       buttonTheme: {
         width: 40,
@@ -308,6 +326,7 @@ const StockPriceChart = () => {
         style: {
           color: "var(--custom-black)",
           fontWeight: "bold",
+          borderWidth: 0,
         },
         states: {
           select: {
@@ -349,17 +368,52 @@ const StockPriceChart = () => {
         guideBox: {
           color: "var(--custom-yellow-2)",
         },
+        cursor: "pointer",
+        events: {
+          drag: function (this: any, event: any) {
+            // this.xAxis.plotLinesAndBands[0].options.from = event.point.x
+            console.log(this.series.flags)
+            // this.chart.redraw()
+          },
+          // click: function (this: any, event: any) {
+          //   // this.xAxis.plotLinesAndBands[0].options.from = event.point.x
+          //   console.log(this.series.flags)
+          //   this.chart.redraw()
+          // },
+        },
       },
     },
     series: [
       {
+        id: "NAVER",
         name: "NAVER",
         type: "line",
         data: data,
-        color: "var(--custom-mint)",
+        color: "var(--custom-green-1)",
         shadow: true,
         dateFormat: "%Y-%m-%d",
       },
+      // {
+      //   type: "flags",
+      //   name: "Flags on series",
+      //   data: [
+      //     {
+      //       x: Date.UTC(2017, 6, 1),
+      //       title: "시작",
+      //     },
+      //     {
+      //       x: Date.UTC(2017, 8, 1),
+      //       title: "끝",
+      //     },
+      //   ],
+      //   onSeries: "NAVER",
+      //   shape: "squarepin",
+      //   // cursor: "pointer",
+      //   // dragDrop: {
+      //   //   draggableX: true,
+      //   //   draggableY: false,
+      //   // },
+      // },
     ],
   }
 
