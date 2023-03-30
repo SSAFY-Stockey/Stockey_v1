@@ -1,4 +1,4 @@
-package com.ssafy.backend.temp;
+package com.ssafy.backend.domain.keyword.entity;
 
 import lombok.Getter;
 

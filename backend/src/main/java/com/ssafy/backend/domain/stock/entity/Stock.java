@@ -1,14 +1,14 @@
 package com.ssafy.backend.domain.stock.entity;
 
 import com.ssafy.backend.domain.industry.entity.Industry;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -61,13 +61,28 @@ public class Stock {
     @JoinColumn(name = "industry_id", nullable = false)
     private Industry industry;
 
+    @BatchSize(size = 500)
+    @OneToMany(mappedBy = "stock",fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Business> businesses = new ArrayList<>();
+
+    public void setBusiness(Business business){
+        this.businesses.add(business);
+        if(business.getStock()!=this){
+            business.setStock(this);
+        }
+    }
     @Builder
-    public Stock(String name, String code, String description, Long marketCap, Long stockCount, Industry industry) {
+    public Stock(Long id, String name, String code, String description, Long marketCap, Long stockCount, String companySize, String companySales, String creditRank, String basicInfo, Industry industry) {
+        this.id = id;
         this.name = name;
         this.code = code;
         this.description = description;
         this.marketCap = marketCap;
         this.stockCount = stockCount;
+        this.companySize = companySize;
+        this.companySales = companySales;
+        this.creditRank = creditRank;
+        this.basicInfo = basicInfo;
         this.industry = industry;
     }
 }

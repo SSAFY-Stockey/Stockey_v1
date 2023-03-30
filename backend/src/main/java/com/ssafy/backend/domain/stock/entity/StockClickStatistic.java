@@ -1,4 +1,4 @@
-package com.ssafy.backend.temp;
+package com.ssafy.backend.domain.stock.entity;
 
 import com.ssafy.backend.domain.stock.entity.Stock;
 import lombok.Getter;

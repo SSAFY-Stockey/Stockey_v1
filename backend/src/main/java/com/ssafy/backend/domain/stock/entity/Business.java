@@ -1,7 +1,9 @@
-package com.ssafy.backend.temp;
+package com.ssafy.backend.domain.stock.entity;
 
 import com.ssafy.backend.domain.stock.entity.Stock;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -9,6 +11,7 @@ import javax.validation.constraints.Size;
 
 @Getter
 @Entity
+@Setter
 @Table(name = "business")
 public class Business {
 
@@ -28,4 +31,9 @@ public class Business {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name="stock_id", nullable = false)
     private Stock stock;
+
+    public void setStock(Stock stock){
+        this.stock = stock;
+        stock.getBusinesses().add(this);
+    }
 }

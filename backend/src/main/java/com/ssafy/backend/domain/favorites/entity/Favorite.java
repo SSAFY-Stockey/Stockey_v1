@@ -3,7 +3,7 @@ package com.ssafy.backend.domain.favorites.entity;
 import com.ssafy.backend.domain.industry.entity.Industry;
 import com.ssafy.backend.domain.member.entity.Member;
 import com.ssafy.backend.domain.stock.entity.Stock;
-import com.ssafy.backend.temp.Keyword;
+import com.ssafy.backend.domain.keyword.entity.Keyword;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

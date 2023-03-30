@@ -1,5 +1,6 @@
-package com.ssafy.backend.temp;
+package com.ssafy.backend.domain.keyword.entity;
 
+import com.ssafy.backend.domain.keyword.entity.Keyword;
 import com.ssafy.backend.domain.member.entity.Member;
 import lombok.Getter;
 
