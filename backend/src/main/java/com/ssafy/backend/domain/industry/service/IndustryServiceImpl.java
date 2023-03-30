@@ -4,6 +4,7 @@ package com.ssafy.backend.domain.industry.service;
 import com.ssafy.backend.domain.favorites.entity.Favorite;
 import com.ssafy.backend.domain.favorites.repository.FavoriteRepository;
 import com.ssafy.backend.domain.favorites.service.FavoriteService;
+import com.ssafy.backend.domain.industry.api.response.GetIndustryMarketCapResponse;
 import com.ssafy.backend.domain.industry.api.response.IndustryCapitalDto;
 import com.ssafy.backend.domain.industry.dto.IndustryDto;
 import com.ssafy.backend.domain.industry.entity.Industry;
@@ -11,6 +12,7 @@ import com.ssafy.backend.domain.industry.mapper.IndustryDtoMapper;
 import com.ssafy.backend.domain.industry.mapper.IndustryMapper;
 import com.ssafy.backend.domain.industry.repository.IndustryRepository;
 import com.ssafy.backend.domain.member.entity.Member;
+import com.ssafy.backend.domain.stock.dto.IndustrySumDto;
 import com.ssafy.backend.domain.stock.dto.StockBriefDto;
 import com.ssafy.backend.domain.stock.entity.Stock;
 import com.ssafy.backend.domain.stock.mapper.StockMapper;
@@ -137,6 +139,12 @@ public class IndustryServiceImpl implements IndustryService {
         Favorite favorite = favoriteRepository.findByMemberAndIndustry(member, industry);
         checkUser(member, favorite);
         favoriteRepository.delete(favorite);
+    }
+
+    public List<GetIndustryMarketCapResponse> getMarketCapList(Long id) {
+        Industry industry = getIndustry(id);
+        List<IndustrySumDto> marketList = stockRepository.getMarketList(industry);
+        return industryDtoMapper.toGetMarketCapResponse(marketList);
     }
 
     // 유저가 동일한지 체크
