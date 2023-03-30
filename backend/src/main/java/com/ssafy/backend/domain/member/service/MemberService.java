@@ -11,21 +11,12 @@ import java.util.Optional;
 public interface MemberService {
     void checkDuplicatedNickname(String nickName);
     String changeNickname(MemberDto member, String newNickname);
+    void changeNickname(String newNickname);
     // 메소드 오버로딩 : 회원가입, 로그인시 사용되는 getMember
     Optional<OauthMemberDto> getMember(long oAuthId, OauthType oAuthType);
+    MemberDto getMember(long memberId);
+    MemberDto getMember();
+    Member getMemberEntity();
     void saveMember(long oAuthId, String nickname, OauthType oAuthType);
-
-//    TokenRespDto tokenRefresh();
-//
-//    void logout();
-//
-//    MemberIdAndNicknameDto getMemberIdAndNicknameByJwtToken();
-//
-//    void deleteMember();
-//
-//    void addMemberCoin(int addCoinVal);
-//
-//    MemberCoinRespDto getMemberCoin();
-//
-//    void setHyncholAuth(SuperMemberCafeAuthReqDto locationDto);
+    void deleteMember();
 }
