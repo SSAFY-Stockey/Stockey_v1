@@ -3,6 +3,7 @@ package com.ssafy.backend.domain.member.service;
 
 import com.ssafy.backend.domain.member.dto.MemberDto;
 import com.ssafy.backend.domain.member.dto.OauthMemberDto;
+import com.ssafy.backend.domain.member.entity.Member;
 import com.ssafy.backend.domain.member.enums.OauthType;
 
 import java.util.Optional;
@@ -15,6 +16,7 @@ public interface MemberService {
     Optional<OauthMemberDto> getMember(long oAuthId, OauthType oAuthType);
     MemberDto getMember(long memberId);
     MemberDto getMember();
+    Member getMemberEntity();
     void saveMember(long oAuthId, String nickname, OauthType oAuthType);
     void deleteMember();
 }

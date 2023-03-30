@@ -62,7 +62,7 @@ public class AuthServiceImpl implements AuthService{
             long id = element.getAsJsonObject().get("id").getAsLong();
 
             OauthMemberDto oAuthMemberDto = OauthMemberDto.builder()
-                    .id(id)
+                    .oauthMemberId(id)
                     .build();
 
             br.close();
