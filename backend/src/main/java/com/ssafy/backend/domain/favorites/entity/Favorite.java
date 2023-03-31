@@ -48,4 +48,10 @@ public class Favorite {
         this.industry = industry;
     }
 
+    @Builder(builderClassName = "stockBuilder", builderMethodName = "stockBuilder")
+    public Favorite(Member member,Stock stock){
+        this.member = member;
+        this.stock = stock;
+    }
+
 }
