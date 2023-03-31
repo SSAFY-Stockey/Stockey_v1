@@ -1,39 +1,42 @@
 import styled from "styled-components"
-import { PanelTitle, PanelSubTitle } from "../KeywordPanel/KeywordPanel"
+import { PanelTitle } from "../KeywordPanel/KeywordPanel"
 import BookmarkBtn from "../../common/Bookmark/BookmarkBtn"
-import StockPriceChart from "./StockPriceChart"
-import KeywordBarGraph from "../../StockMainPage/BriefingSection/KeywordBarGraph"
+import PriceSection from "./PriceSection"
+import KeywordSection from "./KeywordSection"
+import AnalysisTriggerBtn from "./AnalysisTriggerBtn"
+import { Grid } from "@mui/material"
 
 const StockMainSection = () => {
   return (
-    <SectionWrapper>
-      <PanelTitle>
-        네이버
-        <BookmarkBtn isBookmarked={false} page="stock" />
-      </PanelTitle>
-
-      <PanelSubTitle>
-        <HighlightedSpan>키워드</HighlightedSpan>로 보는 주가 차트
-      </PanelSubTitle>
-      <StockPriceChart />
-      <PanelSubTitle>
-        뉴스 기사 속 핵심
-        <HighlightedSpan>키워드</HighlightedSpan>로 확인하기
-      </PanelSubTitle>
-      <KeywordBarGraph />
+    <SectionWrapper container rowSpacing={3}>
+      <Grid item xs={12}>
+        <PanelTitle>
+          네이버
+          <BookmarkBtn isBookmarked={false} page="stock" />
+        </PanelTitle>
+      </Grid>
+      <Grid item xs={12}>
+        <PriceSection />
+      </Grid>
+      <Grid item xs={12}>
+        <AnalysisTriggerBtn />
+      </Grid>
+      <Grid item xs={12}>
+        <KeywordSection />
+      </Grid>
     </SectionWrapper>
   )
 }
 
 export default StockMainSection
 
-const SectionWrapper = styled.div`
-  display: flex;
+const SectionWrapper = styled(Grid)`
+  // display: flex;
   padding: 12px 24px 24px;
-  flex-direction: column;
-  align-items: left;
-  width: 100%;
-  height: 100%;
+  // flex-direction: column;
+  // align-items: left;
+  // width: 100%;
+  // height: 100%;
   overflow-y: scroll;
 
   /* 스크롤바 숨기기 */
@@ -42,9 +45,4 @@ const SectionWrapper = styled.div`
   ::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
-`
-
-const HighlightedSpan = styled.span`
-  color: var(--custom-mint);
-  font-weight
 `

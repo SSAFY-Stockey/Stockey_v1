@@ -53,7 +53,7 @@ export const PanelTitle = styled.p`
   font-size: 2.6rem;
   font-weight: bold;
   letter-spacing: 0.2rem;
-  margin-block: 12px;
+  margin-bottom: 0;
 `
 export const PanelSubTitle = styled.p`
   font-size: 2.2rem;
