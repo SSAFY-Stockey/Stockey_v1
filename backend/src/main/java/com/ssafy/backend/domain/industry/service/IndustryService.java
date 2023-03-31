@@ -4,6 +4,7 @@ import com.ssafy.backend.domain.industry.api.response.GetIndustryMarketCapRespon
 import com.ssafy.backend.domain.industry.api.response.IndustryCapitalDto;
 import com.ssafy.backend.domain.industry.dto.IndustryDto;
 import com.ssafy.backend.domain.member.entity.Member;
+import com.ssafy.backend.domain.stock.api.response.GetStockTodayResponse;
 import com.ssafy.backend.domain.stock.dto.StockBriefDto;
 
 import java.util.List;
@@ -21,6 +22,8 @@ public interface IndustryService {
      boolean checkFavorite(Member member,Long id);
 
      List<GetIndustryMarketCapResponse> getMarketCapList(Long id);
+
+     List<GetStockTodayResponse> getStockListPrice(Long id);
 
 
 
