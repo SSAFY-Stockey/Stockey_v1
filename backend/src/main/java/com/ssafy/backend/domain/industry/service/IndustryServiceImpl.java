@@ -12,6 +12,7 @@ import com.ssafy.backend.domain.industry.mapper.IndustryDtoMapper;
 import com.ssafy.backend.domain.industry.mapper.IndustryMapper;
 import com.ssafy.backend.domain.industry.repository.IndustryRepository;
 import com.ssafy.backend.domain.member.entity.Member;
+import com.ssafy.backend.domain.member.service.MemberService;
 import com.ssafy.backend.domain.stock.dto.IndustrySumDto;
 import com.ssafy.backend.domain.stock.dto.StockBriefDto;
 import com.ssafy.backend.domain.stock.entity.Stock;
@@ -44,6 +45,7 @@ public class IndustryServiceImpl implements IndustryService {
     private final FavoriteService favoriteService;
 
     private final FavoriteRepository favoriteRepository;
+    private final MemberService memberService;
 
     //모든 산업 반환
     public List<IndustryDto> getAll() {
