@@ -1,9 +1,7 @@
 import styled from "@emotion/styled"
 import Box from "@mui/material/Box"
 import Card from "@mui/material/Card"
-import CardMedia from "@mui/material/CardMedia"
 import { CardActionArea } from "@mui/material"
-import sampleImg from "./responsive-design.png"
 import { useNavigate } from "react-router-dom"
 
 interface CardProps {
@@ -12,8 +10,8 @@ interface CardProps {
 
 const IndustryCard = ({ industryName }: CardProps) => {
   const navigate = useNavigate()
-  const onClickIndustryCard = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
+  const onClickIndustryCard = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
     navigate(`/industry/${industryName}`)
   }
 
@@ -22,15 +20,7 @@ const IndustryCard = ({ industryName }: CardProps) => {
       <IndustryCardActionArea onClick={onClickIndustryCard}>
         <IndustryCardContent>
           <IndustryCardBody>
-            <CardMedia
-              component="img"
-              src={sampleImg}
-              alt="thumbnail"
-              sx={{
-                borderRadius: "50%",
-                width: "80%",
-              }}
-            />
+            <IndustryCardImg src="/industryLogos/sampleIndustryLogo.png" />
           </IndustryCardBody>
           <IndustryCardNameArea>
             <NameTagP>{industryName}</NameTagP>
@@ -73,6 +63,11 @@ const IndustryCardBody = styled(Box)({
   justifyContent: "center",
   alignItems: "center",
 })
+
+const IndustryCardImg = styled.img`
+  border-radius: 50%;
+  width: 80%;
+`
 
 const IndustryCardNameArea = styled(Box)({
   padding: "0px",

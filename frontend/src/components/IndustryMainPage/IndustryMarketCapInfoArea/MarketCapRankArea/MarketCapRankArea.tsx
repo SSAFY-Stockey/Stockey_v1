@@ -1,27 +1,35 @@
 import styled from "styled-components"
 import MarketCapCardList from "./MarketCapCardList"
-
-interface clickedIndustryInfoProps {
-  clickedIndustryName: string
-  clickedChartColor: string
-}
+import { useMarketCapRank } from "../../../../hooks/useMarketCapRank"
+import { ClickedIndustryInfoType } from "../IndustryMarketCapInfoArea"
+import Spinner from "../../../common/Spinner/Spinner"
 
 const MarketCapRankArea = ({
-  clickedIndustryName,
-  clickedChartColor,
-}: clickedIndustryInfoProps) => {
+  clickedIndustryInfo,
+}: {
+  clickedIndustryInfo: ClickedIndustryInfoType
+}) => {
+  const { isLoading, data: marketCapRankList } = useMarketCapRank(
+    clickedIndustryInfo.id
+  )
+  console.log(marketCapRankList)
+  console.log(clickedIndustryInfo)
   return (
     <AreaDiv>
       <TitleDiv>
-        <IndustryNameSpan nameColor={clickedChartColor}>
-          {clickedIndustryName}
+        <IndustryNameSpan nameColor={clickedIndustryInfo.color}>
+          {clickedIndustryInfo.name}
         </IndustryNameSpan>{" "}
         종목 시총 순위
       </TitleDiv>
-      <MarketCapCardList
-        key={clickedIndustryName}
-        industryName={clickedIndustryName}
-      />
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <MarketCapCardList
+          key={clickedIndustryInfo.name}
+          marketCapRankList={marketCapRankList}
+        />
+      )}
     </AreaDiv>
   )
 }
