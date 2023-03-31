@@ -9,4 +9,6 @@ public interface KeywordService {
 //    List<KeywordDto> searchKeyword(SearchKeywordRequest searchKeyword);
 
     KeywordDto getKeywordDetail(Long keywordsId);
+
+     getKeywordFreq(Long keywordsId);
 }

@@ -39,4 +39,19 @@ public class KeywordController {
         KeywordDetailResponse keywordDetailResponse = keywordDtoMapper.toKeywordDetailResponse(keywordDto);
         return new ResponseEntity<>(new ResponseDto("키워드 상세 정보", keywordDetailResponse), HttpStatus.OK);
     }
+
+
+    @Operation(summary = "keyword frequency", description = "모든 기간의 키워드 빈도")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "요청 성공"),
+                    @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+                    @ApiResponse(responseCode = "404", description = "키워드 데이터 없음")
+            }
+    )
+    @GetMapping("/{keywordsId}/frequency")
+    public ResponseEntity<ResponseDto> getKeywordFreq(@Valid @NotNull @Min(value = -1) @PathVariable Long keywordsId) {
+        keywordService.getKeywordFreq(keywordsId);
+        return new ResponseEntity<>(new ResponseDto("키워드 상세 정보", null), HttpStatus.OK);
+    }
 }
