@@ -15,10 +15,10 @@ public interface IndustryService {
      List<StockBriefDto> getStockList();
      List<StockBriefDto> getStockList(Long id);
      List<IndustryDto> getMyIndustries(Member member);
-     boolean checkFavorite(Member member,Long id);
 
      void addFavorite(Member member,Long id);
      void deleteFavorite(Member member,Long id);
+     boolean checkFavorite(Member member,Long id);
 
      List<GetIndustryMarketCapResponse> getMarketCapList(Long id);
 
