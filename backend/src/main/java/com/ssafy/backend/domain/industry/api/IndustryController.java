@@ -5,10 +5,12 @@ import com.ssafy.backend.domain.industry.api.response.GetIndustryResponse;
 import com.ssafy.backend.domain.industry.api.response.IndustryCapitalDto;
 import com.ssafy.backend.domain.industry.dto.IndustryDto;
 import com.ssafy.backend.domain.industry.mapper.IndustryDtoMapper;
+import com.ssafy.backend.domain.industry.service.IndustryService;
 import com.ssafy.backend.domain.member.entity.Member;
 import com.ssafy.backend.domain.member.repository.MemberRepository;
+import com.ssafy.backend.domain.member.service.MemberService;
 import com.ssafy.backend.domain.stock.dto.StockBriefDto;
-import com.ssafy.backend.domain.industry.service.IndustryService;
+import com.ssafy.backend.global.annotation.Auth;
 import com.ssafy.backend.global.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -31,8 +33,7 @@ import java.util.List;
 public class IndustryController {
     private final IndustryService industryService;
 
-    //TODO
-    private final MemberRepository memberRepository;
+    private final MemberService memberService;
     private final IndustryDtoMapper dtoMapper;
 
 
@@ -107,7 +108,7 @@ public class IndustryController {
     )
     @GetMapping("stocklist/my")
     public ResponseEntity<ResponseDto> getMyIndustries() {
-        Member member = memberRepository.findByNickname("진호").get();
+        Member member = memberService.getMemberEntity();
         List<IndustryDto> myIndustries = industryService.getMyIndustries(member);
         List<GetIndustryResponse> getIndustryResponses = dtoMapper.toGetResponse(myIndustries);
         return new ResponseEntity<>(new ResponseDto("OK", getIndustryResponses), HttpStatus.OK);
@@ -125,12 +126,13 @@ public class IndustryController {
     )
     @GetMapping("stocklist/my/{id}")
     public ResponseEntity<ResponseDto> checkFavorite(@PathVariable Long id) {
-        Member member = memberRepository.findByNickname("진호").get();
+        Member member = memberService.getMemberEntity();
         boolean result = industryService.checkFavorite(member, id);
         return new ResponseEntity<>(new ResponseDto("OK", result), HttpStatus.OK);
     }
 
     // 관심 산업 등록
+    @Auth
     @Operation(summary = "관심 산업 등록", description = "관심 산업을 등록합니다.")
     @ApiResponses(
             value = {
@@ -140,10 +142,10 @@ public class IndustryController {
             }
     )
     @PostMapping("stocklist/my/{id}")
-    public ResponseEntity<ResponseDto> addFavorite(@PathVariable Long id){
-        Member member = memberRepository.findByNickname("진호").get();
-        industryService.addFavorite(member,id);
-        return new ResponseEntity<>(new ResponseDto("CREATED",null),HttpStatus.CREATED);
+    public ResponseEntity<ResponseDto> addFavorite(@PathVariable Long id) {
+        Member member = memberService.getMemberEntity();
+        industryService.addFavorite(member, id);
+        return new ResponseEntity<>(new ResponseDto("CREATED", null), HttpStatus.CREATED);
     }
 
     // 관심 산업 삭제
@@ -156,31 +158,26 @@ public class IndustryController {
             }
     )
     @DeleteMapping("stocklist/my/{id}")
-    public ResponseEntity<ResponseDto> deleteFavorite(@PathVariable Long id){
-        Member member = memberRepository.findByNickname("진호").get();
-        industryService.deleteFavorite(member,id);
-        return new ResponseEntity<>(new ResponseDto("DELETED",null),HttpStatus.OK);
+    public ResponseEntity<ResponseDto> deleteFavorite(@PathVariable Long id) {
+        Member member = memberService.getMemberEntity();
+        industryService.deleteFavorite(member, id);
+        return new ResponseEntity<>(new ResponseDto("DELETED", null), HttpStatus.OK);
     }
 
 
     //산업별 시가총액 데이터 출력
-    @Operation(summary = "산업 하나의 날짜별 시가총액 그래프",description = "산업하나의 날짜별 시가총액 합을 제공합니다. ")
+    @Operation(summary = "산업 하나의 날짜별 시가총액 그래프", description = "산업하나의 날짜별 시가총액 합을 제공합니다. ")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200",description = "조회 성공"),
-                    @ApiResponse(responseCode = "404" ,description = "산업 없음")
+                    @ApiResponse(responseCode = "200", description = "조회 성공"),
+                    @ApiResponse(responseCode = "404", description = "산업 없음")
             }
     )
     @GetMapping("/marketcap/{id}")
-    public ResponseEntity<ResponseDto> getMarketCapByDate(@PathVariable Long id){
+    public ResponseEntity<ResponseDto> getMarketCapByDate(@PathVariable Long id) {
         List<GetIndustryMarketCapResponse> marketCapList = industryService.getMarketCapList(id);
-        return new ResponseEntity<>(new ResponseDto("OK",marketCapList),HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseDto("OK", marketCapList), HttpStatus.OK);
     }
-
-
-
-
-
 
 
 }
