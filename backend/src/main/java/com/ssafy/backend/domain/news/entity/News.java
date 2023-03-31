@@ -1,10 +1,11 @@
-package com.ssafy.backend.temp;
+package com.ssafy.backend.domain.news.entity;
 
 import lombok.Getter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Getter
 @Entity
@@ -22,12 +23,8 @@ public class News {
     @Column(name = "news_url", length = 2083)
     private String newsUrl;
 
-    @Size(max = 100)
-    @Column(name = "press", length = 100)
-    private String press;
-
     @Column(name = "pressed_at")
-    private Instant pressedAt;
+    private LocalDate pressedAt;
 
     @Lob
     @Column(name = "title")
