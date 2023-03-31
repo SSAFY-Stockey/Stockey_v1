@@ -1,5 +1,6 @@
 package com.ssafy.backend.domain.industry.service;
 
+import com.ssafy.backend.domain.industry.api.response.GetIndustryMarketCapResponse;
 import com.ssafy.backend.domain.industry.api.response.IndustryCapitalDto;
 import com.ssafy.backend.domain.industry.dto.IndustryDto;
 import com.ssafy.backend.domain.member.entity.Member;
@@ -18,6 +19,8 @@ public interface IndustryService {
 
      void addFavorite(Member member,Long id);
      void deleteFavorite(Member member,Long id);
+
+     List<GetIndustryMarketCapResponse> getMarketCapList(Long id);
 
 
 
