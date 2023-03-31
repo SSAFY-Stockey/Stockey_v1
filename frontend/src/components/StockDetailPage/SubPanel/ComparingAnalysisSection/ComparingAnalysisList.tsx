@@ -1,8 +1,8 @@
-import styled from "styled-components";
-import CapitalAnalysisCard from "./CapitalAnalysisCard";
-import PriceAnalysisCard from "./PriceAnalysisCard";
-import ViewAnalysisCard from "./ViewAnalysisCard";
-import { Grid } from "@mui/material";
+import styled from "styled-components"
+import CapitalAnalysisCard from "./CapitalAnalysisCard"
+import PriceAnalysisCard from "./PriceAnalysisCard"
+import LikeAnalysisCard from "./LikeAnalysisCard"
+import { Grid } from "@mui/material"
 
 const ComparingAnalysisList = () => {
   return (
@@ -12,7 +12,7 @@ const ComparingAnalysisList = () => {
           stockName="NAVER"
           industry="IT"
           industryTotal={100}
-          industryRank={2}
+          industryRank={1}
         />
       </Grid>
       <Grid item>
@@ -24,10 +24,10 @@ const ComparingAnalysisList = () => {
         />
       </Grid>
       <Grid item>
-        <ViewAnalysisCard viewRank={3} industry="IT" industryTotal={100} />
+        <LikeAnalysisCard likeRank={3} industry="IT" industryTotal={100} />
       </Grid>
     </Grid>
-  );
-};
+  )
+}
 
-export default ComparingAnalysisList;
+export default ComparingAnalysisList
