@@ -7,6 +7,7 @@ import com.ssafy.backend.domain.favorites.service.FavoriteService;
 import com.ssafy.backend.domain.industry.api.response.GetIndustryMarketCapResponse;
 import com.ssafy.backend.domain.industry.api.response.IndustryCapitalDto;
 import com.ssafy.backend.domain.industry.dto.IndustryDto;
+import com.ssafy.backend.domain.industry.dto.IndustryEpochSumDto;
 import com.ssafy.backend.domain.industry.entity.Industry;
 import com.ssafy.backend.domain.industry.mapper.IndustryDtoMapper;
 import com.ssafy.backend.domain.industry.mapper.IndustryMapper;
@@ -32,6 +33,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -152,7 +157,22 @@ public class IndustryServiceImpl implements IndustryService {
     public List<GetIndustryMarketCapResponse> getMarketCapList(Long id) {
         Industry industry = getIndustry(id);
         List<IndustrySumDto> marketList = stockRepository.getMarketList(industry);
-        return industryDtoMapper.toGetMarketCapResponse(marketList);
+        List<IndustryEpochSumDto> result = new ArrayList<>();
+
+        // LocalDate -> epochTime
+        for(IndustrySumDto industryDto : marketList){
+            LocalDate stockDate = industryDto.getStockDate();
+            LocalDateTime localDateTime = stockDate.atStartOfDay();
+            Instant instant = localDateTime.toInstant(ZoneOffset.UTC);
+            long epochSecond = instant.getEpochSecond();
+            IndustryEpochSumDto industryEpochSumDto = IndustryEpochSumDto.builder()
+                    .stockDate(industryDto.getStockDate())
+                    .marketCap(industryDto.getMarketCap())
+                    .epochTime(epochSecond)
+                    .build();
+            result.add(industryEpochSumDto);
+        }
+        return industryDtoMapper.toGetMarketCapResponse(result);
     }
 
     public List<GetStockTodayResponse> getStockListPrice(Long id) {
