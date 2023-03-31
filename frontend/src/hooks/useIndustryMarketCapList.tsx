@@ -16,14 +16,7 @@ export const useIndustryMarketCapList = () => {
   })
 }
 
-export type defaultDataType = {
-  id: string
-  name: string
-  y: number
-  drilldown: string | undefined
-}[]
-
-export type drilldownDataType = {
+export type DonutChartDataType = {
   id: string
   name: string
   y: number
@@ -32,42 +25,28 @@ export type drilldownDataType = {
 const select = (response: any) => {
   const rawData = response.data.data
 
-  let defaultData: defaultDataType = []
+  let DonutChartData: DonutChartDataType = []
 
-  let drilldownData: drilldownDataType = []
-
-  let drilldownItem = {
+  let OthersData = {
     id: "0",
     name: "기타",
     y: 0,
-    drilldown: "기타",
   }
   for (let i = 0; i < rawData.length; i++) {
-    if (i < 10) {
-      const newDefaultData = {
+    if (i < 7) {
+      const newData = {
         id: rawData[i].id,
         name: rawData[i].name,
         y: rawData[i].sum,
-        drilldown: undefined,
       }
-      defaultData.push(newDefaultData)
+      DonutChartData.push(newData)
     } else {
-      const newDrilldownData = {
-        id: rawData[i].id,
-        name: rawData[i].name,
-        y: rawData[i].sum,
-      }
-      drilldownData.push(newDrilldownData)
-      drilldownItem.y += rawData[i].sum
+      OthersData.y += rawData[i].sum
     }
   }
-  defaultData.push(drilldownItem)
+  DonutChartData.push(OthersData)
 
-  const result: [defaultDataType, drilldownDataType] = [
-    defaultData,
-    drilldownData,
-  ]
-  return result
+  return DonutChartData
 }
 
 const onError = (err: any) => {

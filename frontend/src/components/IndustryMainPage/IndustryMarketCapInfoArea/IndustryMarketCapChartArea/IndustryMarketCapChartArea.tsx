@@ -1,63 +1,45 @@
 import Highcharts from "highcharts"
 import HighchartsReact from "highcharts-react-official"
-import drilldown from "highcharts/modules/drilldown"
-import { useEffect } from "react"
 import styled from "styled-components"
-import {
-  defaultDataType,
-  drilldownDataType,
-} from "../../../../hooks/useIndustryMarketCapList"
+import { DonutChartDataType } from "../../../../hooks/useIndustryMarketCapList"
 
 interface DonutChartProps {
-  chartData: [defaultDataType, drilldownDataType]
+  chartData: DonutChartDataType
   handleClickedIndustryInfo: Function
 }
-
-drilldown(Highcharts)
 
 const IndustryMarketCapChartArea = ({
   chartData,
   handleClickedIndustryInfo,
 }: DonutChartProps) => {
-  const defaultData = chartData[0]
-  const drilldownData = chartData[1]
+  const handleClickChartPoint = (event: any) => {
+    let clickedIndustryId: string | undefined
+    let clickedIndustryName: string
+    let clickedChartColor: string
+    const defaultIndustryName = "전체"
+    const defaultChartColor = "var(--custom-black)"
 
-  useEffect(() => {}, [])
-
-  const handleClickChartPoint = (
-    event: Highcharts.PointInteractionEventObject
-  ) => {
-    // const clickedIndustryInfo = {
-    //     id: event,
-    //     name: clickedIndustryName,
-    //     color: clickedChartColor,
-    //   }
-    //   handleClickedIndustryInfo(clickedIndustryInfo)
-    // if (event.point.options.id !== "0") {
-    //   let clickedIndustryId: string | undefined
-    //   let clickedIndustryName: string
-    //   let clickedChartColor: string
-    //   const defaultIndustryName = "전체"
-    //   const defaultChartColor = "var(--custom-black)"
-    //   if (event.point.selected) {
-    //     clickedIndustryId = event.point.options.id
-    //     clickedIndustryName = event.point.name
-    //     if (typeof event.point.color === "string") {
-    //       clickedChartColor = event.point.color
-    //     } else {
-    //       clickedChartColor = defaultChartColor
-    //     }
-    //   } else {
-    //     clickedIndustryName = defaultIndustryName
-    //     clickedChartColor = defaultChartColor
-    //   }
-    // const clickedIndustryInfo = {
-    //   id: clickedIndustryId,
-    //   name: clickedIndustryName,
-    //   color: clickedChartColor,
-    // }
-    // handleClickedIndustryInfo(clickedIndustryInfo)
-    // }
+    if (event.point.options.id !== "0") {
+      event.point.select(!event.point.selected)
+      if (event.point.selected) {
+        clickedIndustryId = event.point.options.id
+        clickedIndustryName = event.point.name
+        if (typeof event.point.color === "string") {
+          clickedChartColor = event.point.color
+        } else {
+          clickedChartColor = defaultChartColor
+        }
+      } else {
+        clickedIndustryName = defaultIndustryName
+        clickedChartColor = defaultChartColor
+      }
+      const clickedIndustryInfo = {
+        id: clickedIndustryId,
+        name: clickedIndustryName,
+        color: clickedChartColor,
+      }
+      handleClickedIndustryInfo(clickedIndustryInfo)
+    }
   }
 
   const options: Highcharts.Options = {
@@ -73,14 +55,24 @@ const IndustryMarketCapChartArea = ({
     tooltip: {
       pointFormat: "<b>{point.percentage:.1f}%</b>",
     },
+    colors: [
+      "var(--custom-purple-2)",
+      "var(--custom-green-2)",
+      "var(--custom-pink-2)",
+      "var(--custom-orange-2)",
+      "var(--custom-yellow-1)",
+      "var(--custom-purple-3)",
+      "var(--custom-green-3)",
+      "#BBBAC5",
+    ],
     plotOptions: {
       pie: {
         size: 220,
-        center: ["50%", "50%"],
+        center: ["50%", "55%"],
         innerSize: "40%",
         dataLabels: {
           enabled: true,
-          format: "{point.name}: {point.percentage:.1f} %",
+          format: "{point.name}",
           distance: -30,
           style: {
             fontWeight: "bold",
@@ -88,39 +80,23 @@ const IndustryMarketCapChartArea = ({
           },
         },
         showInLegend: true,
-        // allowPointSelect: true,
-        // events: {
-        //   click: handleClickChartPoint,
-        // },
         cursor: "pointer",
       },
       series: {
-        allowPointSelect: true,
         point: {
           events: {
-            select: handleClickChartPoint,
-            // unselect:(event) => {}
+            click: handleClickChartPoint,
           },
         },
       },
     },
     series: [
       {
-        name: "Percentage",
-        data: defaultData,
+        name: "DonutChart",
+        data: chartData,
         type: "pie",
       },
     ],
-    drilldown: {
-      series: [
-        {
-          id: "기타",
-          name: "기타",
-          type: "pie",
-          data: drilldownData,
-        },
-      ],
-    },
     legend: {
       backgroundColor: "white",
       borderRadius: 24,
@@ -130,7 +106,7 @@ const IndustryMarketCapChartArea = ({
       alignColumns: false,
       width: "100%",
       padding: 12,
-      y: 8,
+      y: 12,
     },
     credits: {
       enabled: false,
@@ -139,7 +115,7 @@ const IndustryMarketCapChartArea = ({
 
   return (
     <AreaDiv>
-      <HighchartsReact id="chart" highcharts={Highcharts} options={options} />
+      <HighchartsReact highcharts={Highcharts} options={options} />
     </AreaDiv>
   )
 }

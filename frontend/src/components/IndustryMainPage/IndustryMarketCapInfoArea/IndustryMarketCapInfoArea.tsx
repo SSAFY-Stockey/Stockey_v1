@@ -29,7 +29,7 @@ const IndustryMarketCapInfoArea = () => {
 
   return (
     <AreaDiv>
-      <TitleDiv>주식시장 내 산업별 비중</TitleDiv>
+      <TitleDiv>산업별 규모를 확인해보세요📈</TitleDiv>
       <ContentDiv>
         {chartData ? (
           <IndustryMarketCapChartArea
@@ -68,15 +68,13 @@ const TitleDiv = styled.div`
   font-family: "Inter";
   font-style: normal;
   font-weight: 700;
-  font-size: 24px;
-  line-height: 20px;
+  font-size: 2rem;
+  line-height: 2rem;
   /* or 83% */
 
   display: flex;
   align-items: center;
   letter-spacing: 0.1px;
-
-  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 `
 
 const ContentDiv = styled.div`
