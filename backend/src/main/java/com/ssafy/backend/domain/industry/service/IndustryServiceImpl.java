@@ -12,11 +12,15 @@ import com.ssafy.backend.domain.industry.mapper.IndustryDtoMapper;
 import com.ssafy.backend.domain.industry.mapper.IndustryMapper;
 import com.ssafy.backend.domain.industry.repository.IndustryRepository;
 import com.ssafy.backend.domain.member.entity.Member;
-import com.ssafy.backend.domain.member.service.MemberService;
+import com.ssafy.backend.domain.stock.api.response.GetStockTodayResponse;
 import com.ssafy.backend.domain.stock.dto.IndustrySumDto;
 import com.ssafy.backend.domain.stock.dto.StockBriefDto;
+import com.ssafy.backend.domain.stock.dto.StockTodayDto;
+import com.ssafy.backend.domain.stock.entity.DailyStock;
 import com.ssafy.backend.domain.stock.entity.Stock;
+import com.ssafy.backend.domain.stock.mapper.StockDtoMapper;
 import com.ssafy.backend.domain.stock.mapper.StockMapper;
+import com.ssafy.backend.domain.stock.repository.DailyStockRepository;
 import com.ssafy.backend.domain.stock.repository.StockRepository;
 import com.ssafy.backend.global.exception.favorite.FavoriteException;
 import com.ssafy.backend.global.exception.favorite.FavoriteExceptionType;
@@ -31,6 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -41,11 +46,12 @@ public class IndustryServiceImpl implements IndustryService {
     private final IndustryMapper industryMapper;
     private final IndustryDtoMapper industryDtoMapper;
     private final StockMapper stockMapper;
+    private final StockDtoMapper stockDtoMapper;
 
     private final FavoriteService favoriteService;
 
     private final FavoriteRepository favoriteRepository;
-    private final MemberService memberService;
+    private final DailyStockRepository dailyStockRepository;
 
     //모든 산업 반환
     public List<IndustryDto> getAll() {
@@ -119,7 +125,7 @@ public class IndustryServiceImpl implements IndustryService {
         Industry industry = getIndustry(id);
         boolean isFavorite = checkFavorite(member, id);
         //이미 관심등록했다면
-        if(isFavorite){
+        if (isFavorite) {
             throw new FavoriteException(FavoriteExceptionType.ALREADY_EXIST);
         }
         Favorite favorite = Favorite.industryBuilder()
@@ -147,6 +153,33 @@ public class IndustryServiceImpl implements IndustryService {
         Industry industry = getIndustry(id);
         List<IndustrySumDto> marketList = stockRepository.getMarketList(industry);
         return industryDtoMapper.toGetMarketCapResponse(marketList);
+    }
+
+    public List<GetStockTodayResponse> getStockListPrice(Long id) {
+        Industry industry = getIndustry(id);
+        List<Stock> stockList = stockRepository.findByIndustry(industry);
+
+        // 해당 주식의 현재가격 가져오기
+        List<DailyStock> dailyStockList = stockList.stream()
+                .map(o -> dailyStockRepository.findTodayDailyStock(o.getId()).get())
+                .collect(Collectors.toList());
+        //결과를 담을 result 리스트
+        List<StockTodayDto> result = new ArrayList<>();
+        for (DailyStock dailyStock : dailyStockList) {
+            Long stock_id = dailyStock.getStock().getId();
+            String name = dailyStock.getStock().getName();
+            Integer close_price = dailyStock.getClosePrice();
+            Float change_rate = dailyStock.getChangeRate() * 100;
+
+            StockTodayDto stockTodayDto = StockTodayDto.builder()
+                    .id(stock_id)
+                    .name(name)
+                    .price(close_price)
+                    .rate(change_rate)
+                    .build();
+            result.add(stockTodayDto);
+        }
+        return stockDtoMapper.toGetStockTodayResponse(result);
     }
 
     // 유저가 동일한지 체크
