@@ -17,3 +17,8 @@ export const accessTokenSelector = selector({
     set(accessTokenState, newValue)
   },
 })
+
+export const logInState = atom<boolean>({
+  key: "logInState",
+  default: false,
+})

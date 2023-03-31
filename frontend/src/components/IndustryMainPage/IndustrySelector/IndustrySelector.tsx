@@ -1,11 +1,22 @@
 import styled from "styled-components"
 import IndustryCardList from "./IndustryCardList"
+import { useIndustryList } from "../../../hooks/useIndustryList"
+import Spinner from "../../common/Spinner/Spinner"
 
 const IndustrySelector = () => {
+  const { isLoading, data: industryList } = useIndustryList()
+
   return (
     <IndustrySelectorDiv>
-      <IndustrySelectorTitleDiv>산업 분류 선택</IndustrySelectorTitleDiv>
-      <IndustryCardList />
+      <TitleWrapper>
+        <IndustrySelectorTitleDiv>산업 분류</IndustrySelectorTitleDiv>
+        <DescriptionDiv>산업의 자세한 정보를 알아보세요</DescriptionDiv>
+      </TitleWrapper>
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <IndustryCardList industryList={industryList} />
+      )}
     </IndustrySelectorDiv>
   )
 }
@@ -27,20 +38,22 @@ const IndustrySelectorDiv = styled.div`
     0px 1px 3px rgba(0, 0, 0, 0.3);
   border-radius: 24px;
 `
-const IndustrySelectorTitleDiv = styled.div`
-  width: 100%;
-  height: 24px;
-  margin: 0px;
 
+const TitleWrapper = styled.div`
+  width: 100%;
+  height: 2rem;
+  margin: 0px;
+  display: flex;
+`
+
+const IndustrySelectorTitleDiv = styled.div`
   font-family: "Inter";
   font-style: normal;
   font-weight: 700;
-  font-size: 24px;
-  line-height: 20px;
+  font-size: 2rem;
+  line-height: 2rem;
   /* or 83% */
 
-  display: flex;
-  align-items: center;
   letter-spacing: 0.1px;
 
   color: #000000;
@@ -50,4 +63,13 @@ const IndustrySelectorTitleDiv = styled.div`
   flex: none;
   order: 0;
   flex-grow: 0;
+`
+
+const DescriptionDiv = styled.div`
+  margin-left: 1rem;
+  display: flex;
+  align-items: end;
+  font-size: 1.2rem;
+  line-height: 1.2rem;
+  color: #6d6666;
 `
