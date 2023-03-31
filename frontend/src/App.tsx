@@ -20,23 +20,29 @@ import Navbar from "./components/common/Navbar/Navbar"
 
 // recoil
 import { useRecoilValue } from "recoil"
-import { logInState } from "./stores/atoms"
+import { accessTokenSelector, logInState } from "./stores/atoms"
 import customAxios from "./utils/customAxios"
-import useInterceptedAxios from "./utils/useInterceptedAxios"
 
 function App() {
   const curPath = useLocation().pathname
-
-  // // accessToken 데이터 가져오기
+  // login state
   const isLogIn = useRecoilValue(logInState)
-  const axios = useInterceptedAxios()
+  const accessToken = useRecoilValue(accessTokenSelector)
 
-  if (isLogIn) {
-    axios
-      .get("/member")
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err))
-  }
+  const axios = customAxios(accessToken)
+
+  useEffect(() => {
+    if (isLogIn) {
+      axios
+        .get("/member")
+        .then((response) => {
+          console.log(response)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    }
+  }, [isLogIn])
   return (
     <>
       <MainWrapper>
