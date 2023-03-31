@@ -13,4 +13,5 @@ import java.time.LocalDate;
 public class GetIndustryMarketCapResponse {
     LocalDate stockDate;
     Long marketCap;
+    Long epochTime;
 }
