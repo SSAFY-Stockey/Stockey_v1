@@ -1,19 +1,47 @@
 import Highcharts from "highcharts"
 import HighchartsReact from "highcharts-react-official"
 import styled from "styled-components"
+import { DonutChartDataType } from "../../../../hooks/useIndustryMarketCapList"
 
 interface DonutChartProps {
-  data: {
-    name: string
-    y: number
-  }[]
-  setClickedIndustryInfo: (name: string, color: string) => void
+  chartData: DonutChartDataType
+  handleClickedIndustryInfo: Function
 }
 
 const IndustryMarketCapChartArea = ({
-  data,
-  setClickedIndustryInfo,
+  chartData,
+  handleClickedIndustryInfo,
 }: DonutChartProps) => {
+  const handleClickChartPoint = (event: any) => {
+    let clickedIndustryId: string | undefined
+    let clickedIndustryName: string
+    let clickedChartColor: string
+    const defaultIndustryName = "전체"
+    const defaultChartColor = "var(--custom-black)"
+
+    if (event.point.options.id !== "0") {
+      event.point.select(!event.point.selected)
+      if (event.point.selected) {
+        clickedIndustryId = event.point.options.id
+        clickedIndustryName = event.point.name
+        if (typeof event.point.color === "string") {
+          clickedChartColor = event.point.color
+        } else {
+          clickedChartColor = defaultChartColor
+        }
+      } else {
+        clickedIndustryName = defaultIndustryName
+        clickedChartColor = defaultChartColor
+      }
+      const clickedIndustryInfo = {
+        id: clickedIndustryId,
+        name: clickedIndustryName,
+        color: clickedChartColor,
+      }
+      handleClickedIndustryInfo(clickedIndustryInfo)
+    }
+  }
+
   const options: Highcharts.Options = {
     chart: {
       type: "pie",
@@ -27,14 +55,24 @@ const IndustryMarketCapChartArea = ({
     tooltip: {
       pointFormat: "<b>{point.percentage:.1f}%</b>",
     },
+    colors: [
+      "var(--custom-purple-2)",
+      "var(--custom-green-2)",
+      "var(--custom-pink-2)",
+      "var(--custom-orange-2)",
+      "var(--custom-yellow-1)",
+      "var(--custom-purple-3)",
+      "var(--custom-green-3)",
+      "#BBBAC5",
+    ],
     plotOptions: {
       pie: {
         size: 220,
-        center: ["50%", "50%"],
+        center: ["50%", "55%"],
         innerSize: "40%",
         dataLabels: {
           enabled: true,
-          format: "{point.name}: {point.percentage:.1f} %",
+          format: "{point.name}",
           distance: -30,
           style: {
             fontWeight: "bold",
@@ -42,36 +80,20 @@ const IndustryMarketCapChartArea = ({
           },
         },
         showInLegend: true,
-        events: {
-          click: function (event) {
-            event.point.select(!event.point.selected)
-
-            let clickedIndustryName: string
-            let clickedChartColor: string
-            const defaultIndustryName = "전체"
-            const defaultChartColor = "var(--custom-black)"
-
-            if (event.point.selected) {
-              clickedIndustryName = event.point.name
-              if (typeof event.point.color === "string") {
-                clickedChartColor = event.point.color
-              } else {
-                clickedChartColor = defaultChartColor
-              }
-            } else {
-              clickedIndustryName = defaultIndustryName
-              clickedChartColor = defaultChartColor
-            }
-
-            setClickedIndustryInfo(clickedIndustryName, clickedChartColor)
+        cursor: "pointer",
+      },
+      series: {
+        point: {
+          events: {
+            click: handleClickChartPoint,
           },
         },
       },
     },
     series: [
       {
-        name: "Percentage",
-        data: data,
+        name: "DonutChart",
+        data: chartData,
         type: "pie",
       },
     ],
@@ -84,12 +106,13 @@ const IndustryMarketCapChartArea = ({
       alignColumns: false,
       width: "100%",
       padding: 12,
-      y: 8,
+      y: 12,
     },
     credits: {
       enabled: false,
     },
   }
+
   return (
     <AreaDiv>
       <HighchartsReact highcharts={Highcharts} options={options} />
