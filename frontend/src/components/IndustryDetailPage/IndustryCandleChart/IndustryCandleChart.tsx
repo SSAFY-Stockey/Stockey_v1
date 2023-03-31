@@ -1,14 +1,11 @@
 import * as Highcharts from "highcharts"
 import HighchartsReact from "highcharts-react-official"
 import highchartsStock from "highcharts/modules/stock"
-import BrandLight from "highcharts/themes/brand-light"
 import styled from "styled-components"
 import { sampleData } from "./dummyData"
 import { useState } from "react"
+import { makePriceFormat } from "../../IndustryMainPage/makePriceFormat"
 
-// 폰트 import 에러 발생 => 추후 확인할 것
-BrandLight(Highcharts)
-console.log(BrandLight)
 highchartsStock(Highcharts)
 Highcharts.setOptions({
   lang: {
@@ -35,7 +32,7 @@ Highcharts.setOptions({
 const IndustryCandleChart = () => {
   const dummyData = sampleData
 
-  const [options, setOptions] = useState<Highcharts.Options>({
+  const options: Highcharts.Options = {
     chart: {
       borderColor: "var(--custom-background)",
       borderRadius: 20,
@@ -61,11 +58,6 @@ const IndustryCandleChart = () => {
     rangeSelector: {
       allButtonsEnabled: false,
       buttons: [
-        {
-          type: "day",
-          count: 1,
-          text: "1일",
-        },
         {
           type: "week",
           count: 1,
@@ -114,11 +106,10 @@ const IndustryCandleChart = () => {
     },
     series: [
       {
-        name: "삼성전자",
+        name: "산업산업",
         type: "line",
         data: dummyData,
         color: "var(--custom-mint)",
-        compare: "percent",
       },
     ],
     title: {
@@ -126,13 +117,28 @@ const IndustryCandleChart = () => {
     },
     tooltip: {
       split: false,
-      valueDecimals: 2,
-      valueSuffix: "원",
-      dateTimeLabelFormats: {
-        day: "%Y년 %m월 %d일",
+      formatter: function (this: any) {
+        let tooltipContent =
+          "<b>" + Highcharts.dateFormat("%Y년 %m월 %d일", this.x) + "</b><br>"
+        tooltipContent += `<span style="color:${this.color}">${
+          this.series.name
+        }</span>: <b>${makePriceFormat(this.y)}</b> `
+
+        const index =
+          this.series.points.findIndex((point: any) => {
+            return point.x === this.x
+          }) - 1
+
+        if (index >= 0) {
+          const prevPoint = this.series.points[index]
+
+          tooltipContent += `(${
+            Math.round(((this.y - prevPoint.y) / prevPoint.y) * 10000) / 100
+          }%)<br/>`
+        }
+
+        return tooltipContent
       },
-      pointFormat:
-        '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> ({point.change}%)<br/>',
     },
     xAxis: {
       type: "datetime",
@@ -143,44 +149,12 @@ const IndustryCandleChart = () => {
     yAxis: {
       type: "linear",
     },
-  })
-
-  const changeChartType = (event: React.MouseEvent<HTMLButtonElement>) => {
-    switch ((event.target as HTMLButtonElement).value) {
-      case "candlestick":
-        setOptions({
-          series: [
-            {
-              type: "candlestick",
-              color: undefined,
-            },
-          ],
-        })
-        break
-      case "line":
-        setOptions({
-          series: [
-            {
-              type: "line",
-              color: "var(--custom-mint)",
-            },
-          ],
-        })
-        break
-      default:
-    }
   }
 
   return (
     <AreaDiv>
       <TitleDiv>산업 규모</TitleDiv>
       <ChartWrapper>
-        <button onClick={changeChartType} value="line">
-          간단히
-        </button>
-        <button onClick={changeChartType} value="candlestick">
-          자세히
-        </button>
         <HighchartsReact
           highcharts={Highcharts}
           constructorType={"stockChart"}

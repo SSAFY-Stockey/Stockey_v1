@@ -4,15 +4,18 @@ import Card from "@mui/material/Card"
 import { CardActionArea } from "@mui/material"
 import { useNavigate } from "react-router-dom"
 
-interface CardProps {
-  industryName: string
+export interface IndustryInfoType {
+  id: number
+  name: string
+  description: string | null
+  category: string
 }
 
-const IndustryCard = ({ industryName }: CardProps) => {
+const IndustryCard = ({ industryInfo }: { industryInfo: IndustryInfoType }) => {
   const navigate = useNavigate()
   const onClickIndustryCard = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
-    navigate(`/industry/${industryName}`)
+    navigate(`/industry/${industryInfo.name}`)
   }
 
   return (
@@ -23,7 +26,7 @@ const IndustryCard = ({ industryName }: CardProps) => {
             <IndustryCardImg src="/industryLogos/sampleIndustryLogo.png" />
           </IndustryCardBody>
           <IndustryCardNameArea>
-            <NameTagP>{industryName}</NameTagP>
+            <NameTagP>{industryInfo.name}</NameTagP>
           </IndustryCardNameArea>
         </IndustryCardContent>
       </IndustryCardActionArea>
