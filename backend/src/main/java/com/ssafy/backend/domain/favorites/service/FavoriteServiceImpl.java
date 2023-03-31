@@ -4,6 +4,7 @@ import com.ssafy.backend.domain.favorites.entity.Favorite;
 import com.ssafy.backend.domain.favorites.repository.FavoriteRepository;
 import com.ssafy.backend.domain.industry.entity.Industry;
 import com.ssafy.backend.domain.member.entity.Member;
+import com.ssafy.backend.domain.stock.entity.Stock;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +14,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FavoriteServiceImpl implements FavoriteService {
     private final FavoriteRepository favoriteRepository;
-
 
     // 내 관심 산업
     public List<Favorite> _findByIndustry(Member member) {
@@ -25,5 +25,13 @@ public class FavoriteServiceImpl implements FavoriteService {
         return favoriteRepository.existsByMemberAndIndustry(member, industry);
     }
 
+    @Override
+    public List<Favorite> _findByStock(Member member) {
+        return favoriteRepository.findByStock(member);
+    }
 
+    @Override
+    public boolean existsByMemberAndStock(Stock stock, Member member) {
+        return favoriteRepository.existsByMemberAndStock(member,stock);
+    }
 }
