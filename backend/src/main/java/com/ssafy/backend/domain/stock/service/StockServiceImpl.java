@@ -34,6 +34,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StockServiceImpl implements StockService{
 
+
     private final StockRepository stockRepository;
     private final StockMapper stockMapper;
     private final StockDtoMapper stockDtoMapper;
@@ -52,8 +53,10 @@ public class StockServiceImpl implements StockService{
         List<BusinessDto> businessDtos = businessMapper.toDto(stock.getBusinesses());
         stockDto.setIndustry(industryDto);
         stockDto.setBusinesses(businessDtos);
-        Integer rank = getStockIndustryRank(stockId, industryDto.getId());
-        stockDto.setIndustryRank(rank);
+        Integer marketCapRank = getStockIndustryMarketCapRank(stockId, industryDto.getId());
+        stockDto.setIndustryCapRank(marketCapRank);
+        Integer favoriteRank = getStockIndustryMarketCapRank(stockId, industryDto.getId());
+        stockDto.setIndustryFavRank(favoriteRank);
         Float avgRate = getAverageIndustryChangeRate(industryDto.getId());
         stockDto.setIndustryAvgChangeRate(avgRate);
         DailyStockDto dailyStockDto =getTodayDailyStock(stockId);
@@ -61,8 +64,13 @@ public class StockServiceImpl implements StockService{
         return stockDto;
     }
 
-    public Integer getStockIndustryRank(Long stockId, Long industryId)throws Exception{
-        Integer rank = stockRepository.findIndustryRank(stockId, industryId);
+    public Integer getStockIndustryMarketCapRank(Long stockId, Long industryId)throws Exception{
+        Integer rank = stockRepository.findIndustryMarketCapRank(stockId, industryId);
+        return rank;
+    }
+
+    public Integer getStockIndustryFavoriteRank(Long stockId,Long industryId){
+        Integer rank = stockRepository.findIndustryFavoriteRank(stockId,industryId);
         return rank;
     }
 

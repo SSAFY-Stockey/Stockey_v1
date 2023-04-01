@@ -2,7 +2,6 @@ package com.ssafy.backend.domain.stock.repository;
 
 import com.ssafy.backend.domain.industry.entity.Industry;
 import com.ssafy.backend.domain.stock.dto.IndustrySumDto;
-import com.ssafy.backend.domain.stock.entity.DailyStock;
 import com.ssafy.backend.domain.stock.entity.Stock;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,7 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 public interface StockRepository extends JpaRepository<Stock,Long> {
@@ -46,7 +44,17 @@ public interface StockRepository extends JpaRepository<Stock,Long> {
             "\tFROM stock\n" +
             "\tWHERE industry_id = :industryId ) as b\n" +
             "WHERE stock_id = :stockId ;", nativeQuery = true)
-    Integer findIndustryRank(Long stockId, Long industryId);
+    Integer findIndustryMarketCapRank(Long stockId, Long industryId);
+
+    @Query(value = "SELECT ranking\n" +
+            " FROM  (\n" +
+                " SELECT stock_id, count(*), rank() over (order by count(*) desc) as ranking \n" +
+                " FROM  favorite f \n" +
+                " WHERE f.industry_id = :industryId \n" +
+                " GROUP BY :stockId \n" +
+            ") s\n" +
+            " where s.stock_id = stockId;" ,nativeQuery = true)
+    Integer findIndustryFavoriteRank(Long stockId,Long industryId);
 
     @Query(value = "select avg(change_rate), stock_date\n" +
             "from daily_stock\n" +

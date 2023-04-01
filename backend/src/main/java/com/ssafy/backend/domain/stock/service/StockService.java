@@ -12,7 +12,8 @@ import java.util.List;
 
 public interface StockService {
      StockDto getStock(Long stockId) throws Exception;
-     Integer getStockIndustryRank(Long stockId, Long industryId)throws Exception;
+     Integer getStockIndustryMarketCapRank(Long stockId, Long industryId)throws Exception;
+     Integer getStockIndustryFavoriteRank(Long stockId, Long industryId);
      Float getAverageIndustryChangeRate(Long industryId) throws Exception;
      List<StockPreviewDto> getStock() throws Exception;
      List<StockPreviewDto> getStockRandom(Integer count) throws Exception;
