@@ -1,12 +1,14 @@
 package com.ssafy.backend.domain.keyword.dto;
 
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.ToString;
 
+@Builder
 @Getter
-@Setter
+@ToString
 public class KeywordDto {
-    private Long id;
-    private String name;
-    private String description;
+    private final long id;
+    private final String name;
+    private final String description;
 }
