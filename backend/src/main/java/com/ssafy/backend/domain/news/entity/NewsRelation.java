@@ -1,7 +1,8 @@
-package com.ssafy.backend.temp;
+package com.ssafy.backend.domain.news.entity;
 
 import com.ssafy.backend.domain.industry.entity.Industry;
 import com.ssafy.backend.domain.keyword.entity.Keyword;
+import com.ssafy.backend.domain.news.entity.News;
 import com.ssafy.backend.domain.stock.entity.Stock;
 import lombok.Getter;
 
