@@ -2,6 +2,7 @@ import { Box } from "@mui/material"
 import KeywordBarGraph from "../../../StockMainPage/BriefingSection/KeywordBarGraph"
 import LoadingComponent from "../../../common/Loading/LoadingComponent"
 import styled from "styled-components"
+import OtherKeywordList from "./OtherKeywordList"
 
 interface Props {
   activeTab: number
@@ -20,7 +21,14 @@ function NewsTabPanel({ activeTab, index, isLoading, ...other }: Props) {
     >
       {activeTab === index && (
         <TabPanelWrapper isLoading={isLoading}>
-          {isLoading ? <LoadingComponent /> : <KeywordBarGraph />}
+          {isLoading ? (
+            <LoadingComponent />
+          ) : (
+            <>
+              <KeywordBarGraph />
+              <OtherKeywordList />
+            </>
+          )}
         </TabPanelWrapper>
       )}
     </div>
