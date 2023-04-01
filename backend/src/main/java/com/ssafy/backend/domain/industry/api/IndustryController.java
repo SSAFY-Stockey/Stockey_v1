@@ -7,8 +7,8 @@ import com.ssafy.backend.domain.industry.dto.IndustryDto;
 import com.ssafy.backend.domain.industry.mapper.IndustryDtoMapper;
 import com.ssafy.backend.domain.industry.service.IndustryService;
 import com.ssafy.backend.domain.member.entity.Member;
-import com.ssafy.backend.domain.member.repository.MemberRepository;
 import com.ssafy.backend.domain.member.service.MemberService;
+import com.ssafy.backend.domain.stock.api.response.GetStockTodayResponse;
 import com.ssafy.backend.domain.stock.dto.StockBriefDto;
 import com.ssafy.backend.global.annotation.Auth;
 import com.ssafy.backend.global.dto.ResponseDto;
@@ -99,6 +99,22 @@ public class IndustryController {
         return new ResponseEntity<>(new ResponseDto("OK", stockList), HttpStatus.OK);
     }
 
+    //산업에 해당하는 기업 리스트의 현재가 출력
+    @Operation(summary = "해당 산업의 주식현재가격 출력", description = "해당 산업에 해당하는 종목 리스트의 현재가를 반환해주는 리스트입니다")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "요청 성공"),
+                    @ApiResponse(responseCode = "404", description = "해당 산업 없음")
+            }
+    )
+    @GetMapping("/stocklist/{id}/current")
+    public ResponseEntity<ResponseDto> getStockCurrent(@PathVariable Long id){
+        List<GetStockTodayResponse> stockListPrice = industryService.getStockListPrice(id);
+        return new ResponseEntity<>(new ResponseDto("OK", stockListPrice), HttpStatus.OK);
+    }
+
+
+
     // 내 관심산업 리스트
     @Operation(summary = "관심 산업 리스트", description = "내 관심 산업 리스트를 출력합니다.")
     @ApiResponses(
@@ -178,6 +194,9 @@ public class IndustryController {
         List<GetIndustryMarketCapResponse> marketCapList = industryService.getMarketCapList(id);
         return new ResponseEntity<>(new ResponseDto("OK", marketCapList), HttpStatus.OK);
     }
+
+
+
 
 
 }
