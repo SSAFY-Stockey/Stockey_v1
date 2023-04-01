@@ -7,11 +7,11 @@ interface Props {
   keyword: string
 }
 
-const triggerScroll = () => {
+export const triggerScroll = (elementId: string) => {
   console.log("triggerScroll")
-  const newsRef = document.getElementById("newsRef")
-  console.log(newsRef)
-  newsRef?.scrollIntoView({ behavior: "smooth" })
+  const scrollRef = document.getElementById(elementId)
+  console.log(scrollRef)
+  scrollRef?.scrollIntoView({ behavior: "smooth" })
 }
 const KeywordPanel = ({ keyword }: Props) => {
   return (
@@ -23,7 +23,7 @@ const KeywordPanel = ({ keyword }: Props) => {
       <PanelSubTitle id="newsRef">
         {keyword} 관련 기사 한 눈에 보기
       </PanelSubTitle>
-      <NewsSection triggerScroll={triggerScroll} />
+      <NewsSection triggerScroll={() => triggerScroll("newsRef")} />
     </PanelWrapper>
   )
 }

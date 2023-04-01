@@ -1,5 +1,5 @@
 // import { readFileSync } from "fs"
-import { ChartWrapper } from "../KeywordPanel/KeywordChart"
+import { ChartWrapper } from "../../KeywordPanel/KeywordChart"
 import * as Highcharts from "highcharts"
 import HighchartsReact from "highcharts-react-official"
 import highchartsStock from "highcharts/modules/stock"

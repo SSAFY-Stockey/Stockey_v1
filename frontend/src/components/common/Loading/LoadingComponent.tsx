@@ -25,11 +25,11 @@ const LoaderContainer = styled.div`
 `
 const LoaderWrapper = styled.div`
   width: 200px;
-  height: 60px;
+  height: 50%;
   position: absolute;
   left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  top: 30%;
+  transform: translate(-50%, 0%);
 `
 const CircleAnimation = keyframes`
 0%{

@@ -1,9 +1,8 @@
 import styled from "styled-components"
 import { PanelTitle } from "../KeywordPanel/KeywordPanel"
 import BookmarkBtn from "../../common/Bookmark/BookmarkBtn"
-import PriceSection from "./PriceSection"
-import KeywordSection from "./KeywordSection"
-import AnalysisTriggerBtn from "./AnalysisTriggerBtn"
+import PriceSection from "./PriceSection/PriceSection"
+import AnalysisSection from "./KeywordSection/AnalysisSection"
 import { Grid } from "@mui/material"
 
 const StockMainSection = () => {
@@ -15,14 +14,11 @@ const StockMainSection = () => {
           <BookmarkBtn isBookmarked={false} page="stock" />
         </PanelTitle>
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={12} id="priceChartRef">
         <PriceSection />
       </Grid>
       <Grid item xs={12}>
-        <AnalysisTriggerBtn />
-      </Grid>
-      <Grid item xs={12}>
-        <KeywordSection />
+        <AnalysisSection />
       </Grid>
     </SectionWrapper>
   )
