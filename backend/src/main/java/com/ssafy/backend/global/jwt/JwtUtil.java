@@ -158,7 +158,7 @@ public class JwtUtil {
         refreshTokenCookie.setMaxAge(((int)refreshTokenValidityInMinutes) * 60);
         refreshTokenCookie.setHttpOnly(true);
         refreshTokenCookie.setSecure(request.isSecure()); // true로 하면 항상 https만 가능
-        refreshTokenCookie.setPath("/");
+        refreshTokenCookie.setPath("/api");
 
         assert response != null;
         response.addCookie(refreshTokenCookie);
