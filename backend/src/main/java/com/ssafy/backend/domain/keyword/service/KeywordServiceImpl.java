@@ -34,7 +34,6 @@ public class KeywordServiceImpl implements KeywordService{
 
     @Override
     public List<KeywordStatisticDto> getKeywordFreq(Long keywordsId) {
-        return keywordStatisticRepository.findStatisticsByCategoryAndKeywordId(StatisticType.FREQ, keywordsId);
-//        return null;
+        return keywordStatisticRepository.findFreqStatisticsByKeywordId(keywordsId);
     }
 }

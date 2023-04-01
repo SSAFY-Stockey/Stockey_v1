@@ -63,17 +63,25 @@ class KeywordServiceImplTest {
                 .count(50L)
                 .category(StatisticType.FREQ).build();
 
-        keywordStatisticRepository.save(ks1);
+        KeywordStatistic saveKs1 = keywordStatisticRepository.save(ks1);
         keywordStatisticRepository.save(ks2);
         keywordStatisticRepository.save(ks3);
 
-
-
         List<KeywordStatisticDto> keywordFreq = keywordService.getKeywordFreq(k1.getId());
 
-        for (KeywordStatisticDto keywordStatisticDto : keywordFreq) {
-            System.out.println("keywordStatisticDto.getStatisticDate() = " + keywordStatisticDto.getStatisticDate());
-            System.out.println("keywordStatisticDto.getCount() = " + keywordStatisticDto.getCount());
-        }
+        Assertions.assertThat(keywordFreq.size()).isEqualTo(3);
+
+        Assertions.assertThat(keywordFreq.get(0).getStatisticDate())
+                .isEqualTo(LocalDate.of(2022, 10, 22));
+        Assertions.assertThat(keywordFreq.get(0).getCount())
+                .isEqualTo(10);
+        Assertions.assertThat(keywordFreq.get(1).getStatisticDate())
+                .isEqualTo(LocalDate.of(2022, 11, 15));
+        Assertions.assertThat(keywordFreq.get(1).getCount())
+                .isEqualTo(20);
+        Assertions.assertThat(keywordFreq.get(2).getStatisticDate())
+                .isEqualTo(LocalDate.of(2022, 12, 3));
+        Assertions.assertThat(keywordFreq.get(2).getCount())
+                .isEqualTo(50);
     }
 }

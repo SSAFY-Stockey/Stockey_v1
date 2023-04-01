@@ -3,6 +3,7 @@ package com.ssafy.backend.domain.keyword.api;
 import com.ssafy.backend.domain.keyword.api.request.SearchKeywordRequest;
 import com.ssafy.backend.domain.keyword.api.response.KeywordDetailResponse;
 import com.ssafy.backend.domain.keyword.dto.KeywordDto;
+import com.ssafy.backend.domain.keyword.dto.KeywordStatisticDto;
 import com.ssafy.backend.domain.keyword.mapper.KeywordDtoMapper;
 import com.ssafy.backend.domain.keyword.service.KeywordService;
 import com.ssafy.backend.global.dto.ResponseDto;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -45,13 +47,14 @@ public class KeywordController {
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "요청 성공"),
-                    @ApiResponse(responseCode = "400", description = "잘못된 요청"),
-                    @ApiResponse(responseCode = "404", description = "키워드 데이터 없음")
             }
     )
     @GetMapping("/{keywordsId}/frequency")
     public ResponseEntity<ResponseDto> getKeywordFreq(@Valid @NotNull @Min(value = -1) @PathVariable Long keywordsId) {
-        keywordService.getKeywordFreq(keywordsId);
-        return new ResponseEntity<>(new ResponseDto("키워드 상세 정보", null), HttpStatus.OK);
+        List<KeywordStatisticDto> keywordFreq = keywordService.getKeywordFreq(keywordsId);
+        return new ResponseEntity<>(new ResponseDto("일자별 키워드 빈도", keywordFreq), HttpStatus.OK);
     }
+
+
+    
 }

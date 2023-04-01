@@ -13,7 +13,7 @@ import java.time.LocalDate;
 
 @Getter
 @Entity
-@Table(name = "keywords_statistic")
+@Table(name = "keyword_statistic")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class KeywordStatistic {
     @Id
