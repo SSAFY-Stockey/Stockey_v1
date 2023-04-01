@@ -5,6 +5,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.ssafy.backend.domain.member.dto.MemberDto;
 import com.ssafy.backend.domain.member.dto.OauthMemberDto;
+import com.ssafy.backend.global.exception.jwt.JwtException;
+import com.ssafy.backend.global.exception.jwt.JwtExceptionType;
 import com.ssafy.backend.global.exception.member.AuthException;
 import com.ssafy.backend.global.exception.member.AuthExceptionType;
 import com.ssafy.backend.global.exception.member.MemberException;
@@ -138,8 +140,10 @@ public class AuthServiceImpl implements AuthService{
         // refresh token 받아오기
         String refreshToken = jwtUtil.getRefreshTokenFromCookie();
 
-        // refresh token 인증
-        jwtUtil.isValidForm(refreshToken);
+        if (refreshToken == null) {
+            throw new JwtException(JwtExceptionType.TOKEN_NULL);
+        }
+
         refreshToken = refreshToken.substring(7);
         jwtUtil.isValidToken(refreshToken, JwtUtil.REFRESH_TOKEN_SUBJECT);
 
