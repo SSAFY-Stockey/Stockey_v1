@@ -6,6 +6,10 @@ import com.ssafy.backend.domain.keyword.dto.KeywordDto;
 import com.ssafy.backend.domain.keyword.dto.KeywordStatisticDto;
 import com.ssafy.backend.domain.keyword.mapper.KeywordDtoMapper;
 import com.ssafy.backend.domain.keyword.service.KeywordService;
+import com.ssafy.backend.domain.member.entity.Member;
+import com.ssafy.backend.domain.member.service.MemberService;
+import com.ssafy.backend.domain.stock.api.response.GetStockTodayResponse;
+import com.ssafy.backend.global.annotation.Auth;
 import com.ssafy.backend.global.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -56,5 +60,19 @@ public class KeywordController {
     }
 
 
-    
+    // 내 관심종목 리스트
+    @Auth
+    @Operation(summary = "관심 종목 리스트", description = "내 관심 종목 리스트를 출력합니다.")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "요청 성공")
+            }
+    )
+    @GetMapping("/my")
+    public ResponseEntity<ResponseDto> getMyKeywords() {
+        List<KeywordDto> myKeywords = keywordService.getMyKeywords();
+        return new ResponseEntity<>(new ResponseDto("관심 키워드 출력!",
+                keywordDtoMapper.toKeywordResponse(myKeywords)), HttpStatus.OK);
+
+    }
 }

@@ -13,5 +13,7 @@ public interface KeywordService {
 
     List<KeywordStatisticDto> getKeywordFreq(Long keywordsId);
 
+    List<KeywordDto> getMyKeywords();
+
 //     getKeywordFreq(Long keywordsId);
 }
