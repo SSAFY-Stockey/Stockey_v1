@@ -28,6 +28,7 @@ public class GetStockResponse {
     private IndustryDto industry;
     private List<BusinessDto> businesses;
     private DailyStockDto todayDailyStock;
-    private Integer industryRank;
+    private Integer industryCapRank;
+    private Integer industryFavRank;
     private Float industryAvgChangeRate;
 }
