@@ -15,5 +15,7 @@ public interface KeywordService {
 
     List<KeywordDto> getMyKeywords();
 
+    boolean checkFavorite(Long id);
+
 //     getKeywordFreq(Long keywordsId);
 }

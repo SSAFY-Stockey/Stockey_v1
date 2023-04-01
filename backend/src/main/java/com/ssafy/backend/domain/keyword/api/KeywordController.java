@@ -60,19 +60,33 @@ public class KeywordController {
     }
 
 
-    // 내 관심종목 리스트
+    // 내 관심키워드 리스트
     @Auth
-    @Operation(summary = "관심 종목 리스트", description = "내 관심 종목 리스트를 출력합니다.")
+    @Operation(summary = "관심 키워드 리스트", description = "내 관심 키워드 리스트를 출력합니다.")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "요청 성공")
             }
     )
-    @GetMapping("/my")
+    @GetMapping("/keywordlist/my")
     public ResponseEntity<ResponseDto> getMyKeywords() {
         List<KeywordDto> myKeywords = keywordService.getMyKeywords();
         return new ResponseEntity<>(new ResponseDto("관심 키워드 출력!",
                 keywordDtoMapper.toKeywordResponse(myKeywords)), HttpStatus.OK);
 
+    }
+
+    // 관심 키워드 체크
+    @Auth
+    @Operation(summary = "관심 키워드 체크", description = "관심 키워드 체크")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "요청 성공")
+            }
+    )
+    @GetMapping("keywordlist/my/{id}")
+    public ResponseEntity<ResponseDto> checkFavorite(@PathVariable Long id) {
+        boolean result = keywordService.checkFavorite(id);
+        return new ResponseEntity<>(new ResponseDto("관심 키워드 여부 체크!", result), HttpStatus.OK);
     }
 }

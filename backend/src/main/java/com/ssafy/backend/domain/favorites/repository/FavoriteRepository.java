@@ -17,14 +17,13 @@ public interface FavoriteRepository extends JpaRepository<Favorite,Long> {
     List<Favorite> findByIndustry(@Param("member")Member member);
     @Query("select f from Favorite f where f.member = :member and f.stock != null")
     List<Favorite> findByStock(@Param("member")Member member);
-//    @Query("select f from Favorite f where f.member = :member and f.keyword != null")
-//    List<Favorite> findByKeyword(@Param("member")Member member);
     @Query("SELECT f.keyword FROM Favorite f WHERE f.member = :member and f.keyword != null")
     List<Keyword> findKeywordsByMember(@Param("member") Member member);
 
 
     boolean existsByMemberAndIndustry(Member member, Industry industry);
     boolean existsByMemberAndStock(Member member, Stock stock);
+    boolean existsByMemberAndKeyword(Member member, Keyword keyword);
     Favorite findByMemberAndIndustry(Member member,Industry industry);
     Favorite findByMemberAndStock(Member member, Stock stock);
 

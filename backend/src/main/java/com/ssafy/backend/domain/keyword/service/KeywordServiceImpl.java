@@ -46,4 +46,11 @@ public class KeywordServiceImpl implements KeywordService{
         List<Keyword> keywords = favoriteRepository.findKeywordsByMember(memberService.getMemberEntity());
         return keywordMapper.toDto(keywords);
     }
+
+    @Override
+    public boolean checkFavorite(Long id) {
+        Keyword keyword = keywordRepository.findById(id).orElseThrow(()
+                -> new KeywordException(KeywordExceptionType.KEYWORD_NOT_EXIST));
+        return favoriteRepository.existsByMemberAndKeyword(memberService.getMemberEntity(), keyword);
+    }
 }

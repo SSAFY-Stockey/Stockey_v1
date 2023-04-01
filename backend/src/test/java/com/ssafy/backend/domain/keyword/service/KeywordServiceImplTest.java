@@ -121,4 +121,21 @@ class KeywordServiceImplTest {
         List<Keyword> keywords2 = favoriteRepository.findKeywordsByMember(saveMember2);
         Assertions.assertThat(keywords2.size()).isEqualTo(0);
     }
+
+    @Test
+    void 관심_키워드_여부_확인() {
+        Member member = Member.oAuthBuilder().oAuthType(OauthType.KAKAO).oAuthId(1234L).nickname("jun").build();
+        Member member2 = Member.oAuthBuilder().oAuthType(OauthType.KAKAO).oAuthId(5678L).nickname("kim").build();
+        Member saveMember = memberRepository.save(member);
+        Member saveMember2 = memberRepository.save(member2);
+
+        Keyword k1 = Keyword.builder().name("금리").description("금리란...").build();
+        Keyword saveK1 = keywordRepository.save(k1);
+
+        Favorite f1 = Favorite.keywordBuilder().member(saveMember).keyword(saveK1).build();
+        favoriteRepository.save(f1);
+
+        Assertions.assertThat(favoriteRepository.existsByMemberAndKeyword(saveMember, saveK1)).isTrue();
+        Assertions.assertThat(favoriteRepository.existsByMemberAndKeyword(saveMember2, saveK1)).isFalse();
+    }
 }
