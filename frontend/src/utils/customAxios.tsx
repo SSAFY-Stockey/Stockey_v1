@@ -1,7 +1,7 @@
 import axios from "axios"
 
 // custom axios
-// parameter => accessToken : accessToken 인증이 필요한 경우, argument 값으로 accessToken을 넣어서 사용
+// parameter => accessToken : accessToken 인증이 필요한 경우, argument 값으로 accessToken, setAccessToken을 넣어서 사용
 // useQuery에서 사용하는 경우 useQuery의 queryKey에 accessToken을 넣어서 fetch 함수에 전달할 것
 
 const customAxios = (
@@ -16,16 +16,16 @@ const customAxios = (
 
   // refresh 여부 확인 코드
   let isTokenRefreshing = false
-  let refreshSubscribers: any[] = []
-
-  // refreshToken 재실행 코드
-  const onTokenRefreshed = (accessToken: string) => {
-    refreshSubscribers.map((callback: any) => callback(accessToken))
-  }
+  let refreshSubscribers: ((token: string) => void)[] = []
 
   // refresh 필요 함수 저장
-  const addRefreshSubscriber = (callback: any) => {
-    refreshSubscribers.push(callback)
+  const subscribeTokenRefresh = (cb: (token: string) => void) => {
+    refreshSubscribers.push(cb)
+  }
+
+  // refreshToken 재실행 코드
+  const onRefreshed = (token: string) => {
+    refreshSubscribers.forEach((cb) => cb(token))
   }
 
   // header에 accessToken 추가
@@ -35,6 +35,36 @@ const customAxios = (
     }
     return config
   })
+
+  // refresh token 요청 함수
+  const getRefreshToken = async (): Promise<string | void> => {
+    try {
+      const { data: newAccessToken } = await axios.get(
+        `${process.env.REACT_APP_SERVER_BASE_URL}/auth/refresh`,
+        {
+          timeout: 2000,
+          withCredentials: true,
+        }
+      )
+
+      isTokenRefreshing = false
+      onRefreshed(newAccessToken)
+      refreshSubscribers = []
+
+      if (setAccessToken) {
+        setAccessToken(newAccessToken?.data)
+      }
+
+      return newAccessToken?.data
+    } catch (error) {
+      isTokenRefreshing = false
+      refreshSubscribers = []
+
+      if (setAccessToken) {
+        setAccessToken(undefined)
+      }
+    }
+  }
 
   // refresh 요청 보내기
   api.interceptors.response.use(
@@ -48,27 +78,30 @@ const customAxios = (
       } = error
       const originalRequest = config
 
-      if (status === 401 || status === 400) {
-        console.log("no, its expired")
-        // isTokenRefreshing이 false인 경우에만 token refresh 요청
-        if (!isTokenRefreshing) {
-          isTokenRefreshing = true
-
-          const newAccessToken = axios
-            .get(`${process.env.REACT_APP_SERVER_BASE_URL}/auth/refresh`, {
-              timeout: 2000,
-              withCredentials: true,
-            })
-            .then((response) => {
-              return response.data.data
-            })
-
-          // 새로운 accessToken 저장
-          if (setAccessToken) {
-            setAccessToken(newAccessToken)
-          }
-        }
+      if (status !== 401 && status !== 400) {
+        return Promise.reject(error)
       }
+
+      if (isTokenRefreshing) {
+        return new Promise((resolve) => {
+          subscribeTokenRefresh((token: string) => {
+            originalRequest.headers.Authorization = `Bearer ${token}`
+            resolve(axios(originalRequest))
+          })
+        })
+      }
+      isTokenRefreshing = true
+      const newAccessToken = await getRefreshToken()
+      console.log(newAccessToken)
+      console.log(typeof newAccessToken)
+
+      if (typeof newAccessToken === "string") {
+        console.log("refetch")
+        config.headers.Authorization = `Bearer ${newAccessToken}`
+        return axios(config)
+      }
+
+      return Promise.reject(error)
     }
   )
 

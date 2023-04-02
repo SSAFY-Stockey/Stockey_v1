@@ -4,6 +4,8 @@ import styled from "styled-components"
 import { Grid } from "@mui/material"
 import customAxios from "../utils/customAxios"
 
+import { useEffect } from "react"
+
 import { accessTokenSelector } from "../stores/atoms"
 import { useRecoilState } from "recoil"
 
@@ -21,6 +23,10 @@ const KeywordPage = () => {
         console.log(error)
       })
   }
+
+  useEffect(() => {
+    console.log(accessToken)
+  }, [accessToken])
 
   const handleAnotherClick = () => {
     console.log(document.cookie)
