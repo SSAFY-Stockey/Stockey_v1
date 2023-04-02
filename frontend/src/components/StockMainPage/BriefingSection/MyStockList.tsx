@@ -13,8 +13,6 @@ const MyStockList = () => {
           stockName={stock.name}
           currentPrice={stock.currentPrice}
           priceChange={stock.changeRate}
-          selectedIdx={selectedIdx}
-          setSelectedIdx={setSelectedIdx}
         />
       ))}
     </StyledDiv>

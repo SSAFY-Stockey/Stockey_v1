@@ -28,7 +28,7 @@ interface DataProps {
   rank: number
 }
 
-const KeywordBarGraph = (selectedIdx: number) => {
+const KeywordBarGraph = () => {
   const data: DataProps[] = [
     { name: "빅스텝", y: 74.84, rank: 2 },
     { name: "금리", y: 100, rank: 1 },
