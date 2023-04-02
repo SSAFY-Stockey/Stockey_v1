@@ -6,6 +6,10 @@ import com.ssafy.backend.domain.keyword.dto.KeywordDto;
 import com.ssafy.backend.domain.keyword.dto.KeywordStatisticDto;
 import com.ssafy.backend.domain.keyword.mapper.KeywordDtoMapper;
 import com.ssafy.backend.domain.keyword.service.KeywordService;
+import com.ssafy.backend.domain.member.entity.Member;
+import com.ssafy.backend.domain.member.service.MemberService;
+import com.ssafy.backend.domain.stock.api.response.GetStockTodayResponse;
+import com.ssafy.backend.global.annotation.Auth;
 import com.ssafy.backend.global.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -56,5 +60,69 @@ public class KeywordController {
     }
 
 
-    
+    // 내 관심키워드 리스트
+    @Auth
+    @Operation(summary = "관심 키워드 리스트", description = "내 관심 키워드 리스트를 출력합니다.")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "요청 성공"),
+                    @ApiResponse(responseCode = "401", description = "권한 없음")
+            }
+    )
+    @GetMapping("/keywordlist/my")
+    public ResponseEntity<ResponseDto> getMyKeywords() {
+        List<KeywordDto> myKeywords = keywordService.getMyKeywords();
+        return new ResponseEntity<>(new ResponseDto("관심 키워드 출력!",
+                keywordDtoMapper.toKeywordResponse(myKeywords)), HttpStatus.OK);
+
+    }
+
+    // 관심 키워드 체크
+    @Auth
+    @Operation(summary = "관심 키워드 체크", description = "관심 키워드 체크")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "요청 성공"),
+                    @ApiResponse(responseCode = "401", description = "권한 없음")
+            }
+    )
+    @GetMapping("/keywordlist/my/{id}")
+    public ResponseEntity<ResponseDto> checkFavorite(@PathVariable Long id) {
+        boolean result = keywordService.checkFavorite(id);
+        return new ResponseEntity<>(new ResponseDto("관심 키워드 여부 체크!", result), HttpStatus.OK);
+    }
+
+    // 관심 키워드 등록
+    @Auth
+    @Operation(summary = "관심 키워드 등록", description = "관심 키워드를 등록합니다.")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "201", description = "등록 성공"),
+                    @ApiResponse(responseCode = "400", description = "이미 관심 키워드 등록"),
+                    @ApiResponse(responseCode = "401", description = "권한 없음"),
+                    @ApiResponse(responseCode = "404", description = "키워드 없음"),
+            }
+    )
+    @PostMapping("/keywordlist/my/{id}")
+    public ResponseEntity<ResponseDto> addFavorite(@PathVariable Long id) {
+        keywordService.addFavorite(id);
+        return new ResponseEntity<>(new ResponseDto("관심 키워드 등록 성공!", null), HttpStatus.CREATED);
+    }
+
+    // 관심 산업 삭제
+    @Auth
+    @Operation(summary = "관심 키워드 삭제", description = "관심 키워드를 삭제합니다.")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "삭제 성공"),
+                    @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+                    @ApiResponse(responseCode = "401", description = "권한 없음"),
+                    @ApiResponse(responseCode = "404", description = "키워드 없음"),
+            }
+    )
+    @DeleteMapping("/keywordlist/my/{id}")
+    public ResponseEntity<ResponseDto> deleteFavorite(@PathVariable Long id) {
+        keywordService.deleteFavorite(id);
+        return new ResponseEntity<>(new ResponseDto("DELETED", null), HttpStatus.OK);
+    }
 }
