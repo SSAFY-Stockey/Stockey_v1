@@ -1,15 +1,18 @@
 import { atom, selector } from "recoil"
 
+// 닉네임 유효성 검사 State
 export const nicknameValidState = atom<boolean>({
   key: "nicknameValidState",
   default: false,
 })
 
-const accessTokenState = atom<string | null>({
+// accessToken 저장 State
+const accessTokenState = atom<string | undefined>({
   key: "accessToken",
-  default: null,
+  default: undefined,
 })
 
+// accessToken의 getter & setter
 export const accessTokenSelector = selector({
   key: "setAccessToken",
   get: ({ get }) => get(accessTokenState),
@@ -18,6 +21,7 @@ export const accessTokenSelector = selector({
   },
 })
 
+// login Stae
 export const logInState = atom<boolean>({
   key: "logInState",
   default: false,
