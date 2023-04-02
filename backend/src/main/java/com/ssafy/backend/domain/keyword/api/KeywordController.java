@@ -89,4 +89,20 @@ public class KeywordController {
         boolean result = keywordService.checkFavorite(id);
         return new ResponseEntity<>(new ResponseDto("관심 키워드 여부 체크!", result), HttpStatus.OK);
     }
+
+    // 관심 키워드 등록
+    @Auth
+    @Operation(summary = "관심 키워드 등록", description = "관심 키워드를 등록합니다.")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "201", description = "등록 성공"),
+                    @ApiResponse(responseCode = "400", description = "이미 관심 키워드 등록"),
+                    @ApiResponse(responseCode = "404", description = "키워드 없음"),
+            }
+    )
+    @PostMapping("keywordlist/my/{id}")
+    public ResponseEntity<ResponseDto> addFavorite(@PathVariable Long id) {
+        keywordService.addFavorite(id);
+        return new ResponseEntity<>(new ResponseDto("관심 키워드 등록 성공!", null), HttpStatus.CREATED);
+    }
 }

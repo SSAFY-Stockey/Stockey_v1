@@ -12,6 +12,7 @@ import com.ssafy.backend.domain.keyword.repository.KeywordStatisticRepository;
 import com.ssafy.backend.domain.member.entity.Member;
 import com.ssafy.backend.domain.member.enums.OauthType;
 import com.ssafy.backend.domain.member.repository.MemberRepository;
+import com.ssafy.backend.global.exception.favorite.FavoriteException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -120,6 +121,27 @@ class KeywordServiceImplTest {
 
         List<Keyword> keywords2 = favoriteRepository.findKeywordsByMember(saveMember2);
         Assertions.assertThat(keywords2.size()).isEqualTo(0);
+    }
+
+    @Test
+    void 관심_키워드_등록() {
+        Member member = Member.oAuthBuilder().oAuthType(OauthType.KAKAO).oAuthId(1234L).nickname("jun").build();
+        Member saveMember = memberRepository.save(member);
+
+        Keyword k1 = Keyword.builder().name("금리").description("금리란...").build();
+        Keyword saveK1 = keywordRepository.save(k1);
+
+        Favorite favorite = Favorite.keywordBuilder()
+                .member(saveMember)
+                .keyword(saveK1)
+                .build();
+
+        // 관심 키워드 등록
+        favoriteRepository.save(favorite);
+        Assertions.assertThat(favoriteRepository.existsByMemberAndKeyword(saveMember, saveK1)).isTrue();
+
+        // 이미 등록한 키워드 등록 시도 (위 라인과 동일하지만 굳이 쓴 이유는 이 기능이 돌 때 아래 로직이 돌아가는걸 표시하려고..)
+        Assertions.assertThat(favoriteRepository.existsByMemberAndKeyword(saveMember, saveK1)).isTrue();
     }
 
     @Test

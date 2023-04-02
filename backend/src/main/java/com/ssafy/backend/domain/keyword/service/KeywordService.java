@@ -17,5 +17,7 @@ public interface KeywordService {
 
     boolean checkFavorite(Long id);
 
+    void addFavorite(Long id);
+
 //     getKeywordFreq(Long keywordsId);
 }
