@@ -8,7 +8,7 @@ const fetchIndustryMarketCap = ({ queryKey }: any) => {
   return axios.get(`/industry/marketcap/${industryId}`)
 }
 
-export const useIndustryMarketCapList = (industryId: string) => {
+export const useIndustryMarketCap = (industryId: number) => {
   return useQuery(["industryMarketCap", industryId], fetchIndustryMarketCap, {
     staleTime: 5 * 60 * 1000,
     select,
@@ -17,22 +17,23 @@ export const useIndustryMarketCapList = (industryId: string) => {
   })
 }
 
-export type LineChartDataType = [x: number, y: number][]
+export type LineChartDataType = [number, number][]
+type RawDataType = {
+  stockDate: string
+  marketCap: number
+  epochTime: number
+}[]
 
 const select = (response: any) => {
-  const rawData = response.data.data
+  const rawData: RawDataType = response.data.data
 
-  let LineChartData: LineChartDataType = []
+  const lineChartData: LineChartDataType = rawData.map((item) => {
+    const dateObj = new Date(item.stockDate)
+    const newItem: [number, number] = [dateObj.getTime(), item.marketCap]
+    return newItem
+  })
 
-  // rawData.map((item: {stockDate: string, marketCap: number}) => {
-  //   const dateObj = new Date(item.stockDate)
-  //   const newItem = [
-  //     x: dateObj.getTime(),
-  //     y: item.marketCap
-  //   ]
-  // })
-
-  return LineChartData
+  return lineChartData
 }
 
 const onError = (err: any) => {

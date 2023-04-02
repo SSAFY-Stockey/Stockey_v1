@@ -2,9 +2,10 @@ import * as Highcharts from "highcharts"
 import HighchartsReact from "highcharts-react-official"
 import highchartsStock from "highcharts/modules/stock"
 import styled from "styled-components"
-import { sampleData } from "./dummyData"
-import { useState } from "react"
 import { makePriceFormat } from "../../IndustryMainPage/makePriceFormat"
+import { useIndustryMarketCap } from "../../../hooks/useIndustryMarketCap"
+import Spinner from "../../common/Spinner/Spinner"
+import { useParams } from "react-router-dom"
 
 highchartsStock(Highcharts)
 Highcharts.setOptions({
@@ -29,8 +30,10 @@ Highcharts.setOptions({
   },
 })
 
-const IndustryCandleChart = () => {
-  const dummyData = sampleData
+const IndustryMarketCapLineChart = ({ industryId }: { industryId: number }) => {
+  const { isLoading, data: lineChartData } = useIndustryMarketCap(industryId)
+  const params = useParams()
+  const stockName = params?.industryName
 
   const options: Highcharts.Options = {
     chart: {
@@ -106,9 +109,9 @@ const IndustryCandleChart = () => {
     },
     series: [
       {
-        name: "산업산업",
+        name: stockName,
         type: "line",
-        data: dummyData,
+        data: lineChartData,
         color: "var(--custom-mint)",
       },
     ],
@@ -119,10 +122,8 @@ const IndustryCandleChart = () => {
       split: false,
       formatter: function (this: any) {
         let tooltipContent =
-          "<b>" + Highcharts.dateFormat("%Y년 %m월 %d일", this.x) + "</b><br>"
-        tooltipContent += `<span style="color:${this.color}">${
-          this.series.name
-        }</span>: <b>${makePriceFormat(this.y)}</b> `
+          Highcharts.dateFormat("%Y년 %m월 %d일", this.x) + "<br>"
+        tooltipContent += `<b>${makePriceFormat(this.y)}</b><br/>`
 
         const index =
           this.series.points.findIndex((point: any) => {
@@ -131,10 +132,14 @@ const IndustryCandleChart = () => {
 
         if (index >= 0) {
           const prevPoint = this.series.points[index]
-
-          tooltipContent += `(${
+          const rate =
             Math.round(((this.y - prevPoint.y) / prevPoint.y) * 10000) / 100
-          }%)<br/>`
+
+          tooltipContent += `전 날 대비 <span style="color:${
+            rate > 0 ? "red" : rate === 0 ? "black" : "blue"
+          }">${
+            rate > 0 ? "▲" + rate + "%" : rate === 0 ? "=" : "▼" + rate + "%"
+          }</span><br/>`
         }
 
         return tooltipContent
@@ -155,17 +160,21 @@ const IndustryCandleChart = () => {
     <AreaDiv>
       <TitleDiv>산업 규모</TitleDiv>
       <ChartWrapper>
-        <HighchartsReact
-          highcharts={Highcharts}
-          constructorType={"stockChart"}
-          options={options}
-        />
+        {isLoading ? (
+          <Spinner />
+        ) : (
+          <HighchartsReact
+            highcharts={Highcharts}
+            constructorType={"stockChart"}
+            options={options}
+          />
+        )}
       </ChartWrapper>
     </AreaDiv>
   )
 }
 
-export default IndustryCandleChart
+export default IndustryMarketCapLineChart
 
 const ChartWrapper = styled.div`
   width: 100%;

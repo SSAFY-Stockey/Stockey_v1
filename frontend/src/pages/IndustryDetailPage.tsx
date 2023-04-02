@@ -1,5 +1,5 @@
 import IndustryBubbleChart from "../components/IndustryDetailPage/IndustryBubbleChart/IndustryBubbleChart"
-import IndustryCandleChart from "../components/IndustryDetailPage/IndustryCandleChart/IndustryCandleChart"
+import IndustryMarketCapLineChart from "../components/IndustryDetailPage/IndustryMarketCapLineChart/IndustryMarketCapLineChart"
 import IndustryOverall from "../components/IndustryDetailPage/IndustryOverall/IndustryOverall"
 import { IndustrySelector } from "../components/IndustryMainPage"
 import KeywordPanel from "../components/StockDetailPage/KeywordPanel/KeywordPanel"
@@ -12,13 +12,12 @@ import { useIndustryList } from "../hooks/useIndustryList"
 import Spinner from "../components/common/Spinner/Spinner"
 
 const IndustryDetailPage = () => {
-  const { industryName } = useParams()
+  const params = useParams()
+  const industryName = params?.industryName
 
   const industryId = industryName ? industryList.indexOf(industryName) + 1 : 0
 
-  const { isLoading, data: industryInfo } = useIndustryList(
-    industryId.toString()
-  )
+  const { isLoading, data: industryInfo } = useIndustryList(industryId)
 
   const [mode, setMode] = useState<string>("default")
 
@@ -51,7 +50,7 @@ const IndustryDetailPage = () => {
             <BookmarkBtn isBookmarked={false} page="stock" />
           </TitleDiv>
           <IndustryOverall />
-          <IndustryCandleChart />
+          <IndustryMarketCapLineChart industryId={industryId} />
           <div>연관 키워드 차트</div>
         </LeftSection>
       </Grid>
@@ -77,7 +76,7 @@ const IndustryDetailPage = () => {
             <BookmarkBtn isBookmarked={false} page="stock" />
           </TitleDiv>
           <IndustryOverall />
-          <IndustryCandleChart />
+          <IndustryMarketCapLineChart industryId={industryId} />
           <div>연관 키워드 차트</div>
           <IndustryBubbleChart industryId={industryInfo?.id} />
           <div>전체 종목 리스트</div>
@@ -103,7 +102,7 @@ const IndustryDetailPage = () => {
             <BookmarkBtn isBookmarked={false} page="stock" />
           </TitleDiv>
           <IndustryOverall />
-          <IndustryCandleChart />
+          <IndustryMarketCapLineChart industryId={industryId} />
           <div>연관 키워드 차트</div>
           <IndustryBubbleChart industryId={industryInfo?.id} />
           <div>전체 종목 리스트</div>

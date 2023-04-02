@@ -12,7 +12,7 @@ const fetchIndustryList = ({ queryKey }: any) => {
   }
 }
 
-export const useIndustryList = (industryId?: string) => {
+export const useIndustryList = (industryId?: number) => {
   return useQuery(["industryList", industryId], fetchIndustryList, {
     staleTime: 5 * 60 * 1000,
     select,
