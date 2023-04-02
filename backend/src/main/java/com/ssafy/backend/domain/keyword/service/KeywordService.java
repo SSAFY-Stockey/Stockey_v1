@@ -13,5 +13,13 @@ public interface KeywordService {
 
     List<KeywordStatisticDto> getKeywordFreq(Long keywordsId);
 
+    List<KeywordDto> getMyKeywords();
+
+    boolean checkFavorite(Long id);
+
+    void addFavorite(Long id);
+
+    void deleteFavorite(Long id);
+
 //     getKeywordFreq(Long keywordsId);
 }

@@ -54,4 +54,10 @@ public class Favorite {
         this.stock = stock;
     }
 
+    @Builder(builderClassName = "keywordBuilder", builderMethodName = "keywordBuilder")
+    public Favorite(Member member,Keyword keyword){
+        this.member = member;
+        this.keyword = keyword;
+    }
+
 }
