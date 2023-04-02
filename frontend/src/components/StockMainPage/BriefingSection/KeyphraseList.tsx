@@ -2,50 +2,61 @@ import styled from "styled-components"
 import KeyphraseListItem from "./KeyphraseListItem"
 
 interface Props {
-  focused: number
+  selectedIdx: number
 }
 
-const KeyphraseList = ({ focused }: Props) => {
+const KeyphraseList = ({ selectedIdx }: Props) => {
   const colors: string[] = ["orange", "pink", "purple"]
-  const keyphrases: string[] = ["금리 인상", "대출 규제", "부동산 하락", "연준 발표"]
+  const keyphrases: string[] = [
+    "금리 인상",
+    "대출 규제",
+    "부동산 하락",
+    "연준 발표",
+  ]
   return (
-    <StyledDiv>
+    <KeyphraseContainer selectedIdx={selectedIdx}>
       {keyphrases.map((phrase, index) => {
         return (
           <KeyphraseListItem
             keyphrase={phrase}
-            backgroundColor={`var(--custom-${colors[focused]}-${index + 1})`}
+            backgroundColor={`var(--custom-${colors[selectedIdx]}-${
+              index + 1
+            })`}
             rank={index + 1}
           />
         )
       })}
-    </StyledDiv>
+    </KeyphraseContainer>
   )
 }
 
 export default KeyphraseList
 
-const StyledDiv = styled.div`
+const KeyphraseContainer = styled.div<{ selectedIdx: number }>`
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  padding: 10% 5%;
+  padding: 24px 0px;
   width: 100%;
   background-color: white;
   border-radius: 36px;
   position: relative;
+  height: 24vh;
+
+  // 말풍선 꼬리
   ::after {
     content: "";
     position: absolute;
-    bottom: 0;
-    left: 50%;
+    bottom: -4px;
+    left: ${({ selectedIdx }) => 50 + (selectedIdx - 1) * 32}%;
     width: 0;
     height: 0;
-    border: 1.5em solid transparent;
+    border: 2em solid transparent;
     border-top-color: #ffffff;
     border-bottom: 0;
     margin-left: -1.5em;
     margin-bottom: -1.5em;
+    z-index: 1;
   }
 `

@@ -1,24 +1,29 @@
 import KeywordBarGraph from "./KeywordBarGraph"
 import KeyphraseList from "./KeyphraseList"
+import { HighlightedSpan } from "../../StockDetailPage/MainSection/PriceSection/PriceSection"
 import styled from "styled-components"
 
-const focusedIndex: number = Math.floor(Math.random() * (2 - 0 + 1)) + 0
-console.log(focusedIndex)
-const KeywordBoard = () => {
+export interface SelectHandlerType {
+  selectedIdx: number
+  setSelectedIdx: (idx: number) => void
+}
+
+const KeywordBoard = ({ selectedIdx, setSelectedIdx }: SelectHandlerType) => {
   return (
-    <StyledDiv>
-      <StyledTitle>
-        <StyledSpan>키워드</StyledSpan>로 보는 이번 주 네이버 소식💌
-      </StyledTitle>
-      <KeyphraseList focused={focusedIndex} />
-      <KeywordBarGraph />
-    </StyledDiv>
+    <BoardDiv>
+      <BoardTitle>
+        <HighlightedSpan color="#ff6f9d">키워드</HighlightedSpan>로 보는 이번 주
+        네이버 소식💌
+      </BoardTitle>
+      <KeyphraseList selectedIdx={selectedIdx} />
+      <KeywordBarGraph selectedIdx={selectedIdx} />
+    </BoardDiv>
   )
 }
 
 export default KeywordBoard
 
-const StyledDiv = styled.div`
+const BoardDiv = styled.div`
   background-color: #faf5f7;
   display: flex;
   flex-direction: column;
@@ -27,11 +32,7 @@ const StyledDiv = styled.div`
   border-radius: 24px;
   height: 100%;
 `
-const StyledTitle = styled.p`
+const BoardTitle = styled.p`
   font-size: 2rem;
   font-weight: bold;
-`
-
-const StyledSpan = styled.span`
-  color: #ff6f9d;
 `

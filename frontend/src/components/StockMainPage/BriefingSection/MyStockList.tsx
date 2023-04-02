@@ -1,27 +1,22 @@
 import styled from "styled-components"
-
 import StockBlock from "./StockBlock"
+import { useRandomStock } from "../../../hooks/useRandomStock"
+
 const MyStockList = () => {
+  const { data: randomStockData } = useRandomStock(3)
   return (
     <StyledDiv>
-      <StockBlock
-        companyLogo="naver"
-        companyName="네이버"
-        currentPrice={59800}
-        priceChange={0.17}
-      />
-      <StockBlock
-        companyLogo="naver"
-        companyName="네이버"
-        currentPrice={59800}
-        priceChange={0.17}
-      />
-      <StockBlock
-        companyLogo="naver"
-        companyName="네이버"
-        currentPrice={59800}
-        priceChange={0.17}
-      />
+      {randomStockData?.map((stock: any, index: number) => (
+        <StockBlock
+          key={`randomStock-${index}`}
+          idx={index}
+          stockName={stock.name}
+          currentPrice={stock.currentPrice}
+          priceChange={stock.changeRate}
+          selectedIdx={selectedIdx}
+          setSelectedIdx={setSelectedIdx}
+        />
+      ))}
     </StyledDiv>
   )
 }
