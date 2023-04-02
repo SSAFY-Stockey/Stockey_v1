@@ -37,7 +37,7 @@ const IndustryCard = ({ industryInfo }: { industryInfo: IndustryInfoType }) => {
 export default IndustryCard
 
 const IndustryCardWrapper = styled(Card)({
-  width: "calc((100% - 72px)/3)",
+  width: "auto",
   borderRadius: "24px",
   filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))",
 })
@@ -89,7 +89,7 @@ const NameTagP = styled.p`
   font-family: "Inter";
   font-style: normal;
   font-weight: 700;
-  font-size: 1.2rem;
+  font-size: calc(1rem + 0.25vw);
 
   display: flex;
   align-items: center;

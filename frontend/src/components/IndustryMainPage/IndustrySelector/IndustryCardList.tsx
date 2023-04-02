@@ -1,6 +1,7 @@
 import styled from "@emotion/styled"
 import IndustryCard from "./IndustryCard"
 import { IndustryInfoType } from "./IndustryCard/IndustryCard"
+import { Grid } from "@mui/material"
 
 interface IndustryListProps {
   industryList: IndustryInfoType[]
@@ -9,9 +10,13 @@ interface IndustryListProps {
 const IndustryCardList = ({ industryList }: IndustryListProps) => {
   return (
     <IndustryCardListDiv>
-      {industryList?.map((industryInfo) => (
-        <IndustryCard key={industryInfo.id} industryInfo={industryInfo} />
-      ))}
+      <IndustryCardListGrid container rowGap={3} columnSpacing={3}>
+        {industryList?.map((industryInfo) => (
+          <Grid item xs={12} sm={6} md={4}>
+            <IndustryCard key={industryInfo.id} industryInfo={industryInfo} />
+          </Grid>
+        ))}
+      </IndustryCardListGrid>
     </IndustryCardListDiv>
   )
 }
@@ -20,14 +25,10 @@ export default IndustryCardList
 
 const IndustryCardListDiv = styled.div`
   margin: 0px;
-  padding: 5px;
-  width: calc(100% - 10px);
+  padding: 5px 5px 5px 0px;
+  width: 100%;
   height: 100%;
   overflow-y: scroll;
-
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24px;
 
   ::-webkit-scrollbar {
     width: 22px;
@@ -42,3 +43,10 @@ const IndustryCardListDiv = styled.div`
     width: 22px;
   }
 `
+
+const IndustryCardListGrid = styled(Grid)({
+  margin: 0,
+
+  width: "100%",
+  height: "100%",
+})

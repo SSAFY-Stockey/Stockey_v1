@@ -10,6 +10,7 @@ import BookmarkBtn from "../components/common/Bookmark/BookmarkBtn"
 import { useParams } from "react-router-dom"
 import { useIndustryList } from "../hooks/useIndustryList"
 import Spinner from "../components/common/Spinner/Spinner"
+import IndustrySelectorToggleBtn from "../components/IndustryDetailPage/IndustrySelectorToggleBtn"
 
 const IndustryDetailPage = () => {
   const params = useParams()
@@ -19,32 +20,37 @@ const IndustryDetailPage = () => {
 
   const { isLoading, data: industryInfo } = useIndustryList(industryId)
 
-  const [mode, setMode] = useState<string>("default")
+  const [mode, setMode] = useState<string>("def")
 
-  const changeLayout = (event: React.MouseEvent<HTMLButtonElement>) => {
-    document.querySelectorAll(".fade-in").forEach((elem) => {
-      elem.classList.replace("fade-in", "fade-out")
-    })
-    setTimeout(() => {
-      setMode((event.target as HTMLButtonElement).innerText)
-    }, 300)
-    setTimeout(() => {
-      document.querySelectorAll(".fade-out").forEach((elem) => {
-        elem.classList.replace("fade-out", "fade-in")
-      })
-    }, 500)
+  const changeLayout = (
+    e: React.MouseEvent<HTMLElement>,
+    toggleMode: string
+  ) => {
+    // document.querySelectorAll(".fade-in").forEach((elem) => {
+    //   elem.classList.replace("fade-in", "fade-out")
+    // })
+    setMode(toggleMode)
+    // setTimeout(() => {
+    //   document.querySelectorAll(".fade-out").forEach((elem) => {
+    //     elem.classList.replace("fade-out", "fade-in")
+    //   })
+    // }, 500)
   }
 
   const defaultLayout = (
     <>
       <Grid item xs={12} marginLeft={4.5}>
-        <ButtonDiv className="fade-in">
-          <button onClick={changeLayout}>keywordPanel</button>
-          <button onClick={changeLayout}>industrySelector</button>
+        <ButtonDiv className={mode}>
+          <button onClick={(e) => changeLayout(e, "kwd")}>keywordPanel</button>
+          <IndustrySelectorToggleBtn
+            changeLayout={(e, mode) => {
+              changeLayout(e, mode)
+            }}
+          />
         </ButtonDiv>
       </Grid>
       <Grid item xs={7}>
-        <LeftSection className="fade-in">
+        <LeftSection className={mode}>
           <TitleDiv>
             {industryInfo?.name}
             <BookmarkBtn isBookmarked={false} page="stock" />
@@ -55,7 +61,7 @@ const IndustryDetailPage = () => {
         </LeftSection>
       </Grid>
       <Grid item xs={5}>
-        <RightSection className="fade-in">
+        <RightSection className={mode}>
           <IndustryBubbleChart industryId={industryInfo?.id} />
           <div>전체 종목 리스트</div>
         </RightSection>
@@ -66,10 +72,16 @@ const IndustryDetailPage = () => {
   const onKeywordPanelLayout = (
     <>
       <Grid item xs={7}>
-        <LeftSection className="fade-in">
-          <ButtonDiv className="fade-in">
-            <button onClick={changeLayout}>default</button>
-            <button onClick={changeLayout}>industrySelector</button>
+        <LeftSection className={mode}>
+          <ButtonDiv className={mode}>
+            <button onClick={(e) => changeLayout(e, "kwd")}>
+              keywordPanel
+            </button>
+            <IndustrySelectorToggleBtn
+              changeLayout={(e, mode) => {
+                changeLayout(e, mode)
+              }}
+            />
           </ButtonDiv>
           <TitleDiv>
             {industryInfo?.name}
@@ -90,13 +102,23 @@ const IndustryDetailPage = () => {
 
   const onIndustrySelectorLayout = (
     <>
-      <Grid item xs={5} marginTop={4.5}>
-        <LeftSection className="fade-in">
+      <Grid item xs={12} marginLeft={4.5}>
+        <ButtonDiv className={mode}>
+          <button onClick={(e) => changeLayout(e, "kwd")}>keywordPanel</button>
+          <IndustrySelectorToggleBtn
+            changeLayout={(e, mode) => {
+              changeLayout(e, mode)
+            }}
+          />
+        </ButtonDiv>
+      </Grid>
+      <Grid item xs={5}>
+        <LeftSection className={mode}>
           <IndustrySelector />
         </LeftSection>
       </Grid>
-      <Grid item xs={7} marginTop={4.5}>
-        <RightSection className="fade-in">
+      <Grid item xs={7}>
+        <RightSection className={mode}>
           <TitleDiv>
             {industryInfo?.name}
             <BookmarkBtn isBookmarked={false} page="stock" />
@@ -117,9 +139,9 @@ const IndustryDetailPage = () => {
         <Spinner />
       ) : (
         {
-          default: defaultLayout,
-          keywordPanel: onKeywordPanelLayout,
-          industrySelector: onIndustrySelectorLayout,
+          def: defaultLayout,
+          kwd: onKeywordPanelLayout,
+          sel: onIndustrySelectorLayout,
         }[mode]
       )}
     </Grid>
@@ -171,6 +193,37 @@ from {
 to {
   opacity: 0;
 }
+`
+
+const SlideInLeft = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+`
+
+const SlideOutRigt = keyframes`
+  from {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+`
+
+const AnimatedDiv = styled.div`
+  animation-duration: 0.5s;
+  animation-fill-mode: both;
+  animation-timing-function: ease-in-out;
+  .industry-selector {
+    animation-name: ${SlideInLeft};
+  }
 `
 
 const ButtonDiv = styled.div`

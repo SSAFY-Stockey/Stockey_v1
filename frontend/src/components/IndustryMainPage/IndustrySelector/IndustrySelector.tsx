@@ -28,7 +28,7 @@ const IndustrySelectorDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 24px 0px 24px 24px;
+  padding: 24px 0px;
   gap: 24px;
 
   background: #f8f8f8;
@@ -44,6 +44,7 @@ const TitleWrapper = styled.div`
   height: 2rem;
   margin: 0px;
   display: flex;
+  padding-left: 24px;
 `
 
 const IndustrySelectorTitleDiv = styled.div`
