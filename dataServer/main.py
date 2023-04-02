@@ -127,7 +127,7 @@ def sub_test(name : str, start_date,end_date):
 
     result = []
     for key_phrase_target in keyphrase_target_list:
-        dict = {}
+        dict = {} 
         phrase = get_phraze(key_phrase_target[0])
         print(phrase)
         dict['key_phrase'] = phrase

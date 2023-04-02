@@ -27,7 +27,6 @@ class Stock:
             cur = con.cursor()
             cur.execute("SELECT * FROM daily_stock where stock_id = '%s'  order by stock_date desc",stock[0])
             recent_row = cur.fetchone()
-            print("마지막 날짜",recent_row)
             start_date = recent_row[6]+timedelta(days=1)
             end_date = datetime.today().date()
 
@@ -43,7 +42,6 @@ class Stock:
         con.close()
         
     def daily_stock_update(self):
-        print("HI")
         con = pymysql.connect(host=self.host, user=self.user, password=self.password, db=self.db, charset='utf8')
 
         today = datetime.today().date()
@@ -70,3 +68,4 @@ class Stock:
                 where stock_id ={stock[0]} and stock_date = '{today}'"
             cur.execute(sql)
             con.commit()
+    
