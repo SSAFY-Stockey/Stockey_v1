@@ -4,7 +4,7 @@ import { Grid } from "@mui/material"
 
 const OtherKeywordList = () => {
   return (
-    <KeywordListWrapper container spacing={6}>
+    <KeywordListWrapper container rowSpacing={6}>
       <Grid item xs={12}>
         <KeywordListItem rank={4} keyword="연준" percentage={24} />
       </Grid>
@@ -21,10 +21,12 @@ const OtherKeywordList = () => {
 export default OtherKeywordList
 
 const KeywordListWrapper = styled(Grid)`
-  padding: 36px;
-  border-radius: 35px 35px 0 0;
-  // background-color: #fffefb;
-  // background-color: var(--custom-black);
-  // z-index: 1;
-  // width: 100%;
+  padding: 0px 36px 50px;
+  border-radius: 0 0 24px 24px;
+  background-color: black;
+  background-color: #fffefb;
+  width: 100% !important;
+  margin: -14px 0 0 0 !important;
+  position: relative;
+  z-index: 1;
 `

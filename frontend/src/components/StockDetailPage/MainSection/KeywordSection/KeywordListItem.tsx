@@ -27,7 +27,8 @@ const KeywordListItem = ({ rank, keyword, percentage }: Props) => {
           animation
         />
       </Grid>
-      <Grid item xs={2} ml={4}>
+      <Grid item xs={1} />
+      <Grid item xs={2}>
         <GageChip gage={percentage} color="#68E3BE" backgroundColor="#F1FFFB" />
       </Grid>
     </Grid>
