@@ -144,7 +144,6 @@ public class AuthServiceImpl implements AuthService{
             throw new JwtException(JwtExceptionType.TOKEN_NULL);
         }
 
-        refreshToken = refreshToken.substring(7);
         jwtUtil.isValidToken(refreshToken, JwtUtil.REFRESH_TOKEN_SUBJECT);
 
         // refresh token 에서 유저 aud값 가져오기
