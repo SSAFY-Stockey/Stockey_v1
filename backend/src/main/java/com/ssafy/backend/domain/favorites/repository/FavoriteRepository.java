@@ -27,4 +27,6 @@ public interface FavoriteRepository extends JpaRepository<Favorite,Long> {
     Favorite findByMemberAndIndustry(Member member,Industry industry);
     Favorite findByMemberAndStock(Member member, Stock stock);
 
+    Favorite findByMemberAndKeyword(Member member, Keyword keyword);
+
 }

@@ -19,5 +19,7 @@ public interface KeywordService {
 
     void addFavorite(Long id);
 
+    void deleteFavorite(Long id);
+
 //     getKeywordFreq(Long keywordsId);
 }

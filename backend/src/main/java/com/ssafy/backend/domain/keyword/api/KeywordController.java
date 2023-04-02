@@ -65,7 +65,8 @@ public class KeywordController {
     @Operation(summary = "관심 키워드 리스트", description = "내 관심 키워드 리스트를 출력합니다.")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200", description = "요청 성공")
+                    @ApiResponse(responseCode = "200", description = "요청 성공"),
+                    @ApiResponse(responseCode = "401", description = "권한 없음")
             }
     )
     @GetMapping("/keywordlist/my")
@@ -81,10 +82,11 @@ public class KeywordController {
     @Operation(summary = "관심 키워드 체크", description = "관심 키워드 체크")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200", description = "요청 성공")
+                    @ApiResponse(responseCode = "200", description = "요청 성공"),
+                    @ApiResponse(responseCode = "401", description = "권한 없음")
             }
     )
-    @GetMapping("keywordlist/my/{id}")
+    @GetMapping("/keywordlist/my/{id}")
     public ResponseEntity<ResponseDto> checkFavorite(@PathVariable Long id) {
         boolean result = keywordService.checkFavorite(id);
         return new ResponseEntity<>(new ResponseDto("관심 키워드 여부 체크!", result), HttpStatus.OK);
@@ -97,12 +99,30 @@ public class KeywordController {
             value = {
                     @ApiResponse(responseCode = "201", description = "등록 성공"),
                     @ApiResponse(responseCode = "400", description = "이미 관심 키워드 등록"),
+                    @ApiResponse(responseCode = "401", description = "권한 없음"),
                     @ApiResponse(responseCode = "404", description = "키워드 없음"),
             }
     )
-    @PostMapping("keywordlist/my/{id}")
+    @PostMapping("/keywordlist/my/{id}")
     public ResponseEntity<ResponseDto> addFavorite(@PathVariable Long id) {
         keywordService.addFavorite(id);
         return new ResponseEntity<>(new ResponseDto("관심 키워드 등록 성공!", null), HttpStatus.CREATED);
+    }
+
+    // 관심 산업 삭제
+    @Auth
+    @Operation(summary = "관심 키워드 삭제", description = "관심 키워드를 삭제합니다.")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "삭제 성공"),
+                    @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+                    @ApiResponse(responseCode = "401", description = "권한 없음"),
+                    @ApiResponse(responseCode = "404", description = "키워드 없음"),
+            }
+    )
+    @DeleteMapping("/keywordlist/my/{id}")
+    public ResponseEntity<ResponseDto> deleteFavorite(@PathVariable Long id) {
+        keywordService.deleteFavorite(id);
+        return new ResponseEntity<>(new ResponseDto("DELETED", null), HttpStatus.OK);
     }
 }

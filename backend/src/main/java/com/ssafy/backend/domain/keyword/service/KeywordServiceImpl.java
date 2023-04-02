@@ -75,4 +75,26 @@ public class KeywordServiceImpl implements KeywordService{
                 .build();
         favoriteRepository.save(favorite);
     }
+
+    @Override
+    public void deleteFavorite(Long id) {
+        Keyword keyword = keywordRepository.findById(id).orElseThrow(()
+                -> new KeywordException(KeywordExceptionType.KEYWORD_NOT_EXIST));
+        boolean isFavorite = checkFavorite(id);
+        // 관심 등록하지 않았다면
+        if (!isFavorite) {
+            throw new FavoriteException(FavoriteExceptionType.NOT_FOUND);
+        }
+        Member member = memberService.getMemberEntity();
+        Favorite favorite = favoriteRepository.findByMemberAndKeyword(member, keyword);
+        checkUser(member, favorite);
+        favoriteRepository.delete(favorite);
+    }
+
+    // 유저가 동일한지 체크
+    private static void checkUser(Member member, Favorite favorite) {
+        if (favorite.getMember() != member) {
+            throw new FavoriteException(FavoriteExceptionType.DIFFERENT_USER);
+        }
+    }
 }
