@@ -3,32 +3,49 @@ import customAxios from "../utils/customAxios"
 
 const axios = customAxios()
 
-const fetchKeywordRank = ({ queryKey }: any) => {
-  return axios.get(`/stock`)
+interface ParamsType {
+  topN: number
+  newsType: "STOCK" | "INDUSTRY" | "ECONOMY"
+  typeId: number
+  // yymmdd
+  startDate: string
+  endDate: string
 }
 
-// const fetchMarketCapRank = ({ queryKey }: any) => {
-//   const industryId = queryKey[1]
-//   if (industryId) {
-//     return axios.get(`industry/stocklist/${industryId}`)
-//   } else {
-//     return axios.get(`/industry/stocklist`)
-//   }
-// }
+const fetchKeywordRank = ({ queryKey }: any) => {
+  const [topN, newsType, typeId, startDate, endDate] = queryKey.slice(1)
+  console.log("fetchKeywordRank")
+  return axios.get(`/keywords/topN`, {
+    params: { topN, newsType, typeId, startDate, endDate },
+  })
+}
 
-// export const useMarketCapRank = (industryId?: string) => {
-//   return useQuery(["marketCapRank", industryId], fetchMarketCapRank, {
-//     staleTime: 5 * 60 * 1000,
-//     select,
-//     onError,
-//     refetchOnWindowFocus: false,
-//   })
-// }
+export const useKeywordRank = ({
+  topN,
+  newsType,
+  typeId,
+  startDate,
+  endDate,
+}: ParamsType) => {
+  return useQuery(
+    ["keywordRank", topN, newsType, typeId, startDate, endDate],
+    fetchKeywordRank,
+    {
+      staleTime: Infinity,
+      select,
+      onError,
+      refetchOnWindowFocus: false,
+    }
+  )
+}
 
-// const select = (response: any) => {
-//   return response.data.data
-// }
+const select = (response: any) => {
+  const rawData = response.data
+  const selectedData = rawData
+  console.log("selectedData >> ", selectedData)
+  return selectedData
+}
 
-// const onError = (err: any) => {
-//   console.warn("onError >> ", err)
-// }
+const onError = (err: any) => {
+  console.warn("onError >> ", err)
+}

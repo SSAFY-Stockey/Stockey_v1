@@ -5,6 +5,7 @@ const axios = customAxios()
 
 const fetchRandomStock = ({ queryKey }: any) => {
   const count = queryKey[1]
+  console.log("fetchRandomStock")
   return axios.get(`/stock/random`, { params: { count } })
 }
 

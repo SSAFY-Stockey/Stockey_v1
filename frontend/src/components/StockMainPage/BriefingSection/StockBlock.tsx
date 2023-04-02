@@ -1,27 +1,22 @@
-import { useState } from "react"
 import Paper from "@mui/material/Paper"
 import styled from "styled-components"
+import { useRecoilState } from "recoil"
+import { selectedStockIdxState } from "../../../stores/SelectedStockAtoms"
 
 interface Props {
   idx: number
   stockName: string
   currentPrice: number
   priceChange: number
-  selectedIdx: number
-  setSelectedIdx: (idx: number) => void
 }
 
-const StockBlock = ({
-  idx,
-  stockName,
-  currentPrice,
-  priceChange,
-  selectedIdx,
-  setSelectedIdx,
-}: Props) => {
+const StockBlock = ({ idx, stockName, currentPrice, priceChange }: Props) => {
+  const [selectedIdx, setSelectedIdx] = useRecoilState(selectedStockIdxState)
+
   const clickHandler = () => {
     setSelectedIdx(idx)
   }
+
   return (
     <GradientBorderBlock
       onClick={clickHandler}

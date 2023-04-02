@@ -2,21 +2,23 @@ import KeywordBarGraph from "./KeywordBarGraph"
 import KeyphraseList from "./KeyphraseList"
 import { HighlightedSpan } from "../../StockDetailPage/MainSection/PriceSection/PriceSection"
 import styled from "styled-components"
+import { useRecoilValue } from "recoil"
+import { selectedStockIdxState } from "../../../stores/SelectedStockAtoms"
+import { useRandomStock } from "../../../hooks/useRandomStock"
 
-export interface SelectHandlerType {
-  selectedIdx: number
-  setSelectedIdx: (idx: number) => void
-}
+const KeywordBoard = () => {
+  const selectedStockIdx = useRecoilValue(selectedStockIdxState)
+  const { data: randomStockData } = useRandomStock(3)
+  const selectedStockName = randomStockData?.[selectedStockIdx].name
 
-const KeywordBoard = ({ selectedIdx, setSelectedIdx }: SelectHandlerType) => {
   return (
     <BoardDiv>
       <BoardTitle>
-        <HighlightedSpan color="#ff6f9d">키워드</HighlightedSpan>로 보는 이번 주
-        네이버 소식💌
+        <HighlightedSpan color="#ff6f9d">키워드</HighlightedSpan>로 보는 이번 주{" "}
+        {selectedStockName} 소식💌
       </BoardTitle>
-      <KeyphraseList selectedIdx={selectedIdx} />
-      <KeywordBarGraph selectedIdx={selectedIdx} />
+      <KeyphraseList />
+      <KeywordBarGraph />
     </BoardDiv>
   )
 }
