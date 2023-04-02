@@ -35,6 +35,7 @@ public class KeywordStatistic {
     private Long count;
 
     @Column(name = "category", length = 45)
+    @Enumerated(EnumType.STRING)
     private StatisticType category;
 
     @Builder

@@ -54,7 +54,7 @@ class KeywordServiceImplTest {
     void 키워드_빈도통계() {
         Keyword k1 = Keyword.builder().name("금리").description("금리란...").build();
         Keyword k2 = Keyword.builder().name("연준").description("연준이란...").build();
-        keywordRepository.save(k1);
+        Keyword saveK1 = keywordRepository.save(k1);
         keywordRepository.save(k2);
 
         KeywordStatistic ks1 = KeywordStatistic.builder()
@@ -73,11 +73,11 @@ class KeywordServiceImplTest {
                 .count(50L)
                 .category(StatisticType.FREQ).build();
 
-        KeywordStatistic saveKs1 = keywordStatisticRepository.save(ks1);
+        keywordStatisticRepository.save(ks1);
         keywordStatisticRepository.save(ks2);
         keywordStatisticRepository.save(ks3);
 
-        List<KeywordStatisticDto> keywordFreq = keywordService.getKeywordFreq(k1.getId());
+        List<KeywordStatisticDto> keywordFreq = keywordService.getKeywordFreq(saveK1.getId());
 
         Assertions.assertThat(keywordFreq.size()).isEqualTo(3);
 
@@ -109,15 +109,19 @@ class KeywordServiceImplTest {
 
         Favorite f1 = Favorite.keywordBuilder().member(saveMember).keyword(saveK1).build();
         Favorite f2 = Favorite.keywordBuilder().member(saveMember).keyword(saveK2).build();
-        Favorite savef1 = favoriteRepository.save(f1);
-        Favorite savef2 = favoriteRepository.save(f2);
+        favoriteRepository.save(f1);
+        favoriteRepository.save(f2);
 
         List<Keyword> keywords = favoriteRepository.findKeywordsByMember(saveMember);
+        for (Keyword keyword : keywords) {
+            System.out.println("keyword = " + keyword.getId());
+            System.out.println("keyword = " + keyword.getName());
+        }
 
         Assertions.assertThat(keywords.get(0).getName()).isEqualTo("금리");
         Assertions.assertThat(keywords.get(1).getName()).isEqualTo("연준");
-        Assertions.assertThat(keywords.get(0).getId()).isEqualTo(savef1.getId());
-        Assertions.assertThat(keywords.get(1).getId()).isEqualTo(savef2.getId());
+        Assertions.assertThat(keywords.get(0).getId()).isEqualTo(saveK1.getId());
+        Assertions.assertThat(keywords.get(1).getId()).isEqualTo(saveK2.getId());
 
         List<Keyword> keywords2 = favoriteRepository.findKeywordsByMember(saveMember2);
         Assertions.assertThat(keywords2.size()).isEqualTo(0);
