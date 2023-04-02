@@ -1,14 +1,12 @@
 package com.ssafy.backend.domain.keyword.api;
 
-import com.ssafy.backend.domain.keyword.api.request.SearchKeywordRequest;
+import com.ssafy.backend.domain.keyword.api.request.GetTopNKeywordRequest;
 import com.ssafy.backend.domain.keyword.api.response.KeywordDetailResponse;
 import com.ssafy.backend.domain.keyword.dto.KeywordDto;
 import com.ssafy.backend.domain.keyword.dto.KeywordStatisticDto;
+import com.ssafy.backend.domain.keyword.dto.TopKeywordDTO;
 import com.ssafy.backend.domain.keyword.mapper.KeywordDtoMapper;
 import com.ssafy.backend.domain.keyword.service.KeywordService;
-import com.ssafy.backend.domain.member.entity.Member;
-import com.ssafy.backend.domain.member.service.MemberService;
-import com.ssafy.backend.domain.stock.api.response.GetStockTodayResponse;
 import com.ssafy.backend.global.annotation.Auth;
 import com.ssafy.backend.global.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -124,5 +122,18 @@ public class KeywordController {
     public ResponseEntity<ResponseDto> deleteFavorite(@PathVariable Long id) {
         keywordService.deleteFavorite(id);
         return new ResponseEntity<>(new ResponseDto("DELETED", null), HttpStatus.OK);
+    }
+
+    @Operation(summary = "Top6 키워드 리턴", description = "economy, industry, stock 가각에 대해 특정 기간의 Top6 키워드 리턴")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "요청 성공")
+            }
+    )
+    @GetMapping("/topN")
+    public ResponseEntity<ResponseDto> getTop6Keyword(@Valid @RequestBody GetTopNKeywordRequest getTopNKeywordRequest) {
+        Long newsCount = keywordService.getTargetNewsCount(getTopNKeywordRequest);
+        TopKeywordDTO topKeywordDTO = keywordService.getTopNKeyword(getTopNKeywordRequest);
+        return new ResponseEntity<>(new ResponseDto("OK", null), HttpStatus.OK);
     }
 }

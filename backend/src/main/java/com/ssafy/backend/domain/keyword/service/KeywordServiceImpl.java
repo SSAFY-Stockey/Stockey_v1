@@ -2,9 +2,11 @@ package com.ssafy.backend.domain.keyword.service;
 
 import com.ssafy.backend.domain.favorites.entity.Favorite;
 import com.ssafy.backend.domain.favorites.repository.FavoriteRepository;
+import com.ssafy.backend.domain.keyword.api.request.GetTopNKeywordRequest;
 import com.ssafy.backend.domain.keyword.api.request.SearchKeywordRequest;
 import com.ssafy.backend.domain.keyword.dto.KeywordDto;
 import com.ssafy.backend.domain.keyword.dto.KeywordStatisticDto;
+import com.ssafy.backend.domain.keyword.dto.TopKeywordDTO;
 import com.ssafy.backend.domain.keyword.entity.Keyword;
 import com.ssafy.backend.domain.keyword.enums.StatisticType;
 import com.ssafy.backend.domain.keyword.mapper.KeywordMapper;
@@ -12,14 +14,18 @@ import com.ssafy.backend.domain.keyword.repository.KeywordRepository;
 import com.ssafy.backend.domain.keyword.repository.KeywordStatisticRepository;
 import com.ssafy.backend.domain.member.entity.Member;
 import com.ssafy.backend.domain.member.service.MemberService;
+import com.ssafy.backend.domain.news.repository.NewsRelationRepository;
 import com.ssafy.backend.global.exception.favorite.FavoriteException;
 import com.ssafy.backend.global.exception.favorite.FavoriteExceptionType;
 import com.ssafy.backend.global.exception.keyword.KeywordException;
 import com.ssafy.backend.global.exception.keyword.KeywordExceptionType;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -32,6 +38,7 @@ public class KeywordServiceImpl implements KeywordService{
     private final KeywordStatisticRepository keywordStatisticRepository;
     private final FavoriteRepository favoriteRepository;
     private final MemberService memberService;
+    private final NewsRelationRepository newsRelationRepository;
 
     @Override
     public KeywordDto getKeywordDetail(Long keywordsId) {
@@ -89,6 +96,27 @@ public class KeywordServiceImpl implements KeywordService{
         Favorite favorite = favoriteRepository.findByMemberAndKeyword(member, keyword);
         checkUser(member, favorite);
         favoriteRepository.delete(favorite);
+    }
+
+    @Override
+    public Long getTargetNewsCount(GetTopNKeywordRequest getTopNKeywordRequest) {
+        return null;
+    }
+
+    @Override
+    public TopKeywordDTO getTopNKeyword(GetTopNKeywordRequest getTopNKeywordRequest) {
+        Pageable topN = PageRequest.of(0, getTopNKeywordRequest.getTopN());
+        LocalDate startDate = getTopNKeywordRequest.getStartDate();
+        LocalDate endDate = getTopNKeywordRequest.getEndDate();
+
+        List<TopKeywordDTO> topKeywords
+                = newsRelationRepository.getTopNKeywords(startDate, endDate, topN);
+        Long totalUniqueNewsCount = yourRepository.findTotalUniqueNewsCount(startDate, endDate);
+
+        for (TopKeywordDTO keywordDTO : topKeywords) {
+            keywordDTO.setNewsCount(totalUniqueNewsCount);
+        }
+
     }
 
     // 유저가 동일한지 체크
