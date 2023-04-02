@@ -8,12 +8,6 @@ interface Props {
   keyword: string
 }
 
-export const triggerScroll = (elementId: string) => {
-  console.log("triggerScroll")
-  const scrollRef = document.getElementById(elementId)
-  console.log(scrollRef)
-  scrollRef?.scrollIntoView({ behavior: "smooth" })
-}
 const KeywordPanel = ({ keyword }: Props) => {
   return (
     <PanelWrapper>
@@ -30,7 +24,7 @@ const KeywordPanel = ({ keyword }: Props) => {
       <PanelSubTitle id="newsRef">
         {keyword} 관련 기사 한 눈에 보기
       </PanelSubTitle>
-      <NewsSection triggerScroll={() => triggerScroll("newsRef")} />
+      <NewsSection />
     </PanelWrapper>
   )
 }

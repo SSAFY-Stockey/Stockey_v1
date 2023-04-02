@@ -28,19 +28,20 @@ interface DataProps {
   rank: number
 }
 
-const KeywordBarGraph = () => {
+const KeywordBarGraph = (selectedIdx: number) => {
   const data: DataProps[] = [
     { name: "빅스텝", y: 74.84, rank: 2 },
     { name: "금리", y: 100, rank: 1 },
     { name: "연준", y: 34.84, rank: 3 },
   ]
-  const yAxisMax: number = Math.max(...data.map((item) => item.y)) + 160
+  const yAxisMax: number = Math.max(...data.map((item) => item.y)) + 150
   const options: HighchartsOptions = {
     title: { text: undefined },
     chart: {
       type: "column",
       backgroundColor: "var(--custom-background)",
       borderRadius: 20,
+      height: "42%",
     },
     colors: [
       "var(--custom-orange-1)",
@@ -65,6 +66,7 @@ const KeywordBarGraph = () => {
         text: null,
       },
       gridLineWidth: 0,
+      tickWidth: 0,
       labels: {
         enabled: false,
       },
@@ -108,15 +110,15 @@ const KeywordBarGraph = () => {
   }
 
   return (
-    <StyledDiv>
+    <GraphWrapper>
       <HighchartsReact highcharts={Highcharts} options={options} />
-    </StyledDiv>
+    </GraphWrapper>
   )
 }
 
 export default KeywordBarGraph
 
-const StyledDiv = styled.div`
+const GraphWrapper = styled.div`
   width: 100%;
   align-items: center;
   & .custom-label {
@@ -127,17 +129,17 @@ const StyledDiv = styled.div`
   & .custom-label .label-title {
     color: var(--custom-black);
     font-weight: bolder;
-    font-size: 2.4rem;
+    font-size: 2.2rem;
     text-shadow: rgba(0, 0, 0, 0.25) 0px 4px 4px;
     margin-bottom: 0;
   }
   & .custom-label .label-value {
     font-size: 1.6rem;
     color: #605d62;
-    margin-top: 0.5rem;
+    margin-block: 0.5rem;
   }
   & .custom-label .label-rank {
-    font-size: 6.4rem;
+    font-size: 5rem;
     color: white;
     font-style: oblique;
     font-weight: extra-bold;
