@@ -3,47 +3,52 @@ import HighchartsReact from "highcharts-react-official"
 import styled from "styled-components"
 import { useKeywordRank } from "../../../hooks/useKeywordRank"
 import { KeywordRankParamsType } from "../../../hooks/useKeywordRank"
-import { commonParamsType } from "./KeywordBoard"
+import { commonParamsState } from "../../../stores/StockMainAtoms"
+import { useRecoilValue } from "recoil"
+import { useRandomStock } from "../../../hooks/useRandomStock"
+import { selectedStockIdxState } from "../../../stores/StockMainAtoms"
+import { Suspense } from "react"
+import LoadingComponent from "../../common/Loading/LoadingComponent"
 
-// export interface HighchartsOptions {
-//   chart?: Highcharts.ChartOptions
-//   title?: Highcharts.TitleOptions
-//   subtitle?: Highcharts.SubtitleOptions
-//   // xAxis?: Highcharts.XAxisOptions
-//   xAxis?: any
-//   yAxis?: Highcharts.YAxisOptions
-//   legend?: Highcharts.LegendOptions
-//   // series?: Highcharts.SeriesOptionsType[]
-//   series?: any
-//   plotOptions?: Highcharts.PlotOptions
-//   tooltip?: Highcharts.TooltipOptions
-//   credits?: Highcharts.CreditsOptions
-//   exporting?: Highcharts.ExportingOptions
-//   colors?: string[]
-//   responsive?: Highcharts.ResponsiveOptions
-//   accessibility?: Highcharts.AccessibilityOptions
-//   events?: Highcharts.ChartEventsOptions
-// }
+interface KeywordType {
+  keywordName: string
+  keywordCount: number
+  keywordId: number
+}
 
-const KeywordBarGraph = (commonParams: commonParamsType) => {
-  // keyword 순위 읽어오기
-  const keywordRankParams: KeywordRankParamsType = {
+interface ChartDataType {
+  name: string
+  y: number
+  rank: number
+}
+
+const KeywordBarGraph = () => {
+  const { data: randomStockData } = useRandomStock(3) // 랜덤 주식 데이터
+  const selectedStockIdx = useRecoilValue(selectedStockIdxState) // 현재 선택된 주식의 인덱스
+  const commonParams = useRecoilValue(commonParamsState)
+  export const keywordRankParams: KeywordRankParamsType = {
     topN: 3,
+    typeId: randomStockData?.[selectedStockIdx]?.id,
     ...commonParams,
   }
+  // keyword 순위 읽어오기
   const { data: keywordRankData, isLoading } = useKeywordRank(keywordRankParams)
-  const chartData = topKeywords?.map((keyword, index) => {
+  console.log(keywordRankData)
+  const { totalNewsCount, topKeywords } = { ...keywordRankData }
+  const chartData = topKeywords.map((keyword: KeywordType, index: number) => {
     return {
       name: keyword.keywordName,
-      y: keyword.keywordCount / totalNewsCount,
+      y: (keyword.keywordCount / totalNewsCount) * 100,
       rank: index + 1,
     }
   })
+  const top_1 = chartData.splice(1, 1)
+  chartData.splice(0, 0, top_1[0])
+  console.log(chartData)
+  const yAxisMax: number =
+    Math.max(...chartData.map((word: ChartDataType) => word.y)) + 150
+  console.log(yAxisMax, "yAxisMax")
 
-  const top_1 = chartData?.splice(1, 1)
-  chartData?.splice(0, 0, top_1[0])
-
-  const yAxisMax: number = Math.max(...chartData?.map((word) => word.y)) + 150
   const options: Highcharts.Options = {
     title: { text: undefined },
     chart: {
@@ -79,7 +84,8 @@ const KeywordBarGraph = (commonParams: commonParamsType) => {
       labels: {
         enabled: false,
       },
-      max: yAxisMax,
+      max: isLoading ? 200 : yAxisMax,
+      // max: yAxisMax,
     },
     plotOptions: {
       column: {
@@ -112,16 +118,20 @@ const KeywordBarGraph = (commonParams: commonParamsType) => {
     },
     series: [
       {
+        name: "Keyword",
+        type: "column",
+        data: isLoading ? [] : chartData,
         colorByPoint: true,
-        data: chartData,
       },
     ],
   }
 
   return (
-    <GraphWrapper>
-      <HighchartsReact highcharts={Highcharts} options={options} />
-    </GraphWrapper>
+    <Suspense fallback={<LoadingComponent />}>
+      <GraphWrapper>
+        <HighchartsReact highcharts={Highcharts} options={options} />
+      </GraphWrapper>
+    </Suspense>
   )
 }
 
