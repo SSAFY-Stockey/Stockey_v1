@@ -16,6 +16,11 @@ import com.ssafy.backend.global.redis.dto.RefreshTokenDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -164,14 +169,19 @@ public class AuthServiceImpl implements AuthService{
     @Override
     public void logout() {
         String refreshToken = jwtUtil.getRefreshTokenFromCookie();
-
-        // refresh token 인증
-        jwtUtil.isValidForm(refreshToken);
-        refreshToken = refreshToken.substring(7);
-        jwtUtil.isValidToken(refreshToken, "RefreshToken");
-
         // redis에 저장된 refresh토큰 삭제하기
         jwtUtil.deleteRefreshToken(refreshToken);
+        // 쿠키도 제거하기
+        deleteRefreshTokenCookie();
     }
 
+    private void deleteRefreshTokenCookie() {
+        HttpServletResponse response
+                = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
+        Cookie cookie = new Cookie(JwtUtil.REFRESH_TOKEN_SUBJECT, null);
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        assert response != null;
+        response.addCookie(cookie);
+    }
 }
