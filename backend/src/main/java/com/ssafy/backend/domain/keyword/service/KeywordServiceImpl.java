@@ -1,5 +1,6 @@
 package com.ssafy.backend.domain.keyword.service;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.ssafy.backend.domain.favorites.entity.Favorite;
 import com.ssafy.backend.domain.favorites.repository.FavoriteRepository;
 import com.ssafy.backend.domain.keyword.api.request.GetTopNKeywordRequest;
@@ -26,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -100,23 +102,53 @@ public class KeywordServiceImpl implements KeywordService{
 
     @Override
     public Long getTargetNewsCount(GetTopNKeywordRequest getTopNKeywordRequest) {
-        return null;
-    }
-
-    @Override
-    public TopKeywordDTO getTopNKeyword(GetTopNKeywordRequest getTopNKeywordRequest) {
-        Pageable topN = PageRequest.of(0, getTopNKeywordRequest.getTopN());
+        String newsType = getTopNKeywordRequest.getNewsType();
+        Long domainId = getTopNKeywordRequest.getId();
         LocalDate startDate = getTopNKeywordRequest.getStartDate();
         LocalDate endDate = getTopNKeywordRequest.getEndDate();
 
-        List<TopKeywordDTO> topKeywords
-                = newsRelationRepository.getTopNKeywords(startDate, endDate, topN);
-        Long totalUniqueNewsCount = yourRepository.findTotalUniqueNewsCount(startDate, endDate);
+        Long totalNewsCount = 0L;
 
-        for (TopKeywordDTO keywordDTO : topKeywords) {
-            keywordDTO.setNewsCount(totalUniqueNewsCount);
+        switch (newsType) {
+            case "ECONOMY":
+                totalNewsCount = newsRelationRepository.getTotalNewsCountForEconomy(startDate, endDate);
+                break;
+            case "INDUSTRY":
+                totalNewsCount = newsRelationRepository.getTotalNewsCountForIndustry(startDate, endDate, domainId);
+                break;
+            case "STOCK":
+                totalNewsCount = newsRelationRepository.getTotalNewsCountForStock(startDate, endDate, domainId);
+                break;
+            default:
+                break;
         }
+        return totalNewsCount;
+    }
 
+    @Override
+    public List<TopKeywordDTO> getTopNKeyword(GetTopNKeywordRequest getTopNKeywordRequest) {
+        Pageable topN = PageRequest.of(0, getTopNKeywordRequest.getTopN());
+        String newsType = getTopNKeywordRequest.getNewsType();
+        Long domainId = getTopNKeywordRequest.getId();
+        LocalDate startDate = getTopNKeywordRequest.getStartDate();
+        LocalDate endDate = getTopNKeywordRequest.getEndDate();
+
+        List<TopKeywordDTO> topKeywords = new ArrayList<>();
+
+        switch (newsType) {
+            case "ECONOMY":
+                topKeywords = newsRelationRepository.getTopNKeywordsForEconomy(startDate, endDate, topN);
+                break;
+            case "INDUSTRY":
+                topKeywords = newsRelationRepository.getTopNKeywordsForIndustry(startDate, endDate, topN, domainId);
+                break;
+            case "STOCK":
+                topKeywords = newsRelationRepository.getTopNKeywordsForStock(startDate, endDate, topN, domainId);
+                break;
+            default:
+                break;
+        }
+        return topKeywords;
     }
 
     // 유저가 동일한지 체크

@@ -1,7 +1,9 @@
 package com.ssafy.backend.domain.keyword.api;
 
 import com.ssafy.backend.domain.keyword.api.request.GetTopNKeywordRequest;
+import com.ssafy.backend.domain.keyword.api.response.GetTopNKeywordResponse;
 import com.ssafy.backend.domain.keyword.api.response.KeywordDetailResponse;
+import com.ssafy.backend.domain.keyword.api.response.KeywordResponse;
 import com.ssafy.backend.domain.keyword.dto.KeywordDto;
 import com.ssafy.backend.domain.keyword.dto.KeywordStatisticDto;
 import com.ssafy.backend.domain.keyword.dto.TopKeywordDTO;
@@ -124,16 +126,17 @@ public class KeywordController {
         return new ResponseEntity<>(new ResponseDto("DELETED", null), HttpStatus.OK);
     }
 
-    @Operation(summary = "Top6 키워드 리턴", description = "economy, industry, stock 가각에 대해 특정 기간의 Top6 키워드 리턴")
+    @Operation(summary = "TopN 키워드 리턴", description = "economy, industry, stock 가각에 대해 특정 기간의 TopN 키워드 리턴")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "요청 성공")
             }
     )
     @GetMapping("/topN")
-    public ResponseEntity<ResponseDto> getTop6Keyword(@Valid @RequestBody GetTopNKeywordRequest getTopNKeywordRequest) {
-        Long newsCount = keywordService.getTargetNewsCount(getTopNKeywordRequest);
-        TopKeywordDTO topKeywordDTO = keywordService.getTopNKeyword(getTopNKeywordRequest);
-        return new ResponseEntity<>(new ResponseDto("OK", null), HttpStatus.OK);
+    public ResponseEntity<ResponseDto> getTopNKeyword(@Valid @ModelAttribute GetTopNKeywordRequest getTopNKeywordRequest) {
+        Long totalNewsCount = keywordService.getTargetNewsCount(getTopNKeywordRequest);
+        List<TopKeywordDTO> topKeywordDTO = keywordService.getTopNKeyword(getTopNKeywordRequest);
+        GetTopNKeywordResponse getTopNKeywordResponse = new GetTopNKeywordResponse(totalNewsCount, topKeywordDTO);
+        return new ResponseEntity<>(new ResponseDto("OK", getTopNKeywordResponse), HttpStatus.OK);
     }
 }

@@ -25,5 +25,5 @@ public interface KeywordService {
 
     Long getTargetNewsCount(GetTopNKeywordRequest getTopNKeywordRequest);
 
-    TopKeywordDTO getTopNKeyword(GetTopNKeywordRequest getTopNKeywordRequest);
+    List<TopKeywordDTO> getTopNKeyword(GetTopNKeywordRequest getTopNKeywordRequest);
 }
