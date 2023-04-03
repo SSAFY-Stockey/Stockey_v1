@@ -10,9 +10,10 @@ import { useNavigate } from "react-router-dom"
 type PageLinkBtnProps = {
   name: string
   selected: boolean
+  isNarrow: boolean
 }
 
-const PageLinkBtn = ({ name, selected }: PageLinkBtnProps) => {
+const PageLinkBtn = ({ name, selected, isNarrow }: PageLinkBtnProps) => {
   // 페이지 이동 함수 작성
   const navigate = useNavigate()
   const handleBtnClick = () => {
@@ -42,7 +43,7 @@ const PageLinkBtn = ({ name, selected }: PageLinkBtnProps) => {
         ) : (
           <HomeRoundedIcon />
         )}
-        <PageLinkText>{name}</PageLinkText>
+        {isNarrow ? undefined : <PageLinkText>{name}</PageLinkText>}
       </PageLinkBtnDiv>
     </>
   )
@@ -67,6 +68,7 @@ const PageLinkBtnDiv = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: center;
   padding: 16px;
   gap: 10px;
 
