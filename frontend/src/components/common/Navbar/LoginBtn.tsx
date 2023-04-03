@@ -1,7 +1,11 @@
 import styled from "styled-components"
 import { useNavigate } from "react-router-dom"
 
-const LoginBtn = () => {
+interface Props {
+  isNarrow: boolean
+}
+
+const LoginBtn = ({ isNarrow }: Props) => {
   const navigate = useNavigate()
 
   const handleClick = () => {
@@ -9,7 +13,12 @@ const LoginBtn = () => {
   }
   return (
     <>
-      <LoginBtnDiv onClick={handleClick}>로그인</LoginBtnDiv>
+      <LoginBtnDiv
+        onClick={handleClick}
+        className={isNarrow ? "isNarrow" : undefined}
+      >
+        로그인
+      </LoginBtnDiv>
     </>
   )
 }
@@ -17,19 +26,31 @@ const LoginBtn = () => {
 export default LoginBtn
 
 const LoginBtnDiv = styled.div`
-  background-color: val(--custom-gradient-pink);
+  background: var(--custom-gradient-pink);
 
   // font
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   font-weight: bold;
   color: white;
 
   // cursor
   cursor: pointer;
 
+  // padding
+  padding: 12px;
+
+  // border
+  border-radius: 4px;
+
   // prevent drag
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+
+  // isNarrow
+  &.isNarrow {
+    font-size: 1.3rem;
+    padding: 8px;
+  }
 `
