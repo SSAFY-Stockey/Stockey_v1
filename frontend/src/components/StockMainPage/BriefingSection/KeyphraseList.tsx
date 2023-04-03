@@ -3,7 +3,7 @@ import KeyphraseListItem from "./KeyphraseListItem"
 import { useRecoilValue } from "recoil"
 import { selectedKeywordIdxState } from "../../../stores/SelectedIdxAtoms"
 
-const KeyphraseList = (data) => {
+const KeyphraseList = () => {
   const selectedKeywordIdx = useRecoilValue(selectedKeywordIdxState) // 현재 선택된 키워드의 인덱스
   const colors: string[] = ["orange", "pink", "purple"]
   const keyphrases: string[] = [

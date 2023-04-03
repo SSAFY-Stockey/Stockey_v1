@@ -36,6 +36,7 @@ export const useKeyphraseList = ({
       select,
       onError,
       refetchOnWindowFocus: false,
+      enabled: !!keywordId,
     }
   )
 }

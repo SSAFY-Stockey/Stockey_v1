@@ -1,7 +1,7 @@
 import KeywordBarGraph from "./KeywordBarGraph"
 import KeyphraseList from "./KeyphraseList"
 import { HighlightedSpan } from "../../StockDetailPage/MainSection/PriceSection/PriceSection"
-import { useRecoilValue } from "recoil"
+import { useRecoilValue, useRecoilState } from "recoil"
 import {
   selectedStockIdxState,
   selectedKeywordIdxState,
@@ -11,14 +11,17 @@ import { useKeywordRank } from "../../../hooks/useKeywordRank"
 import { useKeyphraseList } from "../../../hooks/useKeyphraseList"
 import { KeywordRankParamsType } from "../../../hooks/useKeywordRank"
 import { KeyphraseListParamsType } from "../../../hooks/useKeyphraseList"
+
 import styled from "styled-components"
 import dayjs from "dayjs"
+import { useEffect } from "react"
 
 const KeywordBoard = () => {
   // 현재 선택된 주식 데이터 읽어오기
-  const selectedStockIdx = useRecoilValue(selectedStockIdxState) // 현재 선택된 주식의 인덱스
   const { data: randomStockData } = useRandomStock(3) // 랜덤 주식 데이터
+  const selectedStockIdx = useRecoilValue(selectedStockIdxState) // 현재 선택된 주식의 인덱스
   const selectedStock = randomStockData?.[selectedStockIdx] // 현재 선택된 주식 데이터
+  console.log(selectedStock)
 
   interface commonParamsType {
     newsType: "STOCK" | "INDUSTRY" | "ECONOMY"
@@ -31,8 +34,8 @@ const KeywordBoard = () => {
   const today = dayjs()
   const commonParams: commonParamsType = {
     newsType: "STOCK",
-    typeId: selectedStock.id,
-    startDate: today.subtract(1, "week").format("YYMMDD"),
+    typeId: selectedStock?.id,
+    startDate: today.subtract(1, "year").startOf("year").format("YYMMDD"),
     endDate: today.format("YYMMDD"),
   }
 
@@ -42,23 +45,28 @@ const KeywordBoard = () => {
     ...commonParams,
   }
   const { data: keywordRankData } = useKeywordRank(keywordRankParams)
+  console.log({ keywordRankData })
 
-  // keyphrase 리스트 읽어오기
-  const selectedKeywordIdx = useRecoilValue(selectedKeywordIdxState) // 현재 선택된 키워드의 인덱스
-  const keyphraseListParams: KeyphraseListParamsType = {
-    keywordId: keywordRankData?.[selectedKeywordIdx].id,
-    ...commonParams,
-  }
-  const { data: keyphraseListData } = useKeyphraseList(keyphraseListParams)
+  // // keyphrase 리스트 읽어오기
+  // const selectedKeywordIdx = useRecoilValue(selectedKeywordIdxState) // 현재 선택된 키워드의 인덱스
+  // const keyphraseListParams: KeyphraseListParamsType = {
+  //   keywordId: keywordRankData?.[selectedKeywordIdx].id,
+  //   ...commonParams,
+  // }
+  // const { data: keyphraseListData } = useKeyphraseList(keyphraseListParams)
 
   return (
     <BoardDiv>
       <BoardTitle>
         <HighlightedSpan color="#ff6f9d">키워드</HighlightedSpan>로 보는 이번 주{" "}
-        {selectedStock.name} 소식💌
+        {selectedStock?.name} 소식💌
       </BoardTitle>
-      <KeyphraseList data={keyphraseListData} />
-      <KeywordBarGraph data={keywordRankData} />
+      <KeyphraseList />
+      <KeywordBarGraph
+        // data={keywordRankData}
+        totalNewsCount={keywordRankData?.totalNewsCount}
+        topKeywords={keywordRankData?.topKeywords}
+      />
     </BoardDiv>
   )
 }

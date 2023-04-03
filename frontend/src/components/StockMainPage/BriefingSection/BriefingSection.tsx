@@ -3,11 +3,6 @@ import RandomStockList from "./RandomStockList"
 import Grid from "@mui/material/Grid"
 
 const BriefingSection = () => {
-  const [selectedIdx, setSelectedIdx] = useState<number>(0)
-  const selectHandler = {
-    selectedIdx,
-    setSelectedIdx,
-  }
   return (
     <Grid container>
       <Grid item xs={8}>

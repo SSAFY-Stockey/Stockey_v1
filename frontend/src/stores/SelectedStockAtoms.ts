@@ -1,6 +1,20 @@
 import { atom } from "recoil"
 
-export const selectedStockIdxState = atom<number>({
+interface SelectedStockType {
+  id: number
+  name: string
+  changeRate: number
+  currentPrice: number
+  index?: number
+}
+
+export const selectedStockState = atom<SelectedStockType>({
   key: "selectedStockIdxState",
-  default: 0,
+  default: {
+    id: -1,
+    name: "",
+    changeRate: 0,
+    currentPrice: 0,
+    index: 0,
+  },
 })

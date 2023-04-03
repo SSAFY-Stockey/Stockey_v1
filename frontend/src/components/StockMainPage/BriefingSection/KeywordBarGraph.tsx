@@ -1,7 +1,6 @@
 import * as Highcharts from "highcharts"
 import HighchartsReact from "highcharts-react-official"
 import styled from "styled-components"
-import { useKeywordRank } from "../../hooks/useKeywordRank"
 
 export interface HighchartsOptions {
   chart?: Highcharts.ChartOptions
@@ -22,20 +21,29 @@ export interface HighchartsOptions {
   accessibility?: Highcharts.AccessibilityOptions
   events?: Highcharts.ChartEventsOptions
 }
-
+interface TopKeywordType {
+  keywordCount: number
+  keywordName: string
+  keywordId: number
+}
 interface DataProps {
-  name: string
-  y: number
-  rank: number
+  totalNewsCount: number
+  topKeywords: TopKeywordType[]
 }
 
-const KeywordBarGraph = (data) => {
-  const data: DataProps[] = [
-    { name: "빅스텝", y: 74.84, rank: 2 },
-    { name: "금리", y: 100, rank: 1 },
-    { name: "연준", y: 34.84, rank: 3 },
-  ]
-  const yAxisMax: number = Math.max(...data.map((item) => item.y)) + 150
+const KeywordBarGraph = ({ totalNewsCount, topKeywords }: DataProps) => {
+  const chartData = topKeywords?.map((keyword, index) => {
+    return {
+      name: keyword.keywordName,
+      y: keyword.keywordCount / totalNewsCount,
+      rank: index + 1,
+    }
+  })
+
+  const top_1 = chartData.splice(1, 1)
+  chartData.splice(0, 0, top_1[0])
+
+  const yAxisMax: number = Math.max(...chartData.map((word) => word.y)) + 150
   const options: HighchartsOptions = {
     title: { text: undefined },
     chart: {
@@ -105,9 +113,9 @@ const KeywordBarGraph = (data) => {
     series: [
       {
         colorByPoint: true,
-        data: data,
+        data: chartData,
       },
-    ], // 데이터가 처음엔 비어았다.
+    ],
   }
 
   return (

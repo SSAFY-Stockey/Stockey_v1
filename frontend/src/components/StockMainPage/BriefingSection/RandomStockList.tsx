@@ -9,7 +9,8 @@ const RandomStockList = () => {
       {randomStockData?.map((stock: any, index: number) => (
         <StockBlock
           key={`randomStock-${index}`}
-          idx={index}
+          stockId={stock.id}
+          index={index}
           stockName={stock.name}
           currentPrice={stock.currentPrice}
           priceChange={stock.changeRate}

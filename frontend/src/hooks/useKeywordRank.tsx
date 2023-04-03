@@ -12,11 +12,11 @@ export interface KeywordRankParamsType {
   endDate: string
 }
 
-const fetchKeywordRank = (queryKey: any) => {
-  const [topN, newsType, typeId, startDate, endDate] = queryKey.slice(1)
+const fetchKeywordRank = ({ queryKey }: any) => {
+  const [, topN, newsType, id, startDate, endDate] = queryKey
   console.log("fetchKeywordRank")
   return axios.get(`/keywords/topN`, {
-    params: { topN, newsType, typeId, startDate, endDate },
+    params: { topN, newsType, id, startDate, endDate },
   })
 }
 
@@ -36,15 +36,15 @@ export const useKeywordRank = ({
       select,
       onError,
       refetchOnWindowFocus: false,
+      enabled: !!typeId,
     }
   )
 }
 
 const select = (response: any) => {
-  const rawData = response.data
-  const selectedData = rawData
-  console.log("selectedData >> ", selectedData)
-  return selectedData
+  const rawData = response.data.data
+  const { totalNewsCount, topKeywordDTO: topKeywords } = rawData
+  return { totalNewsCount, topKeywords }
 }
 
 const onError = (err: any) => {
