@@ -50,7 +50,7 @@ const LoginBtnDiv = styled.div`
 
   // isNarrow
   &.isNarrow {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     padding: 8px;
   }
 `

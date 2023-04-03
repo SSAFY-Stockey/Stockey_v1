@@ -1,8 +1,12 @@
 import ProfileInfo from "./ProfileInfo"
 import PageLinkBtn from "./PageLinkBtn"
+import LogoutBtn from "./LogoutBtn"
 import StockeyLogo from "./StockeyLogo"
 import styled from "styled-components"
 import { useLocation } from "react-router-dom"
+// recoil
+import { useRecoilValue } from "recoil"
+import { logInState } from "../../../stores/atoms"
 
 interface Props {
   isNarrow: boolean
@@ -10,6 +14,7 @@ interface Props {
 
 const Navbar = ({ isNarrow }: Props) => {
   const curPath = useLocation().pathname
+  const isLogin = useRecoilValue(logInState)
 
   const isSeleted = (name: string) => {
     if (curPath.startsWith("/stock") && name === "주식 종목") {
@@ -39,6 +44,7 @@ const Navbar = ({ isNarrow }: Props) => {
           }
         >
           <ProfileInfo isNarrow={isNarrow} />
+
           <PageLinkBtn
             name="주식 종목"
             selected={isSeleted("주식 종목")}
@@ -59,6 +65,7 @@ const Navbar = ({ isNarrow }: Props) => {
             selected={isSeleted("마이페이지")}
             isNarrow={isNarrow}
           />
+          {isLogin ? <LogoutBtn isNarrow={isNarrow} /> : undefined}
         </NavbarDiv>
       </NavWrapper>
     </>
@@ -96,6 +103,6 @@ const NavbarDiv = styled.div`
 const NavWrapper = styled.div`
   position: relative;
 
-  height: 100%;
+  height: 100vh;
   width: 100%;
 `

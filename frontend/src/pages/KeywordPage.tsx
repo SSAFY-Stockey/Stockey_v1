@@ -24,14 +24,6 @@ const KeywordPage = () => {
       })
   }
 
-  useEffect(() => {
-    console.log(accessToken)
-  }, [accessToken])
-
-  const handleAnotherClick = () => {
-    console.log(document.cookie)
-  }
-
   return (
     <>
       <PageGrid>
@@ -40,7 +32,6 @@ const KeywordPage = () => {
           <Bookmark isBookmarked={false} page={"keyword"} />
         </Example>
         <button onClick={handleClick}>실험</button>
-        <button onClick={handleAnotherClick}>실험2</button>
       </PageGrid>
     </>
   )
