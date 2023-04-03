@@ -7,6 +7,7 @@ import com.ssafy.backend.domain.industry.dto.IndustryDto;
 import com.ssafy.backend.domain.industry.mapper.IndustryDtoMapper;
 import com.ssafy.backend.domain.industry.service.IndustryService;
 import com.ssafy.backend.domain.member.entity.Member;
+import com.ssafy.backend.domain.member.repository.MemberRepository;
 import com.ssafy.backend.domain.member.service.MemberService;
 import com.ssafy.backend.domain.stock.api.response.GetStockTodayResponse;
 import com.ssafy.backend.domain.stock.dto.StockBriefDto;
@@ -35,6 +36,9 @@ public class IndustryController {
 
     private final MemberService memberService;
     private final IndustryDtoMapper dtoMapper;
+
+    // TODO  삭제예정
+    private final MemberRepository memberRepository;
 
 
     @Operation(summary = "산업 리스트 목록 반환 ", description = "산업 리스트를 반환해주는 메소드입니다.")
@@ -115,6 +119,7 @@ public class IndustryController {
 
 
 
+    // TODO 수정예정
     // 내 관심산업 리스트
     @Operation(summary = "관심 산업 리스트", description = "내 관심 산업 리스트를 출력합니다.")
     @ApiResponses(
@@ -124,7 +129,8 @@ public class IndustryController {
     )
     @GetMapping("stocklist/my")
     public ResponseEntity<ResponseDto> getMyIndustries() {
-        Member member = memberService.getMemberEntity();
+//        Member member = memberService.getMemberEntity();
+        Member member = memberRepository.findById(1L).get();
         List<IndustryDto> myIndustries = industryService.getMyIndustries(member);
         List<GetIndustryResponse> getIndustryResponses = dtoMapper.toGetResponse(myIndustries);
         return new ResponseEntity<>(new ResponseDto("OK", getIndustryResponses), HttpStatus.OK);
@@ -142,13 +148,14 @@ public class IndustryController {
     )
     @GetMapping("stocklist/my/{id}")
     public ResponseEntity<ResponseDto> checkFavorite(@PathVariable Long id) {
-        Member member = memberService.getMemberEntity();
+//        Member member = memberService.getMemberEntity();
+        Member member = memberRepository.findById(1L).get();
         boolean result = industryService.checkFavorite(member, id);
         return new ResponseEntity<>(new ResponseDto("OK", result), HttpStatus.OK);
     }
 
     // 관심 산업 등록
-    @Auth
+//    @Auth
     @Operation(summary = "관심 산업 등록", description = "관심 산업을 등록합니다.")
     @ApiResponses(
             value = {
@@ -159,7 +166,8 @@ public class IndustryController {
     )
     @PostMapping("stocklist/my/{id}")
     public ResponseEntity<ResponseDto> addFavorite(@PathVariable Long id) {
-        Member member = memberService.getMemberEntity();
+//        Member member = memberService.getMemberEntity();
+        Member member = memberRepository.findById(1L).get();
         industryService.addFavorite(member, id);
         return new ResponseEntity<>(new ResponseDto("CREATED", null), HttpStatus.CREATED);
     }
@@ -175,7 +183,8 @@ public class IndustryController {
     )
     @DeleteMapping("stocklist/my/{id}")
     public ResponseEntity<ResponseDto> deleteFavorite(@PathVariable Long id) {
-        Member member = memberService.getMemberEntity();
+//        Member member = memberService.getMemberEntity();
+        Member member = memberRepository.findById(1L).get();
         industryService.deleteFavorite(member, id);
         return new ResponseEntity<>(new ResponseDto("DELETED", null), HttpStatus.OK);
     }
