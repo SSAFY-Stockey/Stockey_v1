@@ -24,7 +24,7 @@ const IndustrySelector = () => {
 export default IndustrySelector
 
 const IndustrySelectorDiv = styled.div`
-  height: calc(100vh - 156px);
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -41,7 +41,7 @@ const IndustrySelectorDiv = styled.div`
 
 const TitleWrapper = styled.div`
   width: 100%;
-  height: 2rem;
+  height: auto;
   margin: 0px;
   display: flex;
   padding-left: 24px;

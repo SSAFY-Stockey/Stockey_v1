@@ -21,26 +21,66 @@ const IndustryDetailPage = () => {
   const { isLoading, data: industryInfo } = useIndustryList(industryId)
 
   const [mode, setMode] = useState<string>("def")
+  const [className, setClassName] = useState<string>("")
 
   const changeLayout = (
     e: React.MouseEvent<HTMLElement>,
     toggleMode: string
   ) => {
-    // document.querySelectorAll(".fade-in").forEach((elem) => {
-    //   elem.classList.replace("fade-in", "fade-out")
-    // })
-    setMode(toggleMode)
-    // setTimeout(() => {
-    //   document.querySelectorAll(".fade-out").forEach((elem) => {
-    //     elem.classList.replace("fade-out", "fade-in")
-    //   })
-    // }, 500)
+    switch (toggleMode) {
+      case "sel":
+        switch (mode) {
+          case "sel":
+            setClassName("sel-to-def")
+            setTimeout(() => {
+              setMode("def")
+            }, 600)
+            break
+          case "def":
+            setClassName("def-to-sel")
+            setMode("sel")
+            break
+          case "kwd":
+            setClassName("kwd-to-sel")
+            setTimeout(() => {
+              setMode("sel")
+            }, 600)
+            break
+          default:
+            break
+        }
+        break
+      case "kwd":
+        switch (mode) {
+          case "kwd":
+            setClassName("kwd-to-def")
+            setTimeout(() => {
+              setMode("def")
+            }, 600)
+            break
+          case "def":
+            setClassName("def-to-kwd")
+            setMode("kwd")
+            break
+          case "sel":
+            setClassName("sel-to-kwd")
+            setTimeout(() => {
+              setMode("kwd")
+            }, 600)
+            break
+          default:
+            break
+        }
+        break
+      default:
+        break
+    }
   }
 
   const defaultLayout = (
     <>
       <Grid item xs={12} marginLeft={4.5}>
-        <ButtonDiv className={mode}>
+        <ButtonDiv>
           <button onClick={(e) => changeLayout(e, "kwd")}>keywordPanel</button>
           <IndustrySelectorToggleBtn
             changeLayout={(e, mode) => {
@@ -50,20 +90,32 @@ const IndustryDetailPage = () => {
         </ButtonDiv>
       </Grid>
       <Grid item xs={7}>
-        <LeftSection className={mode}>
-          <TitleDiv>
-            {industryInfo?.name}
-            <BookmarkBtn isBookmarked={false} page="stock" />
-          </TitleDiv>
-          <IndustryOverall />
-          <IndustryMarketCapLineChart industryId={industryId} />
-          <div>연관 키워드 차트</div>
+        <LeftSection id="left">
+          <LeftSlider className={`def ${className}`}>
+            <TitleDiv>
+              {industryInfo?.name}
+              <BookmarkBtn isBookmarked={false} page="stock" />
+            </TitleDiv>
+          </LeftSlider>
+          <LeftSlider className={`def ${className}`}>
+            <IndustryOverall />
+          </LeftSlider>
+          <LeftSlider className={`def ${className}`}>
+            <IndustryMarketCapLineChart industryId={industryId} />
+          </LeftSlider>
+          <LeftSlider className={`def ${className}`}>
+            <div>연관 키워드 차트</div>
+          </LeftSlider>
         </LeftSection>
       </Grid>
       <Grid item xs={5}>
-        <RightSection className={mode}>
-          <IndustryBubbleChart industryId={industryInfo?.id} />
-          <div>전체 종목 리스트</div>
+        <RightSection>
+          <RightSlider className={`def ${className}`}>
+            <IndustryBubbleChart industryId={industryInfo?.id} />
+          </RightSlider>
+          <RightSlider className={`def ${className}`}>
+            <div>전체 종목 리스트</div>
+          </RightSlider>
         </RightSection>
       </Grid>
     </>
@@ -72,8 +124,8 @@ const IndustryDetailPage = () => {
   const onKeywordPanelLayout = (
     <>
       <Grid item xs={7}>
-        <LeftSection className={mode}>
-          <ButtonDiv className={mode}>
+        <LeftSection>
+          <ButtonDiv>
             <button onClick={(e) => changeLayout(e, "kwd")}>
               keywordPanel
             </button>
@@ -83,19 +135,81 @@ const IndustryDetailPage = () => {
               }}
             />
           </ButtonDiv>
-          <TitleDiv>
-            {industryInfo?.name}
-            <BookmarkBtn isBookmarked={false} page="stock" />
-          </TitleDiv>
-          <IndustryOverall />
-          <IndustryMarketCapLineChart industryId={industryId} />
-          <div>연관 키워드 차트</div>
-          <IndustryBubbleChart industryId={industryInfo?.id} />
-          <div>전체 종목 리스트</div>
+          <LeftSlider
+            className={
+              className === "kwd-to-sel"
+                ? "sel kwd-to-sel"
+                : className === "sel-to-kwd"
+                ? "kwd sel-to-kwd"
+                : className
+            }
+          >
+            <TitleDiv>
+              {industryInfo?.name}
+              <BookmarkBtn isBookmarked={false} page="stock" />
+            </TitleDiv>
+          </LeftSlider>
+          <LeftSlider
+            className={
+              className === "kwd-to-sel"
+                ? "sel kwd-to-sel"
+                : className === "sel-to-kwd"
+                ? "kwd sel-to-kwd"
+                : className
+            }
+          >
+            <IndustryOverall />
+          </LeftSlider>
+          <LeftSlider
+            className={
+              className === "kwd-to-sel"
+                ? "sel kwd-to-sel"
+                : className === "sel-to-kwd"
+                ? "kwd sel-to-kwd"
+                : className
+            }
+          >
+            <IndustryMarketCapLineChart industryId={industryId} />
+          </LeftSlider>
+          <LeftSlider
+            className={
+              className === "kwd-to-sel"
+                ? "sel kwd-to-sel"
+                : className === "sel-to-kwd"
+                ? "kwd sel-to-kwd"
+                : className
+            }
+          >
+            <div>연관 키워드 차트</div>
+          </LeftSlider>
+          <RightSlider
+            className={
+              className === "kwd-to-sel"
+                ? "sel kwd-to-sel"
+                : className === "sel-to-kwd"
+                ? "kwd sel-to-kwd"
+                : className
+            }
+          >
+            <IndustryBubbleChart industryId={industryInfo?.id} />
+          </RightSlider>
+          <RightSlider
+            className={
+              className === "kwd-to-sel"
+                ? "sel kwd-to-sel"
+                : className === "sel-to-kwd"
+                ? "kwd sel-to-kwd"
+                : className
+            }
+          >
+            <div>전체 종목 리스트</div>
+          </RightSlider>
         </LeftSection>
       </Grid>
       <Grid item xs={5}>
-        <KeywordPanel keyword="빅스텝" />
+        <PanelSlider className={className}>
+          <KeywordPanel keyword="빅스텝" />
+        </PanelSlider>
       </Grid>
     </>
   )
@@ -103,7 +217,7 @@ const IndustryDetailPage = () => {
   const onIndustrySelectorLayout = (
     <>
       <Grid item xs={12} marginLeft={4.5}>
-        <ButtonDiv className={mode}>
+        <ButtonDiv>
           <button onClick={(e) => changeLayout(e, "kwd")}>keywordPanel</button>
           <IndustrySelectorToggleBtn
             changeLayout={(e, mode) => {
@@ -113,21 +227,39 @@ const IndustryDetailPage = () => {
         </ButtonDiv>
       </Grid>
       <Grid item xs={5}>
-        <LeftSection className={mode}>
-          <IndustrySelector />
+        <LeftSection>
+          <SelectorSlider
+            className={
+              className === "kwd-to-sel" ? "sel kwd-to-sel" : className
+            }
+          >
+            <IndustrySelector />
+          </SelectorSlider>
         </LeftSection>
       </Grid>
       <Grid item xs={7}>
-        <RightSection className={mode}>
-          <TitleDiv>
-            {industryInfo?.name}
-            <BookmarkBtn isBookmarked={false} page="stock" />
-          </TitleDiv>
-          <IndustryOverall />
-          <IndustryMarketCapLineChart industryId={industryId} />
-          <div>연관 키워드 차트</div>
-          <IndustryBubbleChart industryId={industryInfo?.id} />
-          <div>전체 종목 리스트</div>
+        <RightSection id="right">
+          <LeftSlider className={className}>
+            <TitleDiv>
+              {industryInfo?.name}
+              <BookmarkBtn isBookmarked={false} page="stock" />
+            </TitleDiv>
+          </LeftSlider>
+          <LeftSlider className={className}>
+            <IndustryOverall />
+          </LeftSlider>
+          <LeftSlider className={className}>
+            <IndustryMarketCapLineChart industryId={industryId} />
+          </LeftSlider>
+          <LeftSlider className={className}>
+            <div>연관 키워드 차트</div>
+          </LeftSlider>
+          <RightSlider className={className}>
+            <IndustryBubbleChart industryId={industryInfo?.id} />
+          </RightSlider>
+          <RightSlider className={className}>
+            <div>전체 종목 리스트</div>
+          </RightSlider>
         </RightSection>
       </Grid>
     </>
@@ -175,66 +307,8 @@ const industryList = [
   "유틸리티",
 ]
 
-const FadeIn = keyframes`
-from {
-  opacity: 0;
-}
-
-to {
-  opacity: 1;
-}
-`
-
-const FadeOut = keyframes`
-from {
-  opacity: 1;
-}
-
-to {
-  opacity: 0;
-}
-`
-
-const SlideInLeft = keyframes`
-  from {
-    opacity: 0;
-    transform: translateX(-100%);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0%);
-  }
-`
-
-const SlideOutRigt = keyframes`
-  from {
-    opacity: 1;
-    transform: translateX(0%);
-  }
-  to {
-    opacity: 0;
-    transform: translateX(100%);
-  }
-`
-
-const AnimatedDiv = styled.div`
-  animation-duration: 0.5s;
-  animation-fill-mode: both;
-  animation-timing-function: ease-in-out;
-  .industry-selector {
-    animation-name: ${SlideInLeft};
-  }
-`
-
 const ButtonDiv = styled.div`
   padding: 24px 0px 0px 0px;
-
-  &.fade-in {
-    animation: ${FadeIn} 1s 0s ease 1 forwards;
-  }
-  &.fade-out {
-    animation: ${FadeOut} 1s 0s ease 1 forwards;
-  }
 `
 
 const TitleDiv = styled.div`
@@ -248,15 +322,6 @@ const LeftSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
-
-  transition: all 0.5s ease;
-
-  &.fade-in {
-    animation: ${FadeIn} 1s 0s ease 1 forwards;
-  }
-  &.fade-out {
-    animation: ${FadeOut} 1s 0s ease 1 forwards;
-  }
 `
 
 const RightSection = styled.div`
@@ -264,13 +329,212 @@ const RightSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
+`
 
-  transition: all 0.5s ease;
-
-  &.fade-in {
-    animation: ${FadeIn} 1s 0s ease 1 forwards;
+const SlideToRight = keyframes`
+  from {
+    z-index: 1;
+    transform: translateX(-71.4%);
   }
-  &.fade-out {
-    animation: ${FadeOut} 1s 0s ease 1 forwards;
+  to {
+    transform: translateX(0%);
+  }
+`
+
+const SlideToLeftForKwd = keyframes`
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+`
+
+const SlideOverRight = keyframes`
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(71.4%);
+  }
+`
+
+const SlideToLeft = keyframes`
+  from {
+    transform: translateX(71.4%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+`
+
+const SlideToRightAndDisppear = keyframes`
+  from {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+`
+
+const SlideDownAndAppear = keyframes`
+from {
+  opacity: 0;
+  height: 0;
+  visibility: hidden;
+}
+to {
+  opacity: 1;
+  visibility: visible;
+}
+`
+
+const SlideUpAndDisappear = keyframes`
+from {
+  opacity: 1;
+  visibility: visible;
+}
+to {
+  opacity: 0;
+  visibility: hidden;
+  height: 0;
+}
+`
+
+// transform: translateY(-${
+//   document.getElementById("right")?.getBoundingClientRect().top
+// }px) scale(0.714);
+
+const SlideDown = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(-200%)
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+`
+
+const SlideUp = keyframes`
+  from {
+    transform: translateY(${
+      document.getElementById("left")?.clientHeight
+    }px) scale(1.4);
+  }
+  50% {
+    transform: translateY(${document.getElementById("left")?.clientHeight}px);
+  }
+  to {
+    transform: translateY(0%);
+  }
+`
+
+const SlideToLeftDown = keyframes`
+  from {
+    transform: translate(100%, -220%) scale(0.714);
+  }
+  to {
+    transform: translate(0%, 0%);
+  }
+`
+
+const SlideToRightUp = keyframes`
+  from {
+    transform: translate(-100%, 220%) scale(1.4);
+  }
+  to {
+    transform: translate(0%, 0%)
+  }
+`
+
+const SelectorSlider = styled.div`
+  transition: all 0.6s forwards;
+  animation-duration: 0.6s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease;
+  height: calc(100vh - 132px);
+  opacity: 0;
+  visibility: hidden;
+
+  &.def-to-sel {
+    z-index: 1;
+    animation-delay: 0.6s;
+    animation-name: ${SlideDownAndAppear};
+  }
+  &.sel-to-def {
+    animation-name: ${SlideUpAndDisappear};
+  }
+  &.sel.kwd-to-sel {
+    animation-name: ${SlideDownAndAppear};
+  }
+  &.sel-to-kwd {
+    animation-name: ${SlideUpAndDisappear};
+  }
+`
+
+const LeftSlider = styled.div`
+  transition: all 0.6s forwards;
+  animation-duration: 0.6s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out;
+  &.def-to-sel {
+    animation-name: ${SlideToRight};
+  }
+  &.def.sel-to-def {
+    animation-name: ${SlideToLeft};
+  }
+  &.sel.kwd-to-sel {
+    animation-name: ${SlideOverRight};
+  }
+  &.kwd.sel-to-kwd {
+    animation-name: ${SlideToLeft};
+  }
+`
+
+const RightSlider = styled.div`
+  animation-duration: 0.6s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out;
+  &.def-to-sel {
+    animation-name: ${SlideDown};
+  }
+  &.def.sel-to-def {
+    animation-duration: 1.2s;
+    transform-origin: top right;
+    animation-name: ${SlideUp};
+  }
+  &.def-to-kwd {
+    animation-name: ${SlideToLeftDown};
+  }
+  &.def.kwd-to-def {
+    animation-name: ${SlideToRightUp};
+  }
+  &.sel.kwd-to-sel {
+    animation-name: ${SlideOverRight};
+  }
+  &.kwd.sel-to-kwd {
+    animation-name: ${SlideToLeft};
+  }
+`
+
+const PanelSlider = styled.div`
+  transition: all 0.6s forwards;
+  animation-duration: 0.6s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease;
+  &.def-to-kwd {
+    animation-name: ${SlideToLeftForKwd};
+  }
+  &.kwd-to-def {
+    animation-name: ${SlideToRightAndDisppear};
+  }
+  &.kwd-to-sel {
+    animation-name: ${SlideToRightAndDisppear};
+  }
+  &.sel-to-kwd {
+    animation-name: ${SlideToLeftForKwd};
   }
 `

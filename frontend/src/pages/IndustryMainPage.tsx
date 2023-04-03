@@ -16,7 +16,9 @@ const IndustryMainPage = () => {
       <PageTitle pageTitleInfo={pageTitleInfo} />
       <Grid item container spacing={4.5}>
         <Grid item xs={5}>
-          <IndustrySelector />
+          <SelectorWrapper>
+            <IndustrySelector />
+          </SelectorWrapper>
         </Grid>
         <RightGrid item xs={7}>
           <IndustryMarketCapInfoArea />
@@ -32,6 +34,10 @@ export default IndustryMainPage
 const PageGrid = styled(Grid)({
   padding: "36px",
 })
+
+const SelectorWrapper = styled.div`
+  height: calc(100vh - 156px);
+`
 
 const RightGrid = styled(Grid)({
   display: "flex",
