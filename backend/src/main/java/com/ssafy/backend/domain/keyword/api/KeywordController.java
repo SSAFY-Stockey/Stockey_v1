@@ -61,7 +61,7 @@ public class KeywordController {
 
 
     // 내 관심키워드 리스트
-    @Auth
+//    @Auth
     @Operation(summary = "관심 키워드 리스트", description = "내 관심 키워드 리스트를 출력합니다.")
     @ApiResponses(
             value = {
@@ -78,7 +78,7 @@ public class KeywordController {
     }
 
     // 관심 키워드 체크
-    @Auth
+//    @Auth
     @Operation(summary = "관심 키워드 체크", description = "관심 키워드 체크")
     @ApiResponses(
             value = {
@@ -93,7 +93,7 @@ public class KeywordController {
     }
 
     // 관심 키워드 등록
-    @Auth
+//    @Auth
     @Operation(summary = "관심 키워드 등록", description = "관심 키워드를 등록합니다.")
     @ApiResponses(
             value = {
@@ -110,7 +110,7 @@ public class KeywordController {
     }
 
     // 관심 산업 삭제
-    @Auth
+//    @Auth
     @Operation(summary = "관심 키워드 삭제", description = "관심 키워드를 삭제합니다.")
     @ApiResponses(
             value = {
