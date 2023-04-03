@@ -37,7 +37,7 @@ const IndustryDetailPage = () => {
         <LeftSection className="fade-in">
           <TitleDiv>
             에너지
-            <BookmarkBtn isBookmarked={false} page="stock" />
+            <BookmarkBtn isBookmarked={false} page="stock" num={2} />
           </TitleDiv>
           <IndustryOverall />
           <IndustryCandleChart />
@@ -63,7 +63,7 @@ const IndustryDetailPage = () => {
           </ButtonDiv>
           <TitleDiv>
             에너지
-            <BookmarkBtn isBookmarked={false} page="stock" />
+            <BookmarkBtn isBookmarked={false} page="stock" num={1} />
           </TitleDiv>
           <IndustryOverall />
           <IndustryCandleChart />
@@ -89,7 +89,7 @@ const IndustryDetailPage = () => {
         <RightSection className="fade-in">
           <TitleDiv>
             에너지
-            <BookmarkBtn isBookmarked={false} page="stock" />
+            <BookmarkBtn isBookmarked={false} page="stock" num={0} />
           </TitleDiv>
           <IndustryOverall />
           <IndustryCandleChart />

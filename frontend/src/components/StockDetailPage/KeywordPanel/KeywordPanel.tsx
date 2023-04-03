@@ -20,7 +20,7 @@ const KeywordPanel = ({ keyword }: Props) => {
       <TopRow>
         <PanelTitle>
           {keyword}
-          <BookmarkBtn isBookmarked={true} page="keyword" />
+          <BookmarkBtn isBookmarked={true} page="keyword" num={1} />
         </PanelTitle>
         <KeywordSearchBtn keyword={keyword} />
       </TopRow>
