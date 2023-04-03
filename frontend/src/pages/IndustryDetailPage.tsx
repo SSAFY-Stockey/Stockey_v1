@@ -38,7 +38,9 @@ const IndustryDetailPage = () => {
             break
           case "def":
             setClassName("def-to-sel")
-            setMode("sel")
+            setTimeout(() => {
+              setMode("sel")
+            }, 600)
             break
           case "kwd":
             setClassName("kwd-to-sel")
@@ -56,11 +58,13 @@ const IndustryDetailPage = () => {
             setClassName("kwd-to-def")
             setTimeout(() => {
               setMode("def")
-            }, 600)
+            }, 400)
             break
           case "def":
             setClassName("def-to-kwd")
-            setMode("kwd")
+            setTimeout(() => {
+              setMode("kwd")
+            }, 400)
             break
           case "sel":
             setClassName("sel-to-kwd")
@@ -80,12 +84,13 @@ const IndustryDetailPage = () => {
   const defaultLayout = (
     <>
       <Grid item xs={12} marginLeft={4.5}>
-        <ButtonDiv>
+        <ButtonDiv id="btn">
           <button onClick={(e) => changeLayout(e, "kwd")}>keywordPanel</button>
           <IndustrySelectorToggleBtn
             changeLayout={(e, mode) => {
               changeLayout(e, mode)
             }}
+            status={className}
           />
         </ButtonDiv>
       </Grid>
@@ -125,7 +130,7 @@ const IndustryDetailPage = () => {
     <>
       <Grid item xs={7}>
         <LeftSection>
-          <ButtonDiv>
+          <ButtonDiv id="btn">
             <button onClick={(e) => changeLayout(e, "kwd")}>
               keywordPanel
             </button>
@@ -133,75 +138,28 @@ const IndustryDetailPage = () => {
               changeLayout={(e, mode) => {
                 changeLayout(e, mode)
               }}
+              status={className}
             />
           </ButtonDiv>
-          <LeftSlider
-            className={
-              className === "kwd-to-sel"
-                ? "sel kwd-to-sel"
-                : className === "sel-to-kwd"
-                ? "kwd sel-to-kwd"
-                : className
-            }
-          >
+          <LeftSlider className={`kwd ${className}`}>
             <TitleDiv>
               {industryInfo?.name}
               <BookmarkBtn isBookmarked={false} page="stock" />
             </TitleDiv>
           </LeftSlider>
-          <LeftSlider
-            className={
-              className === "kwd-to-sel"
-                ? "sel kwd-to-sel"
-                : className === "sel-to-kwd"
-                ? "kwd sel-to-kwd"
-                : className
-            }
-          >
+          <LeftSlider className={`kwd ${className}`}>
             <IndustryOverall />
           </LeftSlider>
-          <LeftSlider
-            className={
-              className === "kwd-to-sel"
-                ? "sel kwd-to-sel"
-                : className === "sel-to-kwd"
-                ? "kwd sel-to-kwd"
-                : className
-            }
-          >
+          <LeftSlider className={`kwd ${className}`}>
             <IndustryMarketCapLineChart industryId={industryId} />
           </LeftSlider>
-          <LeftSlider
-            className={
-              className === "kwd-to-sel"
-                ? "sel kwd-to-sel"
-                : className === "sel-to-kwd"
-                ? "kwd sel-to-kwd"
-                : className
-            }
-          >
+          <LeftSlider className={`kwd ${className}`}>
             <div>연관 키워드 차트</div>
           </LeftSlider>
-          <RightSlider
-            className={
-              className === "kwd-to-sel"
-                ? "sel kwd-to-sel"
-                : className === "sel-to-kwd"
-                ? "kwd sel-to-kwd"
-                : className
-            }
-          >
+          <RightSlider className={`kwd ${className}`}>
             <IndustryBubbleChart industryId={industryInfo?.id} />
           </RightSlider>
-          <RightSlider
-            className={
-              className === "kwd-to-sel"
-                ? "sel kwd-to-sel"
-                : className === "sel-to-kwd"
-                ? "kwd sel-to-kwd"
-                : className
-            }
-          >
+          <RightSlider className={`kwd ${className}`}>
             <div>전체 종목 리스트</div>
           </RightSlider>
         </LeftSection>
@@ -217,47 +175,44 @@ const IndustryDetailPage = () => {
   const onIndustrySelectorLayout = (
     <>
       <Grid item xs={12} marginLeft={4.5}>
-        <ButtonDiv>
+        <ButtonDiv id="btn">
           <button onClick={(e) => changeLayout(e, "kwd")}>keywordPanel</button>
           <IndustrySelectorToggleBtn
             changeLayout={(e, mode) => {
               changeLayout(e, mode)
             }}
+            status={className}
           />
         </ButtonDiv>
       </Grid>
       <Grid item xs={5}>
         <LeftSection>
-          <SelectorSlider
-            className={
-              className === "kwd-to-sel" ? "sel kwd-to-sel" : className
-            }
-          >
+          <SelectorSlider className={`sel ${className}`}>
             <IndustrySelector />
           </SelectorSlider>
         </LeftSection>
       </Grid>
       <Grid item xs={7}>
         <RightSection id="right">
-          <LeftSlider className={className}>
+          <LeftSlider className={`sel ${className}`}>
             <TitleDiv>
               {industryInfo?.name}
               <BookmarkBtn isBookmarked={false} page="stock" />
             </TitleDiv>
           </LeftSlider>
-          <LeftSlider className={className}>
+          <LeftSlider className={`sel ${className}`}>
             <IndustryOverall />
           </LeftSlider>
-          <LeftSlider className={className}>
+          <LeftSlider className={`sel ${className}`}>
             <IndustryMarketCapLineChart industryId={industryId} />
           </LeftSlider>
-          <LeftSlider className={className}>
+          <LeftSlider className={`sel ${className}`}>
             <div>연관 키워드 차트</div>
           </LeftSlider>
-          <RightSlider className={className}>
+          <RightSlider className={`sel ${className}`}>
             <IndustryBubbleChart industryId={industryInfo?.id} />
           </RightSlider>
-          <RightSlider className={className}>
+          <RightSlider className={`sel ${className}`}>
             <div>전체 종목 리스트</div>
           </RightSlider>
         </RightSection>
@@ -403,31 +358,27 @@ to {
 }
 `
 
-// transform: translateY(-${
-//   document.getElementById("right")?.getBoundingClientRect().top
-// }px) scale(0.714);
-
 const SlideDown = keyframes`
   from {
-    opacity: 0;
-    transform: translateY(-200%)
+    transform: translateY(0%);
   }
   to {
-    opacity: 1;
-    transform: translateY(0%);
+    opacity: 0;
+    transform: translateY(${
+      document.getElementById("left")?.clientHeight || 811
+    }px);
   }
 `
 
 const SlideUp = keyframes`
   from {
+    opacity: 0;
     transform: translateY(${
-      document.getElementById("left")?.clientHeight
-    }px) scale(1.4);
-  }
-  50% {
-    transform: translateY(${document.getElementById("left")?.clientHeight}px);
+      document.getElementById("left")?.clientHeight || 811
+    }px);
   }
   to {
+    opacity: 1;
     transform: translateY(0%);
   }
 `
@@ -447,6 +398,24 @@ const SlideToRightUp = keyframes`
   }
   to {
     transform: translate(0%, 0%)
+  }
+`
+
+const FadeOut = keyframes`
+  from {
+  opacity: 1;
+  }
+  to {
+  opacity: 0;
+  }
+`
+
+const FadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 `
 
@@ -480,16 +449,17 @@ const LeftSlider = styled.div`
   animation-duration: 0.6s;
   animation-fill-mode: forwards;
   animation-timing-function: ease-in-out;
-  &.def-to-sel {
+  &.sel.def-to-sel {
     animation-name: ${SlideToRight};
   }
   &.def.sel-to-def {
     animation-name: ${SlideToLeft};
   }
-  &.sel.kwd-to-sel {
+  &.kwd.kwd-to-sel {
     animation-name: ${SlideOverRight};
   }
   &.kwd.sel-to-kwd {
+    animation-duration: 0.4s;
     animation-name: ${SlideToLeft};
   }
 `
@@ -498,24 +468,40 @@ const RightSlider = styled.div`
   animation-duration: 0.6s;
   animation-fill-mode: forwards;
   animation-timing-function: ease-in-out;
-  &.def-to-sel {
+  &.def.def-to-sel {
     animation-name: ${SlideDown};
   }
-  &.def.sel-to-def {
-    animation-duration: 1.2s;
+  &.sel.def-to-sel {
     transform-origin: top right;
+    animation-name: ${FadeIn};
+  }
+  &.sel.sel-to-def {
+    animation-name: ${FadeOut};
+  }
+  &.def.sel-to-def {
+    opacity: 0;
+    animation-delay: 0.4s;
     animation-name: ${SlideUp};
   }
-  &.def-to-kwd {
-    animation-name: ${SlideToLeftDown};
+  &.def.def-to-kwd {
+    animation-duration: 0.4s;
+    animation-name: ${FadeOut};
+  }
+  &.kwd.def-to-kwd {
+    animation-name: ${FadeIn};
+  }
+  &.kwd.kwd-to-def {
+    animation-duration: 0.4s;
+    animation-name: ${FadeOut};
   }
   &.def.kwd-to-def {
-    animation-name: ${SlideToRightUp};
+    animation-name: ${FadeIn};
   }
-  &.sel.kwd-to-sel {
+  &.kwd.kwd-to-sel {
     animation-name: ${SlideOverRight};
   }
   &.kwd.sel-to-kwd {
+    animation-duration: 0.4s;
     animation-name: ${SlideToLeft};
   }
 `
