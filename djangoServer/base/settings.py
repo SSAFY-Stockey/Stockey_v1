@@ -143,10 +143,11 @@ STATIC_URL = 'static/'
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-CORS_ORIGIN_WHITELIST = ['http://127.0.0.1', 'http://localhost'
-                                             'http://127.0.0.1:3000', 'http://localhost:3000',
-                         'https://' + get_secret("DATABASE", "HOST"),
-                         'http://' + get_secret("DATABASE", "HOST"),
-                         'http://' + get_secret("DATABASE", "HOST") + ':3000',
-                         'http://' + get_secret("DATABASE", "HOST") + ':8080']
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost",  # your frontend domain
+    "https://localhost",  # your frontend domain
+    "http://j8a508.p.ssafy.io:9000",  # your frontend domain (if using HTTPS)
+    "https://j8a508.p.ssafy.io:9000"
+]
+
 CORS_ALLOW_CREDENTIALS = True
