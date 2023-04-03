@@ -1,5 +1,5 @@
 import { Tab, Tabs, Grid } from "@mui/material"
-import { PanelSubTitle } from "../../KeywordPanel/KeywordPanel"
+import { PanelSubTitle } from "../../SubPanel/KeywordPanel/KeywordPanel"
 import { HighlightedSpan } from "../PriceSection/PriceSection"
 import { useState } from "react"
 import NewsTabPanel from "./NewsTabPanel"

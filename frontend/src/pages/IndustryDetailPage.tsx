@@ -2,7 +2,7 @@ import IndustryBubbleChart from "../components/IndustryDetailPage/IndustryBubble
 import IndustryCandleChart from "../components/IndustryDetailPage/IndustryCandleChart/IndustryCandleChart"
 import IndustryOverall from "../components/IndustryDetailPage/IndustryOverall/IndustryOverall"
 import { IndustrySelector } from "../components/IndustryMainPage"
-import KeywordPanel from "../components/StockDetailPage/KeywordPanel/KeywordPanel"
+import KeywordPanel from "../components/StockDetailPage/SubPanel/KeywordPanel/KeywordPanel"
 import Grid from "@mui/material/Grid"
 import styled, { keyframes } from "styled-components"
 import { useState } from "react"

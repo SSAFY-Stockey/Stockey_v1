@@ -2,7 +2,7 @@ import styled from "styled-components"
 import StockBlock from "./StockBlock"
 import { useRandomStock } from "../../../hooks/useRandomStock"
 
-const MyStockList = () => {
+const RandomStockList = () => {
   const { data: randomStockData } = useRandomStock(3)
   return (
     <StyledDiv>
@@ -19,7 +19,7 @@ const MyStockList = () => {
   )
 }
 
-export default MyStockList
+export default RandomStockList
 
 const StyledDiv = styled.div`
   display: flex;

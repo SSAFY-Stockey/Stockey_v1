@@ -1,7 +1,7 @@
 import Paper from "@mui/material/Paper"
 import styled from "styled-components"
 import { useRecoilState } from "recoil"
-import { selectedStockIdxState } from "../../../stores/SelectedStockAtoms"
+import { selectedStockIdxState } from "../../../stores/SelectedIdxAtoms"
 
 interface Props {
   idx: number

@@ -2,7 +2,7 @@ import styled from "styled-components"
 import NewsSection from "./NewsSection"
 import KeywordChartSection from "./KeywordChartSection"
 import KeywordSearchBtn from "./KeywordSearchBtn"
-import BookmarkBtn from "../../common/Bookmark/BookmarkBtn"
+import BookmarkBtn from "../../../common/Bookmark/BookmarkBtn"
 
 interface Props {
   keyword: string
@@ -42,6 +42,8 @@ export const PanelWrapper = styled.div`
   height: 100%;
   overflow-y: scroll;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  z-index: 1;
+  position: relative;
 
   /* 스크롤바 숨기기 */
   -ms-overflow-style: none; /* IE and Edge */

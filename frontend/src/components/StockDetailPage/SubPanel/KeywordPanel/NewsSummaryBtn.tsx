@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { triggerScroll } from "../../common/Functions/triggerScroll"
+import { triggerScroll } from "../../../common/Functions/triggerScroll"
 
 interface Props {
   keyphrase: string

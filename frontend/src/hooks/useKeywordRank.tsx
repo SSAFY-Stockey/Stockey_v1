@@ -3,7 +3,7 @@ import customAxios from "../utils/customAxios"
 
 const axios = customAxios()
 
-interface ParamsType {
+export interface KeywordRankParamsType {
   topN: number
   newsType: "STOCK" | "INDUSTRY" | "ECONOMY"
   typeId: number
@@ -12,7 +12,7 @@ interface ParamsType {
   endDate: string
 }
 
-const fetchKeywordRank = ({ queryKey }: any) => {
+const fetchKeywordRank = (queryKey: any) => {
   const [topN, newsType, typeId, startDate, endDate] = queryKey.slice(1)
   console.log("fetchKeywordRank")
   return axios.get(`/keywords/topN`, {
@@ -26,12 +26,13 @@ export const useKeywordRank = ({
   typeId,
   startDate,
   endDate,
-}: ParamsType) => {
+}: KeywordRankParamsType) => {
   return useQuery(
     ["keywordRank", topN, newsType, typeId, startDate, endDate],
     fetchKeywordRank,
     {
-      staleTime: Infinity,
+      staleTime: 60 * 60, // 1시간 동안만 fresh
+      cacheTime: Infinity,
       select,
       onError,
       refetchOnWindowFocus: false,

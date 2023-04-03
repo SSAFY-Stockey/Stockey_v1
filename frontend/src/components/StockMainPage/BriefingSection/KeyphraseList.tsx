@@ -1,11 +1,10 @@
 import styled from "styled-components"
 import KeyphraseListItem from "./KeyphraseListItem"
+import { useRecoilValue } from "recoil"
+import { selectedKeywordIdxState } from "../../../stores/SelectedIdxAtoms"
 
-interface Props {
-  selectedIdx: number
-}
-
-const KeyphraseList = ({ selectedIdx }: Props) => {
+const KeyphraseList = (data) => {
+  const selectedKeywordIdx = useRecoilValue(selectedKeywordIdxState) // 현재 선택된 키워드의 인덱스
   const colors: string[] = ["orange", "pink", "purple"]
   const keyphrases: string[] = [
     "금리 인상",
@@ -14,12 +13,12 @@ const KeyphraseList = ({ selectedIdx }: Props) => {
     "연준 발표",
   ]
   return (
-    <KeyphraseContainer selectedIdx={selectedIdx}>
+    <KeyphraseContainer selectedIdx={selectedKeywordIdx}>
       {keyphrases.map((phrase, index) => {
         return (
           <KeyphraseListItem
             keyphrase={phrase}
-            backgroundColor={`var(--custom-${colors[selectedIdx]}-${
+            backgroundColor={`var(--custom-${colors[selectedKeywordIdx]}-${
               index + 1
             })`}
             rank={index + 1}

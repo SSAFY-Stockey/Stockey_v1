@@ -1,4 +1,4 @@
-import { PanelSubTitle } from "../../KeywordPanel/KeywordPanel"
+import { PanelSubTitle } from "../../SubPanel/KeywordPanel/KeywordPanel"
 import StockPriceChart from "./StockPriceChart"
 import styled from "styled-components"
 

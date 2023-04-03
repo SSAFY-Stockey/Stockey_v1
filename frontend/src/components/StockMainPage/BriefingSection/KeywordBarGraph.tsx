@@ -1,6 +1,7 @@
 import * as Highcharts from "highcharts"
 import HighchartsReact from "highcharts-react-official"
 import styled from "styled-components"
+import { useKeywordRank } from "../../hooks/useKeywordRank"
 
 export interface HighchartsOptions {
   chart?: Highcharts.ChartOptions
@@ -28,7 +29,7 @@ interface DataProps {
   rank: number
 }
 
-const KeywordBarGraph = () => {
+const KeywordBarGraph = (data) => {
   const data: DataProps[] = [
     { name: "빅스텝", y: 74.84, rank: 2 },
     { name: "금리", y: 100, rank: 1 },

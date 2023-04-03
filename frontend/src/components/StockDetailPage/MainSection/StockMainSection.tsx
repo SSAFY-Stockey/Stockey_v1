@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { PanelTitle } from "../KeywordPanel/KeywordPanel"
+import { PanelTitle } from "../SubPanel/KeywordPanel/KeywordPanel"
 import BookmarkBtn from "../../common/Bookmark/BookmarkBtn"
 import PriceSection from "./PriceSection/PriceSection"
 import AnalysisSection from "./KeywordSection/AnalysisSection"
