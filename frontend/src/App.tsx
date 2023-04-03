@@ -1,5 +1,5 @@
-import { useEffect } from "react"
 import "./App.css"
+import { useEffect, useState } from "react"
 import styled from "styled-components"
 import { Routes, Route, useLocation } from "react-router-dom"
 
@@ -25,24 +25,25 @@ import customAxios from "./utils/customAxios"
 
 function App() {
   const curPath = useLocation().pathname
-  // login state
-  const isLogIn = useRecoilValue(logInState)
-  const accessToken = useRecoilValue(accessTokenSelector)
 
-  const axios = customAxios(accessToken)
+  // 가로 길이 확인 => navbar 형태 전달
+  // 현재 화면 크기 state
+  const [isNarrow, setIsNarrow] = useState<boolean>(
+    window.innerWidth <= 1000 ? true : false
+  )
+
+  const handleResize = () => {
+    setIsNarrow(window.innerWidth <= 1000 ? true : false)
+  }
 
   useEffect(() => {
-    if (isLogIn) {
-      axios
-        .get("/member")
-        .then((response) => {
-          console.log(response)
-        })
-        .catch((error) => {
-          console.log(error)
-        })
+    window.addEventListener("resize", handleResize)
+    return () => {
+      // clean up
+      window.removeEventListener("resize", handleResize)
     }
-  }, [isLogIn])
+  }, [])
+
   return (
     <>
       <MainWrapper>
@@ -52,10 +53,12 @@ function App() {
             curPath === "/user/signup" ||
             curPath === "/oauth/kakao"
               ? "login"
+              : isNarrow
+              ? "narrow"
               : undefined
           }
         >
-          <Navbar />
+          <Navbar isNarrow={isNarrow} />
         </NavDiv>
         <MainDiv
           className={
@@ -63,6 +66,8 @@ function App() {
             curPath === "/user/signup" ||
             curPath === "/oauth/kakao"
               ? "login"
+              : isNarrow
+              ? "narrow"
               : undefined
           }
         >
@@ -108,6 +113,11 @@ const NavDiv = styled.div`
   &.login {
     width: 45vw;
   }
+
+  // narrow
+  &.narrow {
+    width: 100px;
+  }
 `
 const MainDiv = styled.div`
   // default size
@@ -119,5 +129,10 @@ const MainDiv = styled.div`
   // login & signup
   &.login {
     width: 55vw;
+  }
+
+  // narrow
+  &.narrow {
+    width: calc(100vw - 100px);
   }
 `
