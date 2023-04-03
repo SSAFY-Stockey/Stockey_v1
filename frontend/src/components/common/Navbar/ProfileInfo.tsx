@@ -1,10 +1,15 @@
 import styled from "styled-components"
 import LoginBtn from "./LoginBtn"
-
-import { useNickname } from "../../../hooks/useNickname"
-
-import { useRecoilState } from "recoil"
-import { logInState, accessTokenSelector } from "../../../stores/atoms"
+import { useEffect } from "react"
+import customAxios from "../../../utils/customAxios"
+import { useQuery } from "react-query"
+import { useRecoilState, useSetRecoilState } from "recoil"
+import {
+  logInState,
+  accessTokenSelector,
+  nicknameState,
+} from "../../../stores/atoms"
+import Spinner from "../Spinner/Spinner"
 
 interface Props {
   isNarrow: boolean
@@ -14,17 +19,41 @@ const ProfileInfo = ({ isNarrow }: Props) => {
   // login state
   const [isLogin, setIsLogin] = useRecoilState(logInState)
   const [accessToken, setAccessToken] = useRecoilState(accessTokenSelector)
+  const setNickname = useSetRecoilState(nicknameState)
+  // axios
+  const axios = customAxios(accessToken, setAccessToken)
 
-  const { data: nickname, isError } = useNickname({
-    accessToken,
-    setAccessToken,
+  //
+  // nickname fuction
+  const fetchNickname = () => {
+    return axios.get("/member")
+  }
+  const select = (response: any) => {
+    return response.data.data.nickname
+  }
+  // nickname useQuery
+  const { isLoading, data: nickname } = useQuery("nickname", fetchNickname, {
+    refetchOnWindowFocus: false,
+    select,
+    retry: false,
+    enabled: !!accessToken,
   })
 
-  if (isError) {
-    setIsLogin(false)
-  } else {
-    setIsLogin(true)
-  }
+  useEffect(() => {
+    if (!!nickname) {
+      setNickname(nickname)
+    }
+  }, [nickname])
+
+  useEffect(() => {
+    if (accessToken) {
+      setIsLogin(true)
+    } else {
+      setIsLogin(false)
+    }
+  }, [accessToken])
+
+  if (isLoading) return <></>
 
   return (
     <>
@@ -64,7 +93,7 @@ const LoginTextDiv = styled.div`
   margin-bottom: 24px;
 
   // line-height
-  line-height: 24px;
+  line-height: 36px;
   text-align: center;
 `
 // 사용자 이름 styled
@@ -97,7 +126,7 @@ const ProfileDiv = styled.div`
 
   // isNarrow
   &.isNarrow {
-    padding: 24px 0px;
+    padding: 12px 0px 24px 0px;
   }
 
   // 드래그 방지
