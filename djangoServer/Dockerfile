@@ -6,7 +6,6 @@ WORKDIR /app
 
 # Copy the current directory contents into the container at /app
 COPY . /app
-COPY ./secrets.json /app.secrets.json
 
 # Install required packages
 RUN pip install -r requirements.txt
