@@ -1,37 +1,37 @@
 import * as Highcharts from "highcharts"
 import HighchartsReact from "highcharts-react-official"
 import styled from "styled-components"
+import { useKeywordRank } from "../../../hooks/useKeywordRank"
+import { KeywordRankParamsType } from "../../../hooks/useKeywordRank"
+import { commonParamsType } from "./KeywordBoard"
 
-export interface HighchartsOptions {
-  chart?: Highcharts.ChartOptions
-  title?: Highcharts.TitleOptions
-  subtitle?: Highcharts.SubtitleOptions
-  // xAxis?: Highcharts.XAxisOptions
-  xAxis?: any
-  yAxis?: Highcharts.YAxisOptions
-  legend?: Highcharts.LegendOptions
-  // series?: Highcharts.SeriesOptionsType[]
-  series?: any
-  plotOptions?: Highcharts.PlotOptions
-  tooltip?: Highcharts.TooltipOptions
-  credits?: Highcharts.CreditsOptions
-  exporting?: Highcharts.ExportingOptions
-  colors?: string[]
-  responsive?: Highcharts.ResponsiveOptions
-  accessibility?: Highcharts.AccessibilityOptions
-  events?: Highcharts.ChartEventsOptions
-}
-interface TopKeywordType {
-  keywordCount: number
-  keywordName: string
-  keywordId: number
-}
-interface DataProps {
-  totalNewsCount: number
-  topKeywords: TopKeywordType[]
-}
+// export interface HighchartsOptions {
+//   chart?: Highcharts.ChartOptions
+//   title?: Highcharts.TitleOptions
+//   subtitle?: Highcharts.SubtitleOptions
+//   // xAxis?: Highcharts.XAxisOptions
+//   xAxis?: any
+//   yAxis?: Highcharts.YAxisOptions
+//   legend?: Highcharts.LegendOptions
+//   // series?: Highcharts.SeriesOptionsType[]
+//   series?: any
+//   plotOptions?: Highcharts.PlotOptions
+//   tooltip?: Highcharts.TooltipOptions
+//   credits?: Highcharts.CreditsOptions
+//   exporting?: Highcharts.ExportingOptions
+//   colors?: string[]
+//   responsive?: Highcharts.ResponsiveOptions
+//   accessibility?: Highcharts.AccessibilityOptions
+//   events?: Highcharts.ChartEventsOptions
+// }
 
-const KeywordBarGraph = ({ totalNewsCount, topKeywords }: DataProps) => {
+const KeywordBarGraph = (commonParams: commonParamsType) => {
+  // keyword 순위 읽어오기
+  const keywordRankParams: KeywordRankParamsType = {
+    topN: 3,
+    ...commonParams,
+  }
+  const { data: keywordRankData, isLoading } = useKeywordRank(keywordRankParams)
   const chartData = topKeywords?.map((keyword, index) => {
     return {
       name: keyword.keywordName,
@@ -40,11 +40,11 @@ const KeywordBarGraph = ({ totalNewsCount, topKeywords }: DataProps) => {
     }
   })
 
-  const top_1 = chartData.splice(1, 1)
-  chartData.splice(0, 0, top_1[0])
+  const top_1 = chartData?.splice(1, 1)
+  chartData?.splice(0, 0, top_1[0])
 
-  const yAxisMax: number = Math.max(...chartData.map((word) => word.y)) + 150
-  const options: HighchartsOptions = {
+  const yAxisMax: number = Math.max(...chartData?.map((word) => word.y)) + 150
+  const options: Highcharts.Options = {
     title: { text: undefined },
     chart: {
       type: "column",
