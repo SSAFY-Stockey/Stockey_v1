@@ -99,6 +99,7 @@ def get_cluster_by_domain(request):
             "title", "news_url", "pressed_at"
         )
     df = pd.DataFrame.from_records(qs)
+    df.drop_duplicates(['news_url'], inplace=True)
     print(qs.count())
     result = clustering(df)
     end = time.time()
@@ -116,7 +117,6 @@ def clustering(df):
     # print("명사 추출 완료")
     df['nouns'] = noun_list
     text = [" ".join(noun) for noun in df['nouns']]
-
     # 1 tf-idf 임베딩(+Normalize)
 
     tfidf_vectorizer = TfidfVectorizer(min_df=5, ngram_range=(1, 5))
@@ -130,7 +130,7 @@ def clustering(df):
 
     # eps이 낮을수록, min_samples 값이 높을수록 군집으로 판단하는 기준이 까다로움.
     vector = np.array(vector)  # Normalizer를 이용해 변환된 벡터
-    model = DBSCAN(eps=0.5, min_samples=5, metric="cosine")
+    model = DBSCAN(eps=0.3, min_samples=1, metric="cosine")
     # 거리 계산 식으로는 Cosine distance를 이용
     result = model.fit_predict(vector)
     df['result'] = result
@@ -141,25 +141,26 @@ def clustering(df):
     # train_extract
 
     clustered_list = []
+    print("시작")
     for cluster_num in set(result):
         # -1,0은 노이즈 판별이 났거나 클러스터링이 안된 경우
         if (cluster_num == -1 or cluster_num == 0):
             continue
         else:
             temp_df = df[df['result'] == cluster_num]  # cluster num 별로 조회
-            clustered_list.append((temp_df['title'], temp_df['news_url'], temp_df['pressed_at']))
-    print(len(clustered_list))
-    clustered_list.sort(key=len, reverse=True)
+            clustered_list.append(temp_df[['title','news_url','pressed_at']])
+
+    clustered_list = sorted(clustered_list, key=lambda x: len(x), reverse=True)
     keyphrase_target_list = clustered_list[:4]
 
     result = []
     for key_phrase_target in keyphrase_target_list:
         dict = {}
-        phrase = get_phraze(key_phrase_target[0])
-        print(phrase)
+        title_list = key_phrase_target['title'].tolist()
+        phrase = get_phraze(title_list)
         dict['key_phrase'] = phrase
         news_list = []
-        for title, url, date in zip(temp_df['title'], temp_df['news_url'], temp_df['pressed_at']):
+        for title, url, date in zip(key_phrase_target['title'], key_phrase_target['news_url'], key_phrase_target['pressed_at']):
             news_dict = {}
             news_dict['title'] = title
             news_dict['url'] = url
