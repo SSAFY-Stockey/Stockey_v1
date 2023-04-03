@@ -2,8 +2,10 @@ package com.ssafy.backend.domain.keyword.service;
 
 import com.ssafy.backend.domain.favorites.entity.Favorite;
 import com.ssafy.backend.domain.favorites.repository.FavoriteRepository;
+import com.ssafy.backend.domain.keyword.api.request.GetTopNKeywordRequest;
 import com.ssafy.backend.domain.keyword.dto.KeywordDto;
 import com.ssafy.backend.domain.keyword.dto.KeywordStatisticDto;
+import com.ssafy.backend.domain.keyword.dto.TopKeywordDTO;
 import com.ssafy.backend.domain.keyword.entity.Keyword;
 import com.ssafy.backend.domain.keyword.entity.KeywordStatistic;
 import com.ssafy.backend.domain.keyword.enums.StatisticType;
@@ -12,6 +14,7 @@ import com.ssafy.backend.domain.keyword.repository.KeywordStatisticRepository;
 import com.ssafy.backend.domain.member.entity.Member;
 import com.ssafy.backend.domain.member.enums.OauthType;
 import com.ssafy.backend.domain.member.repository.MemberRepository;
+import com.ssafy.backend.domain.news.entity.enums.NewsType;
 import com.ssafy.backend.global.exception.favorite.FavoriteException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -163,5 +166,24 @@ class KeywordServiceImplTest {
 
         Assertions.assertThat(favoriteRepository.existsByMemberAndKeyword(saveMember, saveK1)).isTrue();
         Assertions.assertThat(favoriteRepository.existsByMemberAndKeyword(saveMember2, saveK1)).isFalse();
+    }
+
+    @Test
+    void topN_테스트() {
+        GetTopNKeywordRequest getTopNKeywordRequest = GetTopNKeywordRequest.builder()
+                .topN(6)
+                .id(85L)
+                .newsType(NewsType.STOCK)
+                .startDate(LocalDate.of(2022, 10, 15))
+                .endDate(LocalDate.of(2022, 12, 15))
+                .build();
+
+        List<TopKeywordDTO> topKeywords = keywordService.getTopNKeyword(getTopNKeywordRequest);
+
+        for (TopKeywordDTO topKeyword : topKeywords) {
+            System.out.println("topKeyword.getKeywordId() = " + topKeyword.getKeywordId());
+            System.out.println("topKeyword.getKeywordCount() = " + topKeyword.getKeywordCount());
+//
+        }
     }
 }
