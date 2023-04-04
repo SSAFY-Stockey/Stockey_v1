@@ -1,26 +1,41 @@
 package com.ssafy.backend.domain.member.service;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.ssafy.backend.domain.member.dto.MemberDto;
 import com.ssafy.backend.domain.member.dto.OauthMemberDto;
+import com.ssafy.backend.global.exception.jwt.JwtException;
+import com.ssafy.backend.global.exception.jwt.JwtExceptionType;
 import com.ssafy.backend.global.exception.member.AuthException;
 import com.ssafy.backend.global.exception.member.AuthExceptionType;
 import com.ssafy.backend.global.exception.member.MemberException;
 import com.ssafy.backend.global.exception.member.MemberExceptionType;
+import com.ssafy.backend.global.jwt.JwtUtil;
+import com.ssafy.backend.global.redis.dto.RefreshTokenDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 @Service
+@RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService{
 
     @Value("${kakaoOauth.REST_API_KEY}")
     private String rest_api_key;
     @Value("${kakaoOauth.REDIRECT_URL}")
     private String redirect_uri;
+    private final JwtUtil jwtUtil;
+    private final MemberService memberService;
+
 
     // oAuth access token으로 사용자 정보 가져오는 로직
     public OauthMemberDto getKakaoMemberInfo(String token) {
@@ -54,7 +69,7 @@ public class AuthServiceImpl implements AuthService{
             long id = element.getAsJsonObject().get("id").getAsLong();
 
             OauthMemberDto oAuthMemberDto = OauthMemberDto.builder()
-                    .id(id)
+                    .oauthMemberId(id)
                     .build();
 
             br.close();
@@ -118,5 +133,55 @@ public class AuthServiceImpl implements AuthService{
             e.printStackTrace();
         }
         return access_Token;
+    }
+
+    @Override
+    public String createJwt(MemberDto memberDto) {
+        return jwtUtil.createJwt(memberDto);
+    }
+
+    @Override
+    public String tokenRefresh() {
+        // refresh token 받아오기
+        String refreshToken = jwtUtil.getRefreshTokenFromCookie();
+
+        if (refreshToken == null) {
+            throw new JwtException(JwtExceptionType.TOKEN_NULL);
+        }
+
+        jwtUtil.isValidToken(refreshToken, JwtUtil.REFRESH_TOKEN_SUBJECT);
+
+        // refresh token 에서 유저 aud값 가져오기
+        DecodedJWT payload = jwtUtil.getDecodedJWT(refreshToken);
+        long memberId = Long.parseLong(payload.getAudience().get(0));
+
+        // redis에 refresh 토큰이 있는지 체크 -> 없다면 refresh token 효력 없음
+        RefreshTokenDto refreshTokenDto = jwtUtil.getRefreshTokenFromRedis(refreshToken);
+
+        if (memberId != refreshTokenDto.getMemberId()) {
+            throw new MemberException(MemberExceptionType.NOT_FOUND_MEMBER);
+        }
+
+        MemberDto memberDto = memberService.getMember(memberId);
+        return jwtUtil.createJwt(memberDto); // access token return
+    }
+
+    @Override
+    public void logout() {
+        String refreshToken = jwtUtil.getRefreshTokenFromCookie();
+        // redis에 저장된 refresh토큰 삭제하기
+        jwtUtil.deleteRefreshToken(refreshToken);
+        // 쿠키도 제거하기
+        deleteRefreshTokenCookie();
+    }
+
+    private void deleteRefreshTokenCookie() {
+        HttpServletResponse response
+                = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
+        Cookie cookie = new Cookie(JwtUtil.REFRESH_TOKEN_SUBJECT, null);
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        assert response != null;
+        response.addCookie(cookie);
     }
 }
