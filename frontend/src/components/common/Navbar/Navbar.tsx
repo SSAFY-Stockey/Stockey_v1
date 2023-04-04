@@ -6,7 +6,7 @@ import styled from "styled-components"
 import { useLocation } from "react-router-dom"
 // recoil
 import { useRecoilValue } from "recoil"
-import { logInState } from "../../../stores/atoms"
+import { logInState, nicknameState } from "../../../stores/atoms"
 
 interface Props {
   isNarrow: boolean
@@ -15,11 +15,12 @@ interface Props {
 const Navbar = ({ isNarrow }: Props) => {
   const curPath = useLocation().pathname
   const isLogin = useRecoilValue(logInState)
+  const nickname = useRecoilValue(nicknameState)
 
   const isSeleted = (name: string) => {
     if (curPath.startsWith("/stock") && name === "주식 종목") {
       return true
-    } else if (curPath.startsWith("/industry") && name === "산업별 정보") {
+    } else if (curPath.startsWith("/industry") && name === "산업 정보") {
       return true
     } else if (curPath.startsWith("/keyword") && name === "키워드") {
       return true
@@ -32,7 +33,9 @@ const Navbar = ({ isNarrow }: Props) => {
 
   return (
     <>
-      <NavWrapper>
+      <NavWrapper
+        className={isLogin && nickname === "" ? "isLoading" : undefined}
+      >
         <StockeyLogo />
         <NavbarDiv
           className={
@@ -51,8 +54,8 @@ const Navbar = ({ isNarrow }: Props) => {
             isNarrow={isNarrow}
           />
           <PageLinkBtn
-            name="산업별 정보"
-            selected={isSeleted("산업별 정보")}
+            name="산업 정보"
+            selected={isSeleted("산업 정보")}
             isNarrow={isNarrow}
           />
           <PageLinkBtn
@@ -61,8 +64,8 @@ const Navbar = ({ isNarrow }: Props) => {
             isNarrow={isNarrow}
           />
           <PageLinkBtn
-            name="마이페이지"
-            selected={isSeleted("마이페이지")}
+            name="북마크"
+            selected={isSeleted("북마크")}
             isNarrow={isNarrow}
           />
           {isLogin ? <LogoutBtn isNarrow={isNarrow} /> : undefined}
@@ -105,4 +108,11 @@ const NavWrapper = styled.div`
 
   height: 100vh;
   width: 100%;
+
+  transition: opacity 0.1s ease;
+
+  &.isLoading {
+    opacity: 0;
+    // display: none;
+  }
 `

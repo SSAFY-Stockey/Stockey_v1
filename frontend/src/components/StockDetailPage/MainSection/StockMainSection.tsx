@@ -11,7 +11,7 @@ const StockMainSection = () => {
       <Grid item xs={12}>
         <PanelTitle>
           네이버
-          <BookmarkBtn isBookmarked={false} page="stock" />
+          <BookmarkBtn isBookmarked={false} page="stock" num={2} />
         </PanelTitle>
       </Grid>
       <Grid item xs={12} id="priceChartRef">

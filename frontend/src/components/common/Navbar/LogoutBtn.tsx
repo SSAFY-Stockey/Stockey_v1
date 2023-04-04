@@ -2,8 +2,12 @@ import { useEffect } from "react"
 import styled, { keyframes } from "styled-components"
 
 // recoil
-import { useRecoilState } from "recoil"
-import { logInState, accessTokenSelector } from "../../../stores/atoms"
+import { useRecoilState, useSetRecoilState } from "recoil"
+import {
+  logInState,
+  accessTokenSelector,
+  nicknameState,
+} from "../../../stores/atoms"
 
 // mui icon
 import LogoutIcon from "@mui/icons-material/Logout"
@@ -20,6 +24,8 @@ const LogoutBtn = ({ isNarrow }: LogoutBtnProps) => {
   const [isLogin, setIsLogin] = useRecoilState(logInState)
   // accessToken State
   const [accessToken, setAccessToken] = useRecoilState(accessTokenSelector)
+  // nickname State
+  const setNickname = useSetRecoilState(nicknameState)
   // useNavigate
   const navigate = useNavigate()
   // customAxios
@@ -31,6 +37,7 @@ const LogoutBtn = ({ isNarrow }: LogoutBtnProps) => {
         .post("auth/logout")
         .then((response) => {
           setIsLogin(false)
+          setNickname("")
           window.alert("로그아웃 되었습니다")
         })
         .catch((error) => {
