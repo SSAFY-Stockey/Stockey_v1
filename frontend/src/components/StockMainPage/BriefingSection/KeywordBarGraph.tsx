@@ -2,52 +2,22 @@ import * as Highcharts from "highcharts"
 import HighchartsReact from "highcharts-react-official"
 import styled from "styled-components"
 import { useKeywordRank } from "../../../hooks/useKeywordRank"
-import { KeywordRankParamsType } from "../../../hooks/useKeywordRank"
-import { commonParamsState } from "../../../stores/StockMainAtoms"
-import { useRecoilValue } from "recoil"
-import { useRandomStock } from "../../../hooks/useRandomStock"
-import { selectedStockIdxState } from "../../../stores/StockMainAtoms"
-import { Suspense } from "react"
-import LoadingComponent from "../../common/Loading/LoadingComponent"
-
-interface KeywordType {
-  keywordName: string
-  keywordCount: number
-  keywordId: number
-}
-
-interface ChartDataType {
-  name: string
-  y: number
-  rank: number
-}
+import { keywordParamsState } from "../../../stores/StockMainAtoms"
+import { selectedKeywordState } from "../../../stores/StockMainAtoms"
+import { useRecoilValue, useSetRecoilState } from "recoil"
 
 const KeywordBarGraph = () => {
-  const { data: randomStockData } = useRandomStock(3) // 랜덤 주식 데이터
-  const selectedStockIdx = useRecoilValue(selectedStockIdxState) // 현재 선택된 주식의 인덱스
-  const commonParams = useRecoilValue(commonParamsState)
-  export const keywordRankParams: KeywordRankParamsType = {
-    topN: 3,
-    typeId: randomStockData?.[selectedStockIdx]?.id,
-    ...commonParams,
-  }
+  const keywordParams = useRecoilValue(keywordParamsState)
+  const setSelectedKeyword = useSetRecoilState(selectedKeywordState)
+
   // keyword 순위 읽어오기
-  const { data: keywordRankData, isLoading } = useKeywordRank(keywordRankParams)
-  console.log(keywordRankData)
-  const { totalNewsCount, topKeywords } = { ...keywordRankData }
-  const chartData = topKeywords.map((keyword: KeywordType, index: number) => {
-    return {
-      name: keyword.keywordName,
-      y: (keyword.keywordCount / totalNewsCount) * 100,
-      rank: index + 1,
-    }
-  })
-  const top_1 = chartData.splice(1, 1)
-  chartData.splice(0, 0, top_1[0])
-  console.log(chartData)
-  const yAxisMax: number =
-    Math.max(...chartData.map((word: ChartDataType) => word.y)) + 150
-  console.log(yAxisMax, "yAxisMax")
+  const { data: keywordRankData, isLoading } = useKeywordRank(keywordParams)
+  const {
+    top3: chartData,
+    others,
+    totalNewsCount,
+    yAxisMax,
+  } = { ...keywordRankData }
 
   const options: Highcharts.Options = {
     title: { text: undefined },
@@ -107,6 +77,14 @@ const KeywordBarGraph = () => {
             )
           },
         },
+        events: {
+          click: function (event: any) {
+            setSelectedKeyword({
+              idx: event.point.index,
+              id: event.point.keywordId,
+            })
+          },
+        },
         borderRadius: 10,
       },
       series: {
@@ -120,18 +98,16 @@ const KeywordBarGraph = () => {
       {
         name: "Keyword",
         type: "column",
-        data: isLoading ? [] : chartData,
+        data: chartData,
         colorByPoint: true,
       },
     ],
   }
 
   return (
-    <Suspense fallback={<LoadingComponent />}>
-      <GraphWrapper>
-        <HighchartsReact highcharts={Highcharts} options={options} />
-      </GraphWrapper>
-    </Suspense>
+    <GraphWrapper>
+      <HighchartsReact highcharts={Highcharts} options={options} />
+    </GraphWrapper>
   )
 }
 

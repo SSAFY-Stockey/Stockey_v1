@@ -10,14 +10,6 @@ interface Props {
   isLoading: boolean
 }
 
-const dummyKeywords = [
-  {
-    keywordCount: 12,
-    keywordName: "더미키워드",
-    keywordId: 12,
-  },
-]
-
 function NewsTabPanel({ activeTab, index, isLoading, ...other }: Props) {
   return (
     <div
@@ -33,10 +25,7 @@ function NewsTabPanel({ activeTab, index, isLoading, ...other }: Props) {
             <LoadingComponent />
           ) : (
             <>
-              <KeywordBarGraph
-                totalNewsCount={22}
-                topKeywords={dummyKeywords}
-              />
+              <KeywordBarGraph />
               <OtherKeywordList />
             </>
           )}

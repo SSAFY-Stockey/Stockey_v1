@@ -1,21 +1,18 @@
 import styled from "styled-components"
 import KeyphraseListItem from "./KeyphraseListItem"
 import { useRecoilValue } from "recoil"
-import { selectedKeywordIdxState } from "../../../stores/StockMainAtoms"
+import {
+  selectedKeywordState,
+  keyphraseParamsState,
+} from "../../../stores/StockMainAtoms"
 import { useKeyphraseList } from "../../../hooks/useKeyphraseList"
-import { KeyphraseListParamsType } from "../../../hooks/useKeyphraseList"
-import { commonParamsType } from "./KeywordBoard"
-import { useKeywordRank } from "../../../hooks/useKeywordRank"
 
-const KeyphraseList = (commonParams: commonParamsType) => {
-  const { data: keywordRankData } = useKeywordRank(keywordRankParams)
+const KeyphraseList = () => {
+  const { idx: selectedKeywordIdx, id } = useRecoilValue(selectedKeywordState)
   // keyphrase 리스트 읽어오기
-  const selectedKeywordIdx = useRecoilValue(selectedKeywordIdxState) // 현재 선택된 키워드의 인덱스
-  const keyphraseListParams: KeyphraseListParamsType = {
-    keywordId: keywordRankData?.[selectedKeywordIdx].id,
-    ...commonParams,
-  }
-  const { data: keyphraseListData } = useKeyphraseList(keyphraseListParams)
+  const keyphraseParams = useRecoilValue(keyphraseParamsState)
+  const { data: keyphraseListData } = useKeyphraseList(keyphraseParams)
+  console.log(keyphraseListData, "keyphraseListData")
 
   const colors: string[] = ["orange", "pink", "purple"]
   const keyphrases: string[] = [

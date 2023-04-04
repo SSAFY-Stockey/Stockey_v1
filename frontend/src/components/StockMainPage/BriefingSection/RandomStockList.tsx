@@ -4,6 +4,7 @@ import { useRandomStock } from "../../../hooks/useRandomStock"
 
 const RandomStockList = () => {
   const { data: randomStockData } = useRandomStock(3)
+
   return (
     <StyledDiv>
       {randomStockData?.map((stock: any, index: number) => (
