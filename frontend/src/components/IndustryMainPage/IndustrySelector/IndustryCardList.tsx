@@ -12,7 +12,7 @@ const IndustryCardList = ({ industryList }: IndustryListProps) => {
     <IndustryCardListDiv>
       <IndustryCardListGrid container rowGap={3} columnSpacing={3}>
         {industryList?.map((industryInfo) => (
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid key={industryInfo.id} item xs={12} sm={6} md={4}>
             <IndustryCard key={industryInfo.id} industryInfo={industryInfo} />
           </Grid>
         ))}

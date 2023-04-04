@@ -38,7 +38,7 @@ const IndustrySelectorToggleBtn = ({ changeLayout, status }: BtnProps) => {
 export default IndustrySelectorToggleBtn
 
 const StyledButton = styled(Button)({
-  width: "170.52px",
+  width: "180px",
   height: "4.8rem",
   background: "var(--custom-gradient-pink)",
   borderRadius: 24,
@@ -51,7 +51,7 @@ const StyledButton = styled(Button)({
   letterSpacing: "0.1px",
   color: "#FFFFFF",
   "&.small": {
-    width: "114.15px",
+    width: "120px",
   },
   transition: "all 0.6s forwards",
 })
