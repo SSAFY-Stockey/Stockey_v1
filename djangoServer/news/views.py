@@ -22,7 +22,7 @@ tfidf_vectorizer = TfidfVectorizer(min_df=5, ngram_range=(1, 5))
 #
 # okt = Okt()
 @api_view()
-def get_cluster_by_keyword(request):
+def get_cluster_by_keyword(request,keywordId):
 
     id = request.GET["id"]
     type = request.GET['type']
@@ -30,14 +30,13 @@ def get_cluster_by_keyword(request):
     start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
     end_date = request.GET['end_date']
     end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
-    keyword_id = request.GET['keyword_id']
     start = time.time()
-    print(type,id,start_date,end_date,keyword_id)
+    print(type,id,start_date,end_date,keywordId)
 
     if type=='STOCK':
         qs = News.objects.filter(
             pressed_at__range=[start_date, end_date],
-            newsrelation__keyword_id=keyword_id,
+            newsrelation__keyword_id=keywordId,
             newsrelation__stock_id=id
         ).values(
             "title", "news_url", "pressed_at"
@@ -46,7 +45,7 @@ def get_cluster_by_keyword(request):
     elif type == 'INDUSTRY':
         qs = News.objects.filter(
             pressed_at__range=[start_date, end_date],
-            newsrelation__keyword_id=keyword_id,
+            newsrelation__keyword_id=keywordId,
             newsrelation__industry_id= id
         ).values(
             "title", "news_url", "pressed_at"
@@ -54,7 +53,7 @@ def get_cluster_by_keyword(request):
     else:
         qs = News.objects.filter(
             pressed_at__range=[start_date, end_date],
-            newsrelation__keyword_id=keyword_id,
+            newsrelation__keyword_id=keywordId,
             newsrelation__news_type='ECONOMY'
         ).values(
             "title", "news_url", "pressed_at"
