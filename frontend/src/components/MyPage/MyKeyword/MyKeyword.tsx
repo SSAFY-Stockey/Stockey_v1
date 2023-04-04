@@ -1,5 +1,6 @@
 import styled from "styled-components"
 import SubTitle from "../SubTitle"
+import KeywordList from "./KeywordList"
 
 const MyKeyword = () => {
   return (
@@ -9,6 +10,7 @@ const MyKeyword = () => {
           subTitle="단어장"
           description="관심 있는 단어를 한번에 확인해보세요"
         />
+        <KeywordList />
       </MyKeywordWrapper>
     </>
   )
