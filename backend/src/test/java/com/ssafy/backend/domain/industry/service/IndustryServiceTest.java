@@ -1,7 +1,12 @@
 package com.ssafy.backend.domain.industry.service;
 
+import com.ssafy.backend.domain.industry.dto.IndustryDto;
 import com.ssafy.backend.domain.industry.entity.Industry;
 import com.ssafy.backend.domain.industry.repository.IndustryRepository;
+import com.ssafy.backend.domain.member.entity.Member;
+import com.ssafy.backend.domain.member.enums.OauthType;
+import com.ssafy.backend.domain.member.repository.MemberRepository;
+import com.ssafy.backend.domain.member.service.MemberService;
 import com.ssafy.backend.domain.stock.entity.Stock;
 import com.ssafy.backend.domain.stock.repository.StockRepository;
 import org.assertj.core.api.Assertions;
@@ -27,13 +32,19 @@ class IndustryServiceTest {
     IndustryRepository industryRepository;
     @Autowired
     StockRepository stockRepository;
+    @Autowired
+    MemberService memberService;
+    @Autowired
+    MemberRepository memberRepository;
+    @Autowired
+    IndustryService industryService;
 
     Industry industry1;
     Industry industry2;
 
     @BeforeEach
-    void init(){
-        Industry industry01 =Industry.builder()
+    void init() {
+        Industry industry01 = Industry.builder()
                 .description("산업 설명")
                 .category("대분류 1")
                 .name("IT")
@@ -43,7 +54,6 @@ class IndustryServiceTest {
                 .category("대분류 2")
                 .name("전자")
                 .build();
-
 
 
         Stock stock1 = Stock.builder()
@@ -104,10 +114,13 @@ class IndustryServiceTest {
         stockRepository.save(stock4);
         stockRepository.save(stock5);
         stockRepository.save(stock6);
+
+        memberService.saveMember(1, "test1", OauthType.KAKAO);
+        memberService.saveMember(2, "test2", OauthType.KAKAO);
     }
 
     @Test
-    void 산업리스트_테스트() throws  Exception{
+    void 산업리스트_테스트() throws Exception {
         //given
         long beforeCount = industryRepository.count();
 
@@ -123,11 +136,11 @@ class IndustryServiceTest {
 
         //then
         long afterCount = industryRepository.count();
-        Assertions.assertThat(beforeCount+1).isEqualTo(afterCount);
+        Assertions.assertThat(beforeCount + 1).isEqualTo(afterCount);
     }
 
     @Test
-    public void 산업단일_테스트() throws Exception{
+    public void 산업단일_테스트() throws Exception {
         //given
         Industry newIndustry = Industry.builder()
                 .description("산업 설명3")
@@ -143,57 +156,90 @@ class IndustryServiceTest {
         Assertions.assertThat(saveIndustry).isEqualTo(findIndustry);
 
     }
+
     @Test
-    public void 전체top5_개수_테스트() throws Exception{
+    public void 전체top5_개수_테스트() throws Exception {
         //given
         List<Stock> stockList = stockRepository.findAll();
-        Collections.sort(stockList,(o1,o2)-> -o1.getMarketCap().compareTo(o2.getMarketCap()));
+        Collections.sort(stockList, (o1, o2) -> -o1.getMarketCap().compareTo(o2.getMarketCap()));
         //when
-        Pageable pageable = PageRequest.of(0,5);
-        List<Stock> top5Stocks = stockRepository.findTop5Stocks(industry1,pageable);
+        Pageable pageable = PageRequest.of(0, 5);
+        List<Stock> top5Stocks = stockRepository.findTop5Stocks(industry1, pageable);
 
         //then
         Assertions.assertThat(top5Stocks.size()).isEqualTo(5);
     }
+
     @Test
-    public void 전체top5_동작_테스트() throws Exception{
+    public void 전체top5_동작_테스트() throws Exception {
         //given
         List<Stock> stockList = stockRepository.findAll();
-        Collections.sort(stockList,(o1,o2)-> -o1.getMarketCap().compareTo(o2.getMarketCap()));
+        Collections.sort(stockList, (o1, o2) -> -o1.getMarketCap().compareTo(o2.getMarketCap()));
         //when
-        Pageable pageable = PageRequest.of(0,5);
-        List<Stock> top5Stocks = stockRepository.findTop5Stocks(industry1,pageable);
+        Pageable pageable = PageRequest.of(0, 5);
+        List<Stock> top5Stocks = stockRepository.findTop5Stocks(industry1, pageable);
 
         //then
-        for(int i = 0; i<5;i++){
-         Assertions.assertThat(top5Stocks.get(i).getMarketCap()).isEqualTo(stockList.get(i).getMarketCap());
+        for (int i = 0; i < 5; i++) {
+            Assertions.assertThat(top5Stocks.get(i).getMarketCap()).isEqualTo(stockList.get(i).getMarketCap());
         }
     }
-    
+
     @Test
-    public void 시가총액_내림차순_테스트() throws Exception{
+    public void 시가총액_내림차순_테스트() throws Exception {
         //given
-        Pageable pageable = PageRequest.of(0,5);
+        Pageable pageable = PageRequest.of(0, 5);
         List<Stock> top5Stocks = stockRepository.findTop5Stocks(pageable);
         //when
         //then
-        for(int i = 1;i<5;i++){
-            Stock prev = top5Stocks.get(i-1);
+        for (int i = 1; i < 5; i++) {
+            Stock prev = top5Stocks.get(i - 1);
             Stock next = top5Stocks.get(i);
 
             //이전 종목은 다음 종목 보다 커야 한다.
-            Assertions.assertThat(prev.getMarketCap()>= next.getMarketCap()).isTrue();
+            Assertions.assertThat(prev.getMarketCap() >= next.getMarketCap()).isTrue();
         }
-    
+
     }
-    
+
 
     @Test
-    public void 산업조회_실패_테스트() throws Exception{
+    public void 산업조회_실패_테스트() throws Exception {
         //given
         //when
         //then
-        assertThrows(RuntimeException.class, ()->industryRepository.findById(0L).get());
+        assertThrows(RuntimeException.class, () -> industryRepository.findById(0L).get());
+
+    }
+
+    @Test
+    public void 관심산업_등록() throws Exception {
+        //given
+        Member member1 = memberRepository.findByNickname("test1").get();
+
+        //when
+        industryService.addFavorite(member1,industry1.getId());
+        List<IndustryDto> myIndustries = industryService.getMyIndustries(member1);
+
+        //then
+        Assertions.assertThat(myIndustries.size()).isEqualTo(1);
+
+    }
+
+    @Test
+    public void 관심산업_삭제() throws Exception {
+        //given
+        Member member1 = memberRepository.findByNickname("test1").get();
+
+        //when
+        industryService.addFavorite(member1,industry1.getId());
+        List<IndustryDto> myIndustries = industryService.getMyIndustries(member1);
+        Assertions.assertThat(myIndustries.size()).isEqualTo(1);
+        industryService.deleteFavorite(member1,industry1.getId());
+        myIndustries = industryService.getMyIndustries(member1);
+
+        //then
+        Assertions.assertThat(myIndustries.size()).isEqualTo(0);
 
     }
 }

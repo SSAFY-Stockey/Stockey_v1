@@ -2,7 +2,6 @@ package com.ssafy.backend.domain.member.dto;
 
 import com.ssafy.backend.domain.member.enums.OauthType;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 
 

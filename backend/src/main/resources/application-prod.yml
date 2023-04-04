@@ -6,7 +6,7 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${DATABASE_URL}
+    url: jdbc:mysql://mysql-container/stockey?serverTimezone=Asia/Seoul
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
 
@@ -14,11 +14,46 @@ spring:
   jpa:
     open-in-view: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate.format_sql: true
 
+  redis:
+    lettuce:
+      pool:
+        max-active: 10
+        max-idle: 10
+        min-idle: 2
+    port: 6379
+    host: 'redis-container'
+    password: 'ssafy'
+
 logging:
   level:
     org.hibernate.SQL: debug
+
+# springdoc swagger
+springdoc:
+  api-docs:
+    path: /docs # 접속 path 설정
+  swagger-ui:
+    path: /swagger-ui # 접속 path 설정
+
+
+kakaoOauth:
+  REST_API_KEY: 204f458585e0229e8443cd7bc1be5c5e
+  REDIRECT_URL: http://j8a508.p.ssafy.io:8080/oauth/kakao
+
+
+jwt:
+  # base64로 인코딩된 암호 키, HS512를 사용할 것이기 때문에, 512비트(64바이트) 이상이 되어야 합니다. 길게 써주세요
+  secretKey: c3NhZnk46riwMu2Vmeq4sOqzte2Gte2UhOuhnOygne2KuEEzMDg=
+  access:
+    expiration: 100
+  refresh:
+    expiration: 14400
+
+django:
+  url: http://django-container
+  port : 8082
