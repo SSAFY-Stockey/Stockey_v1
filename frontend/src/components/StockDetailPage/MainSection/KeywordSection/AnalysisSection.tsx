@@ -21,7 +21,7 @@ const AnalysisSection = () => {
 }
 
 export default AnalysisSection
-const hide = keyframes`
+export const hide = keyframes`
   0% {
     display: block;
     opacity: 1;
@@ -30,7 +30,7 @@ const hide = keyframes`
     opacity: 0;
   }
   `
-const show = keyframes`
+export const show = keyframes`
   0% {
     opacity: 0;
   }

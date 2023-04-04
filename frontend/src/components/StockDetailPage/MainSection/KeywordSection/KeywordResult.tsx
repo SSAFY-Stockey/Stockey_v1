@@ -1,9 +1,10 @@
 import { Tab, Tabs, Grid } from "@mui/material"
-import { PanelSubTitle, triggerScroll } from "../../KeywordPanel/KeywordPanel"
+import { PanelSubTitle } from "../../SubPanel/KeywordPanel/KeywordPanel"
 import { HighlightedSpan } from "../PriceSection/PriceSection"
 import { useState } from "react"
 import NewsTabPanel from "./NewsTabPanel"
 import styled, { keyframes } from "styled-components"
+import { triggerScroll } from "../../../common/Functions/triggerScroll"
 
 const KeywordResult = () => {
   const [isLoading, setIsLoading] = useState(true)
