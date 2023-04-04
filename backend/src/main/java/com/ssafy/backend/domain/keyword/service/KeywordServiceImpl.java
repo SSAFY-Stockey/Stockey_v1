@@ -182,9 +182,7 @@ public class KeywordServiceImpl implements KeywordService{
 
         // SpringBoot -> DjangoServer 데이터 요청
         RestTemplate restTemplate = new RestTemplate();
-//        String url = "http://j8a508.p.ssafy.io:8082/keywords/{keywordId}/keyphrase?type={type}&id={id}" +
-//                "&start_date={startDateString}&end_date={endDateString}";
-        String url = "http://j8a508.p.ssafy.io:8082/keywords/{keywordId}/keyphrase?";
+        String url = "django-container:8082/keywords/{keywordId}/keyphrase?";
 
         String queryUrl = UriComponentsBuilder.fromUriString(url)
                 .queryParam("type", newsType)
@@ -193,16 +191,8 @@ public class KeywordServiceImpl implements KeywordService{
                 .queryParam("end_date",endDateString)
                 .buildAndExpand(keywordId)
                 .toUriString();
-
-        System.out.println("queryUrl = " + queryUrl);
-
         ResponseEntity<Response> response = restTemplate.exchange(queryUrl, HttpMethod.GET, null, new ParameterizedTypeReference<Response>() {});
         Response Returns = response.getBody();
-        System.out.println("Returns = " + Returns);
-
-//        ParameterizedTypeReference<List<MyObject>> responseType = new ParameterizedTypeReference<List<MyObject>>() {};
-//        ResponseEntity<List<MyObject>> responseEntity = restTemplate.exchange(url, HttpMethod.GET, null, responseType);
-//        List<MyObject> myObjects = responseEntity.getBody()
         return Returns.getMessages();
     }
 
