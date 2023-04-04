@@ -1,4 +1,4 @@
-import React from "react"
+import React, { Suspense } from "react"
 import ReactDOM from "react-dom/client"
 import "./index.css"
 import App from "./App"
@@ -6,6 +6,7 @@ import reportWebVitals from "./reportWebVitals"
 import { RecoilRoot } from "recoil"
 import { QueryClient, QueryClientProvider } from "react-query"
 import { BrowserRouter } from "react-router-dom"
+import Spinner from "./components/common/Spinner/Spinner"
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 const queryClient = new QueryClient()
@@ -14,7 +15,9 @@ root.render(
   <RecoilRoot>
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <App />
+        <Suspense fallback={<Spinner />}>
+          <App />
+        </Suspense>
       </BrowserRouter>
     </QueryClientProvider>
   </RecoilRoot>

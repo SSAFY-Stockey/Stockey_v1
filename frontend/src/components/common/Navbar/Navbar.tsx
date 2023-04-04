@@ -1,11 +1,20 @@
 import ProfileInfo from "./ProfileInfo"
 import PageLinkBtn from "./PageLinkBtn"
+import LogoutBtn from "./LogoutBtn"
 import StockeyLogo from "./StockeyLogo"
 import styled from "styled-components"
 import { useLocation } from "react-router-dom"
+// recoil
+import { useRecoilValue } from "recoil"
+import { logInState } from "../../../stores/atoms"
 
-const Navbar = () => {
+interface Props {
+  isNarrow: boolean
+}
+
+const Navbar = ({ isNarrow }: Props) => {
   const curPath = useLocation().pathname
+  const isLogin = useRecoilValue(logInState)
 
   const isSeleted = (name: string) => {
     if (curPath.startsWith("/stock") && name === "주식 종목") {
@@ -34,11 +43,29 @@ const Navbar = () => {
               : undefined
           }
         >
-          <ProfileInfo />
-          <PageLinkBtn name="주식 종목" selected={isSeleted("주식 종목")} />
-          <PageLinkBtn name="산업별 정보" selected={isSeleted("산업별 정보")} />
-          <PageLinkBtn name="키워드" selected={isSeleted("키워드")} />
-          <PageLinkBtn name="마이페이지" selected={isSeleted("마이페이지")} />
+          <ProfileInfo isNarrow={isNarrow} />
+
+          <PageLinkBtn
+            name="주식 종목"
+            selected={isSeleted("주식 종목")}
+            isNarrow={isNarrow}
+          />
+          <PageLinkBtn
+            name="산업별 정보"
+            selected={isSeleted("산업별 정보")}
+            isNarrow={isNarrow}
+          />
+          <PageLinkBtn
+            name="키워드"
+            selected={isSeleted("키워드")}
+            isNarrow={isNarrow}
+          />
+          <PageLinkBtn
+            name="마이페이지"
+            selected={isSeleted("마이페이지")}
+            isNarrow={isNarrow}
+          />
+          {isLogin ? <LogoutBtn isNarrow={isNarrow} /> : undefined}
         </NavbarDiv>
       </NavWrapper>
     </>
@@ -76,6 +103,6 @@ const NavbarDiv = styled.div`
 const NavWrapper = styled.div`
   position: relative;
 
-  height: 100%;
+  height: 100vh;
   width: 100%;
 `

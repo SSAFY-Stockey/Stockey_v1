@@ -1,5 +1,5 @@
-import { useEffect } from "react"
 import "./App.css"
+import { useEffect, useState } from "react"
 import styled from "styled-components"
 import { Routes, Route, useLocation } from "react-router-dom"
 
@@ -20,23 +20,30 @@ import Navbar from "./components/common/Navbar/Navbar"
 
 // recoil
 import { useRecoilValue } from "recoil"
-import { logInState } from "./stores/atoms"
+import { accessTokenSelector, logInState } from "./stores/atoms"
 import customAxios from "./utils/customAxios"
-import useInterceptedAxios from "./utils/useInterceptedAxios"
 
 function App() {
   const curPath = useLocation().pathname
 
-  // // accessToken 데이터 가져오기
-  const isLogIn = useRecoilValue(logInState)
-  const axios = useInterceptedAxios()
+  // 가로 길이 확인 => navbar 형태 전달
+  // 현재 화면 크기 state
+  const [isNarrow, setIsNarrow] = useState<boolean>(
+    window.innerWidth <= 1000 ? true : false
+  )
 
-  if (isLogIn) {
-    axios
-      .get("/member")
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err))
+  const handleResize = () => {
+    setIsNarrow(window.innerWidth <= 1000 ? true : false)
   }
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize)
+    return () => {
+      // clean up
+      window.removeEventListener("resize", handleResize)
+    }
+  }, [])
+
   return (
     <>
       <MainWrapper>
@@ -46,10 +53,12 @@ function App() {
             curPath === "/user/signup" ||
             curPath === "/oauth/kakao"
               ? "login"
+              : isNarrow
+              ? "narrow"
               : undefined
           }
         >
-          <Navbar />
+          <Navbar isNarrow={isNarrow} />
         </NavDiv>
         <MainDiv
           className={
@@ -57,6 +66,8 @@ function App() {
             curPath === "/user/signup" ||
             curPath === "/oauth/kakao"
               ? "login"
+              : isNarrow
+              ? "narrow"
               : undefined
           }
         >
@@ -102,6 +113,11 @@ const NavDiv = styled.div`
   &.login {
     width: 45vw;
   }
+
+  // narrow
+  &.narrow {
+    width: 100px;
+  }
 `
 const MainDiv = styled.div`
   // default size
@@ -113,5 +129,10 @@ const MainDiv = styled.div`
   // login & signup
   &.login {
     width: 55vw;
+  }
+
+  // narrow
+  &.narrow {
+    width: calc(100vw - 100px);
   }
 `
