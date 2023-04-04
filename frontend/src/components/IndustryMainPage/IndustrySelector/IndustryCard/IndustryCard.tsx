@@ -4,15 +4,18 @@ import Card from "@mui/material/Card"
 import { CardActionArea } from "@mui/material"
 import { useNavigate } from "react-router-dom"
 
-interface CardProps {
-  industryName: string
+export interface IndustryInfoType {
+  id: number
+  name: string
+  description: string | null
+  category: string
 }
 
-const IndustryCard = ({ industryName }: CardProps) => {
+const IndustryCard = ({ industryInfo }: { industryInfo: IndustryInfoType }) => {
   const navigate = useNavigate()
   const onClickIndustryCard = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
-    navigate(`/industry/${industryName}`)
+    navigate(`/industry/${industryInfo.name}`)
   }
 
   return (
@@ -23,7 +26,7 @@ const IndustryCard = ({ industryName }: CardProps) => {
             <IndustryCardImg src="/industryLogos/sampleIndustryLogo.png" />
           </IndustryCardBody>
           <IndustryCardNameArea>
-            <NameTagP>{industryName}</NameTagP>
+            <NameTagP>{industryInfo.name}</NameTagP>
           </IndustryCardNameArea>
         </IndustryCardContent>
       </IndustryCardActionArea>
@@ -34,7 +37,7 @@ const IndustryCard = ({ industryName }: CardProps) => {
 export default IndustryCard
 
 const IndustryCardWrapper = styled(Card)({
-  width: "calc((100% - 72px)/3)",
+  width: "auto",
   borderRadius: "24px",
   filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))",
 })
@@ -86,7 +89,7 @@ const NameTagP = styled.p`
   font-family: "Inter";
   font-style: normal;
   font-weight: 700;
-  font-size: 1.2rem;
+  font-size: calc(1rem + 0.25vw);
 
   display: flex;
   align-items: center;

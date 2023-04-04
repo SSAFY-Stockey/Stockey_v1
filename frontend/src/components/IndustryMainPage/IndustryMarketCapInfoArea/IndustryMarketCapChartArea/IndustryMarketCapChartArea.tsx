@@ -45,8 +45,6 @@ const IndustryMarketCapChartArea = ({
   const options: Highcharts.Options = {
     chart: {
       type: "pie",
-      width: 240,
-      height: 336,
       backgroundColor: "transparent",
     },
     title: {
@@ -67,7 +65,7 @@ const IndustryMarketCapChartArea = ({
     ],
     plotOptions: {
       pie: {
-        size: 220,
+        size: "100%",
         center: ["50%", "55%"],
         innerSize: "40%",
         dataLabels: {
@@ -75,7 +73,8 @@ const IndustryMarketCapChartArea = ({
           format: "{point.name}",
           distance: -30,
           style: {
-            fontWeight: "bold",
+            fontSize: "10px",
+            fontWeight: "normal",
             color: "white",
           },
         },
@@ -115,7 +114,11 @@ const IndustryMarketCapChartArea = ({
 
   return (
     <AreaDiv>
-      <HighchartsReact highcharts={Highcharts} options={options} />
+      <HighchartsReact
+        highcharts={Highcharts}
+        options={options}
+        containerProps={{ style: { width: "100%", height: "100%" } }}
+      />
     </AreaDiv>
   )
 }
@@ -123,7 +126,7 @@ const IndustryMarketCapChartArea = ({
 export default IndustryMarketCapChartArea
 
 const AreaDiv = styled.div`
-  width: 240px;
-  height: 336px;
+  width: 100%;
+  height: 100%;
   padding: 0px;
 `

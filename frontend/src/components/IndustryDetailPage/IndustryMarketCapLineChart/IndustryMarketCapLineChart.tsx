@@ -1,14 +1,12 @@
 import * as Highcharts from "highcharts"
 import HighchartsReact from "highcharts-react-official"
 import highchartsStock from "highcharts/modules/stock"
-import BrandLight from "highcharts/themes/brand-light"
 import styled from "styled-components"
-import { sampleData } from "./dummyData"
-import { useState } from "react"
+import { makePriceFormat } from "../../IndustryMainPage/makePriceFormat"
+import { useIndustryMarketCap } from "../../../hooks/useIndustryMarketCap"
+import Spinner from "../../common/Spinner/Spinner"
+import { useParams } from "react-router-dom"
 
-// 폰트 import 에러 발생 => 추후 확인할 것
-BrandLight(Highcharts)
-console.log(BrandLight)
 highchartsStock(Highcharts)
 Highcharts.setOptions({
   lang: {
@@ -32,10 +30,12 @@ Highcharts.setOptions({
   },
 })
 
-const IndustryCandleChart = () => {
-  const dummyData = sampleData
+const IndustryMarketCapLineChart = ({ industryId }: { industryId: number }) => {
+  const { isLoading, data: lineChartData } = useIndustryMarketCap(industryId)
+  const params = useParams()
+  const stockName = params?.industryName
 
-  const [options, setOptions] = useState<Highcharts.Options>({
+  const options: Highcharts.Options = {
     chart: {
       borderColor: "var(--custom-background)",
       borderRadius: 20,
@@ -61,11 +61,6 @@ const IndustryCandleChart = () => {
     rangeSelector: {
       allButtonsEnabled: false,
       buttons: [
-        {
-          type: "day",
-          count: 1,
-          text: "1일",
-        },
         {
           type: "week",
           count: 1,
@@ -114,11 +109,10 @@ const IndustryCandleChart = () => {
     },
     series: [
       {
-        name: "삼성전자",
+        name: stockName,
         type: "line",
-        data: dummyData,
+        data: lineChartData,
         color: "var(--custom-mint)",
-        compare: "percent",
       },
     ],
     title: {
@@ -126,13 +120,30 @@ const IndustryCandleChart = () => {
     },
     tooltip: {
       split: false,
-      valueDecimals: 2,
-      valueSuffix: "원",
-      dateTimeLabelFormats: {
-        day: "%Y년 %m월 %d일",
+      formatter: function (this: any) {
+        let tooltipContent =
+          Highcharts.dateFormat("%Y년 %m월 %d일", this.x) + "<br>"
+        tooltipContent += `<b>${makePriceFormat(this.y)}</b><br/>`
+
+        const index =
+          this.series.points.findIndex((point: any) => {
+            return point.x === this.x
+          }) - 1
+
+        if (index >= 0) {
+          const prevPoint = this.series.points[index]
+          const rate =
+            Math.round(((this.y - prevPoint.y) / prevPoint.y) * 10000) / 100
+
+          tooltipContent += `전 날 대비 <span style="color:${
+            rate > 0 ? "red" : rate === 0 ? "black" : "blue"
+          }">${
+            rate > 0 ? "▲" + rate + "%" : rate === 0 ? "=" : "▼" + rate + "%"
+          }</span><br/>`
+        }
+
+        return tooltipContent
       },
-      pointFormat:
-        '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> ({point.change}%)<br/>',
     },
     xAxis: {
       type: "datetime",
@@ -143,55 +154,27 @@ const IndustryCandleChart = () => {
     yAxis: {
       type: "linear",
     },
-  })
-
-  const changeChartType = (event: React.MouseEvent<HTMLButtonElement>) => {
-    switch ((event.target as HTMLButtonElement).value) {
-      case "candlestick":
-        setOptions({
-          series: [
-            {
-              type: "candlestick",
-              color: undefined,
-            },
-          ],
-        })
-        break
-      case "line":
-        setOptions({
-          series: [
-            {
-              type: "line",
-              color: "var(--custom-mint)",
-            },
-          ],
-        })
-        break
-      default:
-    }
   }
 
   return (
     <AreaDiv>
       <TitleDiv>산업 규모</TitleDiv>
       <ChartWrapper>
-        <button onClick={changeChartType} value="line">
-          간단히
-        </button>
-        <button onClick={changeChartType} value="candlestick">
-          자세히
-        </button>
-        <HighchartsReact
-          highcharts={Highcharts}
-          constructorType={"stockChart"}
-          options={options}
-        />
+        {isLoading ? (
+          <Spinner />
+        ) : (
+          <HighchartsReact
+            highcharts={Highcharts}
+            constructorType={"stockChart"}
+            options={options}
+          />
+        )}
       </ChartWrapper>
     </AreaDiv>
   )
 }
 
-export default IndustryCandleChart
+export default IndustryMarketCapLineChart
 
 const ChartWrapper = styled.div`
   width: 100%;

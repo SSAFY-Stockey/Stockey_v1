@@ -6,12 +6,13 @@ import customAxios from "../utils/customAxios"
 
 import { useEffect } from "react"
 
-import { accessTokenSelector } from "../stores/atoms"
-import { useRecoilState } from "recoil"
+import { accessTokenSelector, nicknameState } from "../stores/atoms"
+import { useRecoilState, useRecoilValue } from "recoil"
 
 const KeywordPage = () => {
   const [accessToken, setAccessToken] = useRecoilState(accessTokenSelector)
   const axios = customAxios(accessToken, setAccessToken)
+  const nickname = useRecoilValue(nicknameState)
 
   const handleClick = () => {
     axios
@@ -24,23 +25,15 @@ const KeywordPage = () => {
       })
   }
 
-  useEffect(() => {
-    console.log(accessToken)
-  }, [accessToken])
-
-  const handleAnotherClick = () => {
-    console.log(document.cookie)
-  }
-
   return (
     <>
       <PageGrid>
         <Example>
           안녕하세요
-          <Bookmark isBookmarked={false} page={"keyword"} />
+          <Bookmark isBookmarked={false} page={"keyword"} num={1} />
         </Example>
         <button onClick={handleClick}>실험</button>
-        <button onClick={handleAnotherClick}>실험2</button>
+        <div>{nickname}</div>
       </PageGrid>
     </>
   )

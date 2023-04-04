@@ -52,7 +52,10 @@ const customAxios = (
       refreshSubscribers = []
 
       if (setAccessToken) {
+        console.log("reset")
         setAccessToken(newAccessToken?.data)
+      } else {
+        console.log("not work")
       }
 
       return newAccessToken?.data
@@ -92,11 +95,8 @@ const customAxios = (
       }
       isTokenRefreshing = true
       const newAccessToken = await getRefreshToken()
-      console.log(newAccessToken)
-      console.log(typeof newAccessToken)
 
       if (typeof newAccessToken === "string") {
-        console.log("refetch")
         config.headers.Authorization = `Bearer ${newAccessToken}`
         return axios(config)
       }

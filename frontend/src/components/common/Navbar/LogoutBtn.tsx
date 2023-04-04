@@ -1,56 +1,62 @@
-import React from "react"
+import { useEffect } from "react"
 import styled, { keyframes } from "styled-components"
-// mui icon
-import HomeRoundedIcon from "@mui/icons-material/HomeRounded"
-import QueryStatsRoundedIcon from "@mui/icons-material/QueryStatsRounded"
-import AppsRoundedIcon from "@mui/icons-material/AppsRounded"
-import ArticleRoundedIcon from "@mui/icons-material/ArticleRounded"
-import BookmarkIcon from "@mui/icons-material/Bookmark"
-import { useNavigate } from "react-router-dom"
 
-type PageLinkBtnProps = {
-  name: string
-  selected: boolean
+// recoil
+import { useRecoilState, useSetRecoilState } from "recoil"
+import {
+  logInState,
+  accessTokenSelector,
+  nicknameState,
+} from "../../../stores/atoms"
+
+// mui icon
+import LogoutIcon from "@mui/icons-material/Logout"
+import { useNavigate } from "react-router-dom"
+import Spinner from "../Spinner/Spinner"
+import customAxios from "../../../utils/customAxios"
+
+type LogoutBtnProps = {
   isNarrow: boolean
 }
 
-const PageLinkBtn = ({ name, selected, isNarrow }: PageLinkBtnProps) => {
-  // 페이지 이동 함수 작성
+const LogoutBtn = ({ isNarrow }: LogoutBtnProps) => {
+  // login State
+  const [isLogin, setIsLogin] = useRecoilState(logInState)
+  // accessToken State
+  const [accessToken, setAccessToken] = useRecoilState(accessTokenSelector)
+  // nickname State
+  const setNickname = useSetRecoilState(nicknameState)
+  // useNavigate
   const navigate = useNavigate()
-  const handleBtnClick = () => {
-    navigate(
-      name === "주식 종목"
-        ? "/stock"
-        : name === "산업 정보"
-        ? "/industry"
-        : name === "키워드"
-        ? "/keyword"
-        : "/"
-    )
+  // customAxios
+  const axios = customAxios(accessToken, setAccessToken)
+
+  const handleClick = () => {
+    if (isLogin) {
+      axios
+        .post("auth/logout")
+        .then((response) => {
+          setIsLogin(false)
+          setNickname("")
+          window.alert("로그아웃 되었습니다")
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    }
   }
 
   return (
     <>
-      <PageLinkBtnDiv
-        className={selected ? "selected" : undefined}
-        onClick={handleBtnClick}
-      >
-        {name === "주식 종목" ? (
-          <QueryStatsRoundedIcon />
-        ) : name === "산업 정보" ? (
-          <AppsRoundedIcon />
-        ) : name === "키워드" ? (
-          <ArticleRoundedIcon />
-        ) : (
-          <BookmarkIcon />
-        )}
-        {isNarrow ? undefined : <PageLinkText>{name}</PageLinkText>}
+      <PageLinkBtnDiv onClick={handleClick}>
+        <LogoutIcon />
+        {isNarrow ? undefined : <PageLinkText>로그 아웃</PageLinkText>}
       </PageLinkBtnDiv>
     </>
   )
 }
 
-export default PageLinkBtn
+export default LogoutBtn
 
 // 호버링 애니메이션
 const BtnHoverAnime = keyframes`
@@ -73,10 +79,8 @@ const PageLinkBtnDiv = styled.div`
   padding: 16px;
   gap: 10px;
 
-  // 크기
-  width: 100%;
-
   // 형태
+  width: 100%;
   border-radius: 100px;
 
   // 글자
