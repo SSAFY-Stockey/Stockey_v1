@@ -53,3 +53,7 @@ jwt:
     expiration: 100
   refresh:
     expiration: 14400
+
+django:
+  url: http://django-conatiner
+  port : ${DJANGO_PORT}

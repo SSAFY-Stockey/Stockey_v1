@@ -21,6 +21,7 @@ import com.ssafy.backend.global.exception.favorite.FavoriteExceptionType;
 import com.ssafy.backend.global.exception.keyword.KeywordException;
 import com.ssafy.backend.global.exception.keyword.KeywordExceptionType;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -40,6 +41,11 @@ import java.util.List;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class KeywordServiceImpl implements KeywordService{
+    @Value("${django.url}")
+    private String djangoUrl;
+    @Value("${django.port}")
+    private String djangoPort;
+
 
     private final KeywordMapper keywordMapper;
     private final KeywordRepository keywordRepository;
@@ -182,8 +188,7 @@ public class KeywordServiceImpl implements KeywordService{
 
         // SpringBoot -> DjangoServer 데이터 요청
         RestTemplate restTemplate = new RestTemplate();
-        String url = "django-container:8082/keywords/{keywordId}/keyphrase?";
-
+        String url = djangoUrl+":"+djangoPort+"/keywords/{keywordId}/keyphrase?";
         String queryUrl = UriComponentsBuilder.fromUriString(url)
                 .queryParam("type", newsType)
                 .queryParam("id", id)
