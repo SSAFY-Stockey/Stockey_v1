@@ -3,6 +3,8 @@ import KeyphraseList from "./KeyphraseList"
 import { HighlightedSpan } from "../../StockDetailPage/MainSection/PriceSection/PriceSection"
 import { useRecoilValue } from "recoil"
 import { selectedStockState } from "../../../stores/StockMainAtoms"
+import { selectedKeywordState } from "../../../stores/StockMainAtoms"
+import { colors } from "./KeyphraseList"
 
 import styled from "styled-components"
 import { Suspense } from "react"
@@ -15,12 +17,19 @@ const KeywordBoard = () => {
     id,
     name: selectedStockName,
   } = useRecoilValue(selectedStockState)
+  // const { idx: selectedKeywordIdx, id: keywordId } =
+  //   useRecoilValue(selectedKeywordState)
 
   return (
     <BoardDiv>
       <BoardTitle>
-        <HighlightedSpan color="#ff6f9d">키워드</HighlightedSpan>로 보는 이번 주{" "}
-        {selectedStockName} 소식💌
+        <HighlightedSpan
+          // color={`var(--custom-${colors[selectedKeywordIdx]}-1)`}
+          color="var(--custom-pink-1)"
+        >
+          키워드
+        </HighlightedSpan>
+        로 보는 이번 주 {selectedStockName} 소식💌
       </BoardTitle>
       <KeyphraseList />
       <Suspense fallback={<LoadingComponent />}>

@@ -7,6 +7,7 @@ import {
 } from "../../../stores/StockMainAtoms"
 import { useKeyphraseList } from "../../../hooks/useKeyphraseList"
 
+export const colors: string[] = ["orange", "pink", "purple"]
 const KeyphraseList = () => {
   const { idx: selectedKeywordIdx, id } = useRecoilValue(selectedKeywordState)
   // keyphrase 리스트 읽어오기
@@ -14,7 +15,6 @@ const KeyphraseList = () => {
   const { data: keyphraseListData } = useKeyphraseList(keyphraseParams)
   console.log(keyphraseListData, "keyphraseListData")
 
-  const colors: string[] = ["orange", "pink", "purple"]
   const keyphrases: string[] = [
     "금리 인상",
     "대출 규제",
@@ -51,7 +51,7 @@ const KeyphraseContainer = styled.div<{ selectedIdx: number }>`
   background-color: white;
   border-radius: 36px;
   position: relative;
-  height: 24vh;
+  height: 30%;
 
   // 말풍선 꼬리
   ::after {
