@@ -1,15 +1,12 @@
 package com.ssafy.backend.domain.keyword.api;
 
+import com.ssafy.backend.domain.keyword.api.request.GetKeyphraseRequest;
 import com.ssafy.backend.domain.keyword.api.request.GetTopNKeywordRequest;
 import com.ssafy.backend.domain.keyword.api.response.GetTopNKeywordResponse;
 import com.ssafy.backend.domain.keyword.api.response.KeywordDetailResponse;
-import com.ssafy.backend.domain.keyword.api.response.KeywordResponse;
-import com.ssafy.backend.domain.keyword.dto.KeywordDto;
-import com.ssafy.backend.domain.keyword.dto.KeywordStatisticDto;
-import com.ssafy.backend.domain.keyword.dto.TopKeywordDTO;
+import com.ssafy.backend.domain.keyword.dto.*;
 import com.ssafy.backend.domain.keyword.mapper.KeywordDtoMapper;
 import com.ssafy.backend.domain.keyword.service.KeywordService;
-import com.ssafy.backend.global.annotation.Auth;
 import com.ssafy.backend.global.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -20,7 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController
@@ -139,4 +137,12 @@ public class KeywordController {
         GetTopNKeywordResponse getTopNKeywordResponse = new GetTopNKeywordResponse(totalNewsCount, topKeywordDTO);
         return new ResponseEntity<>(new ResponseDto("OK", getTopNKeywordResponse), HttpStatus.OK);
     }
+
+    @GetMapping("/{keywordsId}/keyphrase")
+    public ResponseEntity<ResponseDto> GetKeyphrase(@PathVariable Long keywordsId,
+                                                    @Valid @ModelAttribute GetKeyphraseRequest getKeyphraseRequest){
+        List<Response.Message> keyphrase = keywordService.getKeyphrase(keywordsId, getKeyphraseRequest);
+        return new ResponseEntity<>(new ResponseDto("OK",keyphrase),HttpStatus.OK);
+    }
+
 }

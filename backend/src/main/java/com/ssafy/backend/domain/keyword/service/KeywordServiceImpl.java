@@ -1,15 +1,14 @@
 package com.ssafy.backend.domain.keyword.service;
 
-import com.querydsl.core.types.dsl.BooleanExpression;
 import com.ssafy.backend.domain.favorites.entity.Favorite;
 import com.ssafy.backend.domain.favorites.repository.FavoriteRepository;
+import com.ssafy.backend.domain.keyword.api.request.GetKeyphraseRequest;
 import com.ssafy.backend.domain.keyword.api.request.GetTopNKeywordRequest;
-import com.ssafy.backend.domain.keyword.api.request.SearchKeywordRequest;
 import com.ssafy.backend.domain.keyword.dto.KeywordDto;
 import com.ssafy.backend.domain.keyword.dto.KeywordStatisticDto;
+import com.ssafy.backend.domain.keyword.dto.Response;
 import com.ssafy.backend.domain.keyword.dto.TopKeywordDTO;
 import com.ssafy.backend.domain.keyword.entity.Keyword;
-import com.ssafy.backend.domain.keyword.enums.StatisticType;
 import com.ssafy.backend.domain.keyword.mapper.KeywordMapper;
 import com.ssafy.backend.domain.keyword.repository.KeywordRepository;
 import com.ssafy.backend.domain.keyword.repository.KeywordStatisticRepository;
@@ -22,12 +21,18 @@ import com.ssafy.backend.global.exception.favorite.FavoriteExceptionType;
 import com.ssafy.backend.global.exception.keyword.KeywordException;
 import com.ssafy.backend.global.exception.keyword.KeywordExceptionType;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +49,8 @@ public class KeywordServiceImpl implements KeywordService{
     private final NewsRelationRepository newsRelationRepository;
     // TODO : 삭제
     private final MemberRepository memberRepository;
+
+
 
     @Override
     public KeywordDto getKeywordDetail(Long keywordsId) {
@@ -161,10 +168,51 @@ public class KeywordServiceImpl implements KeywordService{
         return topKeywords;
     }
 
+    @Override
+    public List<Response.Message> getKeyphrase(Long keywordId, GetKeyphraseRequest getKeyphraseRequest) {
+
+        LocalDate startDate = getKeyphraseRequest.getStartDate();
+        LocalDate endDate = getKeyphraseRequest.getEndDate();
+        Long id =  getKeyphraseRequest.getId();
+        String newsType = getKeyphraseRequest.getNewsType();
+        // LocalDate => String 형식으로 변환
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMdd"); 
+        String startDateString = startDate.format(formatter);
+        String endDateString = endDate.format(formatter);
+
+        // SpringBoot -> DjangoServer 데이터 요청
+        RestTemplate restTemplate = new RestTemplate();
+//        String url = "http://j8a508.p.ssafy.io:8082/keywords/{keywordId}/keyphrase?type={type}&id={id}" +
+//                "&start_date={startDateString}&end_date={endDateString}";
+        String url = "http://j8a508.p.ssafy.io:8082/keywords/{keywordId}/keyphrase?";
+
+        String queryUrl = UriComponentsBuilder.fromUriString(url)
+                .queryParam("type", newsType)
+                .queryParam("id", id)
+                .queryParam("start_date", startDateString)
+                .queryParam("end_date",endDateString)
+                .buildAndExpand(keywordId)
+                .toUriString();
+
+        System.out.println("queryUrl = " + queryUrl);
+
+        ResponseEntity<Response> response = restTemplate.exchange(queryUrl, HttpMethod.GET, null, new ParameterizedTypeReference<Response>() {});
+        Response Returns = response.getBody();
+        System.out.println("Returns = " + Returns);
+
+//        ParameterizedTypeReference<List<MyObject>> responseType = new ParameterizedTypeReference<List<MyObject>>() {};
+//        ResponseEntity<List<MyObject>> responseEntity = restTemplate.exchange(url, HttpMethod.GET, null, responseType);
+//        List<MyObject> myObjects = responseEntity.getBody()
+        return Returns.getMessages();
+    }
+
     // 유저가 동일한지 체크
     private static void checkUser(Member member, Favorite favorite) {
         if (favorite.getMember() != member) {
             throw new FavoriteException(FavoriteExceptionType.DIFFERENT_USER);
         }
     }
+
+
 }
+
