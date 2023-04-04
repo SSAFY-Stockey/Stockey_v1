@@ -1,23 +1,26 @@
-from django.shortcuts import render
-
 # Create your views here.
 import time
-from tqdm import tqdm
-import numpy as np
-import pandas as pd
-from konlpy.tag import Okt
-from keybert import KeyBERT
-from transformers import BertModel
-from kiwipiepy import Kiwi
-
-from .models import News
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
 from datetime import datetime
 
-from sklearn.feature_extraction.text import TfidfVectorizer
+import numpy as np
+import pandas as pd
+from keybert import KeyBERT
+from kiwipiepy import Kiwi
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 from sklearn.cluster import DBSCAN
+from sklearn.feature_extraction.text import TfidfVectorizer
+from tqdm import tqdm
+# from konlpy.tag import Okt
 
+from .models import News
+
+kiwi = Kiwi()
+kw_model = KeyBERT("paraphrase-multilingual-MiniLM-L12-v2")
+# kw_model = KeyBERT("skt/kobert-base-v1")
+tfidf_vectorizer = TfidfVectorizer(min_df=5, ngram_range=(1, 5))
+#
+# okt = Okt()
 @api_view()
 def get_cluster_by_keyword(request):
 
@@ -108,18 +111,21 @@ def get_cluster_by_domain(request):
 
 
 def clustering(df):
-    okt = Okt()  # 형태소 분석기 객체 생성
+    # okt = Okt()  # 형태소 분석기 객체 생성
     noun_list = []
     contents = df['title']
     for content in tqdm(contents):
-        nouns = okt.nouns(content)  # 명사만 추출하기, 결과값은 명사 리스트
+        # nouns = okt.nouns(content)  # 명사만 추출하기, 결과값은 명사 리스트
+        nouns = noun_extractor(content)
         noun_list.append(nouns)
     # print("명사 추출 완료")
     df['nouns'] = noun_list
     text = [" ".join(noun) for noun in df['nouns']]
     # 1 tf-idf 임베딩(+Normalize)
 
-    tfidf_vectorizer = TfidfVectorizer(min_df=5, ngram_range=(1, 5))
+
+
+
     tfidf_vectorizer.fit(text)
     vector = tfidf_vectorizer.transform(text).toarray()
     vector = np.array(vector)
@@ -170,20 +176,19 @@ def clustering(df):
         result.append(dict)
     return result
 
+def noun_extractor(text):
+
+    results = []
+    result = kiwi.analyze(text)
+    for token, pos, _, _ in result[0][0]:
+        if len(token) != 1 and pos.startswith('N') or pos.startswith('SL'):
+            results.append(token)
+    return results
+
 def get_phraze(title_list):
     # 명사 추출 함수
-    kiwi = Kiwi()
-
-    def noun_extractor(text):
-        results = []
-        result = kiwi.analyze(text)
-        for token, pos, _, _ in result[0][0]:
-            if len(token) != 1 and pos.startswith('N') or pos.startswith('SL'):
-                results.append(token)
-        return results
-
     # 모델 설정
-    kw_model = KeyBERT("paraphrase-multilingual-MiniLM-L12-v2")
+
 
     # 불용어 설정
     stop_words = ['kbs', '뉴스', '기자', '속보', '뉴스1', 'mbc', 'sbs', '뉴스데스크', '일보', '올해', '오늘', '내일', '어제', '내년', '하루', '이틀',
@@ -210,7 +215,7 @@ def get_phraze(title_list):
     save = []
 
     # 모든 기사마다
-
+    print(title_list)
     content_nouns = ' '.join(title_list)
 
     text = text_cleaner(content_nouns)  # 공백 및 특수문자 제거

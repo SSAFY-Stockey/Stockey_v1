@@ -1,6 +1,5 @@
 # Use an official Python runtime as the base image
-FROM python:3.10.9
-
+FROM python:3.10.10
 ENV PYTHONUNBUFFERED = 1
 
 RUN apt-get -y update

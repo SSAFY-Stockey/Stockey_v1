@@ -16,7 +16,6 @@ JPype1==1.4.1
 keybert==0.7.0
 kiwipiepy==0.15.0
 kiwipiepy-model==0.15.0
-konlpy==0.6.0
 lxml==4.9.2
 markdown-it-py==2.2.0
 MarkupSafe==2.1.2
@@ -48,7 +47,6 @@ tokenizers==0.13.2
 torch==2.0.0
 torchvision==0.15.1
 tqdm==4.65.0
-transformers==4.27.4
 typing_extensions==4.5.0
 tzdata==2023.3
 urllib3==1.26.15
