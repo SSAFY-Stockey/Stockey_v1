@@ -2,7 +2,7 @@ import axios from "axios"
 
 // custom axios
 // parameter => accessToken : accessToken 인증이 필요한 경우, argument 값으로 accessToken, setAccessToken을 넣어서 사용
-// useQuery에서 사용하는 경우 useQuery의 queryKey에 accessToken을 넣어서 fetch 함수에 전달할 것
+// useQuery에서 사용하는 경우 사용하는 페이지에 직접 useQuery, useMutation을 정의하여 사용해야함
 
 const customAxios = (
   accessToken: string | undefined = undefined,

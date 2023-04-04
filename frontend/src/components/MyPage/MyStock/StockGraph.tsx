@@ -63,4 +63,20 @@ const BarWrapper = styled.div`
   // size
   width: calc(100% - 50px);
   min-width: 500px;
+
+  // scroll bar
+  // 아래의 모든 코드는 영역::코드로 사용
+  &::-webkit-scrollbar {
+    height: 25px; // 스크롤바의 너비
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #d9d9d9;
+    border-radius: 30px;
+    border: 10px solid #ffffff;
+  }
+
+  &::-webkit-scrollbar-track {
+    // background-color: rgba(0,0,0,0); // 스크롤바 뒷 배경 색상
+  }
 `
