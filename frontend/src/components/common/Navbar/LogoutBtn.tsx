@@ -12,7 +12,6 @@ import {
 // mui icon
 import LogoutIcon from "@mui/icons-material/Logout"
 import { useNavigate } from "react-router-dom"
-import Spinner from "../Spinner/Spinner"
 import customAxios from "../../../utils/customAxios"
 
 type LogoutBtnProps = {
@@ -50,7 +49,7 @@ const LogoutBtn = ({ isNarrow }: LogoutBtnProps) => {
     <>
       <PageLinkBtnDiv onClick={handleClick}>
         <LogoutIcon />
-        {isNarrow ? undefined : <PageLinkText>로그 아웃</PageLinkText>}
+        {isNarrow ? undefined : <PageLinkText>로그아웃</PageLinkText>}
       </PageLinkBtnDiv>
     </>
   )

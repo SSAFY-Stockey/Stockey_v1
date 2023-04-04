@@ -9,10 +9,11 @@ import { accessTokenSelector } from "../../../stores/atoms"
 // react - query
 import { useMutation } from "react-query"
 
+// 입력 데이터
 type BookmarkProps = {
-  isBookmarked: boolean
-  page: string
-  num: number
+  isBookmarked: boolean // 해당 데이터가 북마크 되었는지
+  page: string // 어느 위치에서 사용되는 버튼인지
+  num: number // 해당 항목의 id(num)
 }
 
 // page : keyword, industry, stock 3개 중 1가지 입력할 것!

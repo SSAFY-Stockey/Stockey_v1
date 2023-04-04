@@ -1,9 +1,15 @@
 import styled from "styled-components"
+import SubTitle from "../SubTitle"
 
 const MyKeyword = () => {
   return (
     <>
-      <MyKeywordWrapper>hello</MyKeywordWrapper>
+      <MyKeywordWrapper>
+        <SubTitle
+          subTitle="단어장"
+          description="관심 있는 단어를 한번에 확인해보세요"
+        />
+      </MyKeywordWrapper>
     </>
   )
 }
@@ -12,7 +18,7 @@ export default MyKeyword
 
 const MyKeywordWrapper = styled.div`
   width: calc(50% - 12px);
-  height: 35vh;
+  height: 37vh;
 
   // background
   background-color: #fafafe;
@@ -29,6 +35,7 @@ const MyKeywordWrapper = styled.div`
   -ms-user-select: none;
   user-select: none;
 
-  // margin
-  margin-top: 24px;
+  // margin & pdding
+  margin-top: 12px;
+  padding: 24px;
 `

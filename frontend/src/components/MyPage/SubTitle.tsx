@@ -26,7 +26,9 @@ const SubTitleDiv = styled.div`
 const DescriptionSpan = styled.span`
   // font
   font-size: 1.2rem;
+  font-weight: normal;
+  color: #6d6666;
 
   // marign
-  margin-left: 12px;
+  margin-left: 8px;
 `

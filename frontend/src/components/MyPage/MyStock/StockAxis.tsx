@@ -30,5 +30,5 @@ const AxisWrapper = styled.div`
   font-weight: bold;
 
   // margin
-  margin-top: 24px;
+  margin-top: 6px;
 `

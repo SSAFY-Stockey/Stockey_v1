@@ -4,10 +4,10 @@ import * as Highcharts from "highcharts"
 import HighchartsReact from "highcharts-react-official"
 import highchartsStock from "highcharts/modules/stock"
 import dayjs from "dayjs"
-import { useStockPriceList } from "../../../hooks/useStockPriceList"
+import { useStockPriceList } from "../../../../hooks/useStockPriceList"
 import { useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
-import Spinner from "../../common/Spinner/Spinner"
+import Spinner from "../../../common/Spinner/Spinner"
 
 highchartsStock(Highcharts)
 Highcharts.setOptions({
