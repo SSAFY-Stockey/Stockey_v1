@@ -20,7 +20,7 @@ const Navbar = ({ isNarrow }: Props) => {
   const isSeleted = (name: string) => {
     if (curPath.startsWith("/stock") && name === "주식 종목") {
       return true
-    } else if (curPath.startsWith("/industry") && name === "산업별 정보") {
+    } else if (curPath.startsWith("/industry") && name === "산업 정보") {
       return true
     } else if (curPath.startsWith("/keyword") && name === "키워드") {
       return true
@@ -54,8 +54,8 @@ const Navbar = ({ isNarrow }: Props) => {
             isNarrow={isNarrow}
           />
           <PageLinkBtn
-            name="산업별 정보"
-            selected={isSeleted("산업별 정보")}
+            name="산업 정보"
+            selected={isSeleted("산업 정보")}
             isNarrow={isNarrow}
           />
           <PageLinkBtn
@@ -64,8 +64,8 @@ const Navbar = ({ isNarrow }: Props) => {
             isNarrow={isNarrow}
           />
           <PageLinkBtn
-            name="마이페이지"
-            selected={isSeleted("마이페이지")}
+            name="북마크"
+            selected={isSeleted("북마크")}
             isNarrow={isNarrow}
           />
           {isLogin ? <LogoutBtn isNarrow={isNarrow} /> : undefined}
