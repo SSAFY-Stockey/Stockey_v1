@@ -67,5 +67,6 @@ const KeyphraseContainer = styled.div<{ selectedIdx: number }>`
     margin-left: -1.5em;
     margin-bottom: -1.5em;
     z-index: 1;
+    transition: left 0.5s ease-in-out;
   }
 `
