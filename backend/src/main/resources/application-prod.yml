@@ -55,5 +55,5 @@ jwt:
     expiration: 14400
 
 django:
-  url: http://django-conatiner
+  url: http://django-container
   port : 8082
