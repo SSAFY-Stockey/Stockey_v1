@@ -38,7 +38,7 @@ const OnKeywordPanelLayout = ({
           <LeftSlider className={`kwd ${className}`}>
             <TitleDiv>
               {industryInfo?.name}
-              <BookmarkBtn isBookmarked={false} page="stock" />
+              <BookmarkBtn isBookmarked={false} page="stock" num={1} />
             </TitleDiv>
           </LeftSlider>
           <LeftSlider className={`kwd ${className}`}>

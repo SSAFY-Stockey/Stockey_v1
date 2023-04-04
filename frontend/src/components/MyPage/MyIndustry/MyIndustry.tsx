@@ -1,5 +1,6 @@
 import styled from "styled-components"
 import SubTitle from "../SubTitle"
+import IndustryList from "./IndustryList"
 
 const MyIndustry = () => {
   return (
@@ -7,8 +8,9 @@ const MyIndustry = () => {
       <MyIndustryWrapper>
         <SubTitle
           subTitle="관심 산업"
-          description="클릭하면 해당 산업으로 이동할 수 있습니다"
+          description="해당 산업으로 이동할 수 있습니다"
         />
+        <IndustryList />
       </MyIndustryWrapper>
     </>
   )
@@ -19,10 +21,10 @@ export default MyIndustry
 const MyIndustryWrapper = styled.div`
   // size
   width: calc(50% - 12px);
-  height: 35vh;
+  height: 37vh;
 
   // margin & padding
-  margin-top: 24px;
+  margin-top: 12px;
   padding: 24px;
 
   // background
