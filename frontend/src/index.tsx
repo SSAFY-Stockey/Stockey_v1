@@ -5,6 +5,7 @@ import App from "./App"
 import reportWebVitals from "./reportWebVitals"
 import { RecoilRoot } from "recoil"
 import { QueryClient, QueryClientProvider } from "react-query"
+import { ReactQueryDevtools } from "react-query/devtools"
 import { BrowserRouter } from "react-router-dom"
 import Spinner from "./components/common/Spinner/Spinner"
 
@@ -19,6 +20,7 @@ root.render(
           <App />
         </Suspense>
       </BrowserRouter>
+      <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
     </QueryClientProvider>
   </RecoilRoot>
 )

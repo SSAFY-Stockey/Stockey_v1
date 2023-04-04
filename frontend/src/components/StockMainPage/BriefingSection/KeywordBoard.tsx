@@ -1,24 +1,38 @@
 import KeywordBarGraph from "./KeywordBarGraph"
 import KeyphraseList from "./KeyphraseList"
-import styled from "styled-components"
+import { HighlightedSpan } from "../../StockDetailPage/MainSection/PriceSection/PriceSection"
+import { useRecoilValue } from "recoil"
+import { selectedStockState } from "../../../stores/StockMainAtoms"
 
-const focusedIndex: number = Math.floor(Math.random() * (2 - 0 + 1)) + 0
-console.log(focusedIndex)
+import styled from "styled-components"
+import { Suspense } from "react"
+import LoadingComponent from "../../common/Loading/LoadingComponent"
+
 const KeywordBoard = () => {
+  // 현재 선택된 주식 데이터 읽어오기
+  const {
+    idx,
+    id,
+    name: selectedStockName,
+  } = useRecoilValue(selectedStockState)
+
   return (
-    <StyledDiv>
-      <StyledTitle>
-        <StyledSpan>키워드</StyledSpan>로 보는 이번 주 네이버 소식💌
-      </StyledTitle>
-      <KeyphraseList focused={focusedIndex} />
-      <KeywordBarGraph />
-    </StyledDiv>
+    <BoardDiv>
+      <BoardTitle>
+        <HighlightedSpan color="#ff6f9d">키워드</HighlightedSpan>로 보는 이번 주{" "}
+        {selectedStockName} 소식💌
+      </BoardTitle>
+      <KeyphraseList />
+      <Suspense fallback={<LoadingComponent />}>
+        <KeywordBarGraph />
+      </Suspense>
+    </BoardDiv>
   )
 }
 
 export default KeywordBoard
 
-const StyledDiv = styled.div`
+const BoardDiv = styled.div`
   background-color: #faf5f7;
   display: flex;
   flex-direction: column;
@@ -27,11 +41,7 @@ const StyledDiv = styled.div`
   border-radius: 24px;
   height: 100%;
 `
-const StyledTitle = styled.p`
+const BoardTitle = styled.p`
   font-size: 2rem;
   font-weight: bold;
-`
-
-const StyledSpan = styled.span`
-  color: #ff6f9d;
 `

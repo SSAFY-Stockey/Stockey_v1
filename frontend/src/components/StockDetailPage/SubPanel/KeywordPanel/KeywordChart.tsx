@@ -2,7 +2,7 @@ import * as Highcharts from "highcharts"
 import HighchartsReact from "highcharts-react-official"
 import dayjs from "dayjs"
 import styled from "styled-components"
-import { HighchartsOptions } from "../../StockMainPage/BriefingSection/KeywordBarGraph"
+// import { HighchartsOptions } from "../../../StockMainPage/BriefingSection/KeywordBarGraph"
 
 Highcharts.setOptions({
   lang: {

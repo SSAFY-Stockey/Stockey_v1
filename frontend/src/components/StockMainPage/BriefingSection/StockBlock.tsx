@@ -1,39 +1,47 @@
-import { useState } from "react"
 import Paper from "@mui/material/Paper"
 import styled from "styled-components"
-
+import { useRecoilState } from "recoil"
+import { selectedStockState } from "../../../stores/StockMainAtoms"
 interface Props {
-  companyLogo?: string
-  companyName: string
+  stockId: number
+  index: number
+  stockName: string
   currentPrice: number
   priceChange: number
 }
 
 const StockBlock = ({
-  companyLogo,
-  companyName,
+  stockId,
+  index,
+  stockName,
   currentPrice,
   priceChange,
 }: Props) => {
-  const [state, setState] = useState<"default" | "selected">("default")
+  const [selectedStock, setSelectedStock] = useRecoilState(selectedStockState)
+
   const clickHandler = () => {
-    state === "default" ? setState("selected") : setState("default")
+    setSelectedStock({ idx: index, id: stockId, name: stockName })
   }
+
   return (
-    <GradientBorderBlock state={state} onClick={clickHandler}>
-      <ContentPaper elevation={0} state={state}>
-        {/* <StyledContent state={state}> */}
-        <LogoImg src={`logo_images/${companyLogo}.png`} />
+    <GradientBorderBlock
+      onClick={clickHandler}
+      selected={index === selectedStock.idx ? true : false}
+    >
+      <ContentPaper
+        elevation={0}
+        selected={index === selectedStock.idx ? true : false}
+      >
+        <LogoImg src={`logo_images/${stockName}.png`} />
         <StockInfoDiv>
-          <StockName>{companyName}</StockName>
+          <StockName>{stockName}</StockName>
           <StockStatDiv>
-            <StockPrice>{currentPrice.toLocaleString("ko-KR")}</StockPrice>
+            <StockPrice>{currentPrice.toLocaleString("ko-KR")}원</StockPrice>
             <PriceChange isIncreasing={priceChange > 0 ? true : false}>
-              {`${priceChange > 0 ? "▲" : "▼"} ${priceChange}%`}
+              {`${priceChange > 0 ? "▲" : "▼"} ${priceChange.toFixed(2)}%`}
             </PriceChange>
           </StockStatDiv>
         </StockInfoDiv>
-        {/* </StyledContent> */}
       </ContentPaper>
     </GradientBorderBlock>
   )
@@ -42,32 +50,29 @@ const StockBlock = ({
 export default StockBlock
 
 export const GradientBorderBlock = styled.div<{
-  state: "default" | "selected"
+  selected: boolean
 }>`
   position: relative;
-  width: ${(props) => (props.state === "default" ? "90%" : "100%")};
-  background-image: ${(props) =>
-    props.state === "default"
-      ? "null"
-      : "linear-gradient(#FAF5F7, #FAF5F7), linear-gradient(130deg, #99C2FF 0%, #FFA7D1 100%)"};
+  width: ${({ selected }) => (selected ? "100%" : "90%")};
+  background-image: ${({ selected }) =>
+    selected
+      ? "linear-gradient(#FAF5F7, #FAF5F7), linear-gradient(130deg, #99C2FF 0%, #FFA7D1 100%)"
+      : "null"};
   background-origin: border-box;
   background-clip: content-box, border-box;
   border-radius: 40px;
-  border: ${(props) =>
-    props.state === "default" ? "5px solid #f8f8f8" : "5px solid transparent"};
+  border: ${({ selected }) =>
+    selected ? "5px solid transparent" : "5px solid #f8f8f8"};
   margin-bottom: 12px;
   ::after {
     content: "";
     padding-bottom: 100%;
     display: block;
   }
-  // &:hover {
-  //   transform: scale(1.1);
-  //   transform-origin: top left;
-  // }
+  transition: width 0.2s ease-in-out;
 `
 
-export const ContentPaper = styled(Paper)<{ state: "default" | "selected" }>`
+export const ContentPaper = styled(Paper)<{ selected: boolean }>`
   && {
     position: absolute;
     top: 0;
@@ -76,11 +81,15 @@ export const ContentPaper = styled(Paper)<{ state: "default" | "selected" }>`
     height: 100%;
     border-radius: 40px;
     padding: 16%;
-    background-color: ${(props) =>
-      props.state === "default" ? "white" : "#FAF5F7"};
+    background-color: ${({ selected }) => (selected ? "#FAF5F7" : "white")};
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    & * {
+      transform: ${({ selected }) => (selected ? "scale(1.05)" : "")};
+      transform-origin: left;
+      transition: transform 0.2s ease-in-out;
+    }
   }
 `
 
@@ -89,6 +98,7 @@ const LogoImg = styled.img`
   height: 30%;
   max-width: 100px;
   border-radius: 24px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.03);
 `
 
 const StockInfoDiv = styled.div`
@@ -98,7 +108,7 @@ const StockInfoDiv = styled.div`
 
 const StockName = styled.p`
   color: black;
-  font-size: 24px;
+  font-size: 1.7rem;
   font-weight: Bold;
   margin-bottom: 5%;
 `
@@ -111,12 +121,12 @@ const StockStatDiv = styled.div`
 
 const StockPrice = styled.p`
   color: #8a8a8a;
-  font-size: 18px;
-  margin-right: 10px;
+  font-size: 1.3rem;
+  margin-right: 5%;
   margin-block: 0px;
 `
 const PriceChange = styled.p<{ isIncreasing: boolean }>`
-  font-size: 14px;
+  font-size: 1.1rem;
   margin-block: 0px;
-  color: ${(props) => (props.isIncreasing ? "#FB6F6F" : "#72A6FA")};
+  color: ${({ isIncreasing }) => (isIncreasing ? "#FB6F6F" : "#72A6FA")};
 `

@@ -1,11 +1,11 @@
 import styled from "styled-components"
+import { triggerScroll } from "../../../common/Functions/triggerScroll"
 
 interface Props {
   keyphrase: string
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>
   index: number
   className: "selected" | "not-selected"
-  triggerScroll: () => void
 }
 
 const NewsSummaryBtn = ({
@@ -13,7 +13,6 @@ const NewsSummaryBtn = ({
   setSelectedIndex,
   index,
   className,
-  triggerScroll,
 }: Props) => {
   const clickHandler = () => {
     setSelectedIndex(index)
@@ -25,7 +24,7 @@ const NewsSummaryBtn = ({
     // 해결 방안
     // 백에서 NewsList를 받아와서 렌더링이 완료된 후에 triggerScroll()을 실행하도록 수정
 
-    triggerScroll()
+    triggerScroll("newsRef")
   }
   return (
     <BtnDiv className={className} onClick={clickHandler}>

@@ -1,14 +1,15 @@
 import KeywordBoard from "./KeywordBoard"
-import MyStockList from "./MyStockList"
+import RandomStockList from "./RandomStockList"
 import Grid from "@mui/material/Grid"
+
 const BriefingSection = () => {
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={8} md={8} lg={9}>
+    <Grid container>
+      <Grid item xs={8}>
         <KeywordBoard />
       </Grid>
-      <Grid item xs={3} md={3} lg={3}>
-        <MyStockList />
+      <Grid item xs={3} pl={4} pr={5}>
+        <RandomStockList />
       </Grid>
     </Grid>
   )
