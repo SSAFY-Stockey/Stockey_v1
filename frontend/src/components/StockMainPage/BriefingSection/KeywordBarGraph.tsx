@@ -18,6 +18,7 @@ const KeywordBarGraph = () => {
     totalNewsCount,
     yAxisMax,
   } = { ...keywordRankData }
+  setSelectedKeyword({ idx: 1, id: chartData?.[1].keywordId })
 
   const options: Highcharts.Options = {
     title: { text: undefined },

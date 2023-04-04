@@ -20,7 +20,10 @@ export const selectedStockState = atom<{
 })
 
 // 선택된 keyword의 index를 저장하는 state
-export const selectedKeywordState = atom<{ idx: number; id: number }>({
+export const selectedKeywordState = atom<{
+  idx: number
+  id: number | undefined
+}>({
   key: "selectedKeywordState",
   default: {
     idx: 1,
@@ -52,36 +55,3 @@ export const keyphraseParamsState = selector<KeyphraseListParamsType>({
     }
   },
 })
-
-//   export const keywordParamsState = atom<KeywordRankParamsType>({
-//   key: "keywordParamsState",
-//   default: {
-//     topN: 6,
-//     typeId: 0,
-//     newsType: "STOCK",
-//     startDate: dayjs().subtract(1, "year").startOf("year").format("YYMMDD"),
-//     endDate: dayjs().format("YYMMDD"),
-//   },
-// })
-
-// export const keyphraseParamsState = atom<object>({
-//   key: "keyphraseParamsState",
-//   default: {
-//     newsType: "STOCK",
-//     typeId: 0,
-//     keywordId: 0,
-//     startDate: dayjs().subtract(1, "year").startOf("year").format("YYMMDD"),
-//     endDate: dayjs().format("YYMMDD"),
-//   },
-// })
-
-//
-// export const keywordParamsState = selector({
-//   key: "keywordParamsState",
-//   get: ({ get }) => {
-//     return {typeId: get(selectedStockState).id, ...get(commonParamsState)}
-//   },
-//   set: ({ set }, newValue) => {
-//     set( , newValue)
-//   },
-// })

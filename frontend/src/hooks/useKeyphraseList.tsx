@@ -4,7 +4,7 @@ import customAxios from "../utils/customAxios"
 const axios = customAxios()
 
 export interface KeyphraseListParamsType {
-  keywordId: number
+  keywordId: number | undefined
   newsType: "STOCK" | "INDUSTRY" | "ECONOMY"
   typeId: number
   // yymmdd
@@ -13,10 +13,10 @@ export interface KeyphraseListParamsType {
 }
 
 const fetchKeyphraseList = ({ queryKey }: any) => {
-  const [keywordId, newsType, typeId, startDate, endDate] = queryKey.slice(1)
+  const [, keywordId, type, id, start_date, end_date] = queryKey
   console.log("fetchKeyPhraseList")
-  return axios.get(`/keywords/keywordId`, {
-    params: { keywordId, newsType, typeId, startDate, endDate },
+  return axios.get(`/keywords/${keywordId}/key_phrase`, {
+    params: { keywordId, type, id, start_date, end_date },
   })
 }
 
@@ -36,7 +36,7 @@ export const useKeyphraseList = ({
       select,
       onError,
       refetchOnWindowFocus: false,
-      enabled: Boolean(keywordId),
+      enabled: !!keywordId,
     }
   )
 }

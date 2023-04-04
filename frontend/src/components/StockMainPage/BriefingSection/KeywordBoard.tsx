@@ -22,7 +22,7 @@ const KeywordBoard = () => {
         <HighlightedSpan color="#ff6f9d">키워드</HighlightedSpan>로 보는 이번 주{" "}
         {selectedStockName} 소식💌
       </BoardTitle>
-      {/* <KeyphraseList /> */}
+      <KeyphraseList />
       <Suspense fallback={<LoadingComponent />}>
         <KeywordBarGraph />
       </Suspense>
