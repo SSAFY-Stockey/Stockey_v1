@@ -56,4 +56,4 @@ jwt:
 
 django:
   url: http://django-conatiner
-  port : ${DJANGO_PORT}
+  port : 8082
