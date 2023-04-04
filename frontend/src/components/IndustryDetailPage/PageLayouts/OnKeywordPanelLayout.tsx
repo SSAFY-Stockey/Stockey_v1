@@ -12,7 +12,7 @@ import BookmarkBtn from "../../common/Bookmark/BookmarkBtn"
 import IndustryOverall from "../IndustryOverall/IndustryOverall"
 import IndustryMarketCapLineChart from "../IndustryMarketCapLineChart/IndustryMarketCapLineChart"
 import IndustryBubbleChart from "../IndustryBubbleChart/IndustryBubbleChart"
-import KeywordPanel from "../../StockDetailPage/KeywordPanel/KeywordPanel"
+import KeywordPanel from "../../StockDetailPage/SubPanel/KeywordPanel/KeywordPanel"
 import { LayoutProps } from "./DefaultLayout"
 
 const OnKeywordPanelLayout = ({
