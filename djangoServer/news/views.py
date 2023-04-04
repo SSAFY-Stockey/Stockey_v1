@@ -27,9 +27,9 @@ def get_cluster_by_keyword(request,keywordId):
     id = request.GET["id"]
     type = request.GET['type']
     start_date =request.GET['start_date']
-    start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
+    start_date = datetime.strptime(start_date, '%y%m%d').date()
     end_date = request.GET['end_date']
-    end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
+    end_date = datetime.strptime(end_date, '%y%m%d').date()
     start = time.time()
     print(type,id,start_date,end_date,keywordId)
 
