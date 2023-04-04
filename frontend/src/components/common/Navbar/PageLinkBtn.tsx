@@ -5,6 +5,7 @@ import HomeRoundedIcon from "@mui/icons-material/HomeRounded"
 import QueryStatsRoundedIcon from "@mui/icons-material/QueryStatsRounded"
 import AppsRoundedIcon from "@mui/icons-material/AppsRounded"
 import ArticleRoundedIcon from "@mui/icons-material/ArticleRounded"
+import BookmarkIcon from "@mui/icons-material/Bookmark"
 import { useNavigate } from "react-router-dom"
 
 type PageLinkBtnProps = {
@@ -20,7 +21,7 @@ const PageLinkBtn = ({ name, selected, isNarrow }: PageLinkBtnProps) => {
     navigate(
       name === "주식 종목"
         ? "/stock"
-        : name === "산업별 정보"
+        : name === "산업 정보"
         ? "/industry"
         : name === "키워드"
         ? "/keyword"
@@ -36,12 +37,12 @@ const PageLinkBtn = ({ name, selected, isNarrow }: PageLinkBtnProps) => {
       >
         {name === "주식 종목" ? (
           <QueryStatsRoundedIcon />
-        ) : name === "산업별 정보" ? (
+        ) : name === "산업 정보" ? (
           <AppsRoundedIcon />
         ) : name === "키워드" ? (
           <ArticleRoundedIcon />
         ) : (
-          <HomeRoundedIcon />
+          <BookmarkIcon />
         )}
         {isNarrow ? undefined : <PageLinkText>{name}</PageLinkText>}
       </PageLinkBtnDiv>
