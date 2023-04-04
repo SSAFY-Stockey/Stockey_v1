@@ -13,7 +13,7 @@ const MarketCapCard = ({ rank, stockName, marketCap }: CardProps) => {
 
   const makePriceFormat = (num: number) => {
     let roundedNum = Math.round(num / 100000000)
-    let result = "원"
+    let result = ""
     let unitWord = "억"
     while (roundedNum > 0) {
       let chunk = roundedNum % 10000
@@ -49,7 +49,7 @@ const MarketCapCard = ({ rank, stockName, marketCap }: CardProps) => {
 export default MarketCapCard
 
 const CardWrapper = styled.div`
-  height: 48px;
+  height: calc(3rem + 1vw);
 
   background: rgba(255, 255, 255, 0.5);
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
@@ -64,7 +64,7 @@ const CardWrapper = styled.div`
 `
 
 const CardDiv = styled.div`
-  height: 48px;
+  height: calc(3rem + 1vw);
   display: flex;
   align-items: center;
   padding: 12px 24px;
@@ -82,17 +82,17 @@ const CardDiv = styled.div`
 const RankDiv = styled.div`
   width: 2.4rem;
   height: auto;
-  font-size: 1.8rem;
+  font-size: calc(1rem + 0.5vw);
   text-align: center;
 `
 
 const StockNameDiv = styled.div`
   flex-grow: 1;
-  font-size: 1.4rem;
+  font-size: calc(0.6rem + 0.5vw);
 `
 
 const MarketCapDiv = styled.div`
   flex-grow: 1;
-  font-size: 1.4rem;
+  font-size: calc(0.6rem + 0.5vw);
   text-align: right;
 `
