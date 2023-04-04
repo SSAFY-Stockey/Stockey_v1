@@ -1,11 +1,21 @@
 import Highcharts from "highcharts"
 import HighchartsReact from "highcharts-react-official"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
+import { useBubbleChartSeries } from "../../../hooks/useBubbleChartSeries"
+import { useMarketCapRank } from "../../../hooks/useMarketCapRank"
+import Spinner from "../../common/Spinner/Spinner"
 
 require("highcharts/highcharts-more")(Highcharts)
 
-const IndustryBubbleChart = () => {
+const IndustryBubbleChart = ({ industryId }: { industryId: number }) => {
+  const { isLoading, data: marketCapRankList } = useMarketCapRank(
+    industryId?.toString()
+  )
+
+  const series = useBubbleChartSeries(marketCapRankList)
+
   const navigate = useNavigate()
 
   const options: Highcharts.Options = {
@@ -63,64 +73,17 @@ const IndustryBubbleChart = () => {
     credits: {
       enabled: false,
     },
-    series: [
-      {
-        name: "삼성전자",
-        data: [
-          {
-            name: "삼성전자",
-            value: 45,
-          },
-        ],
-        type: "packedbubble",
-      },
-      {
-        name: "SK하이닉스",
-        data: [
-          {
-            name: "SK하이닉스",
-            value: 25,
-          },
-        ],
-        type: "packedbubble",
-      },
-      {
-        name: "naver",
-        data: [
-          {
-            name: "naver",
-            value: 14,
-          },
-        ],
-        type: "packedbubble",
-      },
-      {
-        name: "롯데케미칼",
-        data: [
-          {
-            name: "롯데케미칼",
-            value: 15,
-          },
-        ],
-        type: "packedbubble",
-      },
-      {
-        name: "KB금융",
-        data: [
-          {
-            name: "KB금융",
-            value: 7,
-          },
-        ],
-        type: "packedbubble",
-      },
-    ],
+    series: series,
   }
   return (
     <AreaDiv>
       <TitleDiv>산업 내 시가총액 TOP 5</TitleDiv>
       <ChartWrapper>
-        <HighchartsReact highcharts={Highcharts} options={options} />
+        {isLoading ? (
+          <Spinner />
+        ) : (
+          <HighchartsReact highcharts={Highcharts} options={options} />
+        )}
       </ChartWrapper>
     </AreaDiv>
   )

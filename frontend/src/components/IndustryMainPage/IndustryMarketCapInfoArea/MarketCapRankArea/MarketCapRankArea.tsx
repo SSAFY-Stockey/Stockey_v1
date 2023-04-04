@@ -37,7 +37,7 @@ const MarketCapRankArea = ({
 export default MarketCapRankArea
 
 const AreaDiv = styled.div`
-  flex-grow: 1;
+  width: 100%;
   height: auto;
   display: flex;
   flex-direction: column;

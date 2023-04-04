@@ -4,6 +4,7 @@ import MarketCapRankArea from "./MarketCapRankArea/MarketCapRankArea"
 import { useState } from "react"
 import { useIndustryMarketCapList } from "../../../hooks/useIndustryMarketCapList"
 import Spinner from "../../common/Spinner/Spinner"
+import Grid from "@mui/material/Grid/Grid"
 
 export type ClickedIndustryInfoType = {
   id: string | undefined
@@ -30,17 +31,21 @@ const IndustryMarketCapInfoArea = () => {
   return (
     <AreaDiv>
       <TitleDiv>산업별 규모를 확인해보세요📈</TitleDiv>
-      <ContentDiv>
-        {chartData ? (
-          <IndustryMarketCapChartArea
-            chartData={chartData}
-            handleClickedIndustryInfo={handleClickedIndustryInfo}
-          />
-        ) : (
-          <Spinner />
-        )}
-        <MarketCapRankArea clickedIndustryInfo={clickedIndustryInfo} />
-      </ContentDiv>
+      <Grid container spacing={2}>
+        <Grid item sm={12} md={7}>
+          {chartData ? (
+            <IndustryMarketCapChartArea
+              chartData={chartData}
+              handleClickedIndustryInfo={handleClickedIndustryInfo}
+            />
+          ) : (
+            <Spinner />
+          )}
+        </Grid>
+        <Grid item sm={12} md={5}>
+          <MarketCapRankArea clickedIndustryInfo={clickedIndustryInfo} />
+        </Grid>
+      </Grid>
     </AreaDiv>
   )
 }
@@ -49,7 +54,7 @@ export default IndustryMarketCapInfoArea
 
 const AreaDiv = styled.div`
   width: 100%;
-  height: 432px;
+  height: auto;
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -82,5 +87,12 @@ const ContentDiv = styled.div`
   width: auto;
   padding: 0px;
   display: flex;
-  gap: 30px;
+  justify-content: space-between;
 `
+
+const ContentGrid = styled(Grid)({
+  height: "auto",
+  width: "auto",
+  padding: 0,
+  gap: "2rem",
+})
