@@ -32,7 +32,7 @@ const IndustryMarketCapInfoArea = () => {
     <AreaDiv>
       <TitleDiv>산업별 규모를 확인해보세요📈</TitleDiv>
       <ContentGrid container spacing={2}>
-        <ItemGrid item sm={12} md={7}>
+        <ItemGrid item sm={12} md={6}>
           {chartData ? (
             <IndustryMarketCapChartArea
               chartData={chartData}
@@ -42,7 +42,7 @@ const IndustryMarketCapInfoArea = () => {
             <Spinner />
           )}
         </ItemGrid>
-        <ItemGrid item sm={12} md={5}>
+        <ItemGrid item sm={12} md={6}>
           <MarketCapRankArea clickedIndustryInfo={clickedIndustryInfo} />
         </ItemGrid>
       </ContentGrid>

@@ -16,8 +16,7 @@ const FavoriteIndustryCard = ({
   industryName,
   industryId,
 }: CardProps) => {
-  const { isLoading, data: industryMarketCap } =
-    useIndustryMarketCap(industryId)
+  const { data: industryMarketCap } = useIndustryMarketCap(industryId)
 
   const [rate, setRate] = useState<number>(0)
   useEffect(() => {
@@ -36,9 +35,25 @@ const FavoriteIndustryCard = ({
     navigate(`/industry/${industryName}`)
   }
 
+  const [isHovering, setIsHovering] = useState<boolean>(false)
+  const handleMouseOver = () => {
+    setIsHovering(true)
+  }
+  const handleMouseOut = () => {
+    setIsHovering(false)
+  }
+
+  const [chartWidth, setChartWidth] = useState<number>(0)
+  const chartContainer = document.getElementById("chart")
+  useEffect(() => {
+    if (chartContainer) {
+      setChartWidth(chartContainer.clientWidth - 48)
+    }
+  }, [chartContainer])
+
   return (
     <LocationDiv onClick={handleClickCard}>
-      <CardDiv>
+      <CardDiv onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
         <DefaultContentDiv>
           <IndustryLogoImg src={imgUrl} alt="logo" />
           <IndustryNameDiv>{industryName}</IndustryNameDiv>
@@ -46,11 +61,12 @@ const FavoriteIndustryCard = ({
             {rate > 0 ? "▲" + rate : rate < 0 ? "▼" + rate : rate}%
           </FluctuationDiv>
         </DefaultContentDiv>
-        <FluctuationChart id="chart">
+        <FluctuationChart id="chart" className={isHovering ? "active" : ""}>
           {industryMarketCap ? (
             <SimplifiedMarketCapLineChart
               industryName={industryName}
               data={industryMarketCap}
+              chartWidth={chartWidth}
             />
           ) : (
             <Spinner />
@@ -89,9 +105,6 @@ const CardDiv = styled.div`
     z-index: 1;
     height: 192px;
     background: rgba(255, 255, 255, 1);
-    #chart {
-      display: block;
-    }
   }
 `
 
@@ -134,7 +147,15 @@ const FluctuationDiv = styled.div<{ value: number }>`
 `
 
 const FluctuationChart = styled.div`
+  height: 0px;
   padding: 24px;
-  height: 144px;
-  display: none;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.5s;
+
+  &.active {
+    height: 144px;
+    visibility: visible;
+    opacity: 1;
+  }
 `

@@ -10,16 +10,20 @@ highchartsStock(Highcharts)
 interface ChartProps {
   industryName: string
   data: LineChartDataType
+  chartWidth: number
 }
 
-Highcharts.setOptions({
-  chart: {
-    backgroundColor: "transparent",
-    height: 96,
-  },
-})
-const SimplifiedMarketCapLineChart = ({ industryName, data }: ChartProps) => {
+const SimplifiedMarketCapLineChart = ({
+  industryName,
+  data,
+  chartWidth,
+}: ChartProps) => {
   const options: Highcharts.Options = {
+    chart: {
+      backgroundColor: "transparent",
+      height: 96,
+      width: chartWidth,
+    },
     credits: {
       enabled: false,
     },
@@ -96,4 +100,5 @@ export default SimplifiedMarketCapLineChart
 
 const ChartWrapper = styled.div`
   height: 100%;
+  width: 100%;
 `

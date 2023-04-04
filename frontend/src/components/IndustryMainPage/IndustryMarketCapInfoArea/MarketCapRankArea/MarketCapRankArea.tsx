@@ -12,8 +12,6 @@ const MarketCapRankArea = ({
   const { isLoading, data: marketCapRankList } = useMarketCapRank(
     clickedIndustryInfo.id
   )
-  console.log(marketCapRankList)
-  console.log(clickedIndustryInfo)
   return (
     <AreaDiv>
       <TitleDiv>

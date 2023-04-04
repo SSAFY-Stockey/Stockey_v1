@@ -43,13 +43,13 @@ const IndustryMarketCapChartArea = ({
     }
   }
 
-  const [chartSize, setChartSize] = useState<string>("75%")
+  const [chartWidth, setChartWidth] = useState<number>(0)
+  const [chartHeight, setChartHeight] = useState<number>(0)
 
   const container = document.getElementById("donut-chart")
   useEffect(() => {
     if (container) {
-      const ratio = (container.clientHeight / container.clientWidth) * 100
-      setChartSize(ratio.toString())
+      setChartHeight(Math.min(container.clientHeight, container.clientWidth))
     }
   }, [container])
 
@@ -57,8 +57,7 @@ const IndustryMarketCapChartArea = ({
     chart: {
       type: "pie",
       backgroundColor: "transparent",
-      // width: "100%",
-      height: chartSize,
+      height: chartHeight,
     },
     title: {
       text: "",
@@ -79,7 +78,7 @@ const IndustryMarketCapChartArea = ({
     plotOptions: {
       pie: {
         size: "100%",
-        center: ["50%", "55%"],
+        // center: ["50%", "55%"],
         innerSize: "40%",
         dataLabels: {
           enabled: true,
@@ -110,9 +109,10 @@ const IndustryMarketCapChartArea = ({
       },
     ],
     legend: {
+      enabled: true,
       backgroundColor: "white",
       borderRadius: 24,
-      maxHeight: 72,
+      maxHeight: chartHeight * 0.2,
       align: "left",
       verticalAlign: "bottom",
       alignColumns: false,
