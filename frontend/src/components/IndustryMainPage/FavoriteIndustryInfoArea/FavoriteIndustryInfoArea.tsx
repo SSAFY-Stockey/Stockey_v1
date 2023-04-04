@@ -15,7 +15,7 @@ export default FavoriteIndustryInfoArea
 
 const AreaDiv = styled.div`
   width: 100%;
-  height: 60vh;
+  height: calc((100vh - 192px) / 2);
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -27,15 +27,15 @@ const AreaDiv = styled.div`
 `
 
 const TitleDiv = styled.div`
-  height: 24px;
+  height: 2rem;
   width: auto;
   padding: 0px 24px;
 
   font-family: "Inter";
   font-style: normal;
   font-weight: 700;
-  font-size: 24px;
-  line-height: 20px;
+  font-size: 2rem;
+  line-height: 2rem;
   /* or 83% */
 
   display: flex;

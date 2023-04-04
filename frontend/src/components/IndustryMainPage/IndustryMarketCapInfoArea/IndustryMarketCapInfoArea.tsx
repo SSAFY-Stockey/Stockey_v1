@@ -31,8 +31,8 @@ const IndustryMarketCapInfoArea = () => {
   return (
     <AreaDiv>
       <TitleDiv>산업별 규모를 확인해보세요📈</TitleDiv>
-      <Grid container spacing={2}>
-        <Grid item sm={12} md={7}>
+      <ContentGrid container spacing={2}>
+        <ItemGrid item sm={12} md={7}>
           {chartData ? (
             <IndustryMarketCapChartArea
               chartData={chartData}
@@ -41,11 +41,11 @@ const IndustryMarketCapInfoArea = () => {
           ) : (
             <Spinner />
           )}
-        </Grid>
-        <Grid item sm={12} md={5}>
+        </ItemGrid>
+        <ItemGrid item sm={12} md={5}>
           <MarketCapRankArea clickedIndustryInfo={clickedIndustryInfo} />
-        </Grid>
-      </Grid>
+        </ItemGrid>
+      </ContentGrid>
     </AreaDiv>
   )
 }
@@ -54,10 +54,10 @@ export default IndustryMarketCapInfoArea
 
 const AreaDiv = styled.div`
   width: 100%;
-  height: auto;
+  height: calc((100vh - 192px) / 2);
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 2rem;
   padding: 24px;
   background: #f8f8f8;
   border-radius: 24px;
@@ -66,7 +66,7 @@ const AreaDiv = styled.div`
 `
 
 const TitleDiv = styled.div`
-  height: 24px;
+  height: 2rem;
   width: auto;
   padding: 0px;
 
@@ -82,17 +82,11 @@ const TitleDiv = styled.div`
   letter-spacing: 0.1px;
 `
 
-const ContentDiv = styled.div`
-  height: auto;
-  width: auto;
-  padding: 0px;
-  display: flex;
-  justify-content: space-between;
-`
-
 const ContentGrid = styled(Grid)({
-  height: "auto",
-  width: "auto",
-  padding: 0,
-  gap: "2rem",
+  height: "calc(100% - 4rem)",
+  // flexGrow: 1,
+})
+
+const ItemGrid = styled(Grid)({
+  height: "100%",
 })

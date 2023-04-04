@@ -38,11 +38,10 @@ export default MarketCapRankArea
 
 const AreaDiv = styled.div`
   width: 100%;
-  height: auto;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  padding-top: 1rem;
-  gap: 2rem;
+  gap: 1rem;
 `
 
 const TitleDiv = styled.div`
