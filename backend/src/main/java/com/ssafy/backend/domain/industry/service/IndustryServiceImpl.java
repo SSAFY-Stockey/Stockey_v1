@@ -156,7 +156,7 @@ public class IndustryServiceImpl implements IndustryService {
 
     public List<GetIndustryMarketCapResponse> getMarketCapList(Long id) {
         Industry industry = getIndustry(id);
-        List<IndustrySumDto> marketList = stockRepository.getMarketList(industry);
+        List<IndustrySumDto> marketList = stockRepository.getMarketList(industry.getId());
         List<IndustryEpochSumDto> result = new ArrayList<>();
 
         // LocalDate -> epochTime
