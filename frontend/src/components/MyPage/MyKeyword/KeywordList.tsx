@@ -1,6 +1,5 @@
 import styled from "styled-components"
 import KeywordItem from "./KeywordItem"
-import KeywordSampleData from "./KeywordSampleData"
 import { useRecoilValue, useRecoilState } from "recoil"
 import { myKeywordState } from "../../../stores/MyPageAtoms"
 
@@ -9,6 +8,13 @@ import { useQuery } from "react-query"
 import { useNavigate } from "react-router-dom"
 import { accessTokenSelector } from "../../../stores/atoms"
 import customAxios from "../../../utils/customAxios"
+import Spinner from "../../common/Spinner/Spinner"
+
+export interface MyKeywordType {
+  id: number
+  name: string
+  description: string | null
+}
 
 const KeywordList = () => {
   // selected myKeyword state
@@ -24,6 +30,11 @@ const KeywordList = () => {
   const fetchMyKeywordList = () => {
     return axios.get("/keywords/keywordlist/my")
   }
+  const select = (response: any) => {
+    const data: MyKeywordType[] = response.data.data
+
+    return data
+  }
   const { isLoading, data: MyKeywordList } = useQuery(
     "getMyKeywordList",
     fetchMyKeywordList,
@@ -31,13 +42,17 @@ const KeywordList = () => {
       refetchOnMount: false,
       retry: false,
       enabled: !!accessToken,
+      select,
     }
   )
-  console.log(MyKeywordList)
+
+  if (isLoading) {
+    return <Spinner />
+  }
   return (
     <>
       <ListWrapper>
-        {KeywordSampleData.map((keyword, key) => {
+        {MyKeywordList?.map((keyword, key) => {
           const isSelected = keyword.name === myKeyword ? true : false
           return (
             <KeywordItem key={key} keyword={keyword} isSelected={isSelected} />
