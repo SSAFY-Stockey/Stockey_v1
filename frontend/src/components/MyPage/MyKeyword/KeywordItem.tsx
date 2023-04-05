@@ -1,40 +1,34 @@
 import { useSetRecoilState } from "recoil"
 import styled from "styled-components"
 import { myKeywordState } from "../../../stores/MyPageAtoms"
-import { useState } from "react"
 
-interface Props {
+interface KeywordProps {
   id: number
   name: string
   description: string | null
 }
 
-const KeywordItem = ({ props }: { props: Props }) => {
+const KeywordItem = ({
+  keyword,
+  isSelected,
+}: {
+  keyword: KeywordProps
+  isSelected: boolean
+}) => {
   // MyKeyword state
   const setMyKeyword = useSetRecoilState(myKeywordState)
-  // hover state
-  const [isHovered, setIsHovered] = useState(false)
-
-  // handle mouse hover
-  const handleMouseOver = () => {
-    setIsHovered(true)
-  }
-  const handleMouseOut = () => {
-    setIsHovered(false)
-  }
-
+  // handle click
   const handleClick = () => {
-    setMyKeyword(props.name)
+    setMyKeyword(keyword.name)
   }
 
   return (
     <>
       <ItemDiv
         onClick={handleClick}
-        onMouseOut={handleMouseOut}
-        onMouseOver={handleMouseOver}
+        className={isSelected ? "isSelected" : undefined}
       >
-        <div>{props.name}</div>
+        <div>{keyword.name}</div>
       </ItemDiv>
     </>
   )
@@ -80,6 +74,12 @@ const ItemDiv = styled.div`
 
   // hover
   &:hover {
+    background: var(--custom-gradient-pink);
+    transform: scale(1.02);
+    box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.25);
+  }
+
+  &.isSelected {
     background: var(--custom-gradient-pink);
     transform: scale(1.02);
     box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.25);
