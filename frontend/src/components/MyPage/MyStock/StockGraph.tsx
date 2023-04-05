@@ -8,9 +8,14 @@ import customAxios from "../../../utils/customAxios"
 // sub component
 import StockAxis from "./StockAxis"
 import StockGraphBar from "./StockGraphBar"
+import Spinner from "../../common/Spinner/Spinner"
 
-// sample data
-import sampleData from "./SampleData"
+export interface MyStockType {
+  id: number
+  name: string
+  price: number
+  rate: number
+}
 
 const StockGraph = () => {
   // accessTokenState
@@ -24,21 +29,30 @@ const StockGraph = () => {
   const fetchMyStockList = () => {
     return axios.get("/stock/my")
   }
+  const select = (response: any) => {
+    const data: MyStockType[] = response.data.data
+    return data
+  }
 
-  const { isLoading, data } = useQuery("getMyStockList", fetchMyStockList, {
-    refetchOnWindowFocus: false,
-    retry: false,
-    enabled: !!accessToken,
-  })
-
-  console.log(data)
-
+  const { isLoading, data: MyStockList } = useQuery(
+    "getMyStockList",
+    fetchMyStockList,
+    {
+      refetchOnWindowFocus: false,
+      retry: false,
+      enabled: !!accessToken,
+      select,
+    }
+  )
+  if (isLoading) {
+    return <Spinner />
+  }
   return (
     <>
       <GraphWrapper>
         <StockAxis />
         <BarWrapper>
-          {sampleData.map((stock, key) => {
+          {MyStockList?.map((stock, key) => {
             return (
               <StockGraphBar
                 key={key}
