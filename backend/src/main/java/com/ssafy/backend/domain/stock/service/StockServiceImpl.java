@@ -46,8 +46,8 @@ public class StockServiceImpl implements StockService{
 
     private final DailyStockRepository dailyStockRepository;
 
-    public StockDto getStock(Long stockId) throws Exception {
-        Stock stock = stockRepository.findById(stockId).orElseThrow(()->new Exception());
+    public StockDto getStock(Long stockId)  {
+        Stock stock = stockRepository.findById(stockId).orElseThrow(()->new StockException(StockExceptionType.NOT_FOUND));
         StockDto stockDto = stockMapper.toStockDto(stock);
         IndustryDto industryDto = industryMapper.toDto(stock.getIndustry());
         List<BusinessDto> businessDtos = businessMapper.toDto(stock.getBusinesses());
@@ -55,7 +55,7 @@ public class StockServiceImpl implements StockService{
         stockDto.setBusinesses(businessDtos);
         Integer marketCapRank = getStockIndustryMarketCapRank(stockId, industryDto.getId());
         stockDto.setIndustryCapRank(marketCapRank);
-        Integer favoriteRank = getStockIndustryMarketCapRank(stockId, industryDto.getId());
+        Integer favoriteRank = getStockIndustryFavoriteRank(stockId, industryDto.getId());
         stockDto.setIndustryFavRank(favoriteRank);
         Float avgRate = getAverageIndustryChangeRate(industryDto.getId());
         stockDto.setIndustryAvgChangeRate(avgRate);
@@ -64,7 +64,7 @@ public class StockServiceImpl implements StockService{
         return stockDto;
     }
 
-    public Integer getStockIndustryMarketCapRank(Long stockId, Long industryId)throws Exception{
+    public Integer getStockIndustryMarketCapRank(Long stockId, Long industryId){
         Integer rank = stockRepository.findIndustryMarketCapRank(stockId, industryId);
         return rank;
     }
@@ -74,12 +74,12 @@ public class StockServiceImpl implements StockService{
         return rank;
     }
 
-    public Float getAverageIndustryChangeRate(Long industryId) throws Exception{
+    public Float getAverageIndustryChangeRate(Long industryId) {
         Float avgChangeRate = stockRepository.findAverageIndustryChangeRate(industryId);
         return avgChangeRate;
     }
 
-    public List<StockPreviewDto> getStock() throws Exception {
+    public List<StockPreviewDto> getStock()  {
         List<Stock> stocks = stockRepository.findAll();
         List<StockPreviewDto> stockPreviewDtos = new ArrayList<>();
         for (Stock s :stocks){
@@ -91,7 +91,7 @@ public class StockServiceImpl implements StockService{
         return stockPreviewDtos;
     }
 
-    public List<StockPreviewDto> getStockRandom(Integer count) throws Exception{
+    public List<StockPreviewDto> getStockRandom(Integer count) {
         List<Stock> stocks = stockRepository.findStockRandom(count);
         List<StockPreviewDto> stockPreviewDtos = new ArrayList<>();
         for (Stock s :stocks){
@@ -104,24 +104,27 @@ public class StockServiceImpl implements StockService{
     }
 
 
-    public List<StockKeywordDto> getStockKeyword(Long stockId) throws Exception{
+    public List<StockKeywordDto> getStockKeyword(Long stockId){
         List<StockKeywordDto> stockKeyword = keywordRepository.findStockKeywords(stockId);
         return stockKeyword;
     }
 
-    public List<DailyStockDto> getDailyStock(Long stockId) throws Exception{
+    public List<DailyStockDto> getDailyStock(Long stockId) {
         List<DailyStock> dailyStock = dailyStockRepository.findByStockId(stockId);
         List<DailyStockDto> dailyStockDtos = stockMapper.toDailyStockDto(dailyStock);
         return dailyStockDtos;
     }
 
-    public DailyStockDto getTodayDailyStock(Long stockId)throws Exception{
-        DailyStock dailyStock = dailyStockRepository.findTodayDailyStock(stockId).orElseThrow(()->new Exception());
+    public DailyStockDto getTodayDailyStock(Long stockId){
+        Stock stock = stockRepository.findById(stockId).orElseThrow(() -> new StockException(StockExceptionType.NOT_FOUND));
+        DailyStock dailyStock = dailyStockRepository
+                .findTodayDailyStock(stock.getId())
+                .orElseThrow(()->new DailyStockException(com.ssafy.backend.global.exception.stock.DailyStockExceptionType.NOT_FOUND));
         DailyStockDto dailyStockDto = stockMapper.toDailyStockDto(dailyStock);
         return dailyStockDto;
     }
 
-    public List<StockSearchDto> getSearchStock(String keyword) throws Exception{
+    public List<StockSearchDto> getSearchStock(String keyword) {
         keyword = '%'+keyword+'%';
         List<Stock> stocks = stockRepository.findByName(keyword);
         List<StockSearchDto> stockSearchDtos = stockMapper.toSearchDto(stocks);
