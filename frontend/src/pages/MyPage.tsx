@@ -9,7 +9,6 @@ import MyKeyword from "../components/MyPage/MyKeyword/MyKeyword"
 import KeywordPanel from "../components/StockDetailPage/SubPanel/KeywordPanel/KeywordPanel"
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight"
 import { accessTokenSelector } from "../stores/atoms"
-import { Test } from "../utils/TestUser"
 
 const MyPage = () => {
   // myKeyword state
@@ -30,18 +29,6 @@ const MyPage = () => {
       setMyKeword("")
     }, 800)
   }
-
-  useEffect(() => {
-    if (!accessToken) {
-      window.alert("")
-    }
-  }, [])
-
-  useEffect(() => {
-    if (!accessToken) {
-      window.alert("")
-    }
-  }, [accessToken])
 
   return (
     <Wrapper>
