@@ -62,7 +62,7 @@ const BarWrapper = styled.div`
 
   // size
   width: calc(100% - 50px);
-  min-width: 500px;
+  min-width: 100px;
 
   // scroll bar
   // 아래의 모든 코드는 영역::코드로 사용
