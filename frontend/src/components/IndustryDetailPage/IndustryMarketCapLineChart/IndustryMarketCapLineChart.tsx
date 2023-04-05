@@ -6,6 +6,7 @@ import { makePriceFormat } from "../../IndustryMainPage/makePriceFormat"
 import { useIndustryMarketCap } from "../../../hooks/useIndustryMarketCap"
 import Spinner from "../../common/Spinner/Spinner"
 import { useParams } from "react-router-dom"
+import { useEffect, useState } from "react"
 
 highchartsStock(Highcharts)
 Highcharts.setOptions({

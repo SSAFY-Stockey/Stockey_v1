@@ -1,54 +1,24 @@
 import FavoriteIndustryCard from "./FavoriteIndustryCard/FavoriteIndustryCard"
 import styled from "@emotion/styled"
+import { MyIndustryType } from "./FavoriteIndustryInfoArea"
 
-const FavoriteIndustryCardList = () => {
+interface Props {
+  myIndustryList: MyIndustryType[]
+}
+
+const FavoriteIndustryCardList = ({ myIndustryList }: Props) => {
   return (
     <CardListDiv>
-      <FavoriteIndustryCard
-        imgUrl={`/industryLogos/sampleIndustryLogo.png`}
-        industryName="무선통신서비스"
-        marketCapFluctuationRate={0.27}
-      />
-      <FavoriteIndustryCard
-        imgUrl={`/industryLogos/sampleIndustryLogo.png`}
-        industryName="무선통신서비스"
-        marketCapFluctuationRate={0.27}
-      />
-      <FavoriteIndustryCard
-        imgUrl={`/industryLogos/sampleIndustryLogo.png`}
-        industryName="무선통신서비스"
-        marketCapFluctuationRate={0.27}
-      />
-      <FavoriteIndustryCard
-        imgUrl={`/industryLogos/sampleIndustryLogo.png`}
-        industryName="무선통신서비스"
-        marketCapFluctuationRate={0.27}
-      />
-      <FavoriteIndustryCard
-        imgUrl={`/industryLogos/sampleIndustryLogo.png`}
-        industryName="무선통신서비스"
-        marketCapFluctuationRate={0.27}
-      />
-      <FavoriteIndustryCard
-        imgUrl={`/industryLogos/sampleIndustryLogo.png`}
-        industryName="무선통신서비스"
-        marketCapFluctuationRate={0.27}
-      />
-      <FavoriteIndustryCard
-        imgUrl={`/industryLogos/sampleIndustryLogo.png`}
-        industryName="무선통신서비스"
-        marketCapFluctuationRate={0.27}
-      />
-      <FavoriteIndustryCard
-        imgUrl={`/industryLogos/sampleIndustryLogo.png`}
-        industryName="무선통신서비스"
-        marketCapFluctuationRate={0.27}
-      />
-      <FavoriteIndustryCard
-        imgUrl={`/industryLogos/sampleIndustryLogo.png`}
-        industryName="무선통신서비스"
-        marketCapFluctuationRate={0.27}
-      />
+      {myIndustryList.map((myIndustry) => {
+        return (
+          <FavoriteIndustryCard
+            key={myIndustry.id}
+            imgUrl={`/industryLogos/sampleIndustryLogo.png`}
+            industryName={myIndustry.name}
+            industryId={myIndustry.id}
+          />
+        )
+      })}
     </CardListDiv>
   )
 }
