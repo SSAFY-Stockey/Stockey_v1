@@ -1,6 +1,5 @@
 import Highcharts from "highcharts"
 import HighchartsReact from "highcharts-react-official"
-import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import { useBubbleChartSeries } from "../../../hooks/useBubbleChartSeries"

@@ -50,7 +50,7 @@ const OnIndustrySelectorLayout = ({
             </TitleDiv>
           </LeftSlider>
           <LeftSlider className={`sel ${className}`}>
-            <IndustryOverall />
+            <IndustryOverall industryInfo={industryInfo} />
           </LeftSlider>
           <LeftSlider className={`sel ${className}`}>
             <IndustryMarketCapLineChart industryId={industryInfo.id} />

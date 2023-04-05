@@ -2,6 +2,7 @@ import Highcharts from "highcharts"
 import HighchartsReact from "highcharts-react-official"
 import styled from "styled-components"
 import { DonutChartDataType } from "../../../../hooks/useIndustryMarketCapList"
+import { useEffect, useState } from "react"
 
 interface DonutChartProps {
   chartData: DonutChartDataType
@@ -42,10 +43,26 @@ const IndustryMarketCapChartArea = ({
     }
   }
 
+  const [chartHeight, setChartHeight] = useState<number>(200)
+  const [chartWidth, setChartWidth] = useState<number>(200)
+  const [ratio, setRatio] = useState<string>("100%")
+
+  const container = document.getElementById("donut-chart")
+  useEffect(() => {
+    if (container) {
+      setChartHeight(container.clientHeight)
+      setChartHeight(container.clientWidth)
+      setRatio(
+        (container.clientHeight / container.clientWidth).toString() + "%"
+      )
+    }
+  }, [container])
+
   const options: Highcharts.Options = {
     chart: {
       type: "pie",
       backgroundColor: "transparent",
+      // height: ratio,
     },
     title: {
       text: "",
@@ -65,8 +82,9 @@ const IndustryMarketCapChartArea = ({
     ],
     plotOptions: {
       pie: {
+        minSize: "50%",
         size: "100%",
-        center: ["50%", "55%"],
+        center: ["50%", "50%"],
         innerSize: "40%",
         dataLabels: {
           enabled: true,
@@ -97,6 +115,7 @@ const IndustryMarketCapChartArea = ({
       },
     ],
     legend: {
+      enabled: true,
       backgroundColor: "white",
       borderRadius: 24,
       maxHeight: 72,
@@ -113,12 +132,8 @@ const IndustryMarketCapChartArea = ({
   }
 
   return (
-    <AreaDiv>
-      <HighchartsReact
-        highcharts={Highcharts}
-        options={options}
-        containerProps={{ style: { width: "100%", height: "100%" } }}
-      />
+    <AreaDiv id="donut-chart">
+      <HighchartsReact highcharts={Highcharts} options={options} />
     </AreaDiv>
   )
 }

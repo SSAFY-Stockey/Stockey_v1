@@ -42,10 +42,10 @@ const OnKeywordPanelLayout = ({
             </TitleDiv>
           </LeftSlider>
           <LeftSlider className={`kwd ${className}`}>
-            <IndustryOverall />
+            <IndustryOverall industryInfo={industryInfo} />
           </LeftSlider>
           <LeftSlider className={`kwd ${className}`}>
-            <IndustryMarketCapLineChart industryId={industryInfo.id} />
+            <IndustryMarketCapLineChart industryId={industryInfo?.id} />
           </LeftSlider>
           <LeftSlider className={`kwd ${className}`}>
             <div>연관 키워드 차트</div>

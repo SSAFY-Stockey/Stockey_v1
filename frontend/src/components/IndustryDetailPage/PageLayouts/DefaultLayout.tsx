@@ -51,7 +51,7 @@ const DefaultLayout = ({
             </TitleDiv>
           </LeftSlider>
           <LeftSlider className={`def ${className}`}>
-            <IndustryOverall />
+            <IndustryOverall industryInfo={industryInfo} />
           </LeftSlider>
           <LeftSlider className={`def ${className}`}>
             <IndustryMarketCapLineChart industryId={industryInfo.id} />

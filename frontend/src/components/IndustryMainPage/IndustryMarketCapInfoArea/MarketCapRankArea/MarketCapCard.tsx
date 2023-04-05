@@ -49,7 +49,7 @@ const MarketCapCard = ({ rank, stockName, marketCap }: CardProps) => {
 export default MarketCapCard
 
 const CardWrapper = styled.div`
-  height: calc(3rem + 1vw);
+  height: calc((100% - 4.8rem) / 5);
 
   background: rgba(255, 255, 255, 0.5);
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
@@ -64,7 +64,7 @@ const CardWrapper = styled.div`
 `
 
 const CardDiv = styled.div`
-  height: calc(3rem + 1vw);
+  height: 100%;
   display: flex;
   align-items: center;
   padding: 12px 24px;
@@ -82,17 +82,17 @@ const CardDiv = styled.div`
 const RankDiv = styled.div`
   width: 2.4rem;
   height: auto;
-  font-size: calc(1rem + 0.5vw);
+  font-size: calc(1rem);
   text-align: center;
 `
 
 const StockNameDiv = styled.div`
   flex-grow: 1;
-  font-size: calc(0.6rem + 0.5vw);
+  font-size: calc(0.6rem);
 `
 
 const MarketCapDiv = styled.div`
   flex-grow: 1;
-  font-size: calc(0.6rem + 0.5vw);
+  font-size: calc(0.6rem);
   text-align: right;
 `

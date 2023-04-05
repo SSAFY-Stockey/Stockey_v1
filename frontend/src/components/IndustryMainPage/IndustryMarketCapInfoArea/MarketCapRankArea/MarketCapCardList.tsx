@@ -35,7 +35,7 @@ const MarketCapCardList = ({
 export default MarketCapCardList
 
 const CardListWrapper = styled(TransitionGroup)({
-  flexGrow: 1,
+  height: "100%",
   display: "flex",
   flexDirection: "column",
   gap: "1.2rem",
