@@ -16,12 +16,11 @@ public interface KeywordStatisticRepository extends JpaRepository<KeywordStatist
             "WHERE ks.category = 'FREQ' AND ks.keyword.id = :keywordId")
     List<KeywordStatisticDto> findFreqStatisticsByKeywordId(@Param("keywordId") Long keywordId);
 
-    @Query("SELECT WEEK(ks.statisticDate) AS week," +
-            " AVG(ks.count) AS avgAmount " +
+    @Query("SELECT AVG(ks.count) AS avgAmount " +
             " FROM KeywordStatistic ks " +
             " WHERE ks.keyword = :keyword " +
             " AND ks.statisticDate BETWEEN :startDate and :endDate " +
             " GROUP BY WEEK(ks.statisticDate) ")
-    List<Object[]> findAvgKeywordCount(Keyword keyword,LocalDate startDate, LocalDate endDate);
+    List<Double> findAvgKeywordCount(Keyword keyword, LocalDate startDate, LocalDate endDate);
 
 }
