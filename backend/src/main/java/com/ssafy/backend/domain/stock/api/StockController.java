@@ -38,38 +38,82 @@ public class StockController {
     /*
             3. 산업중에 사이트 내에서 검색된 순위
         * */
+
+    @Operation(summary = "종목 상세 반환", description = "종목 상세를 반환합니다..")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "요청 성공"),
+                    @ApiResponse(responseCode = "404", description = "종목 없음")
+            }
+    )
     @GetMapping("/{stockId}")
-    public ResponseEntity<GetStockResponse> getStock(@PathVariable("stockId") Long stockId) throws Exception {
+    public ResponseEntity<GetStockResponse> getStock(@PathVariable("stockId") Long stockId)  {
         StockDto stockDto = stockService.getStock(stockId);
         return ResponseEntity.ok(stockDtoMapper.toGetStockResponse(stockDto));
     }
 
+
+
+    @Operation(summary = "종목 리스트", description = "종목의 간결한 설명 및 현재 가격을 반환합니다.")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "요청 성공"),
+                    @ApiResponse(responseCode = "404", description = "종목 없음")
+            }
+    )
     @GetMapping
-    public ResponseEntity<List<StockPreviewDto>> getStock() throws Exception {
+    public ResponseEntity<List<StockPreviewDto>> getStock()  {
         List<StockPreviewDto> stockPreviewDtos = stockService.getStock();
         return ResponseEntity.ok(stockPreviewDtos);
     }
 
+    @Operation(summary = "랜덤한 종목 리스트 반환", description = "랜덤한 종목의 간결한 설명 및 현재 가격을 반환합니다.")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "요청 성공"),
+                    @ApiResponse(responseCode = "404", description = "종목 없음")
+            }
+    )
     @GetMapping("/random")
-    public ResponseEntity<List<StockPreviewDto>> getStockRandom(@RequestParam Integer count) throws Exception {
+    public ResponseEntity<List<StockPreviewDto>> getStockRandom(@RequestParam Integer count)  {
         List<StockPreviewDto> stockPreviewDtos = stockService.getStockRandom(count);
         return ResponseEntity.ok(stockPreviewDtos);
     }
 
+    @Operation(summary = "종목 검색 결과 반환", description = "종목이름 검색 결과를 반환합니다.")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "요청 성공"),
+            }
+    )
     @GetMapping("/search")
-    public ResponseEntity<List<StockSearchDto>> getStockSearch(@RequestParam String keyword) throws Exception {
+    public ResponseEntity<List<StockSearchDto>> getStockSearch(@RequestParam String keyword)  {
         List<StockSearchDto> stockSearchDtos = stockService.getSearchStock(keyword);
         return ResponseEntity.ok(stockSearchDtos);
     }
 
+    @Operation(summary = "종목과 연관성 있는 키워드 top6", description = "종목과 연관성 있는 키워드 top6을 반환합니다.")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "요청 성공"),
+                    @ApiResponse(responseCode = "404", description = "종목 없음")
+            }
+    )
     @GetMapping("/{stockId}/keyword")
-    public ResponseEntity<List<StockKeywordDto>> getStockKeyword(@PathVariable("stockId") Long stockId) throws Exception {
+    public ResponseEntity<List<StockKeywordDto>> getStockKeyword(@PathVariable("stockId") Long stockId)  {
         List<StockKeywordDto> keywords = stockService.getStockKeyword(stockId);
         return ResponseEntity.ok(keywords);
     }
 
+    @Operation(summary = "주식 데이터 조회", description = "해당 종목의 주식 데이터 조회(2022.01.01~)")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "요청 성공"),
+                    @ApiResponse(responseCode = "404", description = "종목 없음")
+            }
+    )
     @GetMapping("/{stockId}/dailystock")
-    public ResponseEntity<List<DailyStockDto>> getDailyStock(@PathVariable("stockId") Long stockId) throws Exception {
+    public ResponseEntity<List<DailyStockDto>> getDailyStock(@PathVariable("stockId") Long stockId) {
         List<DailyStockDto> dailyStockDtos = stockService.getDailyStock(stockId);
         return ResponseEntity.ok(dailyStockDtos);
     }

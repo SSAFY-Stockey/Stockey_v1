@@ -2,9 +2,9 @@ package com.ssafy.backend.domain.keyword.service;
 
 import com.ssafy.backend.domain.keyword.api.request.GetKeyphraseRequest;
 import com.ssafy.backend.domain.keyword.api.request.GetTopNKeywordRequest;
+import com.ssafy.backend.domain.keyword.dto.GetKeyPhraseResponse;
 import com.ssafy.backend.domain.keyword.dto.KeywordDto;
 import com.ssafy.backend.domain.keyword.dto.KeywordStatisticDto;
-import com.ssafy.backend.domain.keyword.dto.Response;
 import com.ssafy.backend.domain.keyword.dto.TopKeywordDTO;
 
 import java.util.List;
@@ -28,6 +28,6 @@ public interface KeywordService {
 
     List<TopKeywordDTO> getTopNKeyword(GetTopNKeywordRequest getTopNKeywordRequest);
 
-    List<Response.Message> getKeyphrase(Long keywordId, GetKeyphraseRequest getKeyphraseRequest);
+    List<GetKeyPhraseResponse.Message> getKeyphrase(Long keywordId, GetKeyphraseRequest getKeyphraseRequest);
 
 }
