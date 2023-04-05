@@ -15,12 +15,20 @@ import IndustryMarketCapLineChart from "../IndustryMarketCapLineChart/IndustryMa
 import IndustryBubbleChart from "../IndustryBubbleChart/IndustryBubbleChart"
 import { LayoutProps } from "./DefaultLayout"
 import IndustrySelector from "../../IndustryMainPage/IndustrySelector/IndustrySelector"
+import { useMyIndustryCheck } from "../../../hooks/useMyIndustryCheck"
+import { useEffect, useState } from "react"
+import AnalysisSection from "../../StockDetailPage/MainSection/KeywordSection/AnalysisSection"
 
 const OnIndustrySelectorLayout = ({
   changeLayout,
   className,
   industryInfo,
 }: LayoutProps) => {
+  const { data: bookmarked } = useMyIndustryCheck(industryInfo.id)
+  const [isBookmarked, setIsBookmarked] = useState<boolean>(false)
+  useEffect(() => {
+    setIsBookmarked(bookmarked)
+  }, [bookmarked])
   return (
     <>
       <Grid item xs={12} marginLeft={4.5}>
@@ -35,28 +43,32 @@ const OnIndustrySelectorLayout = ({
         </ButtonDiv>
       </Grid>
       <Grid item xs={5}>
-        <LeftSection>
+        <LeftSection className="sel">
           <SelectorSlider className={`sel ${className}`}>
             <IndustrySelector />
           </SelectorSlider>
         </LeftSection>
       </Grid>
       <Grid item xs={7}>
-        <RightSection id="right">
+        <RightSection id="right" className="sel">
           <LeftSlider className={`sel ${className}`}>
             <TitleDiv>
               {industryInfo?.name}
-              <BookmarkBtn isBookmarked={false} page="stock" num={1} />
+              <BookmarkBtn
+                isBookmarked={isBookmarked}
+                page="industry"
+                num={industryInfo.id}
+              />
             </TitleDiv>
           </LeftSlider>
           <LeftSlider className={`sel ${className}`}>
-            <IndustryOverall />
+            <IndustryOverall industryInfo={industryInfo} />
           </LeftSlider>
           <LeftSlider className={`sel ${className}`}>
             <IndustryMarketCapLineChart industryId={industryInfo.id} />
           </LeftSlider>
           <LeftSlider className={`sel ${className}`}>
-            <div>연관 키워드 차트</div>
+            <AnalysisSection />
           </LeftSlider>
           <RightSlider className={`sel ${className}`}>
             <IndustryBubbleChart industryId={industryInfo?.id} />

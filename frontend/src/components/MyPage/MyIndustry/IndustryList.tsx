@@ -1,19 +1,69 @@
 import styled from "styled-components"
-import SampleIndustryData from "./SampleIndustryData"
+import { useQuery } from "react-query"
+import { useNavigate } from "react-router-dom"
+import { useRecoilState } from "recoil"
+import { accessTokenSelector } from "../../../stores/atoms"
+import customAxios from "../../../utils/customAxios"
 import IndustryCard from "../../IndustryMainPage/IndustrySelector/IndustryCard"
+import Spinner from "../../common/Spinner/Spinner"
+
+// fetch data interface
+export interface MyIndustryType {
+  id: number
+  name: string
+  description: string
+  category: string
+}
 
 const IndustryList = () => {
+  // accessToken state
+  const [accessToken, setAccessToken] = useRecoilState(accessTokenSelector)
+  const navigate = useNavigate()
+
+  // custom Axios
+  const axios = customAxios(accessToken, setAccessToken, navigate)
+
+  // useQuery : MyIndustryList
+  const fetchMyIndustryList = () => {
+    return axios.get("/industry/stocklist/my")
+  }
+
+  const select = (response: any) => {
+    const data: MyIndustryType[] = response.data.data
+    return data
+  }
+
+  const { isLoading, data: MyIndustryList } = useQuery(
+    "getMyIndustryLis",
+    fetchMyIndustryList,
+    {
+      select,
+      retry: false,
+      refetchOnWindowFocus: false,
+      enabled: !!accessToken,
+    }
+  )
+  console.log(MyIndustryList)
+
+  if (isLoading) {
+    return <Spinner />
+  }
+
   return (
     <>
-      <IndustryListWrapper>
-        {SampleIndustryData.map((IndustryInfo, key) => {
-          return (
-            <CardWrapper key={key}>
-              <IndustryCard industryInfo={IndustryInfo} />
-            </CardWrapper>
-          )
-        })}
-      </IndustryListWrapper>
+      {!!MyIndustryList ? (
+        <IndustryListWrapper>
+          {MyIndustryList?.map((IndustryInfo, key) => {
+            return (
+              <CardWrapper key={key}>
+                <IndustryCard industryInfo={IndustryInfo} />
+              </CardWrapper>
+            )
+          })}
+        </IndustryListWrapper>
+      ) : (
+        <TextWrapper>관심있는 산업 분야를 등록해보세요</TextWrapper>
+      )}
     </>
   )
 }
@@ -65,4 +115,20 @@ const IndustryListWrapper = styled.div`
 const CardWrapper = styled.div`
   margin-top: 2vh;
   min-width: calc(75px + 3vh);
+`
+
+const TextWrapper = styled.div`
+  // size:
+  width: 100%;
+  height: 100%;
+
+  // flex-box
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  // font
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--custom-black);
 `

@@ -86,7 +86,7 @@ const GraphBarDiv = styled.div`
   background-color: var(--custom-black);
 
   // border
-  border-radius: 18px;
+  border-radius: 18px 18px 18.2px 18.2px;
 
   // flex-box
   display: flex;
@@ -94,8 +94,16 @@ const GraphBarDiv = styled.div`
   justify-content: end;
   align-items: center;
 
+  // transition
+  transition: all 0.2s ease-in-out;
+
   // cursor
   cursor: pointer;
+
+  // hover
+  &:hover {
+    box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.3);
+  }
 `
 
 // 칠해지는 bar
@@ -113,6 +121,8 @@ const RateBar = styled.div<BarProps>`
   &.decrease {
     background: linear-gradient(161.04deg, #8e6eeb 0%, #37c3ff 100%);
   }
+
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.5);
 
   // animation
   animation: ${(props) => IncreaseAnime(props.rate)} 1s 0s forwards ease-in-out;

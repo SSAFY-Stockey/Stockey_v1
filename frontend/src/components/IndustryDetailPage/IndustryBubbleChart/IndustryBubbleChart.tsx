@@ -1,11 +1,11 @@
 import Highcharts from "highcharts"
 import HighchartsReact from "highcharts-react-official"
-import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import { useBubbleChartSeries } from "../../../hooks/useBubbleChartSeries"
 import { useMarketCapRank } from "../../../hooks/useMarketCapRank"
 import Spinner from "../../common/Spinner/Spinner"
+import { useEffect, useState } from "react"
 
 require("highcharts/highcharts-more")(Highcharts)
 
@@ -18,10 +18,29 @@ const IndustryBubbleChart = ({ industryId }: { industryId: number }) => {
 
   const navigate = useNavigate()
 
+  const [chartHeight, setChartHeight] = useState<number>(300)
+  const [chartWidth, setChartWidth] = useState<number>(400)
+  const handleResize = () => {
+    const chartWrapper = document.getElementById("bubble-chart")
+    if (chartWrapper) {
+      setChartHeight(chartWrapper.clientHeight)
+      setChartWidth(chartWrapper.clientWidth)
+    }
+  }
+
+  useEffect(() => {
+    handleResize()
+    window.addEventListener("resize", handleResize)
+    return () => {
+      window.removeEventListener("resize", handleResize)
+    }
+  }, [])
+
   const options: Highcharts.Options = {
     chart: {
       type: "packedbubble",
-      height: "60%",
+      height: chartHeight,
+      width: chartWidth,
       backgroundColor: "transparent",
       borderRadius: 24,
     },
@@ -78,7 +97,7 @@ const IndustryBubbleChart = ({ industryId }: { industryId: number }) => {
   return (
     <AreaDiv>
       <TitleDiv>산업 내 시가총액 TOP 5</TitleDiv>
-      <ChartWrapper>
+      <ChartWrapper id="bubble-chart">
         {isLoading ? (
           <Spinner />
         ) : (
@@ -93,6 +112,8 @@ export default IndustryBubbleChart
 
 const ChartWrapper = styled.div`
   width: 100%;
+  min-height: 350px;
+  height: 25vh;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 24px;
   background-color: var(--custom-background);

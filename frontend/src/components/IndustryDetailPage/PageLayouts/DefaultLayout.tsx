@@ -12,6 +12,9 @@ import BookmarkBtn from "../../common/Bookmark/BookmarkBtn"
 import IndustryOverall from "../IndustryOverall/IndustryOverall"
 import IndustryMarketCapLineChart from "../IndustryMarketCapLineChart/IndustryMarketCapLineChart"
 import IndustryBubbleChart from "../IndustryBubbleChart/IndustryBubbleChart"
+import AnalysisSection from "../../StockDetailPage/MainSection/KeywordSection/AnalysisSection"
+import { useMyIndustryCheck } from "../../../hooks/useMyIndustryCheck"
+import { useEffect, useState } from "react"
 
 export interface LayoutProps {
   changeLayout: (e: React.MouseEvent<HTMLElement>, toggleMode: string) => void
@@ -29,6 +32,11 @@ const DefaultLayout = ({
   className,
   industryInfo,
 }: LayoutProps) => {
+  const { data: bookmarked } = useMyIndustryCheck(industryInfo.id)
+  const [isBookmarked, setIsBookmarked] = useState<boolean>(false)
+  useEffect(() => {
+    setIsBookmarked(bookmarked)
+  }, [bookmarked])
   return (
     <>
       <Grid item xs={12} marginLeft={4.5}>
@@ -47,17 +55,21 @@ const DefaultLayout = ({
           <LeftSlider className={`def ${className}`}>
             <TitleDiv>
               {industryInfo?.name}
-              <BookmarkBtn isBookmarked={false} page="stock" num={1} />
+              <BookmarkBtn
+                isBookmarked={isBookmarked}
+                page="industry"
+                num={industryInfo.id}
+              />
             </TitleDiv>
           </LeftSlider>
           <LeftSlider className={`def ${className}`}>
-            <IndustryOverall />
+            <IndustryOverall industryInfo={industryInfo} />
           </LeftSlider>
           <LeftSlider className={`def ${className}`}>
             <IndustryMarketCapLineChart industryId={industryInfo.id} />
           </LeftSlider>
           <LeftSlider className={`def ${className}`}>
-            <div>연관 키워드 차트</div>
+            <AnalysisSection />
           </LeftSlider>
         </LeftSection>
       </Grid>

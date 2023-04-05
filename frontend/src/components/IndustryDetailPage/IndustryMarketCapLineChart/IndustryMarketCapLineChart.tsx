@@ -6,6 +6,8 @@ import { makePriceFormat } from "../../IndustryMainPage/makePriceFormat"
 import { useIndustryMarketCap } from "../../../hooks/useIndustryMarketCap"
 import Spinner from "../../common/Spinner/Spinner"
 import { useParams } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { HighlightedSpan } from "../../StockDetailPage/MainSection/PriceSection/PriceSection"
 
 highchartsStock(Highcharts)
 Highcharts.setOptions({
@@ -35,6 +37,23 @@ const IndustryMarketCapLineChart = ({ industryId }: { industryId: number }) => {
   const params = useParams()
   const stockName = params?.industryName
 
+  const [chartHeight, setChartHeight] = useState<number>(300)
+  const [chartWidth, setChartWidth] = useState<number>(500)
+  const handleResize = () => {
+    const chartWrapper = document.getElementById("line-chart")
+    if (chartWrapper) {
+      setChartHeight(chartWrapper.clientHeight)
+      setChartWidth(chartWrapper.clientWidth)
+    }
+  }
+  useEffect(() => {
+    handleResize()
+    window.addEventListener("resize", handleResize)
+    return () => {
+      window.removeEventListener("resize", handleResize)
+    }
+  }, [])
+
   const options: Highcharts.Options = {
     chart: {
       borderColor: "var(--custom-background)",
@@ -42,6 +61,8 @@ const IndustryMarketCapLineChart = ({ industryId }: { industryId: number }) => {
       borderWidth: 2,
       margin: 20,
       backgroundColor: "transparent",
+      height: chartHeight,
+      width: chartWidth,
     },
     credits: {
       enabled: false,
@@ -49,13 +70,13 @@ const IndustryMarketCapLineChart = ({ industryId }: { industryId: number }) => {
     navigator: {
       enabled: true,
       handles: {
-        backgroundColor: "var(--custom-purple-2)",
-        borderColor: "var(--custom-black)",
+        backgroundColor: "var(--custom-purple-3)",
+        borderColor: "var(--custom-purple-1)",
         height: 20,
       },
       height: 60,
       margin: 30,
-      maskFill: "rgba(212, 193, 255, 0.4)",
+      maskFill: "rgba(120, 120, 120, 0.4)",
     },
     plotOptions: {},
     rangeSelector: {
@@ -147,19 +168,39 @@ const IndustryMarketCapLineChart = ({ industryId }: { industryId: number }) => {
     },
     xAxis: {
       type: "datetime",
+      dateTimeLabelFormats: {
+        day: "%b %e일",
+        week: "%b %e일",
+        month: "%y년 %b",
+        year: "%Y",
+      },
       labels: {
         step: 1,
       },
     },
     yAxis: {
       type: "linear",
+      labels: {
+        formatter: function (this: any) {
+          let result: string
+          if (this.value >= 1000000000000) {
+            result = Math.round(this.value / 1000000000000).toString() + "조"
+          } else {
+            result = Math.round(this.value / 100000000).toString() + "억"
+          }
+          return result
+        },
+      },
     },
   }
 
   return (
     <AreaDiv>
-      <TitleDiv>산업 규모</TitleDiv>
-      <ChartWrapper>
+      <TitleDiv>
+        <HighlightedSpan color="var(--custom-mint)">키워드</HighlightedSpan>로
+        보는 산업 규모
+      </TitleDiv>
+      <ChartWrapper id="line-chart">
         {isLoading ? (
           <Spinner />
         ) : (
@@ -177,6 +218,8 @@ const IndustryMarketCapLineChart = ({ industryId }: { industryId: number }) => {
 export default IndustryMarketCapLineChart
 
 const ChartWrapper = styled.div`
+  min-height: 350px;
+  height: 25vh;
   width: 100%;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 24px;

@@ -1,29 +1,72 @@
 import styled from "styled-components"
+// useQuery
+import { useQuery } from "react-query"
+import { useNavigate } from "react-router-dom"
+import { useRecoilState } from "recoil"
+import { accessTokenSelector } from "../../../stores/atoms"
+import customAxios from "../../../utils/customAxios"
 // sub component
 import StockAxis from "./StockAxis"
 import StockGraphBar from "./StockGraphBar"
+import Spinner from "../../common/Spinner/Spinner"
 
-// sample data
-import sampleData from "./SampleData"
+export interface MyStockType {
+  id: number
+  name: string
+  price: number
+  rate: number
+}
 
 const StockGraph = () => {
+  // accessTokenState
+  const [accessToken, setAccessToken] = useRecoilState(accessTokenSelector)
+  // useNavigate
+  const navigate = useNavigate()
+  // customAxios
+  const axios = customAxios(accessToken, setAccessToken, navigate)
+
+  // useQuery: getMyStockList
+  const fetchMyStockList = () => {
+    return axios.get("/stock/my")
+  }
+  const select = (response: any) => {
+    const data: MyStockType[] = response.data.data
+    return data
+  }
+  const { isLoading, data: MyStockList } = useQuery(
+    "getMyStockList",
+    fetchMyStockList,
+    {
+      refetchOnWindowFocus: false,
+      retry: false,
+      enabled: !!accessToken,
+      select,
+    }
+  )
+  if (isLoading) {
+    return <Spinner />
+  }
   return (
     <>
-      <GraphWrapper>
-        <StockAxis />
-        <BarWrapper>
-          {sampleData.map((stock, key) => {
-            return (
-              <StockGraphBar
-                key={key}
-                price={stock.price}
-                rate={stock.rate}
-                name={stock.name}
-              />
-            )
-          })}
-        </BarWrapper>
-      </GraphWrapper>
+      {!!MyStockList ? (
+        <GraphWrapper>
+          <StockAxis />
+          <BarWrapper>
+            {MyStockList?.map((stock, key) => {
+              return (
+                <StockGraphBar
+                  key={key}
+                  price={stock.price}
+                  rate={stock.rate}
+                  name={stock.name}
+                />
+              )
+            })}
+          </BarWrapper>
+        </GraphWrapper>
+      ) : (
+        <TextWrapper>관심있는 주식 종목을 등록해보세요</TextWrapper>
+      )}
     </>
   )
 }
@@ -62,7 +105,7 @@ const BarWrapper = styled.div`
 
   // size
   width: calc(100% - 50px);
-  min-width: 500px;
+  min-width: 100px;
 
   // scroll bar
   // 아래의 모든 코드는 영역::코드로 사용
@@ -79,4 +122,20 @@ const BarWrapper = styled.div`
   &::-webkit-scrollbar-track {
     // background-color: rgba(0,0,0,0); // 스크롤바 뒷 배경 색상
   }
+`
+
+const TextWrapper = styled.div`
+  // size:
+  width: 100%;
+  height: 100%;
+
+  // flex-box
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  // font
+  font-size: 3rem;
+  font-weight: bold;
+  color: var(--custom-black);
 `

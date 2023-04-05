@@ -18,11 +18,6 @@ import LoginRedirectHandler from "./components/common/Login/LoginRedirectHandler
 import MainSection from "./components/common/Background/MainSection"
 import Navbar from "./components/common/Navbar/Navbar"
 
-// recoil
-import { useRecoilValue } from "recoil"
-import { accessTokenSelector, logInState } from "./stores/atoms"
-import customAxios from "./utils/customAxios"
-
 function App() {
   const curPath = useLocation().pathname
 

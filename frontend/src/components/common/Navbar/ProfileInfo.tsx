@@ -19,6 +19,7 @@ const ProfileInfo = ({ isNarrow }: Props) => {
   const [isLogin, setIsLogin] = useRecoilState(logInState)
   const [accessToken, setAccessToken] = useRecoilState(accessTokenSelector)
   const setNickname = useSetRecoilState(nicknameState)
+
   // axios
   const axios = customAxios(accessToken, setAccessToken)
 
