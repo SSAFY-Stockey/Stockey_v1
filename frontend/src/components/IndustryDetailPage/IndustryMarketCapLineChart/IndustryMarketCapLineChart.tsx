@@ -7,6 +7,7 @@ import { useIndustryMarketCap } from "../../../hooks/useIndustryMarketCap"
 import Spinner from "../../common/Spinner/Spinner"
 import { useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
+import { HighlightedSpan } from "../../StockDetailPage/MainSection/PriceSection/PriceSection"
 
 highchartsStock(Highcharts)
 Highcharts.setOptions({
@@ -36,6 +37,23 @@ const IndustryMarketCapLineChart = ({ industryId }: { industryId: number }) => {
   const params = useParams()
   const stockName = params?.industryName
 
+  const [chartHeight, setChartHeight] = useState<number>(300)
+  const [chartWidth, setChartWidth] = useState<number>(500)
+  const handleResize = () => {
+    const chartWrapper = document.getElementById("line-chart")
+    if (chartWrapper) {
+      setChartHeight(chartWrapper.clientHeight)
+      setChartWidth(chartWrapper.clientWidth)
+    }
+  }
+  useEffect(() => {
+    handleResize()
+    window.addEventListener("resize", handleResize)
+    return () => {
+      window.removeEventListener("resize", handleResize)
+    }
+  }, [])
+
   const options: Highcharts.Options = {
     chart: {
       borderColor: "var(--custom-background)",
@@ -43,6 +61,8 @@ const IndustryMarketCapLineChart = ({ industryId }: { industryId: number }) => {
       borderWidth: 2,
       margin: 20,
       backgroundColor: "transparent",
+      height: chartHeight,
+      width: chartWidth,
     },
     credits: {
       enabled: false,
@@ -57,7 +77,6 @@ const IndustryMarketCapLineChart = ({ industryId }: { industryId: number }) => {
       height: 60,
       margin: 30,
       maskFill: "rgba(120, 120, 120, 0.4)",
-      maskInside: false,
     },
     plotOptions: {},
     rangeSelector: {
@@ -178,9 +197,10 @@ const IndustryMarketCapLineChart = ({ industryId }: { industryId: number }) => {
   return (
     <AreaDiv>
       <TitleDiv>
-        <ColoredSpan>키워드</ColoredSpan>로 보는 산업 규모
+        <HighlightedSpan color="var(--custom-mint)">키워드</HighlightedSpan>로
+        보는 산업 규모
       </TitleDiv>
-      <ChartWrapper>
+      <ChartWrapper id="line-chart">
         {isLoading ? (
           <Spinner />
         ) : (
@@ -198,6 +218,8 @@ const IndustryMarketCapLineChart = ({ industryId }: { industryId: number }) => {
 export default IndustryMarketCapLineChart
 
 const ChartWrapper = styled.div`
+  min-height: 350px;
+  height: 25vh;
   width: 100%;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 24px;
@@ -225,8 +247,4 @@ const TitleDiv = styled.div`
   display: flex;
   align-items: center;
   letter-spacing: 0.1px;
-`
-
-const ColoredSpan = styled.span`
-  color: var(--custom-mint);
 `

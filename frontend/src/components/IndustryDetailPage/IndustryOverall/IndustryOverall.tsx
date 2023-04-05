@@ -17,7 +17,7 @@ const IndustryOverall = ({ industryInfo }: Props) => {
           <img
             src="/industryLogos/sampleIndustryLogo.png"
             alt="#"
-            width="100%"
+            height="100%"
           />
         </ImgDiv>
         <DescriptionDiv>{industryInfo.description}</DescriptionDiv>
@@ -30,6 +30,8 @@ export default IndustryOverall
 
 const AreaDiv = styled.div`
   width: 100%;
+  height: 15vh;
+  min-height: 216px;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -37,6 +39,7 @@ const AreaDiv = styled.div`
 
 const OverallDiv = styled.div`
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: row;
   align-items: top;
@@ -47,7 +50,7 @@ const OverallDiv = styled.div`
 `
 
 const ImgDiv = styled.div`
-  width: 35%;
+  height: 100%;
   border-radius: 50%;
 `
 

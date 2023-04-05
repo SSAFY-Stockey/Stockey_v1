@@ -79,7 +79,7 @@ const IndustryDetailPage = () => {
   }
 
   return (
-    <Grid container rowSpacing={3} columnSpacing={4.5}>
+    <Grid container rowSpacing={2} columnSpacing={4.5} minWidth="1200px">
       {isLoading ? (
         <Spinner />
       ) : (

@@ -15,6 +15,7 @@ const LeftSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
+  height: calc(100vh - 96px);
 
   &.kwd {
     overflow-y: scroll;
@@ -57,15 +58,6 @@ const SlideOverLeft = keyframes`
   }
   to {
     transform: translateX(-71.4%);
-  }
-`
-
-const SlideOverRight = keyframes`
-  from {
-    transform: translateX(0%);
-  }
-  to {
-    transform: translateX(71.4%);
   }
 `
 
@@ -239,12 +231,13 @@ const RightSlider = styled.div`
   &.def.kwd-to-def {
     animation-name: ${FadeIn};
   }
-  &.kwd.kwd-to-sel {
-    animation-name: ${SlideOverRight};
+  &.sel.kwd-to-sel {
+    animation-name: ${SlideToRight};
   }
-  &.kwd.sel-to-kwd {
+  &.sel.sel-to-kwd {
+    animation-delay: 0.4s;
     animation-duration: 0.4s;
-    animation-name: ${SlideToLeft};
+    animation-name: ${SlideOverLeft};
   }
 `
 
