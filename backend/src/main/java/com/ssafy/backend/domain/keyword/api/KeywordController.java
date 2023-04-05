@@ -141,7 +141,7 @@ public class KeywordController {
     @GetMapping("/{keywordsId}/keyphrase")
     public ResponseEntity<ResponseDto> GetKeyphrase(@PathVariable Long keywordsId,
                                                     @Valid @ModelAttribute GetKeyphraseRequest getKeyphraseRequest){
-        List<Response.Message> keyphrase = keywordService.getKeyphrase(keywordsId, getKeyphraseRequest);
+        List<GetKeyPhraseResponse.Message> keyphrase = keywordService.getKeyphrase(keywordsId, getKeyphraseRequest);
         return new ResponseEntity<>(new ResponseDto("OK",keyphrase),HttpStatus.OK);
     }
 

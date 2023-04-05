@@ -11,16 +11,16 @@ import com.ssafy.backend.domain.stock.dto.StockSearchDto;
 import java.util.List;
 
 public interface StockService {
-     StockDto getStock(Long stockId) throws Exception;
-     Integer getStockIndustryMarketCapRank(Long stockId, Long industryId)throws Exception;
+     StockDto getStock(Long stockId) ;
+     Integer getStockIndustryMarketCapRank(Long stockId, Long industryId);
      Integer getStockIndustryFavoriteRank(Long stockId, Long industryId);
-     Float getAverageIndustryChangeRate(Long industryId) throws Exception;
-     List<StockPreviewDto> getStock() throws Exception;
-     List<StockPreviewDto> getStockRandom(Integer count) throws Exception;
-     List<StockKeywordDto> getStockKeyword(Long stockId) throws Exception;
-     List<DailyStockDto> getDailyStock(Long stockId)throws Exception;
-     DailyStockDto getTodayDailyStock(Long stockId)throws Exception;
-     List<StockSearchDto> getSearchStock(String keyword)throws Exception;
+     Float getAverageIndustryChangeRate(Long industryId) ;
+     List<StockPreviewDto> getStock() ;
+     List<StockPreviewDto> getStockRandom(Integer count) ;
+     List<StockKeywordDto> getStockKeyword(Long stockId) ;
+     List<DailyStockDto> getDailyStock(Long stockId);
+     DailyStockDto getTodayDailyStock(Long stockId);
+     List<StockSearchDto> getSearchStock(String keyword);
 
      List<GetStockTodayResponse> getMyStocks(Member member);
 
