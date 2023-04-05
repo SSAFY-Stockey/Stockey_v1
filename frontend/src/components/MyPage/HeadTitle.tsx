@@ -26,6 +26,9 @@ const TitleDiv = styled.div`
 
   bottom: 0px;
   margin: 0px;
+
+  // size
+  width: 100%;
 `
 
 const GradientSpan = styled.span`

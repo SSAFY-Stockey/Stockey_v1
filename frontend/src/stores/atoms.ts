@@ -1,5 +1,4 @@
 import { atom, selector, useRecoilState } from "recoil"
-import customAxios from "../utils/customAxios"
 
 // 닉네임 유효성 검사 State
 export const nicknameValidState = atom<boolean>({
