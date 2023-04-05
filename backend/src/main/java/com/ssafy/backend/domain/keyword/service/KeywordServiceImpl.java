@@ -9,6 +9,7 @@ import com.ssafy.backend.domain.keyword.dto.KeywordDto;
 import com.ssafy.backend.domain.keyword.dto.KeywordStatisticDto;
 import com.ssafy.backend.domain.keyword.dto.TopKeywordDTO;
 import com.ssafy.backend.domain.keyword.entity.Keyword;
+import com.ssafy.backend.domain.keyword.entity.KeywordStatistic;
 import com.ssafy.backend.domain.keyword.mapper.KeywordMapper;
 import com.ssafy.backend.domain.keyword.repository.KeywordRepository;
 import com.ssafy.backend.domain.keyword.repository.KeywordStatisticRepository;
@@ -55,6 +56,7 @@ public class KeywordServiceImpl implements KeywordService{
     private final NewsRelationRepository newsRelationRepository;
     // TODO : 삭제
     private final MemberRepository memberRepository;
+
 
 
 
@@ -200,6 +202,22 @@ public class KeywordServiceImpl implements KeywordService{
         GetKeyPhraseResponse Returns = response.getBody();
         return Returns.getMessages();
     }
+
+
+
+//    public List<Object[]> findAvgKeywordCount(Keyword keyword, LocalDate startDate, LocalDate endDate){
+//        Keyword keyword = keywordRepository.findById(keywordId).orElseThrow(() ->
+//                new KeywordException(KeywordExceptionType.KEYWORD_NOT_EXIST)
+//        );
+//        List<Object[]> avgKeywordCount = keywordStatisticRepository.findAvgKeywordCount(keyword, startDate, endDate);
+//        for (Object[] objects : avgKeywordCount) {
+//            for (Object object : objects) {
+//                System.out.println("object = " + object);
+//            }
+//        }
+//        return null;
+//
+//    }
 
     // 유저가 동일한지 체크
     private static void checkUser(Member member, Favorite favorite) {
