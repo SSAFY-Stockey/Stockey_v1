@@ -45,7 +45,7 @@ const AnalysisBox = styled.div<{ isStarted: boolean }>`
     isStarted ? "transparent" : "var(--custom-gradient-violet)"};
   border-radius: 24px;
   cursor: ${({ isStarted }) => (isStarted ? "" : "pointer")};
-  padding: ${({ isStarted }) => (isStarted ? "0%" : "5%")};
+  padding: 0;
   box-shadow: ${({ isStarted }) =>
     isStarted
       ? "0 0 10px 1px rgba(0, 0, 0, 0.1)"
@@ -61,6 +61,7 @@ const AnalysisBtn = styled.div<{ isStarted: boolean }>`
   animation: ${({ isStarted }) => (isStarted ? hide : show)} 1s linear;
   animation-fill-mode: both;
   display: ${({ isStarted }) => (!isStarted ? "block" : "none")};
+  padding: 5%;
   &:hover {
     transform: scale(1.1);
   }

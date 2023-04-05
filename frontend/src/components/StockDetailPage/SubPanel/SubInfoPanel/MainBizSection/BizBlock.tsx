@@ -2,8 +2,9 @@ import styled from "styled-components"
 
 interface Props {
   type: string
+  description: string | null
 }
-const BizBlock = ({ type }: Props) => {
+const BizBlock = ({ type, description }: Props) => {
   return (
     <BlockWrapper>
       <BizTypeBox>
@@ -13,7 +14,7 @@ const BizBlock = ({ type }: Props) => {
         </BizTypeWrapper>
       </BizTypeBox>
       <BizDetailContainer>
-        <BizDetail>온라인 검색포털, 모바일 메신저 LINE</BizDetail>
+        <BizDetail>{description}</BizDetail>
       </BizDetailContainer>
     </BlockWrapper>
   )

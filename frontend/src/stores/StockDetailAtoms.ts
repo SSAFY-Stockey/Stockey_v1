@@ -5,7 +5,7 @@ import { StockDetailType } from "../hooks/useStockDetail"
 // stock-detail 페이지에서 사용하는 state들을 관리하는 파일입니다.
 
 // 현재 페이지 stock의 모든 detail information을 저장하는 state
-export const stockDetailState = atom<StockDetailType>({
+export const stockDetailState = atom<StockDetailType | undefined>({
   key: "stockDetailState",
   default: {
     id: 0,

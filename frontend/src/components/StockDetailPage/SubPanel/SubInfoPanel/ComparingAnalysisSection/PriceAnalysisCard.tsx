@@ -1,6 +1,6 @@
 import { Paper, Grid, Divider } from "@mui/material"
 // import Paper from "@mui/material/Paper"
-import styled from "styled-components"
+import styled, { keyframes } from "styled-components"
 
 interface Props {
   stockName: string
@@ -95,12 +95,35 @@ const PriceAnalysisCard = ({
 }
 
 export default PriceAnalysisCard
+
+export const shake = keyframes`
+0% {
+  transform: rotate(-10deg);
+}
+25% {
+  transform: rotate(10deg);
+}
+50% {
+  transform: rotate(-10deg);
+}
+75% {
+  transform: rotate(10deg);
+}
+
+100% {
+  transform: rotate(-10deg);
+}
+`
+
 export const CardPaper = styled(Paper)`
   padding: 5%;
   background-color: rgb(211 244 206 / 50%) !important;
   border-radius: 24px !important;
-  // box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.25);
-  // backdrop-filter: blur(15px);
+  &: hover img {
+    animation: ${shake} 0.6s ease-in-out;
+    animation-iteration-count: 1;
+    animation-direction: alternate;
+  }
 `
 
 export const CardWrapper = styled(Grid)`

@@ -1,12 +1,19 @@
-// import { readFileSync } from "fs"
-import { ChartWrapper } from "../../SubPanel/KeywordPanel/KeywordChart"
+// 차트 관련
 import * as Highcharts from "highcharts"
 import HighchartsReact from "highcharts-react-official"
 import highchartsStock from "highcharts/modules/stock"
 import dayjs from "dayjs"
-import { useStockPriceList } from "../../../../hooks/useStockPriceList"
-import { useParams } from "react-router-dom"
+
+//  동작 관련
 import { useEffect, useState } from "react"
+
+// 데이터 관련
+import { useParams } from "react-router-dom"
+import { useStockPriceList } from "../../../../hooks/useStockPriceList"
+import { useStockDetail } from "../../../../hooks/useStockDetail"
+
+// 컴포넌트 관련
+import { ChartWrapper } from "../../SubPanel/KeywordPanel/KeywordChart"
 import Spinner from "../../../common/Spinner/Spinner"
 
 highchartsStock(Highcharts)
@@ -32,11 +39,6 @@ Highcharts.setOptions({
   },
 })
 
-interface ChartData {
-  DateTime: string
-  AAPL: number
-}
-
 const StockPriceChart = () => {
   //여기
   const params = useParams()
@@ -44,6 +46,7 @@ const StockPriceChart = () => {
   const { isLoading, data: stockPriceData } = useStockPriceList(
     stockId ? stockId : 0
   )
+  const { data: stockDetailData } = useStockDetail(stockId)
 
   const [isCandle, setIsCandle] = useState<boolean>(false)
   const [chartOptions, setChartOptions] = useState<Highcharts.Options>({})
@@ -131,11 +134,28 @@ const StockPriceChart = () => {
       },
       tooltip: {
         split: false,
-        valueDecimals: 2,
+        valueDecimals: 0,
         valueSuffix: "원",
-        dateTimeLabelFormats: {
-          day: "%Y년 %m월 %d일",
+        useHTML: true,
+        formatter: function (this: any) {
+          console.log(this.points)
+          return this.points.reduce(function (initialValue: any, point: any) {
+            return (
+              initialValue +
+              "<hr/>" +
+              '<span style="color:' +
+              point.series.color +
+              '"><b>' +
+              point.series.name +
+              "</b></span>&nbsp;&nbsp;<span><b>" +
+              point.y.toLocaleString("ko-KR") +
+              "원</b></span>"
+            )
+          }, "<p style='margin: 0; font-style: italic'><b>" +
+            dayjs(this.x).format("YYYY-MM-DD") +
+            "</b></p>")
         },
+        shared: true,
       },
       navigator: {
         enabled: true,
@@ -182,8 +202,8 @@ const StockPriceChart = () => {
       },
       series: [
         {
-          id: ,
-          name: "NAVER",
+          id: stockDetailData?.name,
+          name: stockDetailData?.name,
           type: "line",
           data: stockPriceData,
           color: "var(--custom-green-1)",
@@ -212,7 +232,7 @@ const StockPriceChart = () => {
         // },
       ],
     })
-  }, [stockPriceData])
+  }, [stockPriceData, stockDetailData])
 
   const handleChartType = () => {
     if (!isCandle) {

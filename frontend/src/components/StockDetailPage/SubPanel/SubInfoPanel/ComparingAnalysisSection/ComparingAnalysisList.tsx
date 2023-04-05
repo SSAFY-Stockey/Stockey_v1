@@ -1,4 +1,3 @@
-import styled from "styled-components"
 import CapitalAnalysisCard from "./CapitalAnalysisCard"
 import PriceAnalysisCard from "./PriceAnalysisCard"
 import LikeAnalysisCard from "./LikeAnalysisCard"
@@ -24,7 +23,7 @@ const ComparingAnalysisList = () => {
         />
       </Grid>
       <Grid item>
-        <LikeAnalysisCard likeRank={3} industry="IT" industryTotal={100} />
+        <LikeAnalysisCard likeRank={0} industry="IT" industryTotal={100} />
       </Grid>
     </Grid>
   )

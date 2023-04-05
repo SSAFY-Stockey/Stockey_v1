@@ -2,7 +2,7 @@ import styled from "styled-components"
 
 interface Props {
   type: "finance" | "size" | "sales" | "credit_rating"
-  value: string
+  value: string | undefined
 }
 
 const infoType = {

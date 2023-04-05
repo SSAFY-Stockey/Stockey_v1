@@ -45,11 +45,13 @@ const StockDetailPage = () => {
 export default StockDetailPage
 const MainGrid = styled(Grid)`
   transition: all 0.5s;
+  height: 100%;
 `
 
 const PanelGrid = styled(Grid)`
   position: relative;
   transition: all 0.5s;
+  height: 100%;
 `
 
 const PanelToggleBtn = styled.div`
