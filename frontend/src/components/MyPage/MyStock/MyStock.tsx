@@ -42,7 +42,7 @@ const MyStockWrapper = styled.div`
   user-select: none;
 
   // transition
-  transition: width 0.8s ease-in-out;
+  transition: width 1s ease-in-out;
 
   &.isActivate {
     width: calc(50vw - 36px);

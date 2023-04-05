@@ -102,7 +102,7 @@ const GraphBarDiv = styled.div`
 
   // hover
   &:hover {
-    box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.5);
+    box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.3);
   }
 `
 
