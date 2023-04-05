@@ -31,7 +31,7 @@ const OnKeywordPanelLayout = ({
   return (
     <>
       <Grid item xs={7}>
-        <LeftSection>
+        <LeftSection className="kwd">
           <ButtonDiv id="btn">
             <button onClick={(e) => changeLayout(e, "kwd")}>
               keywordPanel
@@ -71,7 +71,7 @@ const OnKeywordPanelLayout = ({
         </LeftSection>
       </Grid>
       <Grid item xs={5}>
-        <PanelSlider className={className}>
+        <PanelSlider className={`kwd ${className}`}>
           <KeywordPanel keyword="빅스텝" />
         </PanelSlider>
       </Grid>

@@ -43,14 +43,14 @@ const OnIndustrySelectorLayout = ({
         </ButtonDiv>
       </Grid>
       <Grid item xs={5}>
-        <LeftSection>
+        <LeftSection className="sel">
           <SelectorSlider className={`sel ${className}`}>
             <IndustrySelector />
           </SelectorSlider>
         </LeftSection>
       </Grid>
       <Grid item xs={7}>
-        <RightSection id="right">
+        <RightSection id="right" className="sel">
           <LeftSlider className={`sel ${className}`}>
             <TitleDiv>
               {industryInfo?.name}

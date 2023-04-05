@@ -67,7 +67,7 @@ const IndustryDetailPage = () => {
             setClassName("sel-to-kwd")
             setTimeout(() => {
               setMode("kwd")
-            }, 600)
+            }, 800)
             break
           default:
             break
