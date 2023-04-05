@@ -52,8 +52,9 @@ const FavoriteIndustryInfoArea = () => {
 export default FavoriteIndustryInfoArea
 
 const AreaDiv = styled.div`
+  min-width: 500px;
   width: 100%;
-  height: calc((100vh - 192px) / 2);
+  height: 100%;
   display: flex;
   flex-direction: column;
   gap: 24px;

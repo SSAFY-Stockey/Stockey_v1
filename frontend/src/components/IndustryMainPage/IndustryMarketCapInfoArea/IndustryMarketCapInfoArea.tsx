@@ -32,7 +32,7 @@ const IndustryMarketCapInfoArea = () => {
     <AreaDiv>
       <TitleDiv>산업별 규모를 확인해보세요📈</TitleDiv>
       <ContentGrid container spacing={2}>
-        <ItemGrid item sm={12} md={6}>
+        <ItemGrid item xs={6}>
           {chartData ? (
             <IndustryMarketCapChartArea
               chartData={chartData}
@@ -42,7 +42,7 @@ const IndustryMarketCapInfoArea = () => {
             <Spinner />
           )}
         </ItemGrid>
-        <ItemGrid item sm={12} md={6}>
+        <ItemGrid item xs={6}>
           <MarketCapRankArea clickedIndustryInfo={clickedIndustryInfo} />
         </ItemGrid>
       </ContentGrid>
@@ -53,8 +53,9 @@ const IndustryMarketCapInfoArea = () => {
 export default IndustryMarketCapInfoArea
 
 const AreaDiv = styled.div`
+  min-width: 500px;
   width: 100%;
-  height: calc((100vh - 192px) / 2);
+  height: 100%;
   display: flex;
   flex-direction: column;
   gap: 2rem;

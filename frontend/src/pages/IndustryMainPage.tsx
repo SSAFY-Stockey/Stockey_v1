@@ -21,10 +21,10 @@ const IndustryMainPage = () => {
           </SelectorWrapper>
         </Grid>
         <Grid item xs={7} container direction="column" spacing={4.5}>
-          <ItemGrid item xs={6}>
+          <ItemGrid item xs={7}>
             <IndustryMarketCapInfoArea />
           </ItemGrid>
-          <ItemGrid item xs={6}>
+          <ItemGrid item xs={5}>
             <FavoriteIndustryInfoArea />
           </ItemGrid>
         </Grid>
@@ -40,6 +40,7 @@ const PageGrid = styled(Grid)({
 })
 
 const SelectorWrapper = styled.div`
+  min-height: 884px;
   height: calc(100vh - 156px);
 `
 
