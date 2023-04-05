@@ -31,6 +31,7 @@ import com.ssafy.backend.global.exception.keyword.KeywordExceptionType;
 import com.ssafy.backend.global.exception.stock.StockException;
 import com.ssafy.backend.global.exception.stock.StockExceptionType;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -218,7 +219,7 @@ public class StockServiceImpl implements StockService{
         favoriteRepository.delete(favorite);
     }
 
-    public Object getCorrelation(Long id, GetCorrelationRequest getCorrelationRequest){
+    public Double getCorrelation(Long id, GetCorrelationRequest getCorrelationRequest){
         Stock stock = getStockEntity(id);
 
 
@@ -227,11 +228,31 @@ public class StockServiceImpl implements StockService{
                 new KeywordException(KeywordExceptionType.KEYWORD_NOT_EXIST));
         LocalDate startDate = getCorrelationRequest.getStartDate();
         LocalDate endDate = getCorrelationRequest.getEndDate();
-        List<Object[]> avgKeywordCount = keywordStatisticRepository.findAvgKeywordCount(keyword, startDate, endDate);
-        return null;
+
+
+        List<Double> avgKeywordCount = keywordStatisticRepository.findAvgKeywordCount(keyword, startDate, endDate);
+        List<Double> stockweekStatistic = dailyStockRepository.getStockweekStatistic(stock, startDate, endDate);
+
+        //리스트의 size가 다를 경우 마지막 제거
+        if(avgKeywordCount.size()>stockweekStatistic.size()){
+            avgKeywordCount.remove(avgKeywordCount.size()-1);
+        }else if(avgKeywordCount.size()<stockweekStatistic.size()){
+            stockweekStatistic.remove(stockweekStatistic.size()-1);
+        }
+
+        double correlationCoefficient = getCorrelationResult(avgKeywordCount, stockweekStatistic);
+        return correlationCoefficient;
     }
 
-
+    // 상관관계 구하기
+    private double getCorrelationResult(List<Double> avgKeywordCount, List<Double> stockweekStatistic) {
+        PearsonsCorrelation correlation = new PearsonsCorrelation();
+        double correlationCoefficient = correlation.correlation(
+                avgKeywordCount.stream().mapToDouble(Double::doubleValue).toArray(),
+                stockweekStatistic.stream().mapToDouble(Double::doubleValue).toArray()
+        );
+        return correlationCoefficient;
+    }
 
 
     // Stock Entity 반환
