@@ -1,13 +1,20 @@
 import styled from "styled-components"
 import KeywordItem from "./KeywordItem"
 import KeywordSampleData from "./KeywordSampleData"
+import { useRecoilValue } from "recoil"
+import { myKeywordState } from "../../../stores/MyPageAtoms"
 
 const KeywordList = () => {
+  const myKeyword = useRecoilValue(myKeywordState)
+
   return (
     <>
       <ListWrapper>
         {KeywordSampleData.map((keyword, key) => {
-          return <KeywordItem key={key} props={keyword} />
+          const isSelected = keyword.name === myKeyword ? true : false
+          return (
+            <KeywordItem key={key} keyword={keyword} isSelected={isSelected} />
+          )
         })}
       </ListWrapper>
     </>
