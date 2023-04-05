@@ -24,6 +24,8 @@ import { accessTokenSelector, logInState } from "./stores/atoms"
 import customAxios from "./utils/customAxios"
 
 function App() {
+  // accessToken
+  const accessToken = useRecoilValue(accessTokenSelector)
   const curPath = useLocation().pathname
 
   // 가로 길이 확인 => navbar 형태 전달
