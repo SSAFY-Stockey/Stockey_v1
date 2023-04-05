@@ -1,31 +1,77 @@
 import styled from "styled-components"
+import { useIndustryMarketCap } from "../../../../hooks/useIndustryMarketCap"
+import SimplifiedMarketCapLineChart from "./SimplifiedMarketCapLineChart"
+import Spinner from "../../../common/Spinner/Spinner"
+import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 interface CardProps {
   imgUrl: string
   industryName: string
-  marketCapFluctuationRate: number
+  industryId: number
 }
 
 const FavoriteIndustryCard = ({
   imgUrl,
   industryName,
-  marketCapFluctuationRate,
+  industryId,
 }: CardProps) => {
+  const { data: industryMarketCap } = useIndustryMarketCap(industryId)
+
+  const [rate, setRate] = useState<number>(0)
+  useEffect(() => {
+    if (industryMarketCap?.length && industryMarketCap.length > 1) {
+      const newRate =
+        ((industryMarketCap[industryMarketCap.length - 1][1] -
+          industryMarketCap[industryMarketCap.length - 2][1]) /
+          industryMarketCap[industryMarketCap.length - 2][1]) *
+        100
+      setRate(Math.round(newRate * 100) / 100)
+    }
+  }, [industryMarketCap])
+
+  const navigate = useNavigate()
+  const handleClickCard = () => {
+    navigate(`/industry/${industryName}`)
+  }
+
+  const [isHovering, setIsHovering] = useState<boolean>(false)
+  const handleMouseOver = () => {
+    setIsHovering(true)
+  }
+  const handleMouseOut = () => {
+    setIsHovering(false)
+  }
+
+  const [chartWidth, setChartWidth] = useState<number>(0)
+  const chartContainer = document.getElementById("chart")
+  useEffect(() => {
+    if (chartContainer) {
+      setChartWidth(chartContainer.clientWidth - 48)
+    }
+  }, [chartContainer])
+
   return (
-    <LocationDiv>
-      <CardDiv>
+    <LocationDiv onClick={handleClickCard}>
+      <CardDiv onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
         <DefaultContentDiv>
           <IndustryLogoImg src={imgUrl} alt="logo" />
           <IndustryNameDiv>{industryName}</IndustryNameDiv>
-          <FluctuationDiv value={marketCapFluctuationRate}>
-            {marketCapFluctuationRate > 0
-              ? "+" + marketCapFluctuationRate
-              : marketCapFluctuationRate < 0
-              ? "-" + marketCapFluctuationRate
-              : marketCapFluctuationRate}
+          <FluctuationDiv value={rate}>
+            {rate > 0 ? "▲" + rate : rate < 0 ? "▼" + rate : rate}%
           </FluctuationDiv>
         </DefaultContentDiv>
-        <FluctuationChart id="chart" />
+        <FluctuationChart id="chart" className={isHovering ? "active" : ""}>
+          {industryMarketCap ? (
+            <SimplifiedMarketCapLineChart
+              industryName={industryName}
+              data={industryMarketCap}
+              chartWidth={chartWidth}
+            />
+          ) : (
+            <Spinner />
+          )}
+        </FluctuationChart>
       </CardDiv>
     </LocationDiv>
   )
@@ -37,6 +83,9 @@ const LocationDiv = styled.div`
   display: flex;
   width: calc((100% - 24px) / 2);
   height: 48px;
+  &:hover {
+    cursor: pointer;
+  }
 `
 
 const CardDiv = styled.div`
@@ -56,9 +105,6 @@ const CardDiv = styled.div`
     z-index: 1;
     height: 192px;
     background: rgba(255, 255, 255, 1);
-    #chart {
-      display: block;
-    }
   }
 `
 
@@ -101,8 +147,15 @@ const FluctuationDiv = styled.div<{ value: number }>`
 `
 
 const FluctuationChart = styled.div`
+  height: 0px;
   padding: 24px;
-  flex-grow: 1;
-  border: 1px dashed black;
-  display: none;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.5s;
+
+  &.active {
+    height: 144px;
+    visibility: visible;
+    opacity: 1;
+  }
 `

@@ -14,12 +14,19 @@ import IndustryMarketCapLineChart from "../IndustryMarketCapLineChart/IndustryMa
 import IndustryBubbleChart from "../IndustryBubbleChart/IndustryBubbleChart"
 import KeywordPanel from "../../StockDetailPage/SubPanel/KeywordPanel/KeywordPanel"
 import { LayoutProps } from "./DefaultLayout"
+import { useMyIndustryCheck } from "../../../hooks/useMyIndustryCheck"
+import { useEffect, useState } from "react"
 
 const OnKeywordPanelLayout = ({
   changeLayout,
   className,
   industryInfo,
 }: LayoutProps) => {
+  const { data: bookmarked } = useMyIndustryCheck(industryInfo.id)
+  const [isBookmarked, setIsBookmarked] = useState<boolean>(false)
+  useEffect(() => {
+    setIsBookmarked(bookmarked)
+  }, [bookmarked])
   return (
     <>
       <Grid item xs={7}>
@@ -38,14 +45,18 @@ const OnKeywordPanelLayout = ({
           <LeftSlider className={`kwd ${className}`}>
             <TitleDiv>
               {industryInfo?.name}
-              <BookmarkBtn isBookmarked={false} page="stock" num={1} />
+              <BookmarkBtn
+                isBookmarked={isBookmarked}
+                page="industry"
+                num={industryInfo.id}
+              />
             </TitleDiv>
           </LeftSlider>
           <LeftSlider className={`kwd ${className}`}>
-            <IndustryOverall />
+            <IndustryOverall industryInfo={industryInfo} />
           </LeftSlider>
           <LeftSlider className={`kwd ${className}`}>
-            <IndustryMarketCapLineChart industryId={industryInfo.id} />
+            <IndustryMarketCapLineChart industryId={industryInfo?.id} />
           </LeftSlider>
           <LeftSlider className={`kwd ${className}`}>
             <div>연관 키워드 차트</div>

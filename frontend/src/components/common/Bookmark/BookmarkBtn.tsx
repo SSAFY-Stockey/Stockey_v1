@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import BookmarkRoundedIcon from "@mui/icons-material/BookmarkRounded"
 import BookmarkBorderRoundedIcon from "@mui/icons-material/BookmarkBorderRounded"
 import customAxios from "../../../utils/customAxios"
@@ -20,6 +20,10 @@ type BookmarkProps = {
 const BookmarkBtn = ({ isBookmarked, page, num }: BookmarkProps) => {
   // bookmark state
   const [bookmarked, setBookmarked] = useState(isBookmarked)
+  // 관심 등록/해제 이후 prop받은 isBookmarked 변수 값이 바뀌는 것 감지
+  useEffect(() => {
+    setBookmarked(isBookmarked)
+  }, [isBookmarked])
   // hover state
   const [isHovered, setIsHovered] = useState(false)
   // accessToken selector
@@ -29,7 +33,7 @@ const BookmarkBtn = ({ isBookmarked, page, num }: BookmarkProps) => {
   // fetchUrl
   const fetchUrl =
     page === "industry"
-      ? `/industry/my/${num}`
+      ? `/industry/stocklist/my/${num}`
       : page === "stock"
       ? `/stock/my/${num}`
       : page === "keyword"

@@ -7,8 +7,8 @@ import styled from "@emotion/styled"
 
 const IndustryMainPage = () => {
   const pageTitleInfo = {
-    pageTitle: "산업별 정보",
-    pageDescription: "주식의 기초를 다질 수 있는 공간입니다",
+    pageTitle: "산업 정보",
+    pageDescription: "산업에 대한 정보를 볼 수 있는 공간입니다",
   }
 
   return (
@@ -20,10 +20,14 @@ const IndustryMainPage = () => {
             <IndustrySelector />
           </SelectorWrapper>
         </Grid>
-        <RightGrid item xs={7}>
-          <IndustryMarketCapInfoArea />
-          <FavoriteIndustryInfoArea />
-        </RightGrid>
+        <Grid item xs={7} container direction="column" spacing={4.5}>
+          <ItemGrid item xs={7}>
+            <IndustryMarketCapInfoArea />
+          </ItemGrid>
+          <ItemGrid item xs={5}>
+            <FavoriteIndustryInfoArea />
+          </ItemGrid>
+        </Grid>
       </Grid>
     </PageGrid>
   )
@@ -36,11 +40,10 @@ const PageGrid = styled(Grid)({
 })
 
 const SelectorWrapper = styled.div`
+  min-height: 884px;
   height: calc(100vh - 156px);
 `
 
-const RightGrid = styled(Grid)({
-  display: "flex",
-  flexDirection: "column",
-  gap: "36px",
+const ItemGrid = styled(Grid)({
+  width: "100%",
 })
