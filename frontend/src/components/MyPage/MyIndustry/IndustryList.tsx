@@ -33,21 +33,17 @@ const IndustryList = () => {
     return data
   }
 
-  const onError = () => {
-    return []
-  }
-
   const { isLoading, data: MyIndustryList } = useQuery(
     "getMyIndustryLis",
     fetchMyIndustryList,
     {
       select,
-      onError,
       retry: false,
       refetchOnWindowFocus: false,
       enabled: !!accessToken,
     }
   )
+  console.log(MyIndustryList)
 
   if (isLoading) {
     return <Spinner />

@@ -33,10 +33,6 @@ const StockGraph = () => {
     const data: MyStockType[] = response.data.data
     return data
   }
-  const onError = () => {
-    return []
-  }
-
   const { isLoading, data: MyStockList } = useQuery(
     "getMyStockList",
     fetchMyStockList,
