@@ -24,7 +24,7 @@ const KeywordList = () => {
   // useNavigate
   const navigate = useNavigate()
   // customAxios
-  const axios = customAxios(accessToken, setAccessToken)
+  const axios = customAxios(accessToken, setAccessToken, navigate)
 
   // useQuery: get my keyword
   const fetchMyKeywordList = () => {
@@ -35,6 +35,9 @@ const KeywordList = () => {
 
     return data
   }
+  const onError = () => {
+    return [{ id: 1, name: "감자", description: null }]
+  }
   const { isLoading, data: MyKeywordList } = useQuery(
     "getMyKeywordList",
     fetchMyKeywordList,
@@ -43,6 +46,7 @@ const KeywordList = () => {
       retry: false,
       enabled: !!accessToken,
       select,
+      onError,
     }
   )
 
@@ -51,14 +55,22 @@ const KeywordList = () => {
   }
   return (
     <>
-      <ListWrapper>
-        {MyKeywordList?.map((keyword, key) => {
-          const isSelected = keyword.name === myKeyword ? true : false
-          return (
-            <KeywordItem key={key} keyword={keyword} isSelected={isSelected} />
-          )
-        })}
-      </ListWrapper>
+      {!!MyKeywordList ? (
+        <ListWrapper>
+          {MyKeywordList?.map((keyword, key) => {
+            const isSelected = keyword.name === myKeyword ? true : false
+            return (
+              <KeywordItem
+                key={key}
+                keyword={keyword}
+                isSelected={isSelected}
+              />
+            )
+          })}
+        </ListWrapper>
+      ) : (
+        <TextWrapper>관심있는 키워드를 등록해보세요</TextWrapper>
+      )}
     </>
   )
 }
@@ -96,4 +108,20 @@ const ListWrapper = styled.div`
   &::-webkit-scrollbar-track {
     // background-color: rgba(0,0,0,0); // 스크롤바 뒷 배경 색상
   }
+`
+
+const TextWrapper = styled.div`
+  // size:
+  width: 100%;
+  height: 100%;
+
+  // flex-box
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  // font
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--custom-black);
 `
