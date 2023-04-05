@@ -15,7 +15,6 @@ import com.ssafy.backend.domain.member.entity.Member;
 import com.ssafy.backend.domain.member.enums.OauthType;
 import com.ssafy.backend.domain.member.repository.MemberRepository;
 import com.ssafy.backend.domain.news.entity.enums.NewsType;
-import com.ssafy.backend.global.exception.favorite.FavoriteException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -173,7 +170,7 @@ class KeywordServiceImplTest {
         GetTopNKeywordRequest getTopNKeywordRequest = GetTopNKeywordRequest.builder()
                 .topN(6)
                 .id(85L)
-                .newsType(NewsType.STOCK)
+                .newsType(NewsType.STOCK.toString())
                 .startDate(LocalDate.of(2022, 10, 15))
                 .endDate(LocalDate.of(2022, 12, 15))
                 .build();

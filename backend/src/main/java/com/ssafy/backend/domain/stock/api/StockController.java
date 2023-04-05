@@ -4,6 +4,7 @@ import com.ssafy.backend.domain.keyword.dto.StockKeywordDto;
 import com.ssafy.backend.domain.member.entity.Member;
 import com.ssafy.backend.domain.member.repository.MemberRepository;
 import com.ssafy.backend.domain.member.service.MemberService;
+import com.ssafy.backend.domain.stock.api.request.GetCorrelationRequest;
 import com.ssafy.backend.domain.stock.api.response.GetStockResponse;
 import com.ssafy.backend.domain.stock.api.response.GetStockTodayResponse;
 import com.ssafy.backend.domain.stock.dto.DailyStockDto;
@@ -12,7 +13,6 @@ import com.ssafy.backend.domain.stock.dto.StockPreviewDto;
 import com.ssafy.backend.domain.stock.dto.StockSearchDto;
 import com.ssafy.backend.domain.stock.mapper.StockDtoMapper;
 import com.ssafy.backend.domain.stock.service.StockService;
-import com.ssafy.backend.global.annotation.Auth;
 import com.ssafy.backend.global.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -22,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -185,6 +186,15 @@ public class StockController {
         stockService.deleteFavorite(member, id);
         return new ResponseEntity<>(new ResponseDto("DELETED", null), HttpStatus.OK);
     }
+
+    @GetMapping("/keyword/correlation/{id}")
+    public ResponseEntity<ResponseDto> getCorrelation(@PathVariable Long id,
+                                                      @Valid @ModelAttribute GetCorrelationRequest getCorrelationRequest){
+        Object correlation = stockService.getCorrelation(id, getCorrelationRequest);
+
+        return null;
+    }
+
 
     // TODO 수정 예정
     private Member getMember() {

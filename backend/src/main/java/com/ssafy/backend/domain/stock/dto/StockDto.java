@@ -25,6 +25,7 @@ public class StockDto {
     private IndustryDto industry;
     private List<BusinessDto> businesses;
     private DailyStockDto todayDailyStock;
+    private Integer industryTotalCount;
 
     private Integer industryCapRank;
     private Integer industryFavRank;

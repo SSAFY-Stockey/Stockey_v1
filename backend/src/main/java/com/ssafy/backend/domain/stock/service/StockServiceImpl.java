@@ -5,8 +5,12 @@ import com.ssafy.backend.domain.favorites.repository.FavoriteRepository;
 import com.ssafy.backend.domain.favorites.service.FavoriteService;
 import com.ssafy.backend.domain.industry.dto.IndustryDto;
 import com.ssafy.backend.domain.industry.mapper.IndustryMapper;
+import com.ssafy.backend.domain.industry.repository.IndustryRepository;
 import com.ssafy.backend.domain.keyword.dto.StockKeywordDto;
+import com.ssafy.backend.domain.keyword.entity.Keyword;
 import com.ssafy.backend.domain.keyword.repository.KeywordRepository;
+import com.ssafy.backend.domain.keyword.repository.KeywordStatisticRepository;
+import com.ssafy.backend.domain.keyword.service.KeywordService;
 import com.ssafy.backend.domain.member.entity.Member;
 import com.ssafy.backend.domain.stock.api.request.GetCorrelationRequest;
 import com.ssafy.backend.domain.stock.api.response.GetStockTodayResponse;
@@ -22,12 +26,15 @@ import com.ssafy.backend.global.exception.dailyStock.DailyStockException;
 import com.ssafy.backend.global.exception.dailyStock.DailyStockExceptionType;
 import com.ssafy.backend.global.exception.favorite.FavoriteException;
 import com.ssafy.backend.global.exception.favorite.FavoriteExceptionType;
+import com.ssafy.backend.global.exception.keyword.KeywordException;
+import com.ssafy.backend.global.exception.keyword.KeywordExceptionType;
 import com.ssafy.backend.global.exception.stock.StockException;
 import com.ssafy.backend.global.exception.stock.StockExceptionType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,14 +49,19 @@ public class StockServiceImpl implements StockService{
     private final IndustryMapper industryMapper;
     private final BusinessMapper businessMapper;
     private final KeywordRepository keywordRepository;
+    private final KeywordStatisticRepository keywordStatisticRepository;
     private final FavoriteRepository favoriteRepository;
     private final FavoriteService favoriteService;
+    private final KeywordService keywordService;
 
     private final DailyStockRepository dailyStockRepository;
+    private final IndustryRepository industryRepository;
 
     public StockDto getStock(Long stockId)  {
         Stock stock = stockRepository.findById(stockId).orElseThrow(()->new StockException(StockExceptionType.NOT_FOUND));
         StockDto stockDto = stockMapper.toStockDto(stock);
+        int industryTotalCount = stockRepository.findByIndustry(stock.getIndustry()).size();
+        stockDto.setIndustryTotalCount(industryTotalCount);
         IndustryDto industryDto = industryMapper.toDto(stock.getIndustry());
         List<BusinessDto> businessDtos = businessMapper.toDto(stock.getBusinesses());
         stockDto.setIndustry(industryDto);
@@ -206,10 +218,21 @@ public class StockServiceImpl implements StockService{
         favoriteRepository.delete(favorite);
     }
 
-    @Override
-    public Object getCorrelation(Long id, GetCorrelationRequest getCorrelationRequest) {
+    public Object getCorrelation(Long id, GetCorrelationRequest getCorrelationRequest){
+        Stock stock = getStockEntity(id);
+
+
+        Long keywordId = getCorrelationRequest.getKeywordId();
+        Keyword keyword = keywordRepository.findById(keywordId).orElseThrow(() ->
+                new KeywordException(KeywordExceptionType.KEYWORD_NOT_EXIST));
+        LocalDate startDate = getCorrelationRequest.getStartDate();
+        LocalDate endDate = getCorrelationRequest.getEndDate();
+        List<Object[]> avgKeywordCount = keywordStatisticRepository.findAvgKeywordCount(keyword, startDate, endDate);
         return null;
     }
+
+
+
 
     // Stock Entity 반환
     private Stock getStockEntity(Long id) {
