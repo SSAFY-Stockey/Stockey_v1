@@ -1,12 +1,57 @@
 import styled from "styled-components"
-import SampleIndustryData from "./SampleIndustryData"
+import { useQuery } from "react-query"
+import { useNavigate } from "react-router-dom"
+import { useRecoilState } from "recoil"
+import { accessTokenSelector } from "../../../stores/atoms"
+import customAxios from "../../../utils/customAxios"
 import IndustryCard from "../../IndustryMainPage/IndustrySelector/IndustryCard"
+import Spinner from "../../common/Spinner/Spinner"
+
+// fetch data interface
+export interface MyIndustryType {
+  id: number
+  name: string
+  description: string
+  category: string
+}
 
 const IndustryList = () => {
+  // accessToken state
+  const [accessToken, setAccessToken] = useRecoilState(accessTokenSelector)
+  const navigate = useNavigate()
+
+  // custom Axios
+  const axios = customAxios(accessToken, setAccessToken)
+
+  // useQuery : MyIndustryList
+  const fetchMyIndustryList = () => {
+    return axios.get("/industry/stocklist/my")
+  }
+
+  const select = (response: any) => {
+    const data: MyIndustryType[] = response.data.data
+    return data
+  }
+
+  const { isLoading, data: MyIndustryList } = useQuery(
+    "getMyIndustryLis",
+    fetchMyIndustryList,
+    {
+      select,
+      retry: false,
+      refetchOnWindowFocus: false,
+      enabled: !!accessToken,
+    }
+  )
+
+  if (isLoading) {
+    return <Spinner />
+  }
+
   return (
     <>
       <IndustryListWrapper>
-        {SampleIndustryData.map((IndustryInfo, key) => {
+        {MyIndustryList?.map((IndustryInfo, key) => {
           return (
             <CardWrapper key={key}>
               <IndustryCard industryInfo={IndustryInfo} />

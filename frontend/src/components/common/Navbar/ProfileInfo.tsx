@@ -3,7 +3,6 @@ import LoginBtn from "./LoginBtn"
 import { useEffect } from "react"
 import customAxios from "../../../utils/customAxios"
 import { useQuery } from "react-query"
-import { useNavigate } from "react-router"
 import { useRecoilState, useSetRecoilState } from "recoil"
 import {
   logInState,
@@ -20,10 +19,9 @@ const ProfileInfo = ({ isNarrow }: Props) => {
   const [isLogin, setIsLogin] = useRecoilState(logInState)
   const [accessToken, setAccessToken] = useRecoilState(accessTokenSelector)
   const setNickname = useSetRecoilState(nicknameState)
-  // useNavigate
-  const navigate = useNavigate()
+
   // axios
-  const axios = customAxios(accessToken, setAccessToken, navigate, "nickname")
+  const axios = customAxios(accessToken, setAccessToken)
 
   // nickname 요청 react query
   // nickname fuction
