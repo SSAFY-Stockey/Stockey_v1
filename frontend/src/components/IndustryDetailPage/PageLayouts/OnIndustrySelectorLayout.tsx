@@ -15,12 +15,19 @@ import IndustryMarketCapLineChart from "../IndustryMarketCapLineChart/IndustryMa
 import IndustryBubbleChart from "../IndustryBubbleChart/IndustryBubbleChart"
 import { LayoutProps } from "./DefaultLayout"
 import IndustrySelector from "../../IndustryMainPage/IndustrySelector/IndustrySelector"
+import { useMyIndustryCheck } from "../../../hooks/useMyIndustryCheck"
+import { useEffect, useState } from "react"
 
 const OnIndustrySelectorLayout = ({
   changeLayout,
   className,
   industryInfo,
 }: LayoutProps) => {
+  const { data: bookmarked } = useMyIndustryCheck(industryInfo.id)
+  const [isBookmarked, setIsBookmarked] = useState<boolean>(false)
+  useEffect(() => {
+    setIsBookmarked(bookmarked)
+  }, [bookmarked])
   return (
     <>
       <Grid item xs={12} marginLeft={4.5}>
@@ -46,7 +53,11 @@ const OnIndustrySelectorLayout = ({
           <LeftSlider className={`sel ${className}`}>
             <TitleDiv>
               {industryInfo?.name}
-              <BookmarkBtn isBookmarked={false} page="stock" num={1} />
+              <BookmarkBtn
+                isBookmarked={isBookmarked}
+                page="industry"
+                num={industryInfo.id}
+              />
             </TitleDiv>
           </LeftSlider>
           <LeftSlider className={`sel ${className}`}>
