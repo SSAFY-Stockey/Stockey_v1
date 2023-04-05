@@ -43,7 +43,7 @@ springdoc:
 
 kakaoOauth:
   REST_API_KEY: 204f458585e0229e8443cd7bc1be5c5e
-  REDIRECT_URL: http://j8a508.p.ssafy.io:8080/oauth/kakao
+  REDIRECT_URL: https://j8a508.p.ssafy.io/oauth/kakao
 
 
 jwt:
