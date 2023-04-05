@@ -8,6 +8,7 @@ import com.ssafy.backend.domain.industry.mapper.IndustryMapper;
 import com.ssafy.backend.domain.keyword.dto.StockKeywordDto;
 import com.ssafy.backend.domain.keyword.repository.KeywordRepository;
 import com.ssafy.backend.domain.member.entity.Member;
+import com.ssafy.backend.domain.stock.api.request.GetCorrelationRequest;
 import com.ssafy.backend.domain.stock.api.response.GetStockTodayResponse;
 import com.ssafy.backend.domain.stock.dto.*;
 import com.ssafy.backend.domain.stock.entity.DailyStock;
@@ -203,6 +204,11 @@ public class StockServiceImpl implements StockService{
         Favorite favorite = favoriteRepository.findByMemberAndStock(member, stock);
         checkUser(member, favorite);
         favoriteRepository.delete(favorite);
+    }
+
+    @Override
+    public Object getCorrelation(Long id, GetCorrelationRequest getCorrelationRequest) {
+        return null;
     }
 
     // Stock Entity 반환
