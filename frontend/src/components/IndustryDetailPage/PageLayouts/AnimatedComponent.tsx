@@ -11,10 +11,19 @@ const TitleDiv = styled.div`
 `
 
 const LeftSection = styled.div`
-  padding: 0px 0px 36px 36px;
+  padding: 0px 10px 36px 26px;
   display: flex;
   flex-direction: column;
   gap: 24px;
+  height: calc(100vh - 96px);
+
+  &.kwd {
+    overflow-y: scroll;
+    height: 100vh;
+  }
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `
 
 const RightSection = styled.div`
@@ -43,12 +52,12 @@ const SlideToLeftForKwd = keyframes`
   }
 `
 
-const SlideOverRight = keyframes`
+const SlideOverLeft = keyframes`
   from {
     transform: translateX(0%);
   }
   to {
-    transform: translateX(71.4%);
+    transform: translateX(-71.4%);
   }
 `
 
@@ -157,9 +166,12 @@ const SelectorSlider = styled.div`
     animation-name: ${SlideUpAndDisappear};
   }
   &.sel.kwd-to-sel {
+    z-index: 1;
+    animation-delay: 0.6s;
     animation-name: ${SlideDownAndAppear};
   }
   &.sel-to-kwd {
+    animation-duration: 0.4s;
     animation-name: ${SlideUpAndDisappear};
   }
 `
@@ -169,18 +181,20 @@ const LeftSlider = styled.div`
   animation-duration: 0.6s;
   animation-fill-mode: forwards;
   animation-timing-function: ease-in-out;
+  z-index: 1;
   &.sel.def-to-sel {
     animation-name: ${SlideToRight};
   }
   &.def.sel-to-def {
     animation-name: ${SlideToLeft};
   }
-  &.kwd.kwd-to-sel {
-    animation-name: ${SlideOverRight};
+  &.sel.kwd-to-sel {
+    animation-name: ${SlideToRight};
   }
-  &.kwd.sel-to-kwd {
+  &.sel.sel-to-kwd {
+    animation-delay: 0.4s;
     animation-duration: 0.4s;
-    animation-name: ${SlideToLeft};
+    animation-name: ${SlideOverLeft};
   }
 `
 
@@ -217,12 +231,13 @@ const RightSlider = styled.div`
   &.def.kwd-to-def {
     animation-name: ${FadeIn};
   }
-  &.kwd.kwd-to-sel {
-    animation-name: ${SlideOverRight};
+  &.sel.kwd-to-sel {
+    animation-name: ${SlideToRight};
   }
-  &.kwd.sel-to-kwd {
+  &.sel.sel-to-kwd {
+    animation-delay: 0.4s;
     animation-duration: 0.4s;
-    animation-name: ${SlideToLeft};
+    animation-name: ${SlideOverLeft};
   }
 `
 
@@ -231,6 +246,14 @@ const PanelSlider = styled.div`
   animation-duration: 0.6s;
   animation-fill-mode: forwards;
   animation-timing-function: ease;
+  &.kwd {
+    height: 100vh;
+    overflow-y: scroll;
+    overflow-x: visible;
+  }
+  &.kwd::-webkit-scrollbar {
+    display: none;
+  }
   &.def-to-kwd {
     animation-name: ${SlideToLeftForKwd};
   }
