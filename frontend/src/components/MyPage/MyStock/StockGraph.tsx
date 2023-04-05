@@ -1,4 +1,10 @@
 import styled from "styled-components"
+// useQuery
+import { useQuery } from "react-query"
+import { useNavigate } from "react-router-dom"
+import { useRecoilState } from "recoil"
+import { accessTokenSelector } from "../../../stores/atoms"
+import customAxios from "../../../utils/customAxios"
 // sub component
 import StockAxis from "./StockAxis"
 import StockGraphBar from "./StockGraphBar"
@@ -7,6 +13,26 @@ import StockGraphBar from "./StockGraphBar"
 import sampleData from "./SampleData"
 
 const StockGraph = () => {
+  // accessTokenState
+  const [accessToken, setAccessToken] = useRecoilState(accessTokenSelector)
+  // useNavigate
+  const navigate = useNavigate()
+  // customAxios
+  const axios = customAxios(accessToken, setAccessToken)
+
+  // useQuery: getMyStockList
+  const fetchMyStockList = () => {
+    return axios.get("/stock/my")
+  }
+
+  const { isLoading, data } = useQuery("getMyStockList", fetchMyStockList, {
+    refetchOnWindowFocus: false,
+    retry: false,
+    enabled: !!accessToken,
+  })
+
+  console.log(data)
+
   return (
     <>
       <GraphWrapper>
