@@ -50,13 +50,14 @@ const IndustryMarketCapLineChart = ({ industryId }: { industryId: number }) => {
     navigator: {
       enabled: true,
       handles: {
-        backgroundColor: "var(--custom-purple-2)",
-        borderColor: "var(--custom-black)",
+        backgroundColor: "var(--custom-purple-3)",
+        borderColor: "var(--custom-purple-1)",
         height: 20,
       },
       height: 60,
       margin: 30,
-      maskFill: "rgba(212, 193, 255, 0.4)",
+      maskFill: "rgba(120, 120, 120, 0.4)",
+      maskInside: false,
     },
     plotOptions: {},
     rangeSelector: {
@@ -148,18 +149,37 @@ const IndustryMarketCapLineChart = ({ industryId }: { industryId: number }) => {
     },
     xAxis: {
       type: "datetime",
+      dateTimeLabelFormats: {
+        day: "%b %e일",
+        week: "%b %e일",
+        month: "%y년 %b",
+        year: "%Y",
+      },
       labels: {
         step: 1,
       },
     },
     yAxis: {
       type: "linear",
+      labels: {
+        formatter: function (this: any) {
+          let result: string
+          if (this.value >= 1000000000000) {
+            result = Math.round(this.value / 1000000000000).toString() + "조"
+          } else {
+            result = Math.round(this.value / 100000000).toString() + "억"
+          }
+          return result
+        },
+      },
     },
   }
 
   return (
     <AreaDiv>
-      <TitleDiv>산업 규모</TitleDiv>
+      <TitleDiv>
+        <ColoredSpan>키워드</ColoredSpan>로 보는 산업 규모
+      </TitleDiv>
       <ChartWrapper>
         {isLoading ? (
           <Spinner />
@@ -205,4 +225,8 @@ const TitleDiv = styled.div`
   display: flex;
   align-items: center;
   letter-spacing: 0.1px;
+`
+
+const ColoredSpan = styled.span`
+  color: var(--custom-mint);
 `

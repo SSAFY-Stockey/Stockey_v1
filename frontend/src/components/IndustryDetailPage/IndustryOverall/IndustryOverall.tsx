@@ -42,7 +42,7 @@ const OverallDiv = styled.div`
   align-items: top;
   padding: 24px 18px;
   gap: 18px;
-  background: #eaddff;
+  background: var(--custom-purple-4);
   border-radius: 24px;
 `
 
@@ -54,10 +54,9 @@ const ImgDiv = styled.div`
 const DescriptionDiv = styled.div`
   flex-grow: 1;
   font-family: "Roboto";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
+  font-weight: normal;
+  font-size: 1.5rem;
+  line-height: 2rem;
   letter-spacing: 0.1px;
   white-space: pre-line;
 `
