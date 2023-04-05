@@ -17,6 +17,7 @@ import { LayoutProps } from "./DefaultLayout"
 import IndustrySelector from "../../IndustryMainPage/IndustrySelector/IndustrySelector"
 import { useMyIndustryCheck } from "../../../hooks/useMyIndustryCheck"
 import { useEffect, useState } from "react"
+import AnalysisSection from "../../StockDetailPage/MainSection/KeywordSection/AnalysisSection"
 
 const OnIndustrySelectorLayout = ({
   changeLayout,
@@ -42,14 +43,14 @@ const OnIndustrySelectorLayout = ({
         </ButtonDiv>
       </Grid>
       <Grid item xs={5}>
-        <LeftSection>
+        <LeftSection className="sel">
           <SelectorSlider className={`sel ${className}`}>
             <IndustrySelector />
           </SelectorSlider>
         </LeftSection>
       </Grid>
       <Grid item xs={7}>
-        <RightSection id="right">
+        <RightSection id="right" className="sel">
           <LeftSlider className={`sel ${className}`}>
             <TitleDiv>
               {industryInfo?.name}
@@ -67,7 +68,7 @@ const OnIndustrySelectorLayout = ({
             <IndustryMarketCapLineChart industryId={industryInfo.id} />
           </LeftSlider>
           <LeftSlider className={`sel ${className}`}>
-            <div>연관 키워드 차트</div>
+            <AnalysisSection />
           </LeftSlider>
           <RightSlider className={`sel ${className}`}>
             <IndustryBubbleChart industryId={industryInfo?.id} />

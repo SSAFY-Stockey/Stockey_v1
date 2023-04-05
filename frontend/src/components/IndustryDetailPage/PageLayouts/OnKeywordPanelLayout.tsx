@@ -16,6 +16,7 @@ import KeywordPanel from "../../StockDetailPage/SubPanel/KeywordPanel/KeywordPan
 import { LayoutProps } from "./DefaultLayout"
 import { useMyIndustryCheck } from "../../../hooks/useMyIndustryCheck"
 import { useEffect, useState } from "react"
+import AnalysisSection from "../../StockDetailPage/MainSection/KeywordSection/AnalysisSection"
 
 const OnKeywordPanelLayout = ({
   changeLayout,
@@ -30,7 +31,7 @@ const OnKeywordPanelLayout = ({
   return (
     <>
       <Grid item xs={7}>
-        <LeftSection>
+        <LeftSection className="kwd">
           <ButtonDiv id="btn">
             <button onClick={(e) => changeLayout(e, "kwd")}>
               keywordPanel
@@ -59,7 +60,7 @@ const OnKeywordPanelLayout = ({
             <IndustryMarketCapLineChart industryId={industryInfo?.id} />
           </LeftSlider>
           <LeftSlider className={`kwd ${className}`}>
-            <div>연관 키워드 차트</div>
+            <AnalysisSection />
           </LeftSlider>
           <RightSlider className={`kwd ${className}`}>
             <IndustryBubbleChart industryId={industryInfo?.id} />
@@ -70,7 +71,7 @@ const OnKeywordPanelLayout = ({
         </LeftSection>
       </Grid>
       <Grid item xs={5}>
-        <PanelSlider className={className}>
+        <PanelSlider className={`kwd ${className}`}>
           <KeywordPanel keyword="빅스텝" />
         </PanelSlider>
       </Grid>
