@@ -1,6 +1,7 @@
 import { useSetRecoilState } from "recoil"
 import styled from "styled-components"
 import { myKeywordState } from "../../../stores/MyPageAtoms"
+import { useState } from "react"
 
 interface Props {
   id: number
@@ -9,7 +10,18 @@ interface Props {
 }
 
 const KeywordItem = ({ props }: { props: Props }) => {
+  // MyKeyword state
   const setMyKeyword = useSetRecoilState(myKeywordState)
+  // hover state
+  const [isHovered, setIsHovered] = useState(false)
+
+  // handle mouse hover
+  const handleMouseOver = () => {
+    setIsHovered(true)
+  }
+  const handleMouseOut = () => {
+    setIsHovered(false)
+  }
 
   const handleClick = () => {
     setMyKeyword(props.name)
@@ -17,7 +29,11 @@ const KeywordItem = ({ props }: { props: Props }) => {
 
   return (
     <>
-      <ItemDiv onClick={handleClick}>
+      <ItemDiv
+        onClick={handleClick}
+        onMouseOut={handleMouseOut}
+        onMouseOver={handleMouseOver}
+      >
         <div>{props.name}</div>
       </ItemDiv>
     </>
@@ -39,6 +55,7 @@ const ItemDiv = styled.div`
 
   // margin & padding
   padding: 24px;
+  margin: 5px 5px;
 
   // border-radius
   border-radius: 12px;
@@ -46,13 +63,25 @@ const ItemDiv = styled.div`
   //cursor
   cursor: pointer;
 
-  background-color: rgb(0, 0, 0, 0);
+  // background
+  background: white;
 
   // font
-  font-size: 2rem;
+  font-size: 1.8rem;
   font-weight: bold;
   color: var(--custom-black);
 
-  // box-shadow
-  box-shadow: 1px 2px 1px;
+  // shadow
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+  box-shadow: 1px 3px 4px rgba(0, 0, 0, 0.25);
+
+  // transition
+  transition: all 0.3s ease-in-out;
+
+  // hover
+  &:hover {
+    background: var(--custom-gradient-pink);
+    transform: scale(1.02);
+    box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.25);
+  }
 `

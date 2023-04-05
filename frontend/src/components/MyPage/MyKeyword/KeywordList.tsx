@@ -19,13 +19,14 @@ export default KeywordList
 const ListWrapper = styled.div`
   // size
   height: 25vh;
+  width: 100%;
 
   // margin & padding
   margin: 12px;
 
   // display
   display: flex;
-  gap: 12px;
+  gap: px;
   flex-wrap: wrap;
 
   // overflow
