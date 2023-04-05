@@ -23,7 +23,7 @@ const ProfileInfo = ({ isNarrow }: Props) => {
   // useNavigate
   const navigate = useNavigate()
   // axios
-  const axios = customAxios(accessToken, setAccessToken, navigate)
+  const axios = customAxios(accessToken, setAccessToken, navigate, "nickname")
 
   // nickname 요청 react query
   // nickname fuction
