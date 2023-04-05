@@ -53,10 +53,15 @@ public class StockServiceImpl implements StockService{
         List<BusinessDto> businessDtos = businessMapper.toDto(stock.getBusinesses());
         stockDto.setIndustry(industryDto);
         stockDto.setBusinesses(businessDtos);
+        System.out.println("1 = " + 1);
         Integer marketCapRank = getStockIndustryMarketCapRank(stockId, industryDto.getId());
+        System.out.println("2 = " + 2);
         stockDto.setIndustryCapRank(marketCapRank);
+        System.out.println("3 = " + 3);
         Integer favoriteRank = getStockIndustryFavoriteRank(stockId, industryDto.getId());
+        System.out.println("4 = " + 4);
         stockDto.setIndustryFavRank(favoriteRank);
+        System.out.println("5 = " + 5);
         Float avgRate = getAverageIndustryChangeRate(industryDto.getId());
         stockDto.setIndustryAvgChangeRate(avgRate);
         DailyStockDto dailyStockDto =getTodayDailyStock(stockId);
@@ -71,6 +76,9 @@ public class StockServiceImpl implements StockService{
 
     public Integer getStockIndustryFavoriteRank(Long stockId,Long industryId){
         Integer rank = stockRepository.findIndustryFavoriteRank(stockId,industryId);
+        if(rank == null){
+            return 0;
+        }
         return rank;
     }
 
