@@ -1,22 +1,31 @@
 import styled from "styled-components"
+import { useRecoilState } from "recoil"
+import { myKeywordState } from "../stores/MyPageAtoms"
+import { useEffect, useState } from "react"
 import HeadTitle from "../components/MyPage/HeadTitle"
 import MyStock from "../components/MyPage/MyStock/MyStock"
 import MyIndustry from "../components/MyPage/MyIndustry/MyIndustry"
 import MyKeyword from "../components/MyPage/MyKeyword/MyKeyword"
 import KeywordPanel from "../components/StockDetailPage/SubPanel/KeywordPanel/KeywordPanel"
-import { useRecoilValue } from "recoil"
-import { myKeywordState } from "../stores/MyPageAtoms"
-import { useEffect, useState } from "react"
+import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight"
 
 const MyPage = () => {
   // myKeyword state
-  const myKeyword = useRecoilValue(myKeywordState)
+  const [myKeyword, setMyKeword] = useRecoilState(myKeywordState)
   // keywordPanel state
   const [isActivate, setIsActivate] = useState<boolean>(false)
 
   useEffect(() => {
     setIsActivate(!!myKeyword ? true : false)
   }, [myKeyword])
+
+  // handleClick to close panel
+  const handleClick = () => {
+    setIsActivate(false)
+    setTimeout(() => {
+      setMyKeword("")
+    }, 500)
+  }
 
   return (
     <Wrapper>
@@ -31,7 +40,15 @@ const MyPage = () => {
           <MyIndustry isActivate={isActivate} isVisible={isActivate} />
         </MyPageWrapper>
         <PannerWrapper className={isActivate ? "isActivate" : undefined}>
-          {!!myKeyword ? <KeywordPanel keyword={myKeyword} /> : undefined}
+          {!!myKeyword ? (
+            <>
+              <PanelToggleBtn onClick={handleClick}>
+                <KeyboardDoubleArrowRightIcon />
+                <span>닫기</span>
+              </PanelToggleBtn>
+              <KeywordPanel keyword={myKeyword} />
+            </>
+          ) : undefined}
         </PannerWrapper>
       </ComponentWrapper>
     </Wrapper>
@@ -71,18 +88,6 @@ const MyPageWrapper = styled.div`
   }
 `
 
-// // componenet 가로 길이 고정용 wrapper
-// const ComponentColWrapper = styled.div`
-//   // size
-//   width: 100%;
-
-//   transition: width 0.8s ease-in-out;
-
-//   &.isActivate {
-//     width: 50vw;
-//   }
-// `
-
 // component 가로 정렬용 wrapper
 const ComponentRowWrapper = styled.div`
   display: flex;
@@ -106,5 +111,49 @@ const PannerWrapper = styled.div`
   &.isActivate {
     width: calc(100%-36px);
     right: 0px;
+  }
+`
+
+// keyword section close button
+const PanelToggleBtn = styled.div`
+  // size
+  width: 66px;
+  height: 40px;
+
+  // background
+  background-color: var(--custom-pink-3);
+  background: opacity 0.5s;
+
+  // position
+  position: absolute;
+  top: 40px;
+  left: -32px;
+
+  // border
+  border-radius: 25% 0 0 25%;
+  border: 3px solid var(--custom-pink-2);
+  border-right: none;
+
+  // flex-box
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+
+  // cursor
+  cursor: pointer;
+
+  // z-index
+  z-index: 0;
+
+  // transition
+  transition: left 0.3s;
+
+  & > span {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+
+  &:hover {
+    left: -66px;
   }
 `
