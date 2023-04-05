@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { PanelTitle } from "../KeywordPanel/KeywordPanel"
+import { PanelTitle } from "../SubPanel/KeywordPanel/KeywordPanel"
 import BookmarkBtn from "../../common/Bookmark/BookmarkBtn"
 import PriceSection from "./PriceSection/PriceSection"
 import AnalysisSection from "./KeywordSection/AnalysisSection"
@@ -11,7 +11,7 @@ const StockMainSection = () => {
       <Grid item xs={12}>
         <PanelTitle>
           네이버
-          <BookmarkBtn isBookmarked={false} page="stock" />
+          <BookmarkBtn isBookmarked={false} page="stock" num={2} />
         </PanelTitle>
       </Grid>
       <Grid item xs={12} id="priceChartRef">

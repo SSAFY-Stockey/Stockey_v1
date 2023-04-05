@@ -2,18 +2,58 @@ import styled from "styled-components"
 import { useState } from "react"
 import BookmarkRoundedIcon from "@mui/icons-material/BookmarkRounded"
 import BookmarkBorderRoundedIcon from "@mui/icons-material/BookmarkBorderRounded"
+import customAxios from "../../../utils/customAxios"
+// recoil
+import { useRecoilState } from "recoil"
+import { accessTokenSelector } from "../../../stores/atoms"
+// react - query
+import { useMutation } from "react-query"
 
+// 입력 데이터
 type BookmarkProps = {
-  isBookmarked: boolean
-  page: string
+  isBookmarked: boolean // 해당 데이터가 북마크 되었는지
+  page: string // 어느 위치에서 사용되는 버튼인지
+  num: number // 해당 항목의 id(num)
 }
 
-const BookmarkBtn = ({ isBookmarked, page }: BookmarkProps) => {
+// page : keyword, industry, stock 3개 중 1가지 입력할 것!
+const BookmarkBtn = ({ isBookmarked, page, num }: BookmarkProps) => {
   // bookmark state
   const [bookmarked, setBookmarked] = useState(isBookmarked)
   // hover state
   const [isHovered, setIsHovered] = useState(false)
+  // accessToken selector
+  const [accessToken, setAccessToken] = useRecoilState(accessTokenSelector)
+  // customAxios
+  const axios = customAxios(accessToken, setAccessToken)
+  // fetchUrl
+  const fetchUrl =
+    page === "industry"
+      ? `/industry/my/${num}`
+      : page === "stock"
+      ? `/stock/my/${num}`
+      : page === "keyword"
+      ? `/keywords/keywordlist/my/${num}`
+      : ""
 
+  // 관심 등록 Function & useMutation
+  const fetchAddBookmark = () => {
+    return axios.post(fetchUrl)
+  }
+  const { mutate: addBookmark } = useMutation(fetchAddBookmark, {
+    onSuccess: () => {
+      setBookmarked(true)
+    },
+  })
+  // 관심 해제 Function & useMutation
+  const fetchDeleteBookmark = () => {
+    return axios.delete(fetchUrl)
+  }
+  const { mutate: deleteBookmark } = useMutation(fetchDeleteBookmark, {
+    onSuccess: () => {
+      setBookmarked(false)
+    },
+  })
   // hovering handling
   const handleMouseOVer = () => {
     setIsHovered(true)
@@ -24,7 +64,11 @@ const BookmarkBtn = ({ isBookmarked, page }: BookmarkProps) => {
 
   // click handling
   const handleClick = () => {
-    setBookmarked(!bookmarked)
+    if (bookmarked) {
+      deleteBookmark()
+    } else {
+      addBookmark()
+    }
   }
 
   return (
@@ -84,7 +128,6 @@ const IconText = styled.div`
 
   // font
   font-size: 1.5rem;
-  font-weight: bold;
   color: white;
 
   // shape
@@ -98,7 +141,7 @@ const IconText = styled.div`
   padding: 0.5rem;
 
   // size
-  width: 11rem;
+  width: 12rem;
 
   // transition
   transition: 0.2s all ease-in-out;
@@ -112,11 +155,13 @@ const IconText = styled.div`
   &.fadeIn {
     opacity: 1;
     transition: opacity 0.15s ease-in-out;
+    visibility: visible;
   }
 
   &.fadeOut {
     opacity: 0;
     transition: opacity 0.15s ease-in-out;
+    visibility: hidden;
   }
 `
 

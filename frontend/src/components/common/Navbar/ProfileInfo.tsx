@@ -9,7 +9,6 @@ import {
   accessTokenSelector,
   nicknameState,
 } from "../../../stores/atoms"
-import Spinner from "../Spinner/Spinner"
 
 interface Props {
   isNarrow: boolean
@@ -23,7 +22,7 @@ const ProfileInfo = ({ isNarrow }: Props) => {
   // axios
   const axios = customAxios(accessToken, setAccessToken)
 
-  //
+  // nickname 요청 react query
   // nickname fuction
   const fetchNickname = () => {
     return axios.get("/member")
@@ -35,8 +34,7 @@ const ProfileInfo = ({ isNarrow }: Props) => {
   const { isLoading, data: nickname } = useQuery("nickname", fetchNickname, {
     refetchOnWindowFocus: false,
     select,
-    retry: false,
-    enabled: !!accessToken,
+    retry: 1,
   })
 
   useEffect(() => {

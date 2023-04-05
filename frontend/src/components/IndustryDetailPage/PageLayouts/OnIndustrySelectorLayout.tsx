@@ -46,7 +46,7 @@ const OnIndustrySelectorLayout = ({
           <LeftSlider className={`sel ${className}`}>
             <TitleDiv>
               {industryInfo?.name}
-              <BookmarkBtn isBookmarked={false} page="stock" />
+              <BookmarkBtn isBookmarked={false} page="stock" num={1} />
             </TitleDiv>
           </LeftSlider>
           <LeftSlider className={`sel ${className}`}>

@@ -2,25 +2,19 @@ import styled from "styled-components"
 import NewsSection from "./NewsSection"
 import KeywordChartSection from "./KeywordChartSection"
 import KeywordSearchBtn from "./KeywordSearchBtn"
-import BookmarkBtn from "../../common/Bookmark/BookmarkBtn"
+import BookmarkBtn from "../../../common/Bookmark/BookmarkBtn"
 
 interface Props {
   keyword: string
 }
 
-export const triggerScroll = (elementId: string) => {
-  console.log("triggerScroll")
-  const scrollRef = document.getElementById(elementId)
-  console.log(scrollRef)
-  scrollRef?.scrollIntoView({ behavior: "smooth" })
-}
 const KeywordPanel = ({ keyword }: Props) => {
   return (
     <PanelWrapper>
       <TopRow>
         <PanelTitle>
           {keyword}
-          <BookmarkBtn isBookmarked={true} page="keyword" />
+          <BookmarkBtn isBookmarked={true} page="keyword" num={1} />
         </PanelTitle>
         <KeywordSearchBtn keyword={keyword} />
       </TopRow>
@@ -30,7 +24,7 @@ const KeywordPanel = ({ keyword }: Props) => {
       <PanelSubTitle id="newsRef">
         {keyword} 관련 기사 한 눈에 보기
       </PanelSubTitle>
-      <NewsSection triggerScroll={() => triggerScroll("newsRef")} />
+      <NewsSection />
     </PanelWrapper>
   )
 }
@@ -48,6 +42,8 @@ export const PanelWrapper = styled.div`
   height: 100%;
   overflow-y: scroll;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  z-index: 1;
+  position: relative;
 
   /* 스크롤바 숨기기 */
   -ms-overflow-style: none; /* IE and Edge */
