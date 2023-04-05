@@ -31,9 +31,20 @@ const MyPage = () => {
     }, 800)
   }
 
+  useEffect(() => {
+    if (!accessToken) {
+      window.alert("")
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!accessToken) {
+      window.alert("")
+    }
+  }, [accessToken])
+
   return (
     <Wrapper>
-      <Test accessToken={accessToken} />
       <ComponentWrapper>
         <MyPageWrapper>
           <HeadTitle />
