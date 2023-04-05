@@ -24,7 +24,6 @@ const IndustrySelector = () => {
 export default IndustrySelector
 
 const IndustrySelectorDiv = styled.div`
-  min-height: 884px;
   height: 100%;
   display: flex;
   flex-direction: column;
