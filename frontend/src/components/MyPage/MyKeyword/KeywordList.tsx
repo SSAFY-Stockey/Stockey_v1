@@ -35,9 +35,6 @@ const KeywordList = () => {
 
     return data
   }
-  const onError = () => {
-    return [{ id: 1, name: "감자", description: null }]
-  }
   const { isLoading, data: MyKeywordList } = useQuery(
     "getMyKeywordList",
     fetchMyKeywordList,
@@ -46,7 +43,6 @@ const KeywordList = () => {
       retry: false,
       enabled: !!accessToken,
       select,
-      onError,
     }
   )
 
