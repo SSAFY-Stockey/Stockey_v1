@@ -23,7 +23,7 @@ const StockGraph = () => {
   // useNavigate
   const navigate = useNavigate()
   // customAxios
-  const axios = customAxios(accessToken, setAccessToken)
+  const axios = customAxios(accessToken, setAccessToken, navigate)
 
   // useQuery: getMyStockList
   const fetchMyStockList = () => {
@@ -32,6 +32,9 @@ const StockGraph = () => {
   const select = (response: any) => {
     const data: MyStockType[] = response.data.data
     return data
+  }
+  const onError = () => {
+    return []
   }
 
   const { isLoading, data: MyStockList } = useQuery(
@@ -49,21 +52,25 @@ const StockGraph = () => {
   }
   return (
     <>
-      <GraphWrapper>
-        <StockAxis />
-        <BarWrapper>
-          {MyStockList?.map((stock, key) => {
-            return (
-              <StockGraphBar
-                key={key}
-                price={stock.price}
-                rate={stock.rate}
-                name={stock.name}
-              />
-            )
-          })}
-        </BarWrapper>
-      </GraphWrapper>
+      {!!MyStockList ? (
+        <GraphWrapper>
+          <StockAxis />
+          <BarWrapper>
+            {MyStockList?.map((stock, key) => {
+              return (
+                <StockGraphBar
+                  key={key}
+                  price={stock.price}
+                  rate={stock.rate}
+                  name={stock.name}
+                />
+              )
+            })}
+          </BarWrapper>
+        </GraphWrapper>
+      ) : (
+        <TextWrapper>관심있는 주식 종목을 등록해보세요</TextWrapper>
+      )}
     </>
   )
 }
@@ -119,4 +126,20 @@ const BarWrapper = styled.div`
   &::-webkit-scrollbar-track {
     // background-color: rgba(0,0,0,0); // 스크롤바 뒷 배경 색상
   }
+`
+
+const TextWrapper = styled.div`
+  // size:
+  width: 100%;
+  height: 100%;
+
+  // flex-box
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  // font
+  font-size: 3rem;
+  font-weight: bold;
+  color: var(--custom-black);
 `
