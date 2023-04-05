@@ -29,5 +29,6 @@ public interface KeywordService {
     List<TopKeywordDTO> getTopNKeyword(GetTopNKeywordRequest getTopNKeywordRequest);
 
     List<GetKeyPhraseResponse.Message> getKeyphrase(Long keywordId, GetKeyphraseRequest getKeyphraseRequest);
+//    List<Object[]> findAvgKeywordCount(Keyword keyword, LocalDate startDate, LocalDate endDate);
 
 }

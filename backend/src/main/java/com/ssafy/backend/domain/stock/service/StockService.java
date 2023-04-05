@@ -1,7 +1,9 @@
 package com.ssafy.backend.domain.stock.service;
 
+import com.ssafy.backend.domain.keyword.api.request.GetKeyphraseRequest;
 import com.ssafy.backend.domain.keyword.dto.StockKeywordDto;
 import com.ssafy.backend.domain.member.entity.Member;
+import com.ssafy.backend.domain.stock.api.request.GetCorrelationRequest;
 import com.ssafy.backend.domain.stock.api.response.GetStockTodayResponse;
 import com.ssafy.backend.domain.stock.dto.DailyStockDto;
 import com.ssafy.backend.domain.stock.dto.StockDto;
@@ -27,6 +29,8 @@ public interface StockService {
      void addFavorite(Member member,Long id);
      void deleteFavorite(Member member,Long id);
      boolean checkFavorite(Member member,Long id);
+
+     Object getCorrelation(Long id, GetCorrelationRequest getCorrelationRequest);
 
 
 }
