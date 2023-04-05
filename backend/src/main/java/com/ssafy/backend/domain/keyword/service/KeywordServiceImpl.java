@@ -4,9 +4,9 @@ import com.ssafy.backend.domain.favorites.entity.Favorite;
 import com.ssafy.backend.domain.favorites.repository.FavoriteRepository;
 import com.ssafy.backend.domain.keyword.api.request.GetKeyphraseRequest;
 import com.ssafy.backend.domain.keyword.api.request.GetTopNKeywordRequest;
+import com.ssafy.backend.domain.keyword.dto.GetKeyPhraseResponse;
 import com.ssafy.backend.domain.keyword.dto.KeywordDto;
 import com.ssafy.backend.domain.keyword.dto.KeywordStatisticDto;
-import com.ssafy.backend.domain.keyword.dto.Response;
 import com.ssafy.backend.domain.keyword.dto.TopKeywordDTO;
 import com.ssafy.backend.domain.keyword.entity.Keyword;
 import com.ssafy.backend.domain.keyword.mapper.KeywordMapper;
@@ -175,7 +175,7 @@ public class KeywordServiceImpl implements KeywordService{
     }
 
     @Override
-    public List<Response.Message> getKeyphrase(Long keywordId, GetKeyphraseRequest getKeyphraseRequest) {
+    public List<GetKeyPhraseResponse.Message> getKeyphrase(Long keywordId, GetKeyphraseRequest getKeyphraseRequest) {
 
         LocalDate startDate = getKeyphraseRequest.getStartDate();
         LocalDate endDate = getKeyphraseRequest.getEndDate();
@@ -196,8 +196,8 @@ public class KeywordServiceImpl implements KeywordService{
                 .queryParam("end_date",endDateString)
                 .buildAndExpand(keywordId)
                 .toUriString();
-        ResponseEntity<Response> response = restTemplate.exchange(queryUrl, HttpMethod.GET, null, new ParameterizedTypeReference<Response>() {});
-        Response Returns = response.getBody();
+        ResponseEntity<GetKeyPhraseResponse> response = restTemplate.exchange(queryUrl, HttpMethod.GET, null, new ParameterizedTypeReference<GetKeyPhraseResponse>() {});
+        GetKeyPhraseResponse Returns = response.getBody();
         return Returns.getMessages();
     }
 
