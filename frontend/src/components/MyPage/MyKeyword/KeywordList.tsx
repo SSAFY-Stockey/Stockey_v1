@@ -1,12 +1,39 @@
 import styled from "styled-components"
 import KeywordItem from "./KeywordItem"
 import KeywordSampleData from "./KeywordSampleData"
-import { useRecoilValue } from "recoil"
+import { useRecoilValue, useRecoilState } from "recoil"
 import { myKeywordState } from "../../../stores/MyPageAtoms"
 
-const KeywordList = () => {
-  const myKeyword = useRecoilValue(myKeywordState)
+// useQuery
+import { useQuery } from "react-query"
+import { useNavigate } from "react-router-dom"
+import { accessTokenSelector } from "../../../stores/atoms"
+import customAxios from "../../../utils/customAxios"
 
+const KeywordList = () => {
+  // selected myKeyword state
+  const myKeyword = useRecoilValue(myKeywordState)
+  // accesstoken state
+  const [accessToken, setAccessToken] = useRecoilState(accessTokenSelector)
+  // useNavigate
+  const navigate = useNavigate()
+  // customAxios
+  const axios = customAxios(accessToken, setAccessToken)
+
+  // useQuery: get my keyword
+  const fetchMyKeywordList = () => {
+    return axios.get("/keywords/keywordlist/my")
+  }
+  const { isLoading, data: MyKeywordList } = useQuery(
+    "getMyKeywordList",
+    fetchMyKeywordList,
+    {
+      refetchOnMount: false,
+      retry: false,
+      enabled: !!accessToken,
+    }
+  )
+  console.log(MyKeywordList)
   return (
     <>
       <ListWrapper>
