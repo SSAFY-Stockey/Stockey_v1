@@ -21,7 +21,7 @@ const IndustryList = () => {
   const navigate = useNavigate()
 
   // custom Axios
-  const axios = customAxios(accessToken, setAccessToken)
+  const axios = customAxios(accessToken, setAccessToken, navigate)
 
   // useQuery : MyIndustryList
   const fetchMyIndustryList = () => {
@@ -33,11 +33,16 @@ const IndustryList = () => {
     return data
   }
 
+  const onError = () => {
+    return []
+  }
+
   const { isLoading, data: MyIndustryList } = useQuery(
     "getMyIndustryLis",
     fetchMyIndustryList,
     {
       select,
+      onError,
       retry: false,
       refetchOnWindowFocus: false,
       enabled: !!accessToken,
@@ -50,15 +55,19 @@ const IndustryList = () => {
 
   return (
     <>
-      <IndustryListWrapper>
-        {MyIndustryList?.map((IndustryInfo, key) => {
-          return (
-            <CardWrapper key={key}>
-              <IndustryCard industryInfo={IndustryInfo} />
-            </CardWrapper>
-          )
-        })}
-      </IndustryListWrapper>
+      {!!MyIndustryList ? (
+        <IndustryListWrapper>
+          {MyIndustryList?.map((IndustryInfo, key) => {
+            return (
+              <CardWrapper key={key}>
+                <IndustryCard industryInfo={IndustryInfo} />
+              </CardWrapper>
+            )
+          })}
+        </IndustryListWrapper>
+      ) : (
+        <TextWrapper>관심있는 산업 분야를 등록해보세요</TextWrapper>
+      )}
     </>
   )
 }
@@ -110,4 +119,20 @@ const IndustryListWrapper = styled.div`
 const CardWrapper = styled.div`
   margin-top: 2vh;
   min-width: calc(75px + 3vh);
+`
+
+const TextWrapper = styled.div`
+  // size:
+  width: 100%;
+  height: 100%;
+
+  // flex-box
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  // font
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--custom-black);
 `

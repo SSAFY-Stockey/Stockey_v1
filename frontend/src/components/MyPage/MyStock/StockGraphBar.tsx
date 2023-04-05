@@ -86,7 +86,7 @@ const GraphBarDiv = styled.div`
   background-color: var(--custom-black);
 
   // border
-  border-radius: 18px 18px 19px 19px;
+  border-radius: 18px 18px 18.2px 18.2px;
 
   // flex-box
   display: flex;
