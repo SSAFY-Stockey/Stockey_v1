@@ -69,9 +69,7 @@ const customAxios = (
         setAccessToken(undefined)
       }
 
-      if (navigate) {
-        navigate("/user/login")
-      }
+      console.log(1)
     }
   }
 
