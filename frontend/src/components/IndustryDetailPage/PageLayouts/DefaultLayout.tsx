@@ -12,6 +12,7 @@ import BookmarkBtn from "../../common/Bookmark/BookmarkBtn"
 import IndustryOverall from "../IndustryOverall/IndustryOverall"
 import IndustryMarketCapLineChart from "../IndustryMarketCapLineChart/IndustryMarketCapLineChart"
 import IndustryBubbleChart from "../IndustryBubbleChart/IndustryBubbleChart"
+import AnalysisSection from "../../StockDetailPage/MainSection/KeywordSection/AnalysisSection"
 import { useMyIndustryCheck } from "../../../hooks/useMyIndustryCheck"
 import { useEffect, useState } from "react"
 
@@ -68,7 +69,7 @@ const DefaultLayout = ({
             <IndustryMarketCapLineChart industryId={industryInfo.id} />
           </LeftSlider>
           <LeftSlider className={`def ${className}`}>
-            <div>연관 키워드 차트</div>
+            <AnalysisSection />
           </LeftSlider>
         </LeftSection>
       </Grid>
