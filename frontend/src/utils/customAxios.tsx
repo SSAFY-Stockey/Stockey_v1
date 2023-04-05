@@ -3,6 +3,7 @@ import axios from "axios"
 // custom axios
 // parameter => accessToken : accessToken 인증이 필요한 경우, argument 값으로 accessToken, setAccessToken을 넣어서 사용
 // useQuery에서 사용하는 경우 사용하는 페이지에 직접 useQuery, useMutation을 정의하여 사용해야함
+// login이 필요한 기능의 경우 useNavigate 객체를 navigate arg에 넣어서 사용해야 함
 
 const customAxios = (
   accessToken: string | undefined = undefined,
@@ -69,7 +70,8 @@ const customAxios = (
         setAccessToken(undefined)
       }
 
-      if (!!navigate && isTokenRefreshing) {
+      if (!!navigate && name !== "nickname") {
+        window.alert("로그인이 필요합니다.")
         navigate("/user/login")
       }
     }
