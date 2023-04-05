@@ -75,7 +75,7 @@ function App() {
             <Routes>
               <Route path="/" element={<MyPage />} />
               <Route path="/stock" element={<StockMainPage />} />
-              <Route path="/stock/:stockName" element={<StockDetailPage />} />
+              <Route path="/stock/:stockId" element={<StockDetailPage />} />
               <Route path="/industry" element={<IndustryMainPage />} />
               <Route
                 path="/industry/:industryName"

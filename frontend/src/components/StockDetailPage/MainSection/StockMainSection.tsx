@@ -4,14 +4,22 @@ import BookmarkBtn from "../../common/Bookmark/BookmarkBtn"
 import PriceSection from "./PriceSection/PriceSection"
 import AnalysisSection from "./KeywordSection/AnalysisSection"
 import { Grid } from "@mui/material"
+import { useRecoilValue } from "recoil"
+import { stockDetailState } from "../../../stores/StockDetailAtoms"
 
 const StockMainSection = () => {
+  const stockDetail = useRecoilValue(stockDetailState)
+
   return (
     <SectionWrapper container rowSpacing={3}>
       <Grid item xs={12}>
         <PanelTitle>
-          네이버
-          <BookmarkBtn isBookmarked={false} page="stock" num={2} />
+          {stockDetail?.name}
+          <BookmarkBtn
+            isBookmarked={false}
+            page="stock"
+            num={stockDetail?.id}
+          />
         </PanelTitle>
       </Grid>
       <Grid item xs={12} id="priceChartRef">

@@ -62,7 +62,7 @@ export const GradientBorderBlock = styled.div<{
   background-clip: content-box, border-box;
   border-radius: 40px;
   border: ${({ selected }) =>
-    selected ? "5px solid transparent" : "5px solid #f8f8f8"};
+    selected ? "7px solid transparent" : "5px solid #f8f8f8"};
   margin-bottom: 12px;
   ::after {
     content: "";
@@ -85,6 +85,7 @@ export const ContentPaper = styled(Paper)<{ selected: boolean }>`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    cursor: pointer;
     & * {
       transform: ${({ selected }) => (selected ? "scale(1.05)" : "")};
       transform-origin: left;
@@ -104,13 +105,16 @@ const LogoImg = styled.img`
 const StockInfoDiv = styled.div`
   display: flex;
   flex-direction: column;
+  font-size: 1vw;
 `
 
 const StockName = styled.p`
   color: black;
-  font-size: 1.7rem;
+  font-size: 1.3em;
   font-weight: Bold;
   margin-bottom: 5%;
+  white-space: nowrap;
+  overflow: hidden;
 `
 
 const StockStatDiv = styled.div`
@@ -121,12 +125,14 @@ const StockStatDiv = styled.div`
 
 const StockPrice = styled.p`
   color: #8a8a8a;
-  font-size: 1.3rem;
+  font-size: 1em;
   margin-right: 5%;
   margin-block: 0px;
+  white-space: nowrap;
+  overflow: hidden;
 `
 const PriceChange = styled.p<{ isIncreasing: boolean }>`
-  font-size: 1.1rem;
+  font-size: 0.7em;
   margin-block: 0px;
   color: ${({ isIncreasing }) => (isIncreasing ? "#FB6F6F" : "#72A6FA")};
 `

@@ -33,5 +33,6 @@ const KeyphraseBubble = styled.div<{ backgroundColor: string; rank: number }>`
     & > p {
       margin: 0;
     }
+    transition: all 0.7s ease;
   }
 `

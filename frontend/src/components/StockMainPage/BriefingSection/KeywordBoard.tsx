@@ -31,8 +31,10 @@ const KeywordBoard = () => {
         </HighlightedSpan>
         로 보는 이번 주 {selectedStockName} 소식💌
       </BoardTitle>
-      <KeyphraseList />
       <Suspense fallback={<LoadingComponent />}>
+        <KeyphraseList />
+        {/* </Suspense>
+      <Suspense fallback={<LoadingComponent />}> */}
         <KeywordBarGraph />
       </Suspense>
     </BoardDiv>

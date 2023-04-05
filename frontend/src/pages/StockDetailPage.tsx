@@ -5,8 +5,18 @@ import { useState } from "react"
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight"
 import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft"
 import styled from "styled-components"
+import { useStockDetail } from "../hooks/useStockDetail"
+import { useParams } from "react-router-dom"
+import { useSetRecoilState } from "recoil"
+import { stockDetailState } from "../stores/StockDetailAtoms"
 
 const StockDetailPage = () => {
+  const params = useParams()
+  const stockId = Number(params?.stockId)
+  const { data: stockDetail } = useStockDetail(stockId)
+  const setStockDetail = useSetRecoilState(stockDetailState)
+  setStockDetail(stockDetail)
+
   const [isPanelExpanded, setIsPanelExpanded] = useState(true)
   const handleToggle = () => {
     setIsPanelExpanded((isPanelExpanded) => !isPanelExpanded)
