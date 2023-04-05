@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { useRecoilState } from "recoil"
+import { useRecoilState, useRecoilValue } from "recoil"
 import { myKeywordState } from "../stores/MyPageAtoms"
 import { useEffect, useState } from "react"
 import HeadTitle from "../components/MyPage/HeadTitle"
@@ -8,12 +8,16 @@ import MyIndustry from "../components/MyPage/MyIndustry/MyIndustry"
 import MyKeyword from "../components/MyPage/MyKeyword/MyKeyword"
 import KeywordPanel from "../components/StockDetailPage/SubPanel/KeywordPanel/KeywordPanel"
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight"
+import { accessTokenSelector } from "../stores/atoms"
+import { Test } from "../utils/TestUser"
 
 const MyPage = () => {
   // myKeyword state
   const [myKeyword, setMyKeword] = useRecoilState(myKeywordState)
   // keywordPanel state
   const [isActivate, setIsActivate] = useState<boolean>(false)
+  // accessToken state
+  const accessToken = useRecoilValue(accessTokenSelector)
 
   useEffect(() => {
     setIsActivate(!!myKeyword ? true : false)
@@ -24,11 +28,12 @@ const MyPage = () => {
     setIsActivate(false)
     setTimeout(() => {
       setMyKeword("")
-    }, 500)
+    }, 800)
   }
 
   return (
     <Wrapper>
+      <Test accessToken={accessToken} />
       <ComponentWrapper>
         <MyPageWrapper>
           <HeadTitle />
