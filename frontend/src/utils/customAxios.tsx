@@ -7,8 +7,8 @@ import axios from "axios"
 const customAxios = (
   accessToken: string | undefined = undefined,
   setAccessToken: Function | undefined = undefined,
-  name: string | undefined = undefined,
-  navigate: Function | undefined = undefined
+  navigate: Function | undefined = undefined,
+  name: string | undefined = undefined
 ) => {
   const api = axios.create({
     baseURL: `${process.env.REACT_APP_SERVER_BASE_URL}`,
@@ -69,7 +69,9 @@ const customAxios = (
         setAccessToken(undefined)
       }
 
-      console.log(1)
+      if (!!navigate) {
+        navigate("/user/login")
+      }
     }
   }
 
