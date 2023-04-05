@@ -23,8 +23,9 @@ const NewsSummaryBtn = ({
     // 이미 스크롤이 가장 하단에 위치해 있기 때문에 더 내려갈 곳이 없는 것임
     // 해결 방안
     // 백에서 NewsList를 받아와서 렌더링이 완료된 후에 triggerScroll()을 실행하도록 수정
-
-    triggerScroll("newsRef")
+    setTimeout(() => {
+      triggerScroll("newsRef")
+    }, 100)
   }
   return (
     <BtnDiv className={className} onClick={clickHandler}>

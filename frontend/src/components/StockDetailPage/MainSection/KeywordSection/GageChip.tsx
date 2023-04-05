@@ -8,7 +8,7 @@ interface Props {
 const GageChip = ({ gage, color, backgroundColor }: Props) => {
   return (
     <Badge color={color} bgColor={backgroundColor}>
-      {gage}%
+      {gage.toFixed(2)}%
     </Badge>
   )
 }

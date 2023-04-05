@@ -7,6 +7,7 @@ import {
 } from "../../../stores/StockMainAtoms"
 import { useKeyphraseList } from "../../../hooks/useKeyphraseList"
 
+export const colors: string[] = ["orange", "pink", "purple"]
 const KeyphraseList = () => {
   const { idx: selectedKeywordIdx, id } = useRecoilValue(selectedKeywordState)
   // keyphrase 리스트 읽어오기
@@ -14,20 +15,13 @@ const KeyphraseList = () => {
   const { data: keyphraseListData } = useKeyphraseList(keyphraseParams)
   console.log(keyphraseListData, "keyphraseListData")
 
-  const colors: string[] = ["orange", "pink", "purple"]
-  const keyphrases: string[] = [
-    "금리 인상",
-    "대출 규제",
-    "부동산 하락",
-    "연준 발표",
-  ]
   return (
     <KeyphraseContainer selectedIdx={selectedKeywordIdx}>
-      {keyphrases.map((phrase, index) => {
+      {keyphraseListData?.map((phraseInfo, index) => {
         return (
           <KeyphraseListItem
             key={`keyphrase-${index}`}
-            keyphrase={phrase}
+            keyphrase={phraseInfo.key_phrase}
             backgroundColor={`var(--custom-${colors[selectedKeywordIdx]}-${
               index + 1
             })`}
@@ -35,6 +29,13 @@ const KeyphraseList = () => {
           />
         )
       })}
+      {keyphraseListData?.length === 0 && (
+        <KeyphraseListItem
+          keyphrase="키프레이즈를 찾지 못했어요"
+          backgroundColor={`var(--custom-${colors[selectedKeywordIdx]}-1`}
+          rank={1}
+        />
+      )}
     </KeyphraseContainer>
   )
 }
@@ -51,7 +52,7 @@ const KeyphraseContainer = styled.div<{ selectedIdx: number }>`
   background-color: white;
   border-radius: 36px;
   position: relative;
-  height: 24vh;
+  height: 30%;
 
   // 말풍선 꼬리
   ::after {
@@ -67,6 +68,6 @@ const KeyphraseContainer = styled.div<{ selectedIdx: number }>`
     margin-left: -1.5em;
     margin-bottom: -1.5em;
     z-index: 1;
-    transition: left 0.5s ease-in-out;
+    transition: left 0.6s cubic-bezier(0.47, 1.64, 0.41, 0.8);
   }
 `
