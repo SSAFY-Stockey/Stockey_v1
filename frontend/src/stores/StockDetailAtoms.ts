@@ -1,6 +1,8 @@
 import { atom, selector } from "recoil"
 import dayjs from "dayjs"
 import { StockDetailType } from "../hooks/useStockDetail"
+import { KeywordRankParamsType } from "../hooks/useKeywordRank"
+import { KeyphraseListParamsType } from "../hooks/useKeyphraseList"
 
 // stock-detail 페이지에서 사용하는 state들을 관리하는 파일입니다.
 
@@ -41,45 +43,49 @@ export const stockDetailState = atom<StockDetailType | undefined>({
       volume: 0,
       changeRate: 0,
     },
+    industryTotalCount: 0, // 소속 산업 내 종목 수
     industryCapRank: 0, // 소속 산업 내 시총 순위
     industryFavRank: 0, // 소속 산업 내 관심 순위
     industryAvgChangeRate: 0, // 소속 산업 평균 등락률
   },
 })
 
-// // 선택된 keyword의 index를 저장하는 state
-// export const selectedKeywordState = atom<{
-//   idx: number
-//   id: number | undefined
-// }>({
-//   key: "selectedKeywordState",
-//   default: {
-//     idx: 1,
-//     id: 0,
-//   },
-// })
+// 선택된 keyword의 id를 저장하는 state
+export const selectedKeywordState = atom<{
+  idx: number
+  id: number | undefined
+}>({
+  key: "selectedKeywordState",
+  default: {
+    idx: 1,
+    id: 0,
+  },
+})
 
-// export const keywordParamsState = selector<KeywordRankParamsType>({
-//   key: "keywordParamsState",
-//   get: ({ get }) => {
-//     return {
-//       topN: 6,
-//       typeId: get(selectedStockState).id,
-//       newsType: "STOCK",
-//       startDate: dayjs().subtract(1, "year").startOf("year").format("YYMMDD"),
-//       endDate: dayjs().format("YYMMDD"),
-//     }
-//   },
-// })
-// export const keyphraseParamsState = selector<KeyphraseListParamsType>({
-//   key: "keyphraseParamsState",
-//   get: ({ get }) => {
-//     return {
-//       newsType: "STOCK",
-//       typeId: get(selectedStockState).id,
-//       keywordId: get(selectedKeywordState).id,
-//       startDate: dayjs().subtract(1, "year").startOf("year").format("YYMMDD"),
-//       endDate: dayjs().format("YYMMDD"),
-//     }
-//   },
-// })
+export const keywordAnalysisParamsState = atom<KeywordRankParamsType>({
+  key: "keywordAnalysisParamsState",
+  default: {
+    topN: 6,
+    typeId: 0,
+    newsType: "STOCK",
+    startDate: "",
+    endDate: "",
+  },
+})
+export const keyphraseAnalysisParamsState = selector<KeyphraseListParamsType>({
+  key: "keyphraseAnalysisParamsState",
+  get: ({ get }) => {
+    return {
+      newsType: get(keywordAnalysisParamsState).newsType,
+      typeId: get(keywordAnalysisParamsState).typeId,
+      keywordId: get(selectedKeywordState).id,
+      startDate: get(keywordAnalysisParamsState).startDate,
+      endDate: get(keywordAnalysisParamsState).endDate,
+    }
+  },
+})
+
+export const panelTypeState = atom<"subInfo" | "keyword">({
+  key: "panelTypeState",
+  default: "subInfo",
+})

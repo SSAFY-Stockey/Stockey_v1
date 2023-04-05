@@ -54,6 +54,7 @@ const BizTypeBox = styled.div`
     font-size: 1.8rem;
     font-weight: bold;
     margin-block: 5% 5%;
+    white-space: pre-wrap;
   }
 `
 const BizTypeWrapper = styled.div<{ type: string }>`

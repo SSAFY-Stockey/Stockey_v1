@@ -21,19 +21,6 @@ const KeywordBarGraph = () => {
   } = { ...keywordRankData }
   setSelectedKeyword({ idx: 1, id: chartData?.[1].keywordId })
 
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth)
-
-  const handleResize = () => {
-    setWindowWidth(window.innerWidth)
-  }
-
-  useEffect(() => {
-    window.addEventListener("resize", handleResize)
-    return () => {
-      window.removeEventListener("resize", handleResize)
-    }
-  }, [])
-
   const options: Highcharts.Options = {
     title: { text: undefined },
     chart: {

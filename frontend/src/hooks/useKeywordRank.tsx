@@ -48,7 +48,7 @@ interface KeywordType {
   keywordId: number
 }
 
-interface ChartDataType extends Highcharts.PointOptionsObject {
+export interface ChartDataType extends Highcharts.PointOptionsObject {
   name: string
   y: number
   rank: number

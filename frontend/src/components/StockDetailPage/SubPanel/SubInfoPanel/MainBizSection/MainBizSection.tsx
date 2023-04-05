@@ -10,7 +10,7 @@ const MainBizSection = () => {
 
   return (
     <>
-      <PanelSubTitle>잘 나가는 사업 TOP 3</PanelSubTitle>
+      <PanelSubTitle>잘 나가는 사업 TOP {bizList?.length}</PanelSubTitle>
       <Grid container spacing={1} mb={3}>
         {bizList?.map((biz, index) => (
           <Grid item xs key={`biz-${index}`}>

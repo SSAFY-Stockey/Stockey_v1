@@ -1,11 +1,15 @@
 import { useState } from "react"
 import styled, { keyframes } from "styled-components"
 import KeywordResult from "./KeywordResult"
+import { triggerScroll } from "../../../common/Functions/triggerScroll"
 
 const AnalysisSection = () => {
   const [isStarted, setIsStarted] = useState(false)
   const handleClick = () => {
     setIsStarted(!isStarted)
+    setTimeout(() => {
+      triggerScroll("analyzeResultRef")
+    }, 50)
   }
 
   return (
@@ -13,7 +17,7 @@ const AnalysisSection = () => {
       <AnalysisBtn isStarted={isStarted} onClick={handleClick}>
         뉴스 키워드 분석하기 🔍
       </AnalysisBtn>
-      <AnalysisResult isStarted={isStarted}>
+      <AnalysisResult isStarted={isStarted} id="analyzeResultRef">
         <KeywordResult />
       </AnalysisResult>
     </AnalysisBox>

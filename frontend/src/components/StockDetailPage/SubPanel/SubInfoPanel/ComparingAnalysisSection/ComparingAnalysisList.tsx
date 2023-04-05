@@ -2,29 +2,42 @@ import CapitalAnalysisCard from "./CapitalAnalysisCard"
 import PriceAnalysisCard from "./PriceAnalysisCard"
 import LikeAnalysisCard from "./LikeAnalysisCard"
 import { Grid } from "@mui/material"
+import { useRecoilValue } from "recoil"
+import { stockDetailState } from "../../../../../stores/StockDetailAtoms"
 
 const ComparingAnalysisList = () => {
+  const stockDetail = useRecoilValue(stockDetailState)
+
   return (
     <Grid container spacing={1}>
-      <Grid item>
-        <CapitalAnalysisCard
-          stockName="NAVER"
-          industry="IT"
-          industryTotal={100}
-          industryRank={1}
-        />
-      </Grid>
-      <Grid item>
-        <PriceAnalysisCard
-          stockName="NAVER"
-          industry="IT"
-          industryAvgChangeRate={0.0073933247}
-          changeRate={-0.00527705}
-        />
-      </Grid>
-      <Grid item>
-        <LikeAnalysisCard likeRank={0} industry="IT" industryTotal={100} />
-      </Grid>
+      {stockDetail && (
+        <>
+          <Grid item>
+            <CapitalAnalysisCard
+              industry={stockDetail.industry.name}
+              industryTotal={stockDetail.industryTotalCount}
+              // industryTotal={100}
+              industryRank={stockDetail.industryCapRank}
+            />
+          </Grid>
+          <Grid item>
+            <PriceAnalysisCard
+              stockName={stockDetail.name}
+              industry={stockDetail.industry.name}
+              industryAvgChangeRate={stockDetail.industryAvgChangeRate}
+              changeRate={stockDetail.todayDailyStock.changeRate}
+            />
+          </Grid>
+          <Grid item>
+            <LikeAnalysisCard
+              likeRank={stockDetail.industryFavRank}
+              industry={stockDetail.industry.name}
+              // industryTotal={100}
+              industryTotal={stockDetail.industryTotalCount}
+            />
+          </Grid>
+        </>
+      )}
     </Grid>
   )
 }

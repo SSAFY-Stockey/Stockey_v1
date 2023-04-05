@@ -50,6 +50,7 @@ export interface StockDetailType {
     volume: number
     changeRate: number
   }
+  industryTotalCount: number // 소속 산업 내 종목 수
   industryCapRank: number // 소속 산업 내 시총 순위
   industryFavRank: number // 소속 산업 내 관심 순위
   industryAvgChangeRate: number // 소속 산업 평균 등락률

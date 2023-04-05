@@ -11,6 +11,8 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { useStockPriceList } from "../../../../hooks/useStockPriceList"
 import { useStockDetail } from "../../../../hooks/useStockDetail"
+import { useRecoilState } from "recoil"
+import { keywordAnalysisParamsState } from "../../../../stores/StockDetailAtoms"
 
 // 컴포넌트 관련
 import { ChartWrapper } from "../../SubPanel/KeywordPanel/KeywordChart"
@@ -40,13 +42,15 @@ Highcharts.setOptions({
 })
 
 const StockPriceChart = () => {
-  //여기
   const params = useParams()
   const stockId = Number(params?.stockId)
   const { isLoading, data: stockPriceData } = useStockPriceList(
     stockId ? stockId : 0
   )
   const { data: stockDetailData } = useStockDetail(stockId)
+  const [keywordAnalysisParams, setKeywordAnalysisParams] = useRecoilState(
+    keywordAnalysisParamsState
+  )
 
   const [isCandle, setIsCandle] = useState<boolean>(false)
   const [chartOptions, setChartOptions] = useState<Highcharts.Options>({})
@@ -57,6 +61,10 @@ const StockPriceChart = () => {
         borderRadius: 20,
         borderWidth: 2,
         margin: 20,
+        animation: true,
+        zooming: {
+          type: "x",
+        },
       },
       xAxis: {
         type: "datetime",
@@ -68,6 +76,17 @@ const StockPriceChart = () => {
         },
         labels: {
           step: 1,
+        },
+        events: {
+          afterSetExtremes: function (this, event) {
+            console.log("fired!")
+            setKeywordAnalysisParams({
+              ...keywordAnalysisParams,
+              typeId: stockId,
+              startDate: dayjs(event.min).format("YYMMDD"),
+              endDate: dayjs(event.max).format("YYMMDD"),
+            })
+          },
         },
       },
       yAxis: {
@@ -138,7 +157,6 @@ const StockPriceChart = () => {
         valueSuffix: "원",
         useHTML: true,
         formatter: function (this: any) {
-          console.log(this.points)
           return this.points.reduce(function (initialValue: any, point: any) {
             return (
               initialValue +

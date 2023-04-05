@@ -31,7 +31,7 @@ const Fill = (gage: number) => keyframes`
     width: 0%;
   }
   100% {
-    width: ${gage}%;
+    width: ${gage * 10}%;
   }
 `
 
@@ -54,7 +54,7 @@ const ColoredBar = styled.div<{
   color: string
   animation: boolean
 }>`
-  width: ${({ gage }) => gage}%;
+  width: ${({ gage }) => gage * 10}%;
   height: 100%;
   background-color: ${({ color }) => color};
   border-radius: 20px;

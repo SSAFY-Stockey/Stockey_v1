@@ -29,6 +29,13 @@ const KeyphraseList = () => {
           />
         )
       })}
+      {keyphraseListData?.length === 0 && (
+        <KeyphraseListItem
+          keyphrase="키프레이즈를 찾지 못했어요"
+          backgroundColor={`var(--custom-${colors[selectedKeywordIdx]}-1`}
+          rank={1}
+        />
+      )}
     </KeyphraseContainer>
   )
 }

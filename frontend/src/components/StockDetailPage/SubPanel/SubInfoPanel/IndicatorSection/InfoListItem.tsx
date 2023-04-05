@@ -64,7 +64,8 @@ const InfoType = styled.p`
   color: rgba(151, 151, 151, 1);
 `
 const InfoValue = styled.p`
-  font-size: 3rem;
+  font-size: 2.6rem;
+  margin-top: 0.8rem !important;
   color: black;
 `
 const SubDescription = styled.span`
