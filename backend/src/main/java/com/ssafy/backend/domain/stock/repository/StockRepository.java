@@ -23,9 +23,9 @@ public interface StockRepository extends JpaRepository<Stock,Long> {
             "JOIN stock s\n" +
             "ON ds.stock_id = s.stock_id\n" +
             "WHERE \n" +
-            "ds.stock_id in (select stock_id from stock t where t.industry_id=1)) AS temp \n" +
+            "ds.stock_id in (select stock_id from stock t where t.industry_id=:industryId)) AS temp \n" +
             "GROUP BY temp.stock_date;",nativeQuery = true)
-    List<IndustrySumDto> getMarketList(Industry industry);
+    List<IndustrySumDto> getMarketList(Long industryId);
 
     Optional<Stock> findById(Long id);
 
