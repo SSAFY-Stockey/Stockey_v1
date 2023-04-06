@@ -1,19 +1,29 @@
 import KeywordListItem from "./KeywordListItem"
 import styled from "styled-components"
 import { Grid } from "@mui/material"
+import { ChartDataType, useKeywordRank } from "../../../../hooks/useKeywordRank"
+import { useRecoilValue } from "recoil"
+import { keywordAnalysisParamsState } from "../../../../stores/StockDetailAtoms"
 
 const OtherKeywordList = () => {
+  const keywordAnalysisParams = useRecoilValue(keywordAnalysisParamsState)
+  const { data: keywordRankData } = useKeywordRank(keywordAnalysisParams)
+  const { top3, others, totalNewsCount, yAxisMax } = { ...keywordRankData }
+
   return (
     <KeywordListWrapper container rowSpacing={6}>
-      <Grid item xs={12}>
-        <KeywordListItem rank={4} keyword="연준" percentage={24} />
-      </Grid>
-      <Grid item xs={12}>
-        <KeywordListItem rank={5} keyword="인플레이션" percentage={19} />
-      </Grid>
-      <Grid item xs={12}>
-        <KeywordListItem rank={6} keyword="클라우드" percentage={15} />
-      </Grid>
+      {others?.map((keyword: ChartDataType, index: number) => {
+        return (
+          <Grid item xs={12} key={`keyword-${index + 4}th`}>
+            <KeywordListItem
+              rank={keyword.rank}
+              keyword={keyword.name}
+              percentage={keyword.y}
+              keywordId={keyword.keywordId}
+            />
+          </Grid>
+        )
+      })}
     </KeywordListWrapper>
   )
 }

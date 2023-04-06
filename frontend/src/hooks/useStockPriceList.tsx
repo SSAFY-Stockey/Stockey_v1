@@ -8,8 +8,7 @@ const fetchStockPriceList = ({ queryKey }: any) => {
   return axios.get(`/stock/${stockId}/dailystock`)
 }
 
-export const useStockPriceList = (stockName: string) => {
-  const stockId = stockNames.indexOf(stockName) + 1
+export const useStockPriceList = (stockId: number) => {
   return useQuery(["stockPriceList", stockId], fetchStockPriceList, {
     staleTime: 5 * 60 * 1000,
     select,

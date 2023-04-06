@@ -2,7 +2,7 @@ import styled from "styled-components"
 
 interface Props {
   type: "finance" | "size" | "sales" | "credit_rating"
-  value: string
+  value: string | undefined
 }
 
 const infoType = {
@@ -15,7 +15,7 @@ const infoType = {
 const InfoListItem = ({ type, value }: Props) => {
   return (
     <InfoDiv>
-      <img src={`/infoLogos/${type}.png`} alt={type} />
+      <InfoIcon src={`/infoLogos/${type}.png`} alt={type} />
       <InfoDetailDiv>
         <InfoType>{infoType[`${type}`]}</InfoType>
         <InfoValue>
@@ -42,11 +42,16 @@ const InfoDiv = styled.div`
     // scale: 0.9;
   }
 `
+const InfoIcon = styled.img`
+  width: 40%;
+`
 
 const InfoDetailDiv = styled.div`
   display: flex;
   flex-direction: column;
-  // padding-left: 3%;
+  font-size: 1vw;
+  width: 45%;
+  overflow: hidden;
   & p {
     font-weight: bold;
     margin: 0;
@@ -55,14 +60,15 @@ const InfoDetailDiv = styled.div`
 `
 
 const InfoType = styled.p`
-  font-size: 1.2rem;
+  font-size: 1rem;
   color: rgba(151, 151, 151, 1);
 `
 const InfoValue = styled.p`
-  font-size: 3.6rem;
+  font-size: 2.6rem;
+  margin-top: 0.8rem !important;
   color: black;
 `
 const SubDescription = styled.span`
-  font-size: 1.6rem;
+  font-size: 1.3rem;
   color: rgba(109, 102, 102, 1);
 `
