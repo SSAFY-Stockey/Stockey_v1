@@ -9,6 +9,7 @@ import customAxios from "../../../utils/customAxios"
 import StockAxis from "./StockAxis"
 import StockGraphBar from "./StockGraphBar"
 import Spinner from "../../common/Spinner/Spinner"
+import { useEffect } from "react"
 
 export interface MyStockType {
   id: number
@@ -33,17 +34,23 @@ const StockGraph = () => {
     const data: MyStockType[] = response.data.data
     return data
   }
-  const { isLoading, data: MyStockList } = useQuery(
-    "getMyStockList",
-    fetchMyStockList,
-    {
-      refetchOnWindowFocus: false,
-      refetchOnMount: true,
-      retry: false,
-      // enabled: !!accessToken,
-      select,
-    }
-  )
+  const {
+    isLoading,
+    data: MyStockList,
+    refetch,
+  } = useQuery("getMyStockList", fetchMyStockList, {
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: true,
+    refetchOnMount: true,
+    retry: false,
+    staleTime: 0,
+    select,
+  })
+
+  useEffect(() => {
+    refetch()
+  }, [])
+
   if (isLoading) {
     return <Spinner />
   }
