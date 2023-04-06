@@ -7,6 +7,7 @@ import { accessTokenSelector } from "../../stores/atoms"
 import customAxios from "../../utils/customAxios"
 import { useQuery } from "react-query"
 import { useEffect, useState } from "react"
+import KeywordChart from "../StockDetailPage/SubPanel/KeywordPanel/KeywordChart"
 
 const KeywordDetailContent = ({
   keywordInfo,
@@ -53,7 +54,7 @@ const KeywordDetailContent = ({
           />
         )}
       </TitleDiv>
-      <div>빈도 차트</div>
+      <KeywordChart keyword={keywordInfo.name} keywordId={keywordInfo.id} />
       <div>관련 기사</div>
     </>
   )
