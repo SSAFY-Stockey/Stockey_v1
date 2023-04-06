@@ -4,7 +4,11 @@ import com.ssafy.backend.domain.keyword.api.request.GetKeyphraseRequest;
 import com.ssafy.backend.domain.keyword.api.request.GetTopNKeywordRequest;
 import com.ssafy.backend.domain.keyword.api.response.GetTopNKeywordResponse;
 import com.ssafy.backend.domain.keyword.api.response.KeywordDetailResponse;
-import com.ssafy.backend.domain.keyword.dto.*;
+import com.ssafy.backend.domain.keyword.api.response.KeywordSearchResponse;
+import com.ssafy.backend.domain.keyword.dto.GetKeyPhraseResponse;
+import com.ssafy.backend.domain.keyword.dto.KeywordDto;
+import com.ssafy.backend.domain.keyword.dto.KeywordStatisticDto;
+import com.ssafy.backend.domain.keyword.dto.TopKeywordDTO;
 import com.ssafy.backend.domain.keyword.mapper.KeywordDtoMapper;
 import com.ssafy.backend.domain.keyword.service.KeywordService;
 import com.ssafy.backend.global.dto.ResponseDto;
@@ -145,7 +149,12 @@ public class KeywordController {
         return new ResponseEntity<>(new ResponseDto("OK",keyphrase),HttpStatus.OK);
     }
 
-
+    @GetMapping("/search")
+    public ResponseEntity<ResponseDto> getStockSearch(@RequestParam String keyword)  {
+        List<KeywordDto> searchKeyword = keywordService.getSearchKeyword(keyword);
+        List<KeywordSearchResponse> keywordSearchResponses = keywordDtoMapper.toKeywordSearchResponse(searchKeyword);
+        return new ResponseEntity<>(new ResponseDto("OK",keywordSearchResponses),HttpStatus.OK);
+    }
 
 
 }
