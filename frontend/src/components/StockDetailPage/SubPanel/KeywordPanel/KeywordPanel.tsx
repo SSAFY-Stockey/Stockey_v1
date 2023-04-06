@@ -3,18 +3,49 @@ import NewsSection from "./NewsSection"
 import KeywordChartSection from "./KeywordChartSection"
 import KeywordSearchBtn from "./KeywordSearchBtn"
 import BookmarkBtn from "../../../common/Bookmark/BookmarkBtn"
+import { useRecoilValue, useRecoilState } from "recoil"
+import { selectedKeywordState } from "../../../../stores/StockDetailAtoms"
+// useQuery
+import { useQuery } from "react-query"
+import customAxios from "../../../../utils/customAxios"
+import { accessTokenSelector } from "../../../../stores/atoms"
 
-interface Props {
-  keyword: string
-}
+const KeywordPanel = () => {
+  const { id: keywordId, name: keyword } = useRecoilValue(selectedKeywordState)
 
-const KeywordPanel = ({ keyword }: Props) => {
+  // accesstoken state
+  const [accessToken, setAccessToken] = useRecoilState(accessTokenSelector)
+  // customAxios
+  const axios = customAxios(accessToken, setAccessToken)
+  // useQuery: get whether the keyword is bookmarked
+  const fetchIsKeywordBookmarked = () => {
+    return axios.get(`/keywords/keywordlist/my/${keywordId}`)
+  }
+  const select = (response: any) => {
+    const isBookmarked: boolean = response.data.data
+    return isBookmarked
+  }
+  const { data: isBookmarked } = useQuery(
+    "isKeywordBookmarked",
+    fetchIsKeywordBookmarked,
+    {
+      enabled: !!accessToken,
+      select,
+      refetchOnWindowFocus: true,
+    }
+  )
   return (
     <PanelWrapper>
       <TopRow>
         <PanelTitle>
           {keyword}
-          <BookmarkBtn isBookmarked={true} page="keyword" num={1} />
+          {isBookmarked !== undefined && (
+            <BookmarkBtn
+              isBookmarked={isBookmarked}
+              page="keyword"
+              num={keywordId}
+            />
+          )}
         </PanelTitle>
         <KeywordSearchBtn keyword={keyword} />
       </TopRow>
