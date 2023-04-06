@@ -14,6 +14,7 @@ import KeywordDetailPage from "./pages/KeywordDetailPage"
 import Login from "./pages/Login"
 import SignupPage from "./pages/SignupPage"
 import LoginRedirectHandler from "./components/common/Login/LoginRedirectHandler"
+import StockeyErrorPage from "./pages/StockeyErrorPage"
 
 // 스타일 적용
 import MainSection from "./components/common/Background/MainSection"
@@ -85,6 +86,7 @@ function App() {
               <Route path="/user/login" element={<Login />} />
               <Route path="/oauth/kakao" element={<LoginRedirectHandler />} />
               <Route path="/user/signup" element={<SignupPage />} />
+              <Route path="/stockeyErrorPage" element={<StockeyErrorPage />} />
             </Routes>
           </MainSection>
         </MainDiv>
