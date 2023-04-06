@@ -217,8 +217,12 @@ public class StockServiceImpl implements StockService{
 
     public Double getCorrelation(Long id, GetCorrelationRequest getCorrelationRequest){
         Stock stock = getStockEntity(id);
+        List<Keyword> all = keywordRepository.findAll();
+        System.out.println("all.size() = " + all.size());
 
         Long keywordId = getCorrelationRequest.getKeywordId();
+        System.out.println("getCorrelationRequest = " + getCorrelationRequest.getKeywordId());
+        System.out.println("keywordRepository = " + keywordRepository.findById(keywordId).get());
         Keyword keyword = keywordRepository.findById(keywordId).orElseThrow(() ->
                 new KeywordException(KeywordExceptionType.KEYWORD_NOT_EXIST));
         LocalDate startDate = getCorrelationRequest.getStartDate();
@@ -240,8 +244,9 @@ public class StockServiceImpl implements StockService{
         List<StockCorrelationDto> stockList = new ArrayList<>();
         List<Stock> stocksExceptMe = stockRepository.getStocksExceptMe(stock);
 
+        // 해당 종목을 제외한 주식들에 대하여 상관분석
         for(Stock s : stocksExceptMe){
-            Double correlation = getCorrelation(stock.getId(), getCorrelationRequest);
+            Double correlation = getCorrelation(s.getId(), getCorrelationRequest);
             stockList.add(new StockCorrelationDto(s,correlation));
         }
         Collections.sort(stockList);
