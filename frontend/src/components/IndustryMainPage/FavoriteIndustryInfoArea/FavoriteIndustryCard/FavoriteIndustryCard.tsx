@@ -6,16 +6,11 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 interface CardProps {
-  imgUrl: string
   industryName: string
   industryId: number
 }
 
-const FavoriteIndustryCard = ({
-  imgUrl,
-  industryName,
-  industryId,
-}: CardProps) => {
+const FavoriteIndustryCard = ({ industryName, industryId }: CardProps) => {
   const { data: industryMarketCap } = useIndustryMarketCap(industryId)
 
   const [rate, setRate] = useState<number>(0)
@@ -55,7 +50,10 @@ const FavoriteIndustryCard = ({
     <LocationDiv onClick={handleClickCard}>
       <CardDiv onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
         <DefaultContentDiv>
-          <IndustryLogoImg src={imgUrl} alt="logo" />
+          <IndustryLogoImg
+            src={`/industryLogos/${industryName}.png`}
+            alt="logo"
+          />
           <IndustryNameDiv>{industryName}</IndustryNameDiv>
           <FluctuationDiv value={rate}>
             {rate > 0 ? "▲" + rate : rate < 0 ? "▼" + rate : rate}%

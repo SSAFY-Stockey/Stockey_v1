@@ -42,6 +42,7 @@ const OnKeywordPanelLayout = ({
                 changeLayout(e, mode)
               }}
               status={className}
+              industryName={industryInfo.name}
             />
           </ButtonDiv>
           <LeftSlider className={`kwd ${className}`}>

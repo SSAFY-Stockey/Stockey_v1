@@ -15,7 +15,7 @@ const IndustryOverall = ({ industryInfo }: Props) => {
       <OverallDiv>
         <ImgDiv>
           <img
-            src="/industryLogos/sampleIndustryLogo.png"
+            src={`/industryLogos/${industryInfo.name}.png`}
             alt="#"
             height="100%"
           />

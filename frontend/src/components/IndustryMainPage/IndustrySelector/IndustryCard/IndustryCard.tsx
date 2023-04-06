@@ -23,7 +23,7 @@ const IndustryCard = ({ industryInfo }: { industryInfo: IndustryInfoType }) => {
       <IndustryCardActionArea onClick={onClickIndustryCard}>
         <IndustryCardContent>
           <IndustryCardBody>
-            <IndustryCardImg src="/industryLogos/sampleIndustryLogo.png" />
+            <IndustryCardImg src={`/industryLogos/${industryInfo.name}.png`} />
           </IndustryCardBody>
           <IndustryCardNameArea>
             <NameTagP>{industryInfo.name}</NameTagP>
