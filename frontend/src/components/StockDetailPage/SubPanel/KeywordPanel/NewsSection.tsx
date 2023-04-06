@@ -2,8 +2,9 @@ import { Grid } from "@mui/material"
 import NewsSummaryBtn from "./NewsSummaryBtn"
 import NewsList from "./NewsList"
 import { useState } from "react"
+import { KeywordPanelProps } from "./KeywordPanel"
 
-const NewsSection = () => {
+const NewsSection = ({ keywordId, keyword }: KeywordPanelProps) => {
   const keyphrases: string[] = [
     "금리 인상",
     "대출 규제",
