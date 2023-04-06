@@ -19,7 +19,7 @@ const KeywordItem = ({
   const setMyKeyword = useSetRecoilState(myKeywordState)
   // handle click
   const handleClick = () => {
-    setMyKeyword(keyword.name)
+    setMyKeyword(keyword)
   }
 
   return (
