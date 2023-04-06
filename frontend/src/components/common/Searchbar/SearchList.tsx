@@ -68,7 +68,7 @@ const SearchList = ({ page, value }: SearchListProps) => {
     event: React.MouseEvent<HTMLLIElement> | undefined
   ) => {
     const url =
-      page === "stock" ? `/stock/${item.name}` : `/keyword/${item.name}`
+      page === "stock" ? `/stock/${item.id}` : `/keyword/${item.id}`
     navigate(url)
   }
 
