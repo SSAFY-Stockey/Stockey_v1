@@ -16,7 +16,8 @@ const PriceSection = () => {
 
 export default PriceSection
 
-export const HighlightedSpan = styled.span<{ color: string }>`
+export const HighlightedSpan = styled.span<{ color: string; size?: string }>`
   color: ${({ color }) => color};
-  font-weight
+  font-size: ${({ size }) => (size ? size : null)};
+  font-weight: bold;
 `

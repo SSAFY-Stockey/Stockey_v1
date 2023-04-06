@@ -98,8 +98,8 @@ const LogoImg = styled.img`
   width: 30%;
   height: 30%;
   max-width: 100px;
-  border-radius: 24px;
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.03);
+  // border-radius: 24px;
+  // box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.03);
 `
 
 const StockInfoDiv = styled.div`

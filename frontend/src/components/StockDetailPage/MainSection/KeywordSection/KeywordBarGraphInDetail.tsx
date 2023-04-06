@@ -1,15 +1,23 @@
 import * as Highcharts from "highcharts"
 import HighchartsReact from "highcharts-react-official"
 import styled from "styled-components"
-import { useKeywordRank } from "../../../hooks/useKeywordRank"
-import { keywordParamsState } from "../../../stores/StockMainAtoms"
-import { selectedKeywordState } from "../../../stores/StockMainAtoms"
-import { useRecoilValue, useSetRecoilState } from "recoil"
-import { useState, useEffect } from "react"
+import { useKeywordRank } from "../../../../hooks/useKeywordRank"
+import {
+  selectedKeywordState,
+  keywordAnalysisParamsState,
+  panelTypeState,
+} from "../../../../stores/StockDetailAtoms"
+import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil"
 
-const KeywordBarGraph = () => {
-  const keywordParams = useRecoilValue(keywordParamsState)
-  const setSelectedKeyword = useSetRecoilState(selectedKeywordState)
+const KeywordBarGraphInDetail = () => {
+  const keywordParams = useRecoilValue(keywordAnalysisParamsState)
+  const [selectedKeyword, setSelectedKeyword] =
+    useRecoilState(selectedKeywordState)
+  const setPanelType = useSetRecoilState(panelTypeState)
+  const showKeywordPanel = () => {
+    setSelectedKeyword({ id: selectedKeyword.id, name: selectedKeyword.name })
+    setPanelType("keyword")
+  }
 
   // keyword 순위 읽어오기
   const { data: keywordRankData, isLoading } = useKeywordRank(keywordParams)
@@ -19,7 +27,6 @@ const KeywordBarGraph = () => {
     totalNewsCount,
     yAxisMax,
   } = { ...keywordRankData }
-  setSelectedKeyword({ idx: 1, id: chartData?.[1].keywordId })
 
   const options: Highcharts.Options = {
     title: { text: undefined },
@@ -27,7 +34,7 @@ const KeywordBarGraph = () => {
       type: "column",
       backgroundColor: "var(--custom-background)",
       borderRadius: 20,
-      // height: chartSize.height,
+      height: 300,
       // width: chartSize.width,
     },
     colors: [
@@ -83,12 +90,7 @@ const KeywordBarGraph = () => {
         },
         events: {
           click: function (event: any) {
-            setSelectedKeyword(() => {
-              return {
-                idx: event.point.index,
-                id: event.point.keywordId,
-              }
-            })
+            showKeywordPanel()
           },
         },
         borderRadius: 10,
@@ -117,11 +119,11 @@ const KeywordBarGraph = () => {
   )
 }
 
-export default KeywordBarGraph
+export default KeywordBarGraphInDetail
 
 const GraphWrapper = styled.div`
   width: 100%;
-  height: 50vh;
+  height: 60%;
   & div {
     height: 100%;
   }

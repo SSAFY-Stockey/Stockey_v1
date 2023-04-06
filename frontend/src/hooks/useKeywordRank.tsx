@@ -37,7 +37,6 @@ export const useKeywordRank = ({
       onError,
       refetchOnWindowFocus: false,
       enabled: !!typeId,
-      suspense: true,
     }
   )
 }

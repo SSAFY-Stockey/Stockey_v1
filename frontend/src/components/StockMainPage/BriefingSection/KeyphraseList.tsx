@@ -6,6 +6,8 @@ import {
   keyphraseParamsState,
 } from "../../../stores/StockMainAtoms"
 import { useKeyphraseList } from "../../../hooks/useKeyphraseList"
+import { Suspense } from "react"
+import LoadingComponent from "../../common/Loading/LoadingComponent"
 
 export const colors: string[] = ["orange", "pink", "purple"]
 const KeyphraseList = () => {
@@ -29,6 +31,7 @@ const KeyphraseList = () => {
           />
         )
       })}
+
       {keyphraseListData?.length === 0 && (
         <KeyphraseListItem
           keyphrase="키프레이즈를 찾지 못했어요"
@@ -42,7 +45,7 @@ const KeyphraseList = () => {
 
 export default KeyphraseList
 
-const KeyphraseContainer = styled.div<{ selectedIdx: number }>`
+export const KeyphraseContainer = styled.div<{ selectedIdx: number }>`
   display: flex;
   flex-direction: row;
   align-items: center;

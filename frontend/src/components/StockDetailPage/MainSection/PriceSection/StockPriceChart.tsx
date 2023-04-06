@@ -53,6 +53,22 @@ const StockPriceChart = () => {
     keywordAnalysisParamsState
   )
 
+  const [chartWidth, setChartWidth] = useState<number>(400)
+  const handleResize = () => {
+    const chartWrapper = document.getElementById("stock-price-chart")
+    if (chartWrapper) {
+      setChartWidth(chartWrapper.clientWidth)
+    }
+  }
+
+  useEffect(() => {
+    handleResize()
+    window.addEventListener("resize", handleResize)
+    return () => {
+      window.removeEventListener("resize", handleResize)
+    }
+  }, [])
+
   const [isCandle, setIsCandle] = useState<boolean>(false)
   const [chartOptions, setChartOptions] = useState<Highcharts.Options>({})
   useEffect(() => {
@@ -66,6 +82,7 @@ const StockPriceChart = () => {
         zooming: {
           type: "x",
         },
+        width: chartWidth,
       },
       xAxis: {
         type: "datetime",
@@ -242,7 +259,14 @@ const StockPriceChart = () => {
         // },
       ],
     })
-  }, [stockPriceData, stockDetailData])
+  }, [
+    stockPriceData,
+    stockDetailData,
+    chartWidth,
+    stockId,
+    keywordAnalysisParams,
+    setKeywordAnalysisParams,
+  ])
 
   const handleChartType = () => {
     if (!isCandle) {
@@ -266,7 +290,7 @@ const StockPriceChart = () => {
   }
 
   return (
-    <ChartWrapper>
+    <ChartWrapper id="stock-price-chart">
       <button onClick={handleChartType}>
         {isCandle ? "간단히" : "자세히"}
       </button>
