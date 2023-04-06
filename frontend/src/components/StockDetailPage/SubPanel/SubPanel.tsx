@@ -17,7 +17,7 @@ const SubPanel = ({ isPanelExpanded }: Props) => {
         panelType === "subInfo" ? (
           <SubInfoPanel />
         ) : (
-          <KeywordPanel keyword="빅스텝" />
+          <KeywordPanel />
         )
       ) : (
         <div></div>
