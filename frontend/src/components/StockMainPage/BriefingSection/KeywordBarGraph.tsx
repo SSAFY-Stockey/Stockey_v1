@@ -57,7 +57,7 @@ const KeywordBarGraph = () => {
       labels: {
         enabled: false,
       },
-      max: 50,
+      max: 20,
       // max: isLoading ? 200 : yAxisMax,
       // max: yAxisMax,
     },
@@ -83,9 +83,11 @@ const KeywordBarGraph = () => {
         },
         events: {
           click: function (event: any) {
-            setSelectedKeyword({
-              idx: event.point.index,
-              id: event.point.keywordId,
+            setSelectedKeyword(() => {
+              return {
+                idx: event.point.index,
+                id: event.point.keywordId,
+              }
             })
           },
         },
@@ -119,7 +121,7 @@ export default KeywordBarGraph
 
 const GraphWrapper = styled.div`
   width: 100%;
-  height: 60%;
+  height: 50vh;
   & div {
     height: 100%;
   }

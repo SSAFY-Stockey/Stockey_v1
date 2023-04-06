@@ -64,7 +64,7 @@ const KeywordChart = ({ keywordId, keyword }: KeywordPanelProps) => {
         gridLineWidth: 1,
         labels: {
           formatter: function (this: any) {
-            return this.value + "%"
+            return this.value + "개"
           },
         },
       },
@@ -92,14 +92,15 @@ const KeywordChart = ({ keywordId, keyword }: KeywordPanelProps) => {
           console.log(this)
           if (this.series.index === 0) {
             return (
-              `<span style="color: ${this.series.color}"><b>` +
-              this.series.name +
-              "</b></span> 관련 기사<br/><hr/>" +
               "<b>" +
               dayjs(this.point.x).format("YY/MM/DD") +
-              "</b> 기사의 <b>" +
+              "</b><hr/>" +
+              `<span style="color: ${this.series.color}"><b>"` +
+              this.series.name +
+              '"</b></span> 관련 기사 ' +
+              "<b>" +
               this.point.y +
-              "%</b> "
+              "개</b> "
             )
           } else {
             return (

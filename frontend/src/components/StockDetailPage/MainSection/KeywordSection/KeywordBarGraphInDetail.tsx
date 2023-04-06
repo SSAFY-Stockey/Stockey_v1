@@ -34,7 +34,7 @@ const KeywordBarGraphInDetail = () => {
       type: "column",
       backgroundColor: "var(--custom-background)",
       borderRadius: 20,
-      // height: chartSize.height,
+      height: 300,
       // width: chartSize.width,
     },
     colors: [
@@ -64,7 +64,7 @@ const KeywordBarGraphInDetail = () => {
       labels: {
         enabled: false,
       },
-      max: 50,
+      max: 20,
       // max: isLoading ? 200 : yAxisMax,
       // max: yAxisMax,
     },

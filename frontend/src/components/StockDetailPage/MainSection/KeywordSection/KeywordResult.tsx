@@ -25,8 +25,8 @@ const KeywordResult = () => {
     "INDUSTRY",
     "ECONOMY",
   ]
-
-  const totalNewsCount: number = 32458
+  const { data: keywordRankData } = useKeywordRank(keywordAnalysisParams)
+  const { top3, others, totalNewsCount, yAxisMax } = { ...keywordRankData }
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     stockDetail &&
       setKeywordAnalysisParams({
@@ -55,48 +55,44 @@ const KeywordResult = () => {
         {isLoading ? (
           <PanelSubTitle>
             <HighlightedSpan color="var(--custom-pink-1)">
-              {["네이버", "IT", "경제"][activeTab]}
+              {
+                [stockDetail?.name, stockDetail?.industry.name, "경제"][
+                  activeTab
+                ]
+              }
             </HighlightedSpan>{" "}
-            관련 뉴스 {totalNewsCount.toLocaleString()}건을 분석 중이에요...
+            관련 뉴스에서 핵심 키워드를 뽑고 있어요...
             <SpinningSpan>⏳</SpinningSpan>
           </PanelSubTitle>
         ) : (
           <PanelSubTitle>
-            뉴스에서 많이 언급된 키워드를 살펴보세요!
+            <HighlightedSpan color="var(--custom-pink-1)">
+              {
+                [stockDetail?.name, stockDetail?.industry.name, "경제"][
+                  activeTab
+                ]
+              }
+            </HighlightedSpan>{" "}
+            관련 뉴스에서 많이 언급된 키워드를 살펴보세요!
           </PanelSubTitle>
         )}
       </Grid>
       <MetaData
         item
-        xs={6}
         px={3}
         mb={4}
         onClick={() => triggerScroll("priceChartRef")}
       >
         ⏰{" "}
-        {dayjs(keywordAnalysisParams.startDate, "YYMMDD").format(
-          "YYYY년 MM월 DD일"
+        {dayjs("20" + keywordAnalysisParams.startDate, "YYYYMMDD").format(
+          "YYYY년 M월 D일"
         )}{" "}
         ~{" "}
-        {dayjs(keywordAnalysisParams.endDate, "YYMMDD").format(
-          "YYYY년 MM월 DD일"
-        )}
+        {dayjs("20" + keywordAnalysisParams.endDate, "YYYYMMDD").format(
+          "YYYY년 M월 D일"
+        )}{" "}
+        {totalNewsCount?.toLocaleString()}건의 뉴스를 분석한 결과예요.
       </MetaData>
-
-      {/* 추후 삭제 예정 */}
-      {/* <Grid
-        item
-        xs={3}
-        px={3}
-        mb={4}
-        sx={{ backgroundColor: "var(--custom-green-4)" }}
-        onClick={() => {
-          setIsLoading(!isLoading)
-          console.log(isLoading)
-        }}
-      >
-        클릭하면 로딩 상태 변경!
-      </Grid> */}
 
       <Grid item xs={12}>
         <NewsCategoryTabs
@@ -140,7 +136,7 @@ const SpinningSpan = styled.div`
 const MetaData = styled(Grid)`
   color: gray;
   font-weight: bold;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   font-style: italic;
   cursor: pointer;
 `
