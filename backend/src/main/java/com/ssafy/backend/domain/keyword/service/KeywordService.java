@@ -10,8 +10,6 @@ import com.ssafy.backend.domain.keyword.dto.TopKeywordDTO;
 import java.util.List;
 
 public interface KeywordService {
-//    List<KeywordDto> searchKeyword(SearchKeywordRequest searchKeyword);
-
     KeywordDto getKeywordDetail(Long keywordsId);
 
     List<KeywordStatisticDto> getKeywordFreq(Long keywordsId);
@@ -29,7 +27,6 @@ public interface KeywordService {
     List<TopKeywordDTO> getTopNKeyword(GetTopNKeywordRequest getTopNKeywordRequest);
 
     List<GetKeyPhraseResponse.Message> getKeyphrase(Long keywordId, GetKeyphraseRequest getKeyphraseRequest);
-//    List<Object[]> findAvgKeywordCount(Keyword keyword, LocalDate startDate, LocalDate endDate);
 
     List<KeywordDto> getSearchKeyword(String name);
 
