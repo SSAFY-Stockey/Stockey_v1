@@ -88,7 +88,11 @@ const customAxios = (
       } = error
       const originalRequest = config
 
-      if (status !== 401 && status !== 400) {
+      if (status !== 401) {
+        if (!!navigate) {
+          window.alert("에러가 발생했습니다.")
+          navigate("/stockeyErrorPage")
+        }
         return Promise.reject(error)
       }
 
