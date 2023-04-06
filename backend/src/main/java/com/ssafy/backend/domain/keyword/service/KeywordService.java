@@ -31,4 +31,6 @@ public interface KeywordService {
     List<GetKeyPhraseResponse.Message> getKeyphrase(Long keywordId, GetKeyphraseRequest getKeyphraseRequest);
 //    List<Object[]> findAvgKeywordCount(Keyword keyword, LocalDate startDate, LocalDate endDate);
 
+    List<KeywordDto> getSearchKeyword(String name);
+
 }
