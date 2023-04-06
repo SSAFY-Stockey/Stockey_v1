@@ -38,6 +38,7 @@ const StockGraph = () => {
     fetchMyStockList,
     {
       refetchOnWindowFocus: false,
+      refetchOnMount: true,
       retry: false,
       enabled: !!accessToken,
       select,
@@ -48,7 +49,7 @@ const StockGraph = () => {
   }
   return (
     <>
-      {!!MyStockList ? (
+      {!!MyStockList?.length ? (
         <GraphWrapper>
           <StockAxis />
           <BarWrapper>

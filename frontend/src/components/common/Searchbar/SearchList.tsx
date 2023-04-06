@@ -2,6 +2,9 @@ import SampleStock from "./SampleList"
 import styled from "styled-components"
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
+import { useKeywordSearch } from "../../../hooks/useKeywordSearch"
+import { useSetRecoilState } from "recoil"
+import { KeywordSearchState } from "../../../stores/KeywordPageAtoms"
 
 type SearchListProps = {
   page: string
@@ -11,10 +14,19 @@ type SearchListProps = {
 const SearchList = ({ page, value }: SearchListProps) => {
   // 연관 검색어 저장 array
   const [searchResult, setSearchResult] = useState<string[]>([])
+  // 가장 상위 검색어 저장 state
+  const setFirstKeyword = useSetRecoilState(KeywordSearchState)
+
+  // useKeywordSearch custom hook
+  const {
+    isLoading,
+    data: KeywordSearchResult,
+    refetch,
+  } = useKeywordSearch(value)
 
   // 입력값이 바뀔 때, 검색 결과 데이터를 갱신
   useEffect(() => {
-    // page = "stock" or "industry" 일 때 탐색 함수
+    // page === "stock" 일 때 탐색 함수
     const saveSearchResult = () => {
       const sampleResult = SampleStock.filter((item: string) =>
         item
@@ -24,8 +36,26 @@ const SearchList = ({ page, value }: SearchListProps) => {
       )
       return sampleResult
     }
-    setSearchResult(saveSearchResult())
-  }, [value])
+
+    // page === "keyword" 일 때 탐색 함수
+    if (page === "keyword") {
+      refetch()
+      console.log("yes")
+    }
+
+    setSearchResult(
+      page === "stock"
+        ? saveSearchResult()
+        : KeywordSearchResult
+        ? KeywordSearchResult
+        : []
+    )
+  }, [value, KeywordSearchResult])
+
+  // 첫번째 단어 저장
+  useEffect(() => {
+    setFirstKeyword(!!searchResult?.length ? searchResult[0] : "")
+  }, [searchResult])
 
   // 클릭시 해당 페이지로 이동하는 함수
   const navigate = useNavigate()
@@ -33,7 +63,8 @@ const SearchList = ({ page, value }: SearchListProps) => {
     item: string,
     event: React.MouseEvent<HTMLLIElement> | undefined
   ) => {
-    navigate(`/stock/${item}`)
+    const url = page === "stock" ? `/stock/${item}` : `/keyword/${item}`
+    navigate(url)
   }
 
   // 검색 내역 포함 부분 표시 함수
