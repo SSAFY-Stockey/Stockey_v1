@@ -13,7 +13,6 @@ import com.ssafy.backend.domain.keyword.mapper.KeywordMapper;
 import com.ssafy.backend.domain.keyword.repository.KeywordRepository;
 import com.ssafy.backend.domain.keyword.repository.KeywordStatisticRepository;
 import com.ssafy.backend.domain.member.entity.Member;
-import com.ssafy.backend.domain.member.repository.MemberRepository;
 import com.ssafy.backend.domain.member.service.MemberService;
 import com.ssafy.backend.domain.news.repository.NewsRelationRepository;
 import com.ssafy.backend.global.exception.favorite.FavoriteException;
@@ -53,8 +52,6 @@ public class KeywordServiceImpl implements KeywordService{
     private final FavoriteRepository favoriteRepository;
     private final MemberService memberService;
     private final NewsRelationRepository newsRelationRepository;
-    // TODO : 삭제
-    private final MemberRepository memberRepository;
 
 
 
@@ -73,8 +70,7 @@ public class KeywordServiceImpl implements KeywordService{
 
     @Override
     public List<KeywordDto> getMyKeywords() {
-//        List<Keyword> keywords = favoriteRepository.findKeywordsByMember(memberService.getMemberEntity());
-        List<Keyword> keywords = favoriteRepository.findKeywordsByMember(memberRepository.findById(1L).get());
+        List<Keyword> keywords = favoriteRepository.findKeywordsByMember(memberService.getMemberEntity());
         return keywordMapper.toDto(keywords);
     }
 
@@ -82,9 +78,7 @@ public class KeywordServiceImpl implements KeywordService{
     public boolean checkFavorite(Long id) {
         Keyword keyword = keywordRepository.findById(id).orElseThrow(()
                 -> new KeywordException(KeywordExceptionType.KEYWORD_NOT_EXIST));
-//        return favoriteRepository.existsByMemberAndKeyword(memberService.getMemberEntity(), keyword);
-        // todo: 삭제
-        return favoriteRepository.existsByMemberAndKeyword(memberRepository.findById(1L).get(), keyword);
+        return favoriteRepository.existsByMemberAndKeyword(memberService.getMemberEntity(), keyword);
     }
 
     @Override
@@ -97,9 +91,7 @@ public class KeywordServiceImpl implements KeywordService{
             throw new FavoriteException(FavoriteExceptionType.ALREADY_EXIST);
         }
 
-//        Member member = memberService.getMemberEntity();
-        // TODO: 삭제
-        Member member = memberRepository.findById(1L).get();
+        Member member = memberService.getMemberEntity();
         Favorite favorite = Favorite.keywordBuilder()
                 .member(member)
                 .keyword(keyword)
@@ -116,9 +108,7 @@ public class KeywordServiceImpl implements KeywordService{
         if (!isFavorite) {
             throw new FavoriteException(FavoriteExceptionType.NOT_FOUND);
         }
-//        Member member = memberService.getMemberEntity();
-        // TODO: 삭제
-        Member member = memberRepository.findById(1L).get();
+        Member member = memberService.getMemberEntity();
         Favorite favorite = favoriteRepository.findByMemberAndKeyword(member, keyword);
         checkUser(member, favorite);
         favoriteRepository.delete(favorite);
