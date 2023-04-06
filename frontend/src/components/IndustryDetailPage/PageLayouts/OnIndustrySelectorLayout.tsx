@@ -18,6 +18,7 @@ import IndustrySelector from "../../IndustryMainPage/IndustrySelector/IndustrySe
 import { useMyIndustryCheck } from "../../../hooks/useMyIndustryCheck"
 import { useEffect, useState } from "react"
 import AnalysisSection from "../../StockDetailPage/MainSection/KeywordSection/AnalysisSection"
+import AllIncludedStockListArea from "../AllIncludedStockListArea/AllIncludedStockListArea"
 
 const OnIndustrySelectorLayout = ({
   changeLayout,
@@ -74,7 +75,10 @@ const OnIndustrySelectorLayout = ({
             <IndustryBubbleChart industryId={industryInfo?.id} />
           </RightSlider>
           <RightSlider className={`sel ${className}`}>
-            <div>전체 종목 리스트</div>
+            <AllIncludedStockListArea
+              industryId={industryInfo.id}
+              industryName={industryInfo.name}
+            />
           </RightSlider>
         </RightSection>
       </Grid>
