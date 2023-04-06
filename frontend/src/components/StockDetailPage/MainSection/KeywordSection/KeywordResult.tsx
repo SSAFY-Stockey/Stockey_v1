@@ -5,12 +5,40 @@ import { useState } from "react"
 import NewsTabPanel from "./NewsTabPanel"
 import styled, { keyframes } from "styled-components"
 import { triggerScroll } from "../../../common/Functions/triggerScroll"
+import { useRecoilValue, useRecoilState } from "recoil"
+import {
+  keywordAnalysisParamsState,
+  stockDetailState,
+} from "../../../../stores/StockDetailAtoms"
+import { useKeywordRank } from "../../../../hooks/useKeywordRank"
+import dayjs from "dayjs"
 
 const KeywordResult = () => {
-  const [isLoading, setIsLoading] = useState(true)
+  const [keywordAnalysisParams, setKeywordAnalysisParams] = useRecoilState(
+    keywordAnalysisParamsState
+  )
+  const { data, isLoading } = useKeywordRank(keywordAnalysisParams)
   const [activeTab, setActiveTab] = useState<number>(0)
+  const stockDetail = useRecoilValue(stockDetailState)
+  const newsTypes: ("STOCK" | "INDUSTRY" | "ECONOMY")[] = [
+    "STOCK",
+    "INDUSTRY",
+    "ECONOMY",
+  ]
+
   const totalNewsCount: number = 32458
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+    stockDetail &&
+      setKeywordAnalysisParams({
+        ...keywordAnalysisParams,
+        newsType: newsTypes[newValue],
+        typeId:
+          newValue === 0
+            ? stockDetail?.id
+            : newValue === 1
+            ? stockDetail?.industry.id
+            : -1,
+      })
     setActiveTab(newValue)
   }
 
@@ -45,11 +73,18 @@ const KeywordResult = () => {
         mb={4}
         onClick={() => triggerScroll("priceChartRef")}
       >
-        ⏰ 2017년 1월 3일 ~ 2017년 10월 13일 기준
+        ⏰{" "}
+        {dayjs(keywordAnalysisParams.startDate, "YYMMDD").format(
+          "YYYY년 MM월 DD일"
+        )}{" "}
+        ~{" "}
+        {dayjs(keywordAnalysisParams.endDate, "YYMMDD").format(
+          "YYYY년 MM월 DD일"
+        )}
       </MetaData>
 
       {/* 추후 삭제 예정 */}
-      <Grid
+      {/* <Grid
         item
         xs={3}
         px={3}
@@ -61,7 +96,7 @@ const KeywordResult = () => {
         }}
       >
         클릭하면 로딩 상태 변경!
-      </Grid>
+      </Grid> */}
 
       <Grid item xs={12}>
         <NewsCategoryTabs
@@ -70,8 +105,8 @@ const KeywordResult = () => {
           textColor="inherit"
           variant="fullWidth"
         >
-          <NewsTab label={"네이버"} {...a11yProps(0)} />
-          <NewsTab label={"IT"} {...a11yProps(1)} />
+          <NewsTab label={stockDetail?.name} {...a11yProps(0)} />
+          <NewsTab label={stockDetail?.industry.name} {...a11yProps(1)} />
           <NewsTab label={"경제"} {...a11yProps(2)} />
         </NewsCategoryTabs>
         <NewsTabPanel isLoading={isLoading} activeTab={activeTab} index={0} />

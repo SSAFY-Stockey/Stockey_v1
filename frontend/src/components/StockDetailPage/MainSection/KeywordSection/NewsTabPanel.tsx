@@ -1,8 +1,8 @@
 import { Box } from "@mui/material"
-import KeywordBarGraph from "../../../StockMainPage/BriefingSection/KeywordBarGraph"
 import LoadingComponent from "../../../common/Loading/LoadingComponent"
 import styled from "styled-components"
 import OtherKeywordList from "./OtherKeywordList"
+import KeywordBarGraphInDetail from "./KeywordBarGraphInDetail"
 
 interface Props {
   activeTab: number
@@ -25,7 +25,7 @@ function NewsTabPanel({ activeTab, index, isLoading, ...other }: Props) {
             <LoadingComponent />
           ) : (
             <>
-              <KeywordBarGraph />
+              <KeywordBarGraphInDetail />
               <OtherKeywordList />
             </>
           )}
