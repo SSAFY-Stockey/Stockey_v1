@@ -5,7 +5,7 @@ import styled from "@emotion/styled"
 import { useEffect, useState } from "react"
 
 interface BtnProps {
-  changeLayout: (e: React.MouseEvent<HTMLElement>, mode: string) => void
+  changeLayout: (mode: string) => void
   status: string
   industryName: string
 }
@@ -28,8 +28,8 @@ const IndustrySelectorToggleBtn = ({
       endIcon={
         isSelectorOn ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />
       }
-      onClick={(e) => {
-        changeLayout(e, "sel")
+      onClick={() => {
+        changeLayout("sel")
         setIsSelectorOn((prev) => !prev)
       }}
       className={isSelectorOn ? "small" : ""}

@@ -15,29 +15,55 @@ import IndustryMarketCapLineChart from "../IndustryMarketCapLineChart/IndustryMa
 import IndustryBubbleChart from "../IndustryBubbleChart/IndustryBubbleChart"
 import { LayoutProps } from "./DefaultLayout"
 import IndustrySelector from "../../IndustryMainPage/IndustrySelector/IndustrySelector"
-import { useMyIndustryCheck } from "../../../hooks/useMyIndustryCheck"
 import { useEffect, useState } from "react"
 import AnalysisSection from "../../StockDetailPage/MainSection/KeywordSection/AnalysisSection"
 import AllIncludedStockListArea from "../AllIncludedStockListArea/AllIncludedStockListArea"
+import { useRecoilState } from "recoil"
+import { accessTokenSelector } from "../../../stores/atoms"
+import customAxios from "../../../utils/customAxios"
+import { useQuery } from "react-query"
 
 const OnIndustrySelectorLayout = ({
   changeLayout,
   className,
   industryInfo,
 }: LayoutProps) => {
+  // 북마크 여부 체크(로그인 상태에서만)
+  const [accessToken, setAccessToken] = useRecoilState(accessTokenSelector)
+  const axios = customAxios(accessToken, setAccessToken)
+  const fetchMyIndustryCheck = ({ queryKey }: any) => {
+    const industryId = queryKey[1]
+    return axios.get(`industry/stocklist/my/${industryId}`)
+  }
+  const select = (response: any) => {
+    return response.data.data
+  }
+
+  const useMyIndustryCheck = (industryId: number) => {
+    return useQuery(["myIndustryCheck", industryId], fetchMyIndustryCheck, {
+      refetchOnWindowFocus: false,
+      select,
+      retry: false,
+      enabled: !!accessToken,
+    })
+  }
+
   const { data: bookmarked } = useMyIndustryCheck(industryInfo.id)
+
   const [isBookmarked, setIsBookmarked] = useState<boolean>(false)
+
   useEffect(() => {
     setIsBookmarked(bookmarked)
   }, [bookmarked])
+
   return (
     <>
       <Grid item xs={12} marginLeft={4.5}>
         <ButtonDiv id="btn">
-          <button onClick={(e) => changeLayout(e, "kwd")}>keywordPanel</button>
+          <button onClick={() => changeLayout("kwd")}>keywordPanel</button>
           <IndustrySelectorToggleBtn
-            changeLayout={(e, mode) => {
-              changeLayout(e, mode)
+            changeLayout={(mode) => {
+              changeLayout(mode)
             }}
             status={className}
             industryName={industryInfo.name}
@@ -56,11 +82,13 @@ const OnIndustrySelectorLayout = ({
           <LeftSlider className={`sel ${className}`}>
             <TitleDiv>
               {industryInfo?.name}
-              <BookmarkBtn
-                isBookmarked={isBookmarked}
-                page="industry"
-                num={industryInfo.id}
-              />
+              {!!accessToken && (
+                <BookmarkBtn
+                  isBookmarked={isBookmarked}
+                  page="industry"
+                  num={industryInfo.id}
+                />
+              )}
             </TitleDiv>
           </LeftSlider>
           <LeftSlider className={`sel ${className}`}>
