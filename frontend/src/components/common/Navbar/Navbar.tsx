@@ -13,7 +13,8 @@ interface Props {
 }
 
 const Navbar = ({ isNarrow }: Props) => {
-  const curPath = useLocation().pathname
+  const location = useLocation()
+  const curPath = location.pathname
   const isLogin = useRecoilValue(logInState)
   const nickname = useRecoilValue(nicknameState)
 
@@ -41,7 +42,8 @@ const Navbar = ({ isNarrow }: Props) => {
           className={
             curPath === "/user/login" ||
             curPath === "/user/signup" ||
-            curPath === "/oauth/kakao"
+            curPath === "/oauth/kakao" ||
+            location.key === "default"
               ? "login"
               : undefined
           }

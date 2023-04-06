@@ -7,7 +7,9 @@ import { accessTokenSelector } from "../../stores/atoms"
 import customAxios from "../../utils/customAxios"
 import { useQuery } from "react-query"
 import { useEffect, useState } from "react"
-import KeywordChart from "../StockDetailPage/SubPanel/KeywordPanel/KeywordChart"
+import NewsSection from "../StockDetailPage/SubPanel/KeywordPanel/NewsSection"
+import KeywordChartArea from "./KeywordChartArea"
+import NewsArea from "./NewsArea"
 
 const KeywordDetailContent = ({
   keywordInfo,
@@ -43,7 +45,7 @@ const KeywordDetailContent = ({
   }, [bookmarked])
 
   return (
-    <>
+    <PageWrapper>
       <TitleDiv>
         {keywordInfo?.name}
         {!!accessToken && (
@@ -54,10 +56,29 @@ const KeywordDetailContent = ({
           />
         )}
       </TitleDiv>
-      <KeywordChart keyword={keywordInfo.name} keywordId={keywordInfo.id} />
-      <div>관련 기사</div>
-    </>
+      <ContentWrapper>
+        <KeywordChartArea
+          keyword={keywordInfo.name}
+          keywordId={keywordInfo.id}
+        />
+        <NewsArea keywordId={keywordInfo.id} keyword={keywordInfo.name} />
+      </ContentWrapper>
+    </PageWrapper>
   )
 }
 
 export default KeywordDetailContent
+
+const PageWrapper = styled.div`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+`
+
+const ContentWrapper = styled.div`
+  height: calc(100% - 50px);
+  width: 100%;
+  display: flex;
+  gap: 3rem;
+`

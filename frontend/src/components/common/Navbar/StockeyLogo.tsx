@@ -2,7 +2,8 @@ import styled from "styled-components"
 import { useLocation } from "react-router-dom"
 
 const StockeyLogo = () => {
-  const curPath = useLocation().pathname
+  const location = useLocation()
+  const curPath = location.pathname
 
   return (
     <>
@@ -10,7 +11,8 @@ const StockeyLogo = () => {
         className={
           curPath === "/user/login" ||
           curPath === "/user/signup" ||
-          curPath === "/oauth/kakao"
+          curPath === "/oauth/kakao" ||
+          location.key === "default"
             ? "login"
             : undefined
         }

@@ -1,6 +1,6 @@
 import styled, { keyframes } from "styled-components"
 
-const StockeyErrorPage = () => {
+const NotFoundPage = () => {
   return (
     <PageWrapper>
       <ErrorMessage>
@@ -12,10 +12,10 @@ const StockeyErrorPage = () => {
   )
 }
 
-export default StockeyErrorPage
+export default NotFoundPage
 
 const PageWrapper = styled.div`
-  padding: 46px;
+  padding: 36px;
   display: flex;
   flex-direction: column;
   align-items: center;

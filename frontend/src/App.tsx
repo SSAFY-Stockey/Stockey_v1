@@ -19,9 +19,11 @@ import StockeyErrorPage from "./pages/StockeyErrorPage"
 // 스타일 적용
 import MainSection from "./components/common/Background/MainSection"
 import Navbar from "./components/common/Navbar/Navbar"
+import NotFoundPage from "./pages/NotFoundPage"
 
 function App() {
-  const curPath = useLocation().pathname
+  const location = useLocation()
+  const curPath = location.pathname
 
   // 가로 길이 확인 => navbar 형태 전달
   // 현재 화면 크기 state
@@ -48,7 +50,8 @@ function App() {
           className={
             curPath === "/user/login" ||
             curPath === "/user/signup" ||
-            curPath === "/oauth/kakao"
+            curPath === "/oauth/kakao" ||
+            location.key === "default"
               ? "login"
               : isNarrow
               ? "narrow"
@@ -61,7 +64,8 @@ function App() {
           className={
             curPath === "/user/login" ||
             curPath === "/user/signup" ||
-            curPath === "/oauth/kakao"
+            curPath === "/oauth/kakao" ||
+            location.key === "default"
               ? "login"
               : isNarrow
               ? "narrow"
@@ -86,7 +90,7 @@ function App() {
               <Route path="/user/login" element={<Login />} />
               <Route path="/oauth/kakao" element={<LoginRedirectHandler />} />
               <Route path="/user/signup" element={<SignupPage />} />
-              <Route path="/stockeyErrorPage" element={<StockeyErrorPage />} />
+              <Route path="/*" element={<NotFoundPage />} />
             </Routes>
           </MainSection>
         </MainDiv>
