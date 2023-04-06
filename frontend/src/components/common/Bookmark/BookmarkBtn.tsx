@@ -127,7 +127,7 @@ const IconSpan = styled.span`
 const IconText = styled.div`
   // position
   position: absolute;
-  top: 0.85rem;
+  top: 0.8rem;
   left: 40px;
 
   // font
