@@ -34,4 +34,5 @@ export default RandomStockList
 const StyledDiv = styled.div`
   display: flex;
   flex-direction: column;
+  height: 70vh !important;
 `

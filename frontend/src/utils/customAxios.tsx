@@ -12,7 +12,7 @@ const customAxios = (
 ) => {
   const api = axios.create({
     baseURL: `${process.env.REACT_APP_SERVER_BASE_URL}`,
-    timeout: 2000,
+    timeout: 20000,
     withCredentials: true,
   })
 

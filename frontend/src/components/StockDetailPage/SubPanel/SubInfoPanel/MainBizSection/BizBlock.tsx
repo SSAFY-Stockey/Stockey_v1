@@ -5,11 +5,12 @@ interface Props {
   description: string | null
 }
 const BizBlock = ({ type, description }: Props) => {
+  const bizType = type.split(" ")[0]
   return (
     <BlockWrapper>
       <BizTypeBox>
         <BizTypeWrapper type={type}>
-          <img src={`/businessLogos/${type}.png`} alt="buisness icon" />
+          <img src={`/businessLogos/${bizType}.png`} alt="buisness icon" />
           <p>{type}</p>
         </BizTypeWrapper>
       </BizTypeBox>
