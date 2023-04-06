@@ -2,165 +2,161 @@ import * as Highcharts from "highcharts"
 import HighchartsReact from "highcharts-react-official"
 import dayjs from "dayjs"
 import styled from "styled-components"
-// import { HighchartsOptions } from "../../../StockMainPage/BriefingSection/KeywordBarGraph"
+import { useKeywordFrequency } from "../../../../hooks/useKeywordFrequency"
+import { useRecoilValue } from "recoil"
+import { selectedKeywordState } from "../../../../stores/StockDetailAtoms"
+import { useState, useEffect } from "react"
+import { keywordAnalysisParamsState } from "../../../../stores/StockDetailAtoms"
 
 Highcharts.setOptions({
   lang: {
-    resetZoom: "한 달로 보기",
+    resetZoom: "전체 기간 보기",
   },
 })
 
-const today = dayjs().endOf("day")
-const aMonthAgo = dayjs().subtract(1, "month").subtract(1, "day").startOf("day")
-
 const KeywordChart = () => {
-  const options = {
-    chart: {
-      type: "areaspline",
-      zoomType: "x",
-      panning: true,
-      panKey: "shift",
-      backgroundColor: "transparent",
-    },
-    credits: {
-      enabled: false,
-    },
-    title: {
-      text: undefined,
-      align: "left",
-      style: {
-        fontSize: "1.6rem",
-        color: "black",
-        fontWeight: "bold",
-      },
-    },
+  const selectedKeyword = useRecoilValue(selectedKeywordState)
+  const { data: keywordFrequency } = useKeywordFrequency(selectedKeyword.id)
+  const keywordAnalysisParams = useRecoilValue(keywordAnalysisParamsState)
+  const [chartOptions, setChartOptions] = useState<Highcharts.Options>({})
 
-    xAxis: {
-      type: "datetime",
-      crosshair: true,
-      min: aMonthAgo.valueOf(),
-      max: today.valueOf(),
-      tickInterval: 24 * 3600 * 1000,
-      dateTimeLabelFormats: {
-        day: "%m/%d",
+  useEffect(() => {
+    setChartOptions({
+      chart: {
+        type: "areaspline",
+        zooming: {
+          type: "x",
+        },
+        backgroundColor: "transparent",
       },
-      labels: {
-        step: 7,
+      credits: {
+        enabled: false,
       },
-    },
-    yAxis: {
       title: {
-        text: null,
-      },
-      gridLineWidth: 1,
-      max: 100,
-      min: 0,
-      labels: {
-        formatter: function (this: any) {
-          return this.value + "%"
+        text: undefined,
+        align: "left",
+        style: {
+          fontSize: "1.6rem",
+          color: "black",
+          fontWeight: "bold",
         },
       },
-    },
-    legend: {
-      layout: "vertical",
-      align: "left",
-      verticalAlign: "top",
-      x: 40,
-      y: 70,
-      floating: true,
-      borderWidth: 1,
-      borderRadius: 5,
-      backgroundColor: "transparent",
-      shadow: false,
-      itemStyle: {
-        color: "black",
-        fontWeight: "bold",
-        fontSize: "1.2rem",
-      },
-    },
-    tooltip: {
-      shared: false,
-      formatter: function (this: any) {
-        console.log(this)
-        if (this.series.index === 0) {
-          return (
-            "<b>" +
-            this.series.name +
-            "</b><br/><br/>" +
-            "<b>" +
-            dayjs(this.point.x).format("MM월 DD일") +
-            "</b> 기사의 <b>" +
-            this.point.y +
-            "%</b> "
-          )
-        } else {
-          return (
-            "<b>" + this.series.name + "</b><br/><br/>" + this.point.y + "원"
-          )
-        }
-      },
-    },
-    series: [
-      {
-        name: "빅스텝",
-        data: [
-          29.9, 71.5, 96.4, 79.2, 44.0, 76.0, 35.6, 48.5, 16.4, 94.1, 54.4,
-          29.9, 71.5, 96.4, 79.2, 44.0, 76.0, 35.6, 48.5, 16.4, 54.4, 29.9,
-          71.5, 96.4, 79.2, 44.0, 76.0, 35.6, 48.5, 16.4,
-        ].map((value, index) => {
-          return [today.valueOf() - index * 24 * 3600 * 1000, value]
-        }),
-        color: "var(--custom-blue)",
-        lineColor: "#2979ff",
-        fillColor: {
-          linearGradient: { x1: 0, x2: 1, y1: 0, y2: 1 },
-          stops: [
-            [0, "#99c2ff"],
-            [1, "#ffa7d1"],
-          ],
-        },
-        // linecap: "round",
-      },
-      {
-        name: "삼성바이오로직스",
-        data: [
-          29.9, 16.4, 59.2, 34.0, 26.0, 35.6, 41.5, 19.4, 14.1, 54.4, 29.9,
-          31.5, 46.4, 19.2, 44.0, 16.0, 21.5, 35.6, 48.5, 36.4, 64.4, 29.9,
-          51.5, 16.4, 19.2, 44.0, 26.0, 35.6, 28.5, 16.4,
-        ].map((value, index) => {
-          return [today.valueOf() - index * 24 * 3600 * 1000, value]
-        }),
-        lineWidth: 4,
-        lineColor: "#ffd600",
-        // fillColor: "#fff59d",
-        color: "#ffd600",
-        fillColor: "transparent",
-        // linecap: "square",
-      },
-    ],
-    plotOptions: {
-      areaspline: {
-        // pointStart: 22,
-        lineWidth: 2.5,
-        linecap: "square",
-        marker: {
-          enabled: false,
-          symbol: "circle",
-          radius: 2,
-          states: {
-            hover: {
-              enabled: true,
-            },
+
+      xAxis: {
+        type: "datetime",
+        crosshair: true,
+        // plotBands: [
+        //   {
+        //     // color: "var(--custom-mint)",
+        //     from: new Date("220303").getTime(),
+        //     to: new Date("220401").getTime(),
+        //   },
+        // ],
+        labels: {
+          formatter: function (this: any) {
+            return dayjs(this.value).format("M월 D일")
           },
         },
-        opacity: 0.4,
       },
-    },
-  }
+      yAxis: {
+        title: {
+          text: null,
+        },
+        gridLineWidth: 1,
+        labels: {
+          formatter: function (this: any) {
+            return this.value + "%"
+          },
+        },
+      },
+      legend: {
+        layout: "vertical",
+        align: "left",
+        verticalAlign: "top",
+        x: 40,
+        y: 0,
+        floating: true,
+        borderWidth: 1,
+        borderRadius: 5,
+        backgroundColor: "transparent",
+        shadow: false,
+        itemStyle: {
+          color: "black",
+          fontWeight: "bold",
+          fontSize: "1.2rem",
+        },
+      },
+      tooltip: {
+        shared: false,
+        useHTML: true,
+        formatter: function (this: any) {
+          console.log(this)
+          if (this.series.index === 0) {
+            return (
+              `<span style="color: ${this.series.color}"><b>` +
+              this.series.name +
+              "</b></span> 관련 기사<br/><hr/>" +
+              "<b>" +
+              dayjs(this.point.x).format("YY/MM/DD") +
+              "</b> 기사의 <b>" +
+              this.point.y +
+              "%</b> "
+            )
+          } else {
+            return (
+              "<b>" + this.series.name + "</b><br/><br/>" + this.point.y + "원"
+            )
+          }
+        },
+      },
+      series: [
+        {
+          name: selectedKeyword.name,
+          type: "areaspline",
+          data: keywordFrequency,
+          color: "var(--custom-blue)",
+          lineColor: "#2979ff",
+        },
+        // {
+        //   name: "삼성바이오로직스",
+        //   data: [
+        //     29.9, 16.4, 59.2, 34.0, 26.0, 35.6, 41.5, 19.4, 14.1, 54.4, 29.9,
+        //     31.5, 46.4, 19.2, 44.0, 16.0, 21.5, 35.6, 48.5, 36.4, 64.4, 29.9,
+        //     51.5, 16.4, 19.2, 44.0, 26.0, 35.6, 28.5, 16.4,
+        //   ].map((value, index) => {
+        //     return [today.valueOf() - index * 24 * 3600 * 1000, value]
+        //   }),
+        //   lineWidth: 4,
+        //   lineColor: "#ffd600",
+        //   // fillColor: "#fff59d",
+        //   color: "#ffd600",
+        //   fillColor: "transparent",
+        //   // linecap: "square",
+        // },
+      ],
+      plotOptions: {
+        areaspline: {
+          lineWidth: 2.5,
+          linecap: "square",
+          marker: {
+            enabled: false,
+            symbol: "circle",
+            radius: 2,
+            states: {
+              hover: {
+                enabled: true,
+              },
+            },
+          },
+          opacity: 0.4,
+        },
+      },
+    })
+  }, [keywordFrequency, keywordAnalysisParams, selectedKeyword.name])
 
   return (
     <ChartWrapper>
-      <HighchartsReact highcharts={Highcharts} options={options} />
+      <HighchartsReact highcharts={Highcharts} options={chartOptions} />
     </ChartWrapper>
   )
 }

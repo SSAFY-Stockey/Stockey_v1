@@ -17,7 +17,7 @@ const KeywordListItem = ({ rank, keyword, percentage, keywordId }: Props) => {
   const setSelectedKeyword = useSetRecoilState(selectedKeywordState)
   const setPanelType = useSetRecoilState(panelTypeState)
   const showKeywordPanel = () => {
-    setSelectedKeyword({ idx: rank - 1, id: keywordId })
+    setSelectedKeyword({ id: keywordId, name: keyword })
     setPanelType("keyword")
   }
 
