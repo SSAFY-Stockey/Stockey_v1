@@ -49,7 +49,7 @@ const MyPage = () => {
                 <KeyboardDoubleArrowRightIcon />
                 <span>닫기</span>
               </PanelToggleBtn>
-              <KeywordPanel keyword={myKeyword} />
+              <KeywordPanel />
             </>
           ) : undefined}
         </PannerWrapper>

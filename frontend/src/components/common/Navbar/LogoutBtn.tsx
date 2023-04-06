@@ -38,6 +38,7 @@ const LogoutBtn = ({ isNarrow }: LogoutBtnProps) => {
           setIsLogin(false)
           setNickname("")
           window.alert("로그아웃 되었습니다")
+          navigate("/user/login")
         })
         .catch((error) => {
           console.log(error)
