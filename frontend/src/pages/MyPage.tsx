@@ -32,6 +32,7 @@ const MyPage = () => {
   }
 
   useEffect(() => {
+    console.log("start")
     checkAccessToken()
   }, [])
 
