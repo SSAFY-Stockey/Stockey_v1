@@ -203,21 +203,11 @@ public class KeywordServiceImpl implements KeywordService{
         return Returns.getMessages();
     }
 
-
-
-//    public List<Object[]> findAvgKeywordCount(Keyword keyword, LocalDate startDate, LocalDate endDate){
-//        Keyword keyword = keywordRepository.findById(keywordId).orElseThrow(() ->
-//                new KeywordException(KeywordExceptionType.KEYWORD_NOT_EXIST)
-//        );
-//        List<Object[]> avgKeywordCount = keywordStatisticRepository.findAvgKeywordCount(keyword, startDate, endDate);
-//        for (Object[] objects : avgKeywordCount) {
-//            for (Object object : objects) {
-//                System.out.println("object = " + object);
-//            }
-//        }
-//        return null;
-//
-//    }
+    @Override
+    public List<KeywordDto> getSearchKeyword(String name) {
+        List<Keyword> keywordList = keywordRepository.findKeywordByNameContaining(name);
+        return keywordMapper.toDto(keywordList);
+    }
 
     // 유저가 동일한지 체크
     private static void checkUser(Member member, Favorite favorite) {
