@@ -45,7 +45,6 @@ const SearchList = ({ page, value }: SearchListProps) => {
     // page === "keyword" 일 때 탐색 함수
     if (page === "keyword") {
       refetch()
-      console.log("yes")
     }
 
     setSearchResult(
@@ -80,11 +79,37 @@ const SearchList = ({ page, value }: SearchListProps) => {
         onClick={(event) => handleClick(item, event)}
         key={item.name + key}
       >
-        {item.name?.split(value ? value.toUpperCase().replace(" ", "") : "")[0]}
+        {
+          item.name?.split(
+            page === "stock"
+              ? value
+                ? value.toUpperCase().replace(" ", "")
+                : ""
+              : value
+              ? value.toLowerCase().replace(" ", "")
+              : ""
+          )[0]
+        }
         <HiglightSpan>
-          {value ? value.toUpperCase().replace(" ", "") : ""}
+          {page === "stock"
+            ? value
+              ? value.toUpperCase().replace(" ", "")
+              : ""
+            : value
+            ? value.toLowerCase().replace(" ", "")
+            : ""}
         </HiglightSpan>
-        {item.name?.split(value ? value.toUpperCase().replace(" ", "") : "")[1]}
+        {
+          item.name?.split(
+            page === "stock"
+              ? value
+                ? value.toUpperCase().replace(" ", "")
+                : ""
+              : value
+              ? value.toLowerCase().replace(" ", "")
+              : ""
+          )[1]
+        }
       </ResultLi>
     )
   }
