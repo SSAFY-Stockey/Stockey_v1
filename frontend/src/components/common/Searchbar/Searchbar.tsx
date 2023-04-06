@@ -1,7 +1,11 @@
 import styled from "styled-components"
 import SearchList from "./SearchList"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
+import debounceFunction from "../Debouncer/Debouncer"
 import SearchIcon from "@mui/icons-material/Search"
+import { useRecoilState } from "recoil"
+import { KeywordSearchState } from "../../../stores/KeywordPageAtoms"
+import { useNavigate } from "react-router-dom"
 
 type SearchbarProps = {
   page: string
@@ -14,6 +18,11 @@ const Searchbar = ({ page }: SearchbarProps) => {
   const [inputValue, setInputValue] = useState<string | undefined>(undefined)
   // 마우스 hovering state
   const [isHovering, setIsHovering] = useState<boolean>(false)
+  // 관련 검색어 상단 단어 state
+  const [firstKeyword, setFirstKeyword] = useRecoilState(KeywordSearchState)
+
+  // useNavigate
+  const navigate = useNavigate()
 
   // input box focus 확인
   const handleFocus = () => {
@@ -24,9 +33,20 @@ const Searchbar = ({ page }: SearchbarProps) => {
     }
   }
 
+  // debouncer를 통한 타이핑 완료 후 검색어 저장
+  const printValue = useCallback(
+    debounceFunction(
+      (value: string | undefined) => {
+        setInputValue(value)
+      },
+      page === "stock" ? 100 : 200
+    ),
+    []
+  )
+
   // input value 확인
   const handleInput = (event: React.ChangeEvent<HTMLInputElement> | null) => {
-    setInputValue(event?.target.value)
+    printValue(event?.target.value)
   }
 
   // hovering 상태 확인
@@ -37,9 +57,31 @@ const Searchbar = ({ page }: SearchbarProps) => {
     setIsHovering(false)
   }
 
+  // 관련 검색어 최상단 이동
+  const moveToFirstKeyword = () => {
+    const url =
+      page === "stock" ? `/stock/${firstKeyword}` : `/keyword/${firstKeyword}`
+    navigate(url)
+  }
+
+  // search icon click handler
+  const handleClick = () => {
+    if (!!firstKeyword) {
+      moveToFirstKeyword()
+    }
+  }
+
+  // enter press handler
+  const handlePressEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter" && !!firstKeyword && isFocus) {
+      moveToFirstKeyword()
+    }
+  }
+
+  // reset first keyword
   useEffect(() => {
-    console.log(isHovering)
-  }, [isHovering])
+    setFirstKeyword("")
+  }, [])
 
   return (
     <>
@@ -54,9 +96,18 @@ const Searchbar = ({ page }: SearchbarProps) => {
               onFocus={handleFocus}
               onBlur={handleFocus}
               onChange={handleInput}
-              placeholder="주식 종목을 검색하세요"
+              onKeyDown={handlePressEnter}
+              placeholder={
+                page === "stock"
+                  ? "주식 종목을 검색하세요"
+                  : "키워드를 검색하세요"
+              }
             />
-            <SearchIcon fontSize="large" />
+            <SearchIcon
+              fontSize="large"
+              onClick={handleClick}
+              sx={{ cursor: "pointer" }}
+            />
           </IconDiv>
           {(isFocus || isHovering) && inputValue ? (
             <SearchList value={inputValue} page={page} />
@@ -83,7 +134,7 @@ const SearchbarWrapper = styled.div`
 
 const SearchbarInput = styled.input`
   font-size: inherit;
-  font-weight: inherit;
+  font-weight: normal;
   width: 750px;
 
   // 테두리 없애기

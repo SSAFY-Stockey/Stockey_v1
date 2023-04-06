@@ -51,7 +51,7 @@ const IndustryList = () => {
 
   return (
     <>
-      {!!MyIndustryList ? (
+      {!!MyIndustryList?.length ? (
         <IndustryListWrapper>
           {MyIndustryList?.map((IndustryInfo, key) => {
             return (
