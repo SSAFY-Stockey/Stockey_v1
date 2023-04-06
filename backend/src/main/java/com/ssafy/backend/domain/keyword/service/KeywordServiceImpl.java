@@ -9,7 +9,6 @@ import com.ssafy.backend.domain.keyword.dto.KeywordDto;
 import com.ssafy.backend.domain.keyword.dto.KeywordStatisticDto;
 import com.ssafy.backend.domain.keyword.dto.TopKeywordDTO;
 import com.ssafy.backend.domain.keyword.entity.Keyword;
-import com.ssafy.backend.domain.keyword.entity.KeywordStatistic;
 import com.ssafy.backend.domain.keyword.mapper.KeywordMapper;
 import com.ssafy.backend.domain.keyword.repository.KeywordRepository;
 import com.ssafy.backend.domain.keyword.repository.KeywordStatisticRepository;
@@ -205,7 +204,7 @@ public class KeywordServiceImpl implements KeywordService{
 
     @Override
     public List<KeywordDto> getSearchKeyword(String name) {
-        List<Keyword> keywordList = keywordRepository.findKeywordByNameContaining(name);
+        List<Keyword> keywordList = keywordRepository.findTop10ByNameStartingWith(name);
         return keywordMapper.toDto(keywordList);
     }
 

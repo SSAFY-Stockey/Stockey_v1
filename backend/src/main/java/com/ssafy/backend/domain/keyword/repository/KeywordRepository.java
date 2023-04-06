@@ -35,5 +35,5 @@ public interface KeywordRepository extends JpaRepository<Keyword, Long> {
             "        count DESC;",nativeQuery = true)
     List<StockKeywordDto> findStockKeywords(Long stockId);
 
-    List<Keyword> findKeywordByNameContaining(String name);
+    List<Keyword> findTop10ByNameStartingWith(String name);
 }
