@@ -10,6 +10,7 @@ import IndustryMainPage from "./pages/IndustryMainPage"
 import StockDetailPage from "./pages/StockDetailPage"
 import StockMainPage from "./pages/StockMainPage"
 import KeywordPage from "./pages/KeywordPage"
+import KeywordDetailPage from "./pages/KeywordDetailPage"
 import Login from "./pages/Login"
 import SignupPage from "./pages/SignupPage"
 import LoginRedirectHandler from "./components/common/Login/LoginRedirectHandler"
@@ -77,6 +78,10 @@ function App() {
                 element={<IndustryDetailPage />}
               />
               <Route path="/keyword" element={<KeywordPage />} />
+              <Route
+                path="/keyword/:keywordName"
+                element={<KeywordDetailPage />}
+              />
               <Route path="/user/login" element={<Login />} />
               <Route path="/oauth/kakao" element={<LoginRedirectHandler />} />
               <Route path="/user/signup" element={<SignupPage />} />

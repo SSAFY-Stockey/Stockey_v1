@@ -51,7 +51,7 @@ const KeywordList = () => {
   }
   return (
     <>
-      {!!MyKeywordList ? (
+      {!!MyKeywordList?.length ? (
         <ListWrapper>
           {MyKeywordList?.map((keyword, key) => {
             const isSelected = keyword.name === myKeyword ? true : false
