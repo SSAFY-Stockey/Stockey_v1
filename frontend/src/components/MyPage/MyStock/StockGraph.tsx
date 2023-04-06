@@ -40,7 +40,7 @@ const StockGraph = () => {
       refetchOnWindowFocus: false,
       refetchOnMount: true,
       retry: false,
-      enabled: !!accessToken,
+      // enabled: !!accessToken,
       select,
     }
   )

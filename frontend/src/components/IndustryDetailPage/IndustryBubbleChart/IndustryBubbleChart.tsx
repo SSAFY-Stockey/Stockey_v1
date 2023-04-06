@@ -6,8 +6,8 @@ import { useBubbleChartSeries } from "../../../hooks/useBubbleChartSeries"
 import { useMarketCapRank } from "../../../hooks/useMarketCapRank"
 import Spinner from "../../common/Spinner/Spinner"
 import { useEffect, useState } from "react"
-import { HighlightedSpan } from "../../StockDetailPage/MainSection/PriceSection/PriceSection"
 import { makePriceFormat } from "../../IndustryMainPage/makePriceFormat"
+import { HighlightedSpan } from "../../StockDetailPage/MainSection/PriceSection/PriceSection"
 
 require("highcharts/highcharts-more")(Highcharts)
 
