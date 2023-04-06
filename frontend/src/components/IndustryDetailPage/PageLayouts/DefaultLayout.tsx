@@ -13,12 +13,15 @@ import IndustryOverall from "../IndustryOverall/IndustryOverall"
 import IndustryMarketCapLineChart from "../IndustryMarketCapLineChart/IndustryMarketCapLineChart"
 import IndustryBubbleChart from "../IndustryBubbleChart/IndustryBubbleChart"
 import AnalysisSection from "../../StockDetailPage/MainSection/KeywordSection/AnalysisSection"
-import { useMyIndustryCheck } from "../../../hooks/useMyIndustryCheck"
 import { useEffect, useState } from "react"
 import AllIncludedStockListArea from "../AllIncludedStockListArea/AllIncludedStockListArea"
+import { accessTokenSelector } from "../../../stores/atoms"
+import { useRecoilState } from "recoil"
+import customAxios from "../../../utils/customAxios"
+import { useQuery } from "react-query"
 
 export interface LayoutProps {
-  changeLayout: (e: React.MouseEvent<HTMLElement>, toggleMode: string) => void
+  changeLayout: (toggleMode: string) => void
   className: string
   industryInfo: {
     id: number
@@ -33,19 +36,42 @@ const DefaultLayout = ({
   className,
   industryInfo,
 }: LayoutProps) => {
+  // 북마크 여부 체크(로그인 상태에서만)
+  const [accessToken, setAccessToken] = useRecoilState(accessTokenSelector)
+  const axios = customAxios(accessToken, setAccessToken)
+  const fetchMyIndustryCheck = ({ queryKey }: any) => {
+    const industryId = queryKey[1]
+    return axios.get(`industry/stocklist/my/${industryId}`)
+  }
+  const select = (response: any) => {
+    return response.data.data
+  }
+
+  const useMyIndustryCheck = (industryId: number) => {
+    return useQuery(["myIndustryCheck", industryId], fetchMyIndustryCheck, {
+      refetchOnWindowFocus: false,
+      select,
+      retry: false,
+      enabled: !!accessToken,
+    })
+  }
+
   const { data: bookmarked } = useMyIndustryCheck(industryInfo.id)
+
   const [isBookmarked, setIsBookmarked] = useState<boolean>(false)
+
   useEffect(() => {
     setIsBookmarked(bookmarked)
   }, [bookmarked])
+
   return (
     <>
       <Grid item xs={12} marginLeft={4.5}>
         <ButtonDiv id="btn">
-          <button onClick={(e) => changeLayout(e, "kwd")}>keywordPanel</button>
+          <button onClick={(e) => changeLayout("kwd")}>keywordPanel</button>
           <IndustrySelectorToggleBtn
-            changeLayout={(e, mode) => {
-              changeLayout(e, mode)
+            changeLayout={(mode) => {
+              changeLayout(mode)
             }}
             status={className}
             industryName={industryInfo.name}
@@ -57,11 +83,13 @@ const DefaultLayout = ({
           <LeftSlider className={`def ${className}`}>
             <TitleDiv>
               {industryInfo?.name}
-              <BookmarkBtn
-                isBookmarked={isBookmarked}
-                page="industry"
-                num={industryInfo.id}
-              />
+              {!!accessToken && (
+                <BookmarkBtn
+                  isBookmarked={isBookmarked}
+                  page="industry"
+                  num={industryInfo.id}
+                />
+              )}
             </TitleDiv>
           </LeftSlider>
           <LeftSlider className={`def ${className}`}>

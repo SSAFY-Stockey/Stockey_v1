@@ -1,10 +1,11 @@
 import styled from "@emotion/styled"
 import FavoriteIndustryCardList from "./FavoriteIndustryCardList"
-import { accessTokenSelector } from "../../../stores/atoms"
+import { accessTokenSelector, nicknameState } from "../../../stores/atoms"
 import customAxios from "../../../utils/customAxios"
 import { useQuery } from "react-query"
 import Spinner from "../../common/Spinner/Spinner"
-import { useRecoilState } from "recoil"
+import { useRecoilState, useRecoilValue } from "recoil"
+import { HighlightedSpan } from "../../StockDetailPage/MainSection/PriceSection/PriceSection"
 
 export interface MyIndustryType {
   id: number
@@ -16,6 +17,7 @@ export interface MyIndustryType {
 const FavoriteIndustryInfoArea = () => {
   // nickname 받아오는 코드로 변경
   const userName = "OOO"
+  const nickname = useRecoilValue(nicknameState)
   const [accessToken, setAccessToken] = useRecoilState(accessTokenSelector)
   const axios = customAxios(accessToken, setAccessToken)
   const fetchMyIndustryList = () => {
@@ -37,13 +39,24 @@ const FavoriteIndustryInfoArea = () => {
   )
   return (
     <AreaDiv>
-      <TitleDiv>{userName} 님의 관심 산업</TitleDiv>
+      <TitleDiv>
+        {!!nickname
+          ? (
+              <HighlightedSpan color="var(--custom-gradient-pink)">
+                {nickname}
+              </HighlightedSpan>
+            ) + " 님의"
+          : ""}
+        관심 산업
+      </TitleDiv>
       {isLoading ? (
         <Spinner />
       ) : myIndustryList ? (
         <FavoriteIndustryCardList myIndustryList={myIndustryList} />
       ) : (
-        <DefaultPhrase>관심 산업을 등록해보세요.</DefaultPhrase>
+        <DefaultPhrase>
+          {!!nickname ? "" : "로그인 후 "}관심 산업을 등록해보세요.
+        </DefaultPhrase>
       )}
     </AreaDiv>
   )
@@ -81,7 +94,7 @@ const TitleDiv = styled.div`
   align-items: center;
   letter-spacing: 0.1px;
 
-  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  white-space: pre;
 `
 
 const DefaultPhrase = styled.div`
