@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 
 @Getter
 @Entity
-@Table(name = "news_relation")
+@Table(name = "news_relation_v2")
 public class NewsRelation {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "news_keyword_id", nullable = false)

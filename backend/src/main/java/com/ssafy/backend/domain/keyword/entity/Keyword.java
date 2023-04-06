@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 
 @Getter
 @Entity
-@Table(name = "keyword")
+@Table(name = "keyword_v2")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Keyword {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
