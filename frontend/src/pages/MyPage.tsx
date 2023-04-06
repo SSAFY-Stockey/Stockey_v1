@@ -9,6 +9,7 @@ import MyKeyword from "../components/MyPage/MyKeyword/MyKeyword"
 import KeywordPanel from "../components/StockDetailPage/SubPanel/KeywordPanel/KeywordPanel"
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight"
 import { accessTokenSelector } from "../stores/atoms"
+import { useNavigate } from "react-router-dom"
 
 const MyPage = () => {
   // myKeyword state
@@ -17,6 +18,22 @@ const MyPage = () => {
   const [isActivate, setIsActivate] = useState<boolean>(false)
   // accessToken state
   const accessToken = useRecoilValue(accessTokenSelector)
+
+  // useNavigate
+  const navigate = useNavigate()
+
+  // accessToken 확인 함수
+  const checkAccessToken = () => {
+    setTimeout(() => {
+      if (!accessToken) {
+        navigate("/user/login")
+      }
+    }, 1000)
+  }
+
+  useEffect(() => {
+    checkAccessToken()
+  }, [])
 
   useEffect(() => {
     setIsActivate(!!myKeyword ? true : false)
