@@ -13,7 +13,6 @@ const FavoriteIndustryCardList = ({ myIndustryList }: Props) => {
         return (
           <FavoriteIndustryCard
             key={myIndustry.id}
-            imgUrl={`/industryLogos/sampleIndustryLogo.png`}
             industryName={myIndustry.name}
             industryId={myIndustry.id}
           />

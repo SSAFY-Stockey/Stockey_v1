@@ -40,6 +40,7 @@ const OnIndustrySelectorLayout = ({
               changeLayout(e, mode)
             }}
             status={className}
+            industryName={industryInfo.name}
           />
         </ButtonDiv>
       </Grid>
