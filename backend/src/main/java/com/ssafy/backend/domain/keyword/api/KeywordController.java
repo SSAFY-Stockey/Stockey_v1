@@ -142,6 +142,15 @@ public class KeywordController {
         return new ResponseEntity<>(new ResponseDto("OK", getTopNKeywordResponse), HttpStatus.OK);
     }
 
+
+    @Operation(summary = "keyphrase 제공", description = "특정 기간의 클러스터링 keyphrase을 제공합니다.")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "요청 성공"),
+                    @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+                    @ApiResponse(responseCode = "404", description = "키워드 없음"),
+            }
+    )
     @GetMapping("/{keywordsId}/keyphrase")
     public ResponseEntity<ResponseDto> GetKeyphrase(@PathVariable Long keywordsId,
                                                     @Valid @ModelAttribute GetKeyphraseRequest getKeyphraseRequest){
@@ -149,6 +158,13 @@ public class KeywordController {
         return new ResponseEntity<>(new ResponseDto("OK",keyphrase),HttpStatus.OK);
     }
 
+    @Operation(summary = "검색", description = "keyword 검색 결과를 제공합니다.")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "삭제 성공"),
+                    @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+            }
+    )
     @GetMapping("/search")
     public ResponseEntity<ResponseDto> getStockSearch(@RequestParam String keyword)  {
         List<KeywordDto> searchKeyword = keywordService.getSearchKeyword(keyword);
