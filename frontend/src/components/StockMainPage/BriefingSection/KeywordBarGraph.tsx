@@ -5,6 +5,7 @@ import { useKeywordRank } from "../../../hooks/useKeywordRank"
 import { keywordParamsState } from "../../../stores/StockMainAtoms"
 import { selectedKeywordState } from "../../../stores/StockMainAtoms"
 import { useRecoilValue, useSetRecoilState } from "recoil"
+import { useState, useEffect } from "react"
 
 const KeywordBarGraph = () => {
   const keywordParams = useRecoilValue(keywordParamsState)
@@ -26,7 +27,8 @@ const KeywordBarGraph = () => {
       type: "column",
       backgroundColor: "var(--custom-background)",
       borderRadius: 20,
-      height: "42%",
+      // height: chartSize.height,
+      // width: chartSize.width,
     },
     colors: [
       "var(--custom-orange-1)",
@@ -55,7 +57,8 @@ const KeywordBarGraph = () => {
       labels: {
         enabled: false,
       },
-      max: isLoading ? 200 : yAxisMax,
+      max: 50,
+      // max: isLoading ? 200 : yAxisMax,
       // max: yAxisMax,
     },
     plotOptions: {
@@ -116,7 +119,10 @@ export default KeywordBarGraph
 
 const GraphWrapper = styled.div`
   width: 100%;
-  align-items: center;
+  height: 60%;
+  & div {
+    height: 100%;
+  }
   & .custom-label {
     text-align: center;
   }

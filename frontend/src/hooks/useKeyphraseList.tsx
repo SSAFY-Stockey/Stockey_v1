@@ -13,10 +13,10 @@ export interface KeyphraseListParamsType {
 }
 
 const fetchKeyphraseList = ({ queryKey }: any) => {
-  const [, keywordId, type, id, start_date, end_date] = queryKey
+  const [, keywordId, newsType, id, startDate, endDate] = queryKey
   console.log("fetchKeyPhraseList")
-  return axios.get(`/keywords/${keywordId}/key_phrase`, {
-    params: { keywordId, type, id, start_date, end_date },
+  return axios.get(`/keywords/${keywordId}/keyphrase`, {
+    params: { newsType, id, startDate, endDate },
   })
 }
 
@@ -41,11 +41,21 @@ export const useKeyphraseList = ({
   )
 }
 
+interface KeyphraseType {
+  key_phrase: string
+  news: {
+    title: string
+    url: string
+    date: string // yyyy-mm-dd
+  }
+}
 const select = (response: any) => {
-  const rawData = response.data
-  const selectedData = rawData
-  console.log("selectedData >> ", selectedData)
-  return selectedData
+  const rawData: KeyphraseType[] = response.data.data
+  // const keyphraseData = rawData.map((keyphrase: KeyphraseType) => {
+  //   return { keyphrase: keyphrase["key_phrase"], news: keyphrase["news"] }
+  // })
+  // console.log("selectedData >> ", keyphraseData)
+  return rawData
 }
 
 const onError = (err: any) => {

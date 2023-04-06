@@ -6,6 +6,8 @@ import { useBubbleChartSeries } from "../../../hooks/useBubbleChartSeries"
 import { useMarketCapRank } from "../../../hooks/useMarketCapRank"
 import Spinner from "../../common/Spinner/Spinner"
 import { useEffect, useState } from "react"
+import { HighlightedSpan } from "../../StockDetailPage/MainSection/PriceSection/PriceSection"
+import { makePriceFormat } from "../../IndustryMainPage/makePriceFormat"
 
 require("highcharts/highcharts-more")(Highcharts)
 
@@ -49,7 +51,16 @@ const IndustryBubbleChart = ({ industryId }: { industryId: number }) => {
     },
     tooltip: {
       useHTML: true,
-      pointFormat: "시가총액: {point.value} 원",
+      // pointFormat: "시가총액: {point.value} 원",
+      formatter: function (this: any) {
+        let content =
+          "<b style='color: var(--custom-purple-1)'>" +
+          this.point.name +
+          "</b><br/>"
+        const value = makePriceFormat(this.point.value)
+        content += "<span>시가총액: " + value.toString() + "</span>"
+        return content
+      },
     },
     plotOptions: {
       packedbubble: {
@@ -96,7 +107,10 @@ const IndustryBubbleChart = ({ industryId }: { industryId: number }) => {
   }
   return (
     <AreaDiv>
-      <TitleDiv>산업 내 시가총액 TOP 5</TitleDiv>
+      <TitleDiv>
+        {"산업 내 시가총액 "}
+        <HighlightedSpan color="var(--custom-mint)">TOP 5</HighlightedSpan>
+      </TitleDiv>
       <ChartWrapper id="bubble-chart">
         {isLoading ? (
           <Spinner />
@@ -140,4 +154,5 @@ const TitleDiv = styled.div`
   display: flex;
   align-items: center;
   letter-spacing: 0.1px;
+  white-space: pre;
 `

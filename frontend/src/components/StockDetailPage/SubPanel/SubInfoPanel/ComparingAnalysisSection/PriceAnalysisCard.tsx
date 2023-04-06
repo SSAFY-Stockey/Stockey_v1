@@ -1,6 +1,6 @@
 import { Paper, Grid, Divider } from "@mui/material"
 // import Paper from "@mui/material/Paper"
-import styled from "styled-components"
+import styled, { keyframes } from "styled-components"
 
 interface Props {
   stockName: string
@@ -30,7 +30,7 @@ const PriceAnalysisCard = ({
   }
   // 산업 평균은 상승했는데 종목은 하락한 경우
   else if (changeRate < 0 && industryAvgChangeRate > 0) {
-    title = `왜 ${stockName}만...😭`
+    title = `왜  ${stockName}만...😭`
     description = `오늘 다른 ${industry} 종목들은 ${industryAvgChangeRate.toFixed(
       1
     )}% 오를 동안 오히려 ${Math.abs(changeRate).toFixed(1)}% 떨어졌어요..`
@@ -61,7 +61,7 @@ const PriceAnalysisCard = ({
   else if (changeRate < 0 && industryAvgChangeRate < 0) {
     // 종목이 더 많이 하락한 경우
     if (changeRate < industryAvgChangeRate) {
-      title = `${industry} 분위기가 좋지 않네요...😢`
+      title = `${industry} 시장 분위기가 좋지 않네요...😢`
       description = `오늘 다른 ${industry} 종목들보다 ${(
         changeRate / industryAvgChangeRate
       ).toFixed(1)}% 더 많이 떨어졌어요!`
@@ -95,12 +95,35 @@ const PriceAnalysisCard = ({
 }
 
 export default PriceAnalysisCard
+
+export const shake = keyframes`
+0% {
+  transform: rotate(-10deg);
+}
+25% {
+  transform: rotate(10deg);
+}
+50% {
+  transform: rotate(-10deg);
+}
+75% {
+  transform: rotate(10deg);
+}
+
+100% {
+  transform: rotate(-10deg);
+}
+`
+
 export const CardPaper = styled(Paper)`
   padding: 5%;
   background-color: rgb(211 244 206 / 50%) !important;
   border-radius: 24px !important;
-  // box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.25);
-  // backdrop-filter: blur(15px);
+  &: hover img {
+    animation: ${shake} 0.6s ease-in-out;
+    animation-iteration-count: 1;
+    animation-direction: alternate;
+  }
 `
 
 export const CardWrapper = styled(Grid)`
@@ -127,8 +150,6 @@ export const CardTitle = styled.p`
   line-height: 2;
   font-style: italic;
   color: #326859;
-  // text-decoration: underline;
-  // text-underline-offset: 50%;
   border-bottom: 2px solid #9e9e9e1f;
 `
 
