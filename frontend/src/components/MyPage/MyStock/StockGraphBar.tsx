@@ -8,13 +8,14 @@ interface Props {
   price: number
   rate: number
   name: string
+  stockId: number
 }
 
 interface BarProps {
   rate: number
 }
 
-const StockGraphBar = ({ price, rate, name }: Props) => {
+const StockGraphBar = ({ price, rate, name, stockId }: Props) => {
   const [isHover, setIsHover] = useState<boolean>(false)
   const navigate = useNavigate()
 
@@ -29,7 +30,7 @@ const StockGraphBar = ({ price, rate, name }: Props) => {
 
   // handle Click
   const handleClick = () => {
-    navigate(`/stock/${name}`)
+    navigate(`/stock/${stockId}`)
   }
 
   return (
