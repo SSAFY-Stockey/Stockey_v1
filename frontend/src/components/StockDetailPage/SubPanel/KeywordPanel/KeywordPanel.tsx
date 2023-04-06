@@ -3,16 +3,17 @@ import NewsSection from "./NewsSection"
 import KeywordChartSection from "./KeywordChartSection"
 import KeywordSearchBtn from "./KeywordSearchBtn"
 import BookmarkBtn from "../../../common/Bookmark/BookmarkBtn"
-import { useRecoilValue, useRecoilState } from "recoil"
-import { selectedKeywordState } from "../../../../stores/StockDetailAtoms"
+import { useRecoilState } from "recoil"
 // useQuery
 import { useQuery } from "react-query"
 import customAxios from "../../../../utils/customAxios"
 import { accessTokenSelector } from "../../../../stores/atoms"
 
-const KeywordPanel = () => {
-  const { id: keywordId, name: keyword } = useRecoilValue(selectedKeywordState)
-
+export interface KeywordPanelProps {
+  keywordId: number
+  keyword: string
+}
+const KeywordPanel = ({ keywordId, keyword }: KeywordPanelProps) => {
   // accesstoken state
   const [accessToken, setAccessToken] = useRecoilState(accessTokenSelector)
   // customAxios
@@ -51,11 +52,11 @@ const KeywordPanel = () => {
       </TopRow>
 
       <PanelSubTitle>키워드 등장 추이 보기</PanelSubTitle>
-      <KeywordChartSection />
+      <KeywordChartSection keywordId={keywordId} keyword={keyword} />
       <PanelSubTitle id="newsRef">
         {keyword} 관련 기사 한 눈에 보기
       </PanelSubTitle>
-      <NewsSection />
+      <NewsSection keywordId={keywordId} keyword={keyword} />
     </PanelWrapper>
   )
 }
