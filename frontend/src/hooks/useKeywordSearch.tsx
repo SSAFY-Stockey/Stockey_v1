@@ -3,6 +3,11 @@ import { useQuery } from "react-query"
 
 const axios = customAxios()
 
+interface Props {
+  id: number
+  name: string
+}
+
 // fetch search value
 const fetchKeywordSearch = ({
   queryKey,
@@ -25,11 +30,5 @@ export const useKeywordSearch = (serachValue: string | undefined) => {
 }
 
 const select = (response: any) => {
-  const searchResult: string[] = []
-
-  response.data.data?.forEach((item: any) => {
-    searchResult.push(item.name)
-  })
-
-  return searchResult
+  return response.data.data
 }

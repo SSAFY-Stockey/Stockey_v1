@@ -1,6 +1,11 @@
 import { atom } from "recoil"
 
-export const myKeywordState = atom<string | undefined>({
+interface MyKeywordProps {
+  id: number
+  name: string
+}
+
+export const myKeywordState = atom<MyKeywordProps | undefined>({
   key: "myKeywordState",
   default: undefined,
 })

@@ -26,7 +26,7 @@ const MyPage = () => {
   const handleClick = () => {
     setIsActivate(false)
     setTimeout(() => {
-      setMyKeword("")
+      setMyKeword(undefined)
     }, 800)
   }
 
@@ -49,7 +49,10 @@ const MyPage = () => {
                 <KeyboardDoubleArrowRightIcon />
                 <span>닫기</span>
               </PanelToggleBtn>
-              <KeywordPanel />
+              <KeywordPanel
+                keywordId={myKeyword?.id}
+                keyword={myKeyword?.name}
+              />
             </>
           ) : undefined}
         </PannerWrapper>

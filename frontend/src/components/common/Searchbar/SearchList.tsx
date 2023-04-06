@@ -11,9 +11,14 @@ type SearchListProps = {
   value: string | undefined
 }
 
+interface Props {
+  id: number
+  name: string
+}
+
 const SearchList = ({ page, value }: SearchListProps) => {
   // 연관 검색어 저장 array
-  const [searchResult, setSearchResult] = useState<string[]>([])
+  const [searchResult, setSearchResult] = useState<Props[]>([])
   // 가장 상위 검색어 저장 state
   const setFirstKeyword = useSetRecoilState(KeywordSearchState)
 
@@ -28,8 +33,8 @@ const SearchList = ({ page, value }: SearchListProps) => {
   useEffect(() => {
     // page === "stock" 일 때 탐색 함수
     const saveSearchResult = () => {
-      const sampleResult = SampleStock.filter((item: string) =>
-        item
+      const sampleResult = SampleStock.filter((item: Props) =>
+        item.name
           .toUpperCase()
           .replace(" ", "")
           .includes(value ? value.toUpperCase().replace(" ", "") : "")
@@ -54,28 +59,32 @@ const SearchList = ({ page, value }: SearchListProps) => {
 
   // 첫번째 단어 저장
   useEffect(() => {
-    setFirstKeyword(!!searchResult?.length ? searchResult[0] : "")
+    setFirstKeyword(!!searchResult?.length ? searchResult[0].name : "")
   }, [searchResult])
 
   // 클릭시 해당 페이지로 이동하는 함수
   const navigate = useNavigate()
   const handleClick = (
-    item: string,
+    item: Props,
     event: React.MouseEvent<HTMLLIElement> | undefined
   ) => {
-    const url = page === "stock" ? `/stock/${item}` : `/keyword/${item}`
+    const url =
+      page === "stock" ? `/stock/${item.name}` : `/keyword/${item.name}`
     navigate(url)
   }
 
   // 검색 내역 포함 부분 표시 함수
-  const coloredItem = (item: string, key: number) => {
+  const coloredItem = (item: Props, key: number) => {
     return (
-      <ResultLi onClick={(event) => handleClick(item, event)} key={item + key}>
-        {item.split(value ? value.toUpperCase().replace(" ", "") : "")[0]}
+      <ResultLi
+        onClick={(event) => handleClick(item, event)}
+        key={item.name + key}
+      >
+        {item.name?.split(value ? value.toUpperCase().replace(" ", "") : "")[0]}
         <HiglightSpan>
           {value ? value.toUpperCase().replace(" ", "") : ""}
         </HiglightSpan>
-        {item.split(value ? value.toUpperCase().replace(" ", "") : "")[1]}
+        {item.name?.split(value ? value.toUpperCase().replace(" ", "") : "")[1]}
       </ResultLi>
     )
   }
