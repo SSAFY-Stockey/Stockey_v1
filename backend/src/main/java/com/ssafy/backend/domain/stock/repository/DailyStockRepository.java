@@ -17,11 +17,16 @@ public interface DailyStockRepository extends JpaRepository<DailyStock, Long> {
     List<DailyStock> findByStockId(Long stockId);
 
 
-    @Query("SELECT AVG(ds.closePrice) AS avgAmount " +
+    @Query("SELECT ds.closePrice AS price " +
             " FROM DailyStock ds " +
             " WHERE ds.stock = :stock " +
-            " AND ds.stockDate BETWEEN :startDate and :endDate " +
-            " GROUP BY WEEK(ds.stockDate) ")
-    List<Double> getStockweekStatistic(Stock stock, LocalDate startDate, LocalDate endDate);
+            " AND ds.stockDate BETWEEN :startDate and :endDate ")
+    List<Double> getStockCorrelation(Stock stock, LocalDate startDate, LocalDate endDate);
+
+    @Query(" SELECT ds.stockDate " +
+            " FROM DailyStock ds" +
+            " WHERE ds.stock = :stock" +
+            " AND ds.stockDate BETWEEN :startDate and :endDate")
+    List<LocalDate> getStockDateCorrelation(Stock stock,LocalDate startDate,LocalDate endDate);
 
 }
