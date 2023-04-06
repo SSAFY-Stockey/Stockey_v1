@@ -48,6 +48,7 @@ const DefaultLayout = ({
               changeLayout(e, mode)
             }}
             status={className}
+            industryName={industryInfo.name}
           />
         </ButtonDiv>
       </Grid>
