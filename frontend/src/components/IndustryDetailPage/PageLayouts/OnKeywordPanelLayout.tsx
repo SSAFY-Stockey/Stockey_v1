@@ -17,6 +17,7 @@ import { LayoutProps } from "./DefaultLayout"
 import { useMyIndustryCheck } from "../../../hooks/useMyIndustryCheck"
 import { useEffect, useState } from "react"
 import AnalysisSection from "../../StockDetailPage/MainSection/KeywordSection/AnalysisSection"
+import AllIncludedStockListArea from "../AllIncludedStockListArea/AllIncludedStockListArea"
 
 const OnKeywordPanelLayout = ({
   changeLayout,
@@ -66,7 +67,10 @@ const OnKeywordPanelLayout = ({
             <IndustryBubbleChart industryId={industryInfo?.id} />
           </RightSlider>
           <RightSlider className={`kwd ${className}`}>
-            <div>전체 종목 리스트</div>
+            <AllIncludedStockListArea
+              industryId={industryInfo.id}
+              industryName={industryInfo.name}
+            />
           </RightSlider>
         </LeftSection>
       </Grid>
