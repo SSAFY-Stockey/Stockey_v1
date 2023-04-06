@@ -1,16 +1,27 @@
 import SubInfoPanel from "./SubInfoPanel/SubInfoPanel"
 import KeywordPanel from "./KeywordPanel/KeywordPanel"
 import styled from "styled-components"
+import { useRecoilValue } from "recoil"
+import { panelTypeState } from "../../../stores/StockDetailAtoms"
 
 interface Props {
   isPanelExpanded: boolean
 }
 
 const SubPanel = ({ isPanelExpanded }: Props) => {
+  const panelType = useRecoilValue(panelTypeState)
+
   return (
     <PanelDiv>
-      {isPanelExpanded ? <SubInfoPanel /> : <div></div>}
-      {/* {false ?  : <KeywordPanel keyword="빅스텝" />} */}
+      {isPanelExpanded ? (
+        panelType === "subInfo" ? (
+          <SubInfoPanel />
+        ) : (
+          <KeywordPanel keyword="빅스텝" />
+        )
+      ) : (
+        <div></div>
+      )}
     </PanelDiv>
   )
 }

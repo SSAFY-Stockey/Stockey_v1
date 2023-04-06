@@ -9,14 +9,12 @@ import {
 import { Grid } from "@mui/material"
 
 interface Props {
-  stockName: string
   industry: string
   industryTotal: number
   industryRank: number
 }
 
 const CapitalAnalysisCard = ({
-  stockName,
   industry,
   industryTotal,
   industryRank,

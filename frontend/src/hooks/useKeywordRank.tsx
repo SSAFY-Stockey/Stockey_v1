@@ -48,7 +48,7 @@ interface KeywordType {
   keywordId: number
 }
 
-interface ChartDataType extends Highcharts.PointOptionsObject {
+export interface ChartDataType extends Highcharts.PointOptionsObject {
   name: string
   y: number
   rank: number
@@ -74,7 +74,7 @@ const select = (response: any) => {
 
   const top3 = chartData.slice(0, 3)
   const others = chartData.slice(3)
-  const yAxisMax: number = top1[0].y + 20
+  const yAxisMax: number = top1[0].y + 30
   return { top3, others, totalNewsCount, yAxisMax }
 }
 
