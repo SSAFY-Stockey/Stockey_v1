@@ -60,7 +60,9 @@ const Searchbar = ({ page }: SearchbarProps) => {
   // 관련 검색어 최상단 이동
   const moveToFirstKeyword = () => {
     const url =
-      page === "stock" ? `/stock/${firstKeyword}` : `/keyword/${firstKeyword}`
+      page === "stock"
+        ? `/stock/${firstKeyword?.id}`
+        : `/keyword/${firstKeyword?.name}`
     navigate(url)
   }
 
@@ -80,7 +82,7 @@ const Searchbar = ({ page }: SearchbarProps) => {
 
   // reset first keyword
   useEffect(() => {
-    setFirstKeyword("")
+    setFirstKeyword(undefined)
   }, [])
 
   return (

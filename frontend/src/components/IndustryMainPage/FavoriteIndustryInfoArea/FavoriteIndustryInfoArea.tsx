@@ -15,8 +15,6 @@ export interface MyIndustryType {
 }
 
 const FavoriteIndustryInfoArea = () => {
-  // nickname 받아오는 코드로 변경
-  const userName = "OOO"
   const nickname = useRecoilValue(nicknameState)
   const [accessToken, setAccessToken] = useRecoilState(accessTokenSelector)
   const axios = customAxios(accessToken, setAccessToken)

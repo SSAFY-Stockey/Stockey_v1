@@ -27,7 +27,7 @@ const SearchList = ({ page, value }: SearchListProps) => {
     isLoading,
     data: KeywordSearchResult,
     refetch,
-  } = useKeywordSearch(value)
+  } = useKeywordSearch(value, page)
 
   // 입력값이 바뀔 때, 검색 결과 데이터를 갱신
   useEffect(() => {
@@ -58,7 +58,7 @@ const SearchList = ({ page, value }: SearchListProps) => {
 
   // 첫번째 단어 저장
   useEffect(() => {
-    setFirstKeyword(!!searchResult?.length ? searchResult[0].name : "")
+    setFirstKeyword(!!searchResult?.length ? searchResult[0] : undefined)
   }, [searchResult])
 
   // 클릭시 해당 페이지로 이동하는 함수
@@ -67,8 +67,8 @@ const SearchList = ({ page, value }: SearchListProps) => {
     item: Props,
     event: React.MouseEvent<HTMLLIElement> | undefined
   ) => {
-    const url =
-      page === "stock" ? `/stock/${item.name}` : `/keyword/${item.name}`
+    setFirstKeyword(item)
+    const url = page === "stock" ? `/stock/${item.id}` : `/keyword/${item.name}`
     navigate(url)
   }
 
