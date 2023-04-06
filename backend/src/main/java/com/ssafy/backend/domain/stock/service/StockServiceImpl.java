@@ -67,15 +67,10 @@ public class StockServiceImpl implements StockService{
         List<BusinessDto> businessDtos = businessMapper.toDto(stock.getBusinesses());
         stockDto.setIndustry(industryDto);
         stockDto.setBusinesses(businessDtos);
-        System.out.println("1 = " + 1);
         Integer marketCapRank = getStockIndustryMarketCapRank(stockId, industryDto.getId());
-        System.out.println("2 = " + 2);
         stockDto.setIndustryCapRank(marketCapRank);
-        System.out.println("3 = " + 3);
         Integer favoriteRank = getStockIndustryFavoriteRank(stockId, industryDto.getId());
-        System.out.println("4 = " + 4);
         stockDto.setIndustryFavRank(favoriteRank);
-        System.out.println("5 = " + 5);
         Float avgRate = getAverageIndustryChangeRate(industryDto.getId());
         stockDto.setIndustryAvgChangeRate(avgRate);
         DailyStockDto dailyStockDto =getTodayDailyStock(stockId);
@@ -222,25 +217,20 @@ public class StockServiceImpl implements StockService{
     public Double getCorrelation(Long id, GetCorrelationRequest getCorrelationRequest){
         Stock stock = getStockEntity(id);
 
-
         Long keywordId = getCorrelationRequest.getKeywordId();
         Keyword keyword = keywordRepository.findById(keywordId).orElseThrow(() ->
                 new KeywordException(KeywordExceptionType.KEYWORD_NOT_EXIST));
         LocalDate startDate = getCorrelationRequest.getStartDate();
         LocalDate endDate = getCorrelationRequest.getEndDate();
-
-
-        List<Double> avgKeywordCount = keywordStatisticRepository.findAvgKeywordCount(keyword, startDate, endDate);
-        List<Double> stockweekStatistic = dailyStockRepository.getStockweekStatistic(stock, startDate, endDate);
-
-        //리스트의 size가 다를 경우 마지막 제거
-        if(avgKeywordCount.size()>stockweekStatistic.size()){
-            avgKeywordCount.remove(avgKeywordCount.size()-1);
-        }else if(avgKeywordCount.size()<stockweekStatistic.size()){
-            stockweekStatistic.remove(stockweekStatistic.size()-1);
+        List<CorrelationDto> test = stockRepository.getTest(stock, keyword,startDate, endDate);
+        List<Double> priceList = new ArrayList<>();
+        List<Double> countList = new ArrayList<>();
+        for(CorrelationDto dto : test){
+            countList.add(Double.valueOf(dto.getCount()));
+            priceList.add(Double.valueOf(dto.getClosePrice()));
         }
-
-        double correlationCoefficient = getCorrelationResult(avgKeywordCount, stockweekStatistic);
+        System.out.println("test = " + test.size());
+        double correlationCoefficient = getCorrelationResult(countList, priceList);
         return correlationCoefficient;
     }
 

@@ -1,6 +1,8 @@
 package com.ssafy.backend.domain.stock.repository;
 
 import com.ssafy.backend.domain.industry.entity.Industry;
+import com.ssafy.backend.domain.keyword.entity.Keyword;
+import com.ssafy.backend.domain.stock.dto.CorrelationDto;
 import com.ssafy.backend.domain.stock.dto.IndustrySumDto;
 import com.ssafy.backend.domain.stock.entity.Stock;
 import org.springframework.data.domain.Pageable;
@@ -8,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -68,4 +71,14 @@ public interface StockRepository extends JpaRepository<Stock,Long> {
 
     @Query("select s from Stock s where s.name like :keyword")
     List<Stock> findByName(String keyword);
+
+
+    @Query("SELECT ds.stockDate as stockDate,ds.closePrice as closePrice,ks.count as count" +
+            " FROM DailyStock  ds" +
+            " left JOIN KeywordStatistic ks" +
+            " ON ds.stockDate = ks.statisticDate " +
+            " WHERE ds.stock = :stock" +
+            " AND ds.stockDate BETWEEN :startDate and :endDate" +
+            " AND ks.keyword = :keyword")
+    List<CorrelationDto> getTest(Stock stock, Keyword keyword, LocalDate startDate, LocalDate endDate);
 }
