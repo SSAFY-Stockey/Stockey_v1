@@ -37,6 +37,7 @@ Highcharts.setOptions({
       "12월",
     ],
     weekdays: ["일", "월", "화", "수", "목", "금", "토"],
+    rangeSelectorFrom: "분석 기간 : ",
     rangeSelectorTo: "⁓",
   },
 })
@@ -185,15 +186,6 @@ const StockPriceChart = () => {
         height: 60,
         margin: 30,
         maskFill: "rgba(212, 193, 255, 0.4)",
-      },
-
-      // 나중에 data fetch 시에는 data 속성 활용
-      data: {
-        // URL: "https://demo-live-data.highcharts.com/time-data.csv",
-        // enablePolling: true,
-        // csvURL: "../../../sample_data/aapl-stock-price.csv",
-        // enablePolling: true,
-        // dataRefreshRate: 1,
       },
       plotOptions: {
         line: {

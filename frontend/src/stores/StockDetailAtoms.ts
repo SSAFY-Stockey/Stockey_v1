@@ -52,13 +52,13 @@ export const stockDetailState = atom<StockDetailType | undefined>({
 
 // 선택된 keyword의 id를 저장하는 state
 export const selectedKeywordState = atom<{
-  idx: number
-  id: number | undefined
+  id: number
+  name: string
 }>({
   key: "selectedKeywordState",
   default: {
-    idx: 1,
     id: 0,
+    name: "",
   },
 })
 
