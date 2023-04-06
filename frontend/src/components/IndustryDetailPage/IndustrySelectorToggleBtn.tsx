@@ -7,9 +7,14 @@ import { useEffect, useState } from "react"
 interface BtnProps {
   changeLayout: (e: React.MouseEvent<HTMLElement>, mode: string) => void
   status: string
+  industryName: string
 }
 
-const IndustrySelectorToggleBtn = ({ changeLayout, status }: BtnProps) => {
+const IndustrySelectorToggleBtn = ({
+  changeLayout,
+  status,
+  industryName,
+}: BtnProps) => {
   const [isSelectorOn, setIsSelectorOn] = useState<boolean>(false)
   useEffect(() => {
     if (status.endsWith("sel")) {
@@ -29,7 +34,7 @@ const IndustrySelectorToggleBtn = ({ changeLayout, status }: BtnProps) => {
       }}
       className={isSelectorOn ? "small" : ""}
     >
-      <ButtonImg src="/industryLogos/sampleIndustryLogo.png" alt="" />
+      <ButtonImg src={`/industryLogos/${industryName}.png`} alt="" />
       {isSelectorOn ? "접기" : "다른산업보기"}
     </StyledButton>
   )

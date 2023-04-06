@@ -32,7 +32,7 @@ const FavoriteIndustryInfoArea = () => {
       refetchOnWindowFocus: false,
       select,
       retry: false,
-      // enabled: !!accessToken, // 배포 서버에 인증 기능 연결되면 주석 해제
+      enabled: !!accessToken,
     }
   )
   return (

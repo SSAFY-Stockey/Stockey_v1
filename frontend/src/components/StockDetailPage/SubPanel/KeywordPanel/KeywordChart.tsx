@@ -4,9 +4,9 @@ import dayjs from "dayjs"
 import styled from "styled-components"
 import { useKeywordFrequency } from "../../../../hooks/useKeywordFrequency"
 import { useRecoilValue } from "recoil"
-import { selectedKeywordState } from "../../../../stores/StockDetailAtoms"
 import { useState, useEffect } from "react"
 import { keywordAnalysisParamsState } from "../../../../stores/StockDetailAtoms"
+import { KeywordPanelProps } from "./KeywordPanel"
 
 Highcharts.setOptions({
   lang: {
@@ -14,9 +14,8 @@ Highcharts.setOptions({
   },
 })
 
-const KeywordChart = () => {
-  const selectedKeyword = useRecoilValue(selectedKeywordState)
-  const { data: keywordFrequency } = useKeywordFrequency(selectedKeyword.id)
+const KeywordChart = ({ keywordId, keyword }: KeywordPanelProps) => {
+  const { data: keywordFrequency } = useKeywordFrequency(keywordId)
   const keywordAnalysisParams = useRecoilValue(keywordAnalysisParamsState)
   const [chartOptions, setChartOptions] = useState<Highcharts.Options>({})
 
@@ -111,7 +110,7 @@ const KeywordChart = () => {
       },
       series: [
         {
-          name: selectedKeyword.name,
+          name: keyword,
           type: "areaspline",
           data: keywordFrequency,
           color: "var(--custom-blue)",
@@ -152,7 +151,7 @@ const KeywordChart = () => {
         },
       },
     })
-  }, [keywordFrequency, keywordAnalysisParams, selectedKeyword.name])
+  }, [keywordFrequency, keywordAnalysisParams, keyword])
 
   return (
     <ChartWrapper>

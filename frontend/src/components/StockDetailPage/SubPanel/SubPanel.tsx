@@ -3,6 +3,7 @@ import KeywordPanel from "./KeywordPanel/KeywordPanel"
 import styled from "styled-components"
 import { useRecoilValue } from "recoil"
 import { panelTypeState } from "../../../stores/StockDetailAtoms"
+import { selectedKeywordState } from "../../../stores/StockDetailAtoms"
 
 interface Props {
   isPanelExpanded: boolean
@@ -10,6 +11,7 @@ interface Props {
 
 const SubPanel = ({ isPanelExpanded }: Props) => {
   const panelType = useRecoilValue(panelTypeState)
+  const { id: keywordId, name: keyword } = useRecoilValue(selectedKeywordState)
 
   return (
     <PanelDiv>
@@ -17,7 +19,7 @@ const SubPanel = ({ isPanelExpanded }: Props) => {
         panelType === "subInfo" ? (
           <SubInfoPanel />
         ) : (
-          <KeywordPanel />
+          <KeywordPanel keywordId={keywordId} keyword={keyword} />
         )
       ) : (
         <div></div>
