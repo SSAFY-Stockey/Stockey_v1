@@ -22,7 +22,7 @@ const StockCard = ({ stockInfo }: StockProps) => {
     setHoverd(false)
   }
   const handleClick = () => {
-    navigate(`/stock/${stockInfo.name}`)
+    navigate(`/stock/${stockInfo.id}`)
   }
   return (
     <GradientBorderBlock

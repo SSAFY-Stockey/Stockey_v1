@@ -51,7 +51,6 @@ const IndustryBubbleChart = ({ industryId }: { industryId: number }) => {
     },
     tooltip: {
       useHTML: true,
-      // pointFormat: "시가총액: {point.value} 원",
       formatter: function (this: any) {
         let content =
           "<b style='color: var(--custom-purple-1)'>" +
@@ -90,7 +89,7 @@ const IndustryBubbleChart = ({ industryId }: { industryId: number }) => {
         cursor: "pointer",
         events: {
           click: function (event) {
-            navigate(`/stock/${event.point.name}`)
+            navigate(`/stock/${event.point.options.id}`)
           },
         },
         states: {

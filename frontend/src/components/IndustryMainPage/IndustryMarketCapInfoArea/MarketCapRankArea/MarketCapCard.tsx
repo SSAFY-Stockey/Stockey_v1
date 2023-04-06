@@ -2,13 +2,18 @@ import Grow from "@mui/material/Grow"
 import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
 
-interface CardProps {
-  rank: number
-  stockName: string
+export interface StockInfoType {
+  id: number
+  name: string
   marketCap: number
 }
 
-const MarketCapCard = ({ rank, stockName, marketCap }: CardProps) => {
+interface CardProps {
+  rank: number
+  stockInfo: StockInfoType
+}
+
+const MarketCapCard = ({ rank, stockInfo }: CardProps) => {
   const navigate = useNavigate()
 
   const makePriceFormat = (num: number) => {
@@ -27,10 +32,10 @@ const MarketCapCard = ({ rank, stockName, marketCap }: CardProps) => {
     return result
   }
 
-  const formattedMarketCap = makePriceFormat(marketCap)
+  const formattedMarketCap = makePriceFormat(stockInfo.marketCap)
 
   const handleCardClick = () => {
-    navigate(`/stock/${stockName}`)
+    navigate(`/stock/${stockInfo.id}`)
   }
 
   return (
@@ -38,7 +43,7 @@ const MarketCapCard = ({ rank, stockName, marketCap }: CardProps) => {
       <Grow in={true} timeout={rank * 300} onClick={handleCardClick}>
         <CardDiv>
           <RankDiv>{rank}</RankDiv>
-          <StockNameDiv>{stockName}</StockNameDiv>
+          <StockNameDiv>{stockInfo.name}</StockNameDiv>
           <MarketCapDiv>{formattedMarketCap}</MarketCapDiv>
         </CardDiv>
       </Grow>

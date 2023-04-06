@@ -2,28 +2,22 @@ import styled from "@emotion/styled"
 import MarketCapCard from "./MarketCapCard"
 import { useEffect, useState } from "react"
 import { TransitionGroup } from "react-transition-group"
+import { StockInfoType } from "./MarketCapCard"
 
-type MarketCapRankListType = {
-  id: number
-  marketCap: number
-  name: string
-}[]
+interface MarketCapRankListType {
+  marketCapRankList: StockInfoType[]
+}
 
-const MarketCapCardList = ({
-  marketCapRankList,
-}: {
-  marketCapRankList: MarketCapRankListType
-}) => {
+const MarketCapCardList = ({ marketCapRankList }: MarketCapRankListType) => {
   const [stockCardList, setStockCardList] = useState<JSX.Element[] | null>(null)
 
   useEffect(() => {
     setStockCardList(
-      marketCapRankList.map((stock, index) => (
+      marketCapRankList.map((stockInfo, index) => (
         <MarketCapCard
-          key={stock.id}
+          key={stockInfo.id}
           rank={index + 1}
-          stockName={stock.name}
-          marketCap={stock.marketCap}
+          stockInfo={stockInfo}
         />
       ))
     )
