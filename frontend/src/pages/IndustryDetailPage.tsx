@@ -1,5 +1,5 @@
 import Grid from "@mui/material/Grid"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { useIndustryList } from "../hooks/useIndustryList"
 import Spinner from "../components/common/Spinner/Spinner"
@@ -8,6 +8,8 @@ import {
   OnIndustrySelectorLayout,
   OnKeywordPanelLayout,
 } from "../components/IndustryDetailPage/PageLayouts"
+import { useRecoilValue, useSetRecoilState } from "recoil"
+import { selectedKeywordState } from "../stores/StockDetailAtoms"
 
 const IndustryDetailPage = () => {
   const params = useParams()
@@ -20,10 +22,7 @@ const IndustryDetailPage = () => {
   const [mode, setMode] = useState<string>("def")
   const [className, setClassName] = useState<string>("")
 
-  const changeLayout = (
-    e: React.MouseEvent<HTMLElement>,
-    toggleMode: string
-  ) => {
+  const changeLayout = (toggleMode: string) => {
     switch (toggleMode) {
       case "sel":
         switch (mode) {
@@ -77,6 +76,19 @@ const IndustryDetailPage = () => {
         break
     }
   }
+  const setSelectedKeyword = useSetRecoilState(selectedKeywordState)
+  useEffect(() => {
+    setSelectedKeyword({
+      id: 0,
+      name: "",
+    })
+  }, [setSelectedKeyword])
+  const { name: keyword } = useRecoilValue(selectedKeywordState)
+  useEffect(() => {
+    if (keyword) {
+      changeLayout("kwd")
+    }
+  }, [keyword])
 
   return (
     <Grid container rowSpacing={2} columnSpacing={4.5} minWidth="1200px">

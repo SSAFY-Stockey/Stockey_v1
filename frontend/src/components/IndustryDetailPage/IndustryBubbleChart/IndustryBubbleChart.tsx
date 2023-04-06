@@ -51,7 +51,6 @@ const IndustryBubbleChart = ({ industryId }: { industryId: number }) => {
     },
     tooltip: {
       useHTML: true,
-      // pointFormat: "시가총액: {point.value} 원",
       formatter: function (this: any) {
         let content =
           "<b style='color: var(--custom-purple-1)'>" +
@@ -65,7 +64,7 @@ const IndustryBubbleChart = ({ industryId }: { industryId: number }) => {
     plotOptions: {
       packedbubble: {
         minSize: "60%",
-        maxSize: "120%",
+        maxSize: "100%",
         color: "var(--custom-background)",
         layoutAlgorithm: {
           splitSeries: false,
@@ -79,7 +78,7 @@ const IndustryBubbleChart = ({ industryId }: { industryId: number }) => {
           enabled: true,
           useHTML: true,
           format:
-            '<img style="clip-path: circle(50% at 50% 50%); cursor: pointer;" width="{point.radius}" height="{point.radius}" src="{process.env.PUBLIC_URL}/logo_images/{point.name}.png" alt="#" />',
+            '<img style="cursor: pointer;" width="{point.radius}" height="{point.radius}" src="{process.env.PUBLIC_URL}/logo_images/{point.name}.png" alt="#" />',
         },
         marker: {
           fillColor: "white",
@@ -90,7 +89,7 @@ const IndustryBubbleChart = ({ industryId }: { industryId: number }) => {
         cursor: "pointer",
         events: {
           click: function (event) {
-            navigate(`/stock/${event.point.name}`)
+            navigate(`/stock/${event.point.options.id}`)
           },
         },
         states: {

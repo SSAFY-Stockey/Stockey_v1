@@ -30,7 +30,7 @@ export default IndustryOverall
 
 const AreaDiv = styled.div`
   width: 100%;
-  height: 15vh;
+  height: auto;
   min-height: 216px;
   display: flex;
   flex-direction: column;
@@ -50,7 +50,7 @@ const OverallDiv = styled.div`
 `
 
 const ImgDiv = styled.div`
-  height: 100%;
+  height: 15vh;
   border-radius: 50%;
 `
 
