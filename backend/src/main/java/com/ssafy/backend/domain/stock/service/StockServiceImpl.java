@@ -217,21 +217,20 @@ public class StockServiceImpl implements StockService{
     public Double getCorrelation(Long id, GetCorrelationRequest getCorrelationRequest){
         Stock stock = getStockEntity(id);
 
-
         Long keywordId = getCorrelationRequest.getKeywordId();
         Keyword keyword = keywordRepository.findById(keywordId).orElseThrow(() ->
                 new KeywordException(KeywordExceptionType.KEYWORD_NOT_EXIST));
         LocalDate startDate = getCorrelationRequest.getStartDate();
         LocalDate endDate = getCorrelationRequest.getEndDate();
-
-
-        List<LocalDate> stockDates = dailyStockRepository.getStockDateCorrelation(stock, startDate, endDate);
-        List<Double> stockweekStatistic = dailyStockRepository.getStockCorrelation(stock, startDate, endDate);
-        List<Double> avgKeywordCount = keywordStatisticRepository.findKeywordCount(keyword, stockDates);
-
-
-
-        double correlationCoefficient = getCorrelationResult(avgKeywordCount, stockweekStatistic);
+        List<CorrelationDto> test = stockRepository.getTest(stock, keyword,startDate, endDate);
+        List<Double> priceList = new ArrayList<>();
+        List<Double> countList = new ArrayList<>();
+        for(CorrelationDto dto : test){
+            countList.add(Double.valueOf(dto.getCount()));
+            priceList.add(Double.valueOf(dto.getClosePrice()));
+        }
+        System.out.println("test = " + test.size());
+        double correlationCoefficient = getCorrelationResult(countList, priceList);
         return correlationCoefficient;
     }
 
