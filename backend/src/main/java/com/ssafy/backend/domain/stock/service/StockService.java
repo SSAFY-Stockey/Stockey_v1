@@ -4,10 +4,7 @@ import com.ssafy.backend.domain.keyword.dto.StockKeywordDto;
 import com.ssafy.backend.domain.member.entity.Member;
 import com.ssafy.backend.domain.stock.api.request.GetCorrelationRequest;
 import com.ssafy.backend.domain.stock.api.response.GetStockTodayResponse;
-import com.ssafy.backend.domain.stock.dto.DailyStockDto;
-import com.ssafy.backend.domain.stock.dto.StockDto;
-import com.ssafy.backend.domain.stock.dto.StockPreviewDto;
-import com.ssafy.backend.domain.stock.dto.StockSearchDto;
+import com.ssafy.backend.domain.stock.dto.*;
 
 import java.util.List;
 
@@ -30,6 +27,7 @@ public interface StockService {
      boolean checkFavorite(Member member,Long id);
 
      Double getCorrelation(Long id, GetCorrelationRequest getCorrelationRequest);
+     List<ResultCorrelationDto> getAllStockCorrelation(Long id , GetCorrelationRequest getCorrelationRequest);
 
 
 }

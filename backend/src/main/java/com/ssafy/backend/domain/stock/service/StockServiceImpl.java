@@ -37,6 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -216,8 +217,12 @@ public class StockServiceImpl implements StockService{
 
     public Double getCorrelation(Long id, GetCorrelationRequest getCorrelationRequest){
         Stock stock = getStockEntity(id);
+        List<Keyword> all = keywordRepository.findAll();
+        System.out.println("all.size() = " + all.size());
 
         Long keywordId = getCorrelationRequest.getKeywordId();
+        System.out.println("getCorrelationRequest = " + getCorrelationRequest.getKeywordId());
+        System.out.println("keywordRepository = " + keywordRepository.findById(keywordId).get());
         Keyword keyword = keywordRepository.findById(keywordId).orElseThrow(() ->
                 new KeywordException(KeywordExceptionType.KEYWORD_NOT_EXIST));
         LocalDate startDate = getCorrelationRequest.getStartDate();
@@ -232,6 +237,33 @@ public class StockServiceImpl implements StockService{
         System.out.println("test = " + test.size());
         double correlationCoefficient = getCorrelationResult(countList, priceList);
         return correlationCoefficient;
+    }
+    public List<ResultCorrelationDto> getAllStockCorrelation(Long id ,GetCorrelationRequest getCorrelationRequest){
+        Stock stock = getStockEntity(id);
+
+        List<StockCorrelationDto> stockList = new ArrayList<>();
+        List<Stock> stocksExceptMe = stockRepository.getStocksExceptMe(stock);
+
+        // 해당 종목을 제외한 주식들에 대하여 상관분석
+        for(Stock s : stocksExceptMe){
+            Double correlation = getCorrelation(s.getId(), getCorrelationRequest);
+            stockList.add(new StockCorrelationDto(s,correlation));
+        }
+        Collections.sort(stockList);
+
+
+        List<ResultCorrelationDto> result = new ArrayList<>();
+        //상위 3개
+        for(int i = 0; i<3;i++){
+            StockCorrelationDto stockCorrelationDto = stockList.get(i);
+            ResultCorrelationDto resultCorrelationDto = ResultCorrelationDto.builder()
+                    .id(stockCorrelationDto.getStock().getId())
+                    .name(stockCorrelationDto.getStock().getName())
+                    .correlation(stockCorrelationDto.getCorrelation())
+                    .build();
+            result.add(resultCorrelationDto);
+        }
+        return result;
     }
 
     // 상관관계 구하기

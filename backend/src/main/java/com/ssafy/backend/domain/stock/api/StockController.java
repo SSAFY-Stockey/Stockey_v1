@@ -6,10 +6,7 @@ import com.ssafy.backend.domain.member.service.MemberService;
 import com.ssafy.backend.domain.stock.api.request.GetCorrelationRequest;
 import com.ssafy.backend.domain.stock.api.response.GetStockResponse;
 import com.ssafy.backend.domain.stock.api.response.GetStockTodayResponse;
-import com.ssafy.backend.domain.stock.dto.DailyStockDto;
-import com.ssafy.backend.domain.stock.dto.StockDto;
-import com.ssafy.backend.domain.stock.dto.StockPreviewDto;
-import com.ssafy.backend.domain.stock.dto.StockSearchDto;
+import com.ssafy.backend.domain.stock.dto.*;
 import com.ssafy.backend.domain.stock.mapper.StockDtoMapper;
 import com.ssafy.backend.domain.stock.service.StockService;
 import com.ssafy.backend.global.annotation.Auth;
@@ -198,6 +195,22 @@ public class StockController {
         System.out.println("correlation = " + correlation);
         return new ResponseEntity<>(new ResponseDto("OK",correlation),HttpStatus.OK);
     }
+
+    @Operation(summary = "종목과 키워드 추이 상관분석", description = "모든종목과 키워드 추이 상관분석 결과를 상위 3개를 보여줍니다.")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "요청 성공"),
+                    @ApiResponse(responseCode = "404", description = "종목 없음, 키워드 없음"),
+            }
+    )
+    @GetMapping("/keyword/correlation/{id}/high")
+    public ResponseEntity<ResponseDto> getAllCorrelation(@PathVariable Long id,
+                                                      @Valid @ModelAttribute GetCorrelationRequest getCorrelationRequest){
+        List<ResultCorrelationDto> top3StockCorrelation = stockService.getAllStockCorrelation(id, getCorrelationRequest);
+        return new ResponseEntity<>(new ResponseDto("OK",top3StockCorrelation),HttpStatus.OK);
+    }
+
+
 
 
     private Member getMember() {
