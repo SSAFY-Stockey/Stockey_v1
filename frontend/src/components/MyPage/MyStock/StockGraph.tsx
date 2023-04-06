@@ -40,10 +40,9 @@ const StockGraph = () => {
     refetch,
   } = useQuery("getMyStockList", fetchMyStockList, {
     refetchOnWindowFocus: false,
-    refetchOnReconnect: true,
-    refetchOnMount: true,
-    retry: false,
+    cacheTime: 0,
     staleTime: 0,
+    retry: false,
     select,
   })
 
