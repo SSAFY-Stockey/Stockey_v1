@@ -1,4 +1,3 @@
-// 숫자에서 가격 포맷으로 변환
 export const makePriceFormat = (num: number) => {
   let roundedNum = Math.round(num / 100000000)
   let result = "원"
