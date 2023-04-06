@@ -77,7 +77,7 @@ const OnKeywordPanelLayout = ({
       </Grid>
       <Grid item xs={5}>
         <PanelSlider className={`kwd ${className}`}>
-          <KeywordPanel keyword="빅스텝" />
+          <KeywordPanel />
         </PanelSlider>
       </Grid>
     </>
