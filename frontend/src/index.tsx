@@ -16,9 +16,9 @@ root.render(
   <RecoilRoot>
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <Suspense fallback={<Spinner />}>
-          <App />
-        </Suspense>
+        {/* <Suspense> */}
+        <App />
+        {/* </Suspense> */}
       </BrowserRouter>
       <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
     </QueryClientProvider>

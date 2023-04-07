@@ -5,12 +5,40 @@ import { useState } from "react"
 import NewsTabPanel from "./NewsTabPanel"
 import styled, { keyframes } from "styled-components"
 import { triggerScroll } from "../../../common/Functions/triggerScroll"
+import { useRecoilValue, useRecoilState } from "recoil"
+import {
+  keywordAnalysisParamsState,
+  stockDetailState,
+} from "../../../../stores/StockDetailAtoms"
+import { useKeywordRank } from "../../../../hooks/useKeywordRank"
+import dayjs from "dayjs"
 
 const KeywordResult = () => {
-  const [isLoading, setIsLoading] = useState(true)
+  const [keywordAnalysisParams, setKeywordAnalysisParams] = useRecoilState(
+    keywordAnalysisParamsState
+  )
+  const { data, isLoading } = useKeywordRank(keywordAnalysisParams)
   const [activeTab, setActiveTab] = useState<number>(0)
-  const totalNewsCount: number = 32458
+  const stockDetail = useRecoilValue(stockDetailState)
+  const newsTypes: ("STOCK" | "INDUSTRY" | "ECONOMY")[] = [
+    "STOCK",
+    "INDUSTRY",
+    "ECONOMY",
+  ]
+  const { data: keywordRankData } = useKeywordRank(keywordAnalysisParams)
+  const { top3, others, totalNewsCount, yAxisMax } = { ...keywordRankData }
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+    stockDetail &&
+      setKeywordAnalysisParams({
+        ...keywordAnalysisParams,
+        newsType: newsTypes[newValue],
+        typeId:
+          newValue === 0
+            ? stockDetail?.id
+            : newValue === 1
+            ? stockDetail?.industry.id
+            : -1,
+      })
     setActiveTab(newValue)
   }
 
@@ -27,41 +55,44 @@ const KeywordResult = () => {
         {isLoading ? (
           <PanelSubTitle>
             <HighlightedSpan color="var(--custom-pink-1)">
-              {["네이버", "IT", "경제"][activeTab]}
+              {
+                [stockDetail?.name, stockDetail?.industry.name, "경제"][
+                  activeTab
+                ]
+              }
             </HighlightedSpan>{" "}
-            관련 뉴스 {totalNewsCount.toLocaleString()}건을 분석 중이에요...
+            관련 뉴스에서 핵심 키워드를 뽑고 있어요...
             <SpinningSpan>⏳</SpinningSpan>
           </PanelSubTitle>
         ) : (
           <PanelSubTitle>
-            뉴스에서 많이 언급된 키워드를 살펴보세요!
+            <HighlightedSpan color="var(--custom-pink-1)">
+              {
+                [stockDetail?.name, stockDetail?.industry.name, "경제"][
+                  activeTab
+                ]
+              }
+            </HighlightedSpan>{" "}
+            관련 뉴스에서 많이 언급된 키워드를 살펴보세요!
           </PanelSubTitle>
         )}
       </Grid>
       <MetaData
         item
-        xs={6}
         px={3}
         mb={4}
         onClick={() => triggerScroll("priceChartRef")}
       >
-        ⏰ 2017년 1월 3일 ~ 2017년 10월 13일 기준
+        ⏰{" "}
+        {dayjs("20" + keywordAnalysisParams.startDate, "YYYYMMDD").format(
+          "YYYY년 M월 D일"
+        )}{" "}
+        ~{" "}
+        {dayjs("20" + keywordAnalysisParams.endDate, "YYYYMMDD").format(
+          "YYYY년 M월 D일"
+        )}{" "}
+        {totalNewsCount?.toLocaleString()}건의 뉴스를 분석한 결과예요.
       </MetaData>
-
-      {/* 추후 삭제 예정 */}
-      <Grid
-        item
-        xs={3}
-        px={3}
-        mb={4}
-        sx={{ backgroundColor: "var(--custom-green-4)" }}
-        onClick={() => {
-          setIsLoading(!isLoading)
-          console.log(isLoading)
-        }}
-      >
-        클릭하면 로딩 상태 변경!
-      </Grid>
 
       <Grid item xs={12}>
         <NewsCategoryTabs
@@ -70,8 +101,8 @@ const KeywordResult = () => {
           textColor="inherit"
           variant="fullWidth"
         >
-          <NewsTab label={"네이버"} {...a11yProps(0)} />
-          <NewsTab label={"IT"} {...a11yProps(1)} />
+          <NewsTab label={stockDetail?.name} {...a11yProps(0)} />
+          <NewsTab label={stockDetail?.industry.name} {...a11yProps(1)} />
           <NewsTab label={"경제"} {...a11yProps(2)} />
         </NewsCategoryTabs>
         <NewsTabPanel isLoading={isLoading} activeTab={activeTab} index={0} />
@@ -105,7 +136,7 @@ const SpinningSpan = styled.div`
 const MetaData = styled(Grid)`
   color: gray;
   font-weight: bold;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   font-style: italic;
   cursor: pointer;
 `

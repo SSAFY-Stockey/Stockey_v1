@@ -16,25 +16,6 @@ const MyPage = () => {
   const [myKeyword, setMyKeword] = useRecoilState(myKeywordState)
   // keywordPanel state
   const [isActivate, setIsActivate] = useState<boolean>(false)
-  // accessToken state
-  const accessToken = useRecoilValue(accessTokenSelector)
-
-  // useNavigate
-  const navigate = useNavigate()
-
-  // accessToken 확인 함수
-  const checkAccessToken = () => {
-    setTimeout(() => {
-      if (!accessToken) {
-        navigate("/user/login")
-      }
-    }, 1000)
-  }
-
-  useEffect(() => {
-    console.log("start")
-    checkAccessToken()
-  }, [])
 
   useEffect(() => {
     setIsActivate(!!myKeyword ? true : false)

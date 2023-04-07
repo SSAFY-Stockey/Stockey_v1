@@ -8,6 +8,7 @@ import { useRecoilState } from "recoil"
 import { useQuery } from "react-query"
 import customAxios from "../../../../utils/customAxios"
 import { accessTokenSelector } from "../../../../stores/atoms"
+import { HighlightedSpan } from "../../MainSection/PriceSection/PriceSection"
 
 export interface KeywordPanelProps {
   keywordId: number
@@ -51,7 +52,12 @@ const KeywordPanel = ({ keywordId, keyword }: KeywordPanelProps) => {
         <KeywordSearchBtn keyword={keyword} />
       </TopRow>
 
-      <PanelSubTitle>키워드 등장 추이 보기</PanelSubTitle>
+      <PanelSubTitle>
+        <HighlightedSpan color="var(--custom-blue)" size="2.4rem">
+          {keyword}
+        </HighlightedSpan>{" "}
+        관련 기사가 얼마나 있었을까요?
+      </PanelSubTitle>
       <KeywordChartSection keywordId={keywordId} keyword={keyword} />
       <PanelSubTitle id="newsRef">
         {keyword} 관련 기사 한 눈에 보기

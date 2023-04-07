@@ -1,12 +1,16 @@
 import HighlyRelatedStockList from "./HighlyRelatedStockList"
 import KeywordChart from "./KeywordChart"
-import { useState } from "react"
+import { Suspense } from "react"
 import { KeywordPanelProps } from "./KeywordPanel"
+import CorrelationResult from "./CorrelationResult"
 
 const KeywordChartSection = ({ keywordId, keyword }: KeywordPanelProps) => {
   return (
     <>
-      <KeywordChart keywordId={keywordId} keyword={keyword} />
+      <Suspense fallback={<></>}>
+        <KeywordChart keywordId={keywordId} keyword={keyword} />
+      </Suspense>
+      <CorrelationResult keywordId={keywordId} keyword={keyword} />
       <HighlyRelatedStockList />
     </>
   )

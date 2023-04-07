@@ -66,6 +66,7 @@ const StockGraph = () => {
                   price={stock.price}
                   rate={stock.rate}
                   name={stock.name}
+                  stockId={stock.id}
                 />
               )
             })}

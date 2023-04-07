@@ -25,13 +25,6 @@ interface KeywordFrequencyType {
   statisticDate: string // yyyy-mm-dd
 }
 
-// export interface ChartDataType extends Highcharts.PointOptionsObject {
-//   name: string
-//   y: number
-//   rank: number
-//   keywordId: number
-// }
-
 const select = (response: any) => {
   const rawData = response.data.data
   const keywordFrequencyChartData = rawData.map(

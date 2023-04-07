@@ -1,5 +1,5 @@
 import KeywordBarGraph from "./KeywordBarGraph"
-import KeyphraseList from "./KeyphraseList"
+import KeyphraseList, { KeyphraseContainer } from "./KeyphraseList"
 import { HighlightedSpan } from "../../StockDetailPage/MainSection/PriceSection/PriceSection"
 import { useRecoilValue } from "recoil"
 import { selectedStockState } from "../../../stores/StockMainAtoms"
@@ -31,12 +31,17 @@ const KeywordBoard = () => {
         </HighlightedSpan>
         로 보는 이번 주 {selectedStockName} 소식💌
       </BoardTitle>
-      <Suspense fallback={<LoadingComponent />}>
+      <Suspense
+        fallback={
+          <KeyphraseContainer selectedIdx={1}>
+            <LoadingComponent />
+          </KeyphraseContainer>
+        }
+      >
         <KeyphraseList />
-        {/* </Suspense>
-      <Suspense fallback={<LoadingComponent />}> */}
-        <KeywordBarGraph />
       </Suspense>
+
+      <KeywordBarGraph />
     </BoardDiv>
   )
 }
@@ -50,7 +55,7 @@ const BoardDiv = styled.div`
   align-items: left;
   padding: 0% 3%;
   border-radius: 24px;
-  height: 100%;
+  height: 80vh;
 `
 const BoardTitle = styled.p`
   font-size: 2rem;
