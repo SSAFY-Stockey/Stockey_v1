@@ -13,106 +13,103 @@ const KeywordBarGraph = () => {
 
   // keyword 순위 읽어오기
   const { data: keywordRankData, isLoading } = useKeywordRank(keywordParams)
-  const {
-    top3: chartData,
-    others,
-    totalNewsCount,
-    yAxisMax,
-  } = { ...keywordRankData }
-  setSelectedKeyword({ idx: 1, id: chartData?.[1].keywordId })
+  const { top3: chartData, others, totalNewsCount } = { ...keywordRankData }
+  chartData !== undefined &&
+    setSelectedKeyword({ idx: 1, id: chartData[1].keywordId })
 
-  const options: Highcharts.Options = {
-    title: { text: undefined },
-    chart: {
-      type: "column",
-      backgroundColor: "var(--custom-background)",
-      borderRadius: 20,
-      // height: chartSize.height,
-      // width: chartSize.width,
-    },
-    colors: [
-      "var(--custom-orange-1)",
-      "var(--custom-pink-1)",
-      "var(--custom-purple-2)",
-    ],
-    credits: {
-      enabled: false,
-    },
-    legend: {
-      enabled: false,
-    },
-    xAxis: {
-      type: "category",
-      crosshair: true,
-      labels: {
-        enabled: false,
-      },
-    },
-    yAxis: {
-      title: {
-        text: null,
-      },
-      gridLineWidth: 0,
-      tickWidth: 0,
-      labels: {
-        enabled: false,
-      },
-      max: 20,
-      // max: isLoading ? 200 : yAxisMax,
-      // max: yAxisMax,
-    },
-    plotOptions: {
-      column: {
-        pointPadding: 0,
-        dataLabels: {
-          enabled: true,
-          align: "center",
-          useHTML: true,
-          className: "custom-label",
-          formatter: function (this: any) {
-            return (
-              '<div><p class="label-title">' +
-              this.point.name +
-              '</p><p class="label-value">' +
-              this.y.toFixed(1) +
-              '%</p><p class="label-rank">' +
-              this.point.rank +
-              "</p></div>"
-            )
+  const [chartOptions, setChartOptions] = useState<Highcharts.Options>({})
+  useEffect(() => {
+    if (chartData !== undefined) {
+      setChartOptions({
+        title: { text: undefined },
+        chart: {
+          type: "column",
+          backgroundColor: "var(--custom-background)",
+          borderRadius: 20,
+        },
+        colors: [
+          "var(--custom-orange-1)",
+          "var(--custom-pink-1)",
+          "var(--custom-purple-2)",
+        ],
+        credits: {
+          enabled: false,
+        },
+        legend: {
+          enabled: false,
+        },
+        xAxis: {
+          type: "category",
+          crosshair: true,
+          labels: {
+            enabled: false,
           },
         },
-        events: {
-          click: function (event: any) {
-            setSelectedKeyword(() => {
-              return {
-                idx: event.point.index,
-                id: event.point.keywordId,
-              }
-            })
+        yAxis: {
+          title: {
+            text: null,
+          },
+          gridLineWidth: 0,
+          tickWidth: 0,
+          labels: {
+            enabled: false,
+          },
+          max: 20,
+        },
+        plotOptions: {
+          column: {
+            pointPadding: 0,
+            dataLabels: {
+              enabled: true,
+              align: "center",
+              useHTML: true,
+              className: "custom-label",
+              formatter: function (this: any) {
+                return (
+                  '<div><p class="label-title">' +
+                  this.point.name +
+                  '</p><p class="label-value">' +
+                  this.y.toFixed(1) +
+                  '%</p><p class="label-rank">' +
+                  this.point.rank +
+                  "</p></div>"
+                )
+              },
+            },
+            events: {
+              click: function (event: any) {
+                setSelectedKeyword(() => {
+                  return {
+                    idx: event.point.index,
+                    id: event.point.keywordId,
+                  }
+                })
+              },
+            },
+            borderRadius: 10,
+          },
+          series: {
+            borderWidth: 0,
           },
         },
-        borderRadius: 10,
-      },
-      series: {
-        borderWidth: 0,
-      },
-    },
-    tooltip: {
-      enabled: false,
-    },
-    series: [
-      {
-        name: "Keyword",
-        type: "column",
-        data: chartData,
-        colorByPoint: true,
-      },
-    ],
-  }
+        tooltip: {
+          enabled: false,
+        },
+        series: [
+          {
+            name: "Keyword",
+            type: "column",
+            data: chartData,
+            colorByPoint: true,
+          },
+        ],
+      })
+    }
+  }, [chartData, isLoading])
 
   return (
     <GraphWrapper>
-      <HighchartsReact highcharts={Highcharts} options={options} />
+      <HighchartsReact highcharts={Highcharts} options={chartOptions} />
     </GraphWrapper>
   )
 }

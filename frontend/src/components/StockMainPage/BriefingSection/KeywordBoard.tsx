@@ -40,8 +40,9 @@ const KeywordBoard = () => {
       >
         <KeyphraseList />
       </Suspense>
-
-      <KeywordBarGraph />
+      <Suspense>
+        <KeywordBarGraph />
+      </Suspense>
     </BoardDiv>
   )
 }

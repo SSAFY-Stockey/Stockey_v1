@@ -26,7 +26,7 @@ const KeywordResult = () => {
     "ECONOMY",
   ]
   const { data: keywordRankData } = useKeywordRank(keywordAnalysisParams)
-  const { top3, others, totalNewsCount, yAxisMax } = { ...keywordRankData }
+  const { top3, others, totalNewsCount } = { ...keywordRankData }
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     stockDetail &&
       setKeywordAnalysisParams({
