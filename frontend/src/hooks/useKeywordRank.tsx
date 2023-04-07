@@ -67,14 +67,13 @@ const select = (response: any) => {
       }
     }
   )
-  console.log("selectchart >> ", chartData)
-  const top1 = chartData.splice(1, 1)
-  chartData.splice(0, 0, top1[0])
+  const top2 = chartData.splice(1, 1)
+  console.log("top", top2[0])
+  chartData.splice(0, 0, top2[0])
 
   const top3 = chartData.slice(0, 3)
   const others = chartData.slice(3)
-  const yAxisMax: number = top1[0].y + 30
-  return { top3, others, totalNewsCount, yAxisMax }
+  return { top3, others, totalNewsCount }
 }
 
 const onError = (err: any) => {

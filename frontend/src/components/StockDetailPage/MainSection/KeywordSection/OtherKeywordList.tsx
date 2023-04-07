@@ -8,7 +8,7 @@ import { keywordAnalysisParamsState } from "../../../../stores/StockDetailAtoms"
 const OtherKeywordList = () => {
   const keywordAnalysisParams = useRecoilValue(keywordAnalysisParamsState)
   const { data: keywordRankData } = useKeywordRank(keywordAnalysisParams)
-  const { top3, others, totalNewsCount, yAxisMax } = { ...keywordRankData }
+  const { top3, others, totalNewsCount } = { ...keywordRankData }
 
   return (
     <KeywordListWrapper container rowSpacing={6}>

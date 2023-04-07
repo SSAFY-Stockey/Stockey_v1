@@ -1,7 +1,9 @@
 import Paper from "@mui/material/Paper"
 import styled from "styled-components"
-import { useRecoilState } from "recoil"
+import { useRecoilState, useSetRecoilState } from "recoil"
 import { selectedStockState } from "../../../stores/StockMainAtoms"
+import { selectedKeywordState } from "../../../stores/StockMainAtoms"
+
 interface Props {
   stockId: number
   index: number
@@ -18,19 +20,20 @@ const StockBlock = ({
   priceChange,
 }: Props) => {
   const [selectedStock, setSelectedStock] = useRecoilState(selectedStockState)
-
+  const setSelectedKeyword = useSetRecoilState(selectedKeywordState)
   const clickHandler = () => {
+    setSelectedKeyword({ id: 0, idx: 1 })
     setSelectedStock({ idx: index, id: stockId, name: stockName })
   }
 
   return (
     <GradientBorderBlock
       onClick={clickHandler}
-      selected={index === selectedStock.idx ? true : false}
+      selected={index === selectedStock?.idx ? true : false}
     >
       <ContentPaper
         elevation={0}
-        selected={index === selectedStock.idx ? true : false}
+        selected={index === selectedStock?.idx ? true : false}
       >
         <LogoImg src={`logo_images/${stockName}.png`} />
         <StockInfoDiv>
