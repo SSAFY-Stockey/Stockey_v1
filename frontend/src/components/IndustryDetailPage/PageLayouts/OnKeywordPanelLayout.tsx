@@ -65,16 +65,18 @@ const OnKeywordPanelLayout = ({
       <Grid item xs={7}>
         <LeftSection className="kwd">
           <ButtonDiv id="btn">
-            <IndustrySelectorToggleBtn
-              changeLayout={(mode) => {
-                changeLayout(mode)
-              }}
-              status={className}
-              industryName={industryInfo.name}
-            />
-            <StyledButton onClick={() => changeLayout("kwd")}>
-              키워드 패널 닫기
-            </StyledButton>
+            <FlexBox>
+              <IndustrySelectorToggleBtn
+                changeLayout={(mode) => {
+                  changeLayout(mode)
+                }}
+                status={className}
+                industryName={industryInfo.name}
+              />
+              <StyledButton onClick={() => changeLayout("kwd")}>
+                키워드 패널 닫기
+              </StyledButton>
+            </FlexBox>
           </ButtonDiv>
           <LeftSlider className={`kwd ${className}`}>
             <TitleDiv>
@@ -119,18 +121,26 @@ const OnKeywordPanelLayout = ({
 
 export default OnKeywordPanelLayout
 
-const StyledButton = styled(Button)({
-  width: "180px",
-  height: "4.8rem",
-  background: "var(--custom-gradient-pink)",
-  borderRadius: 24,
-  paddingLeft: 6,
-  fontFamily: "Inter",
-  fontStyle: "normal",
-  fontWeight: 700,
-  fontSize: "1.4rem",
-  lineHeight: "2rem",
-  letterSpacing: "0.1px",
-  color: "#FFFFFF",
-  right: 0,
-})
+const StyledButton = styled.button`
+  width: 180px;
+  height: 4.8rem;
+  background: var(--custom-gradient-pink);
+  border-radius: 24px;
+  border: none;
+  padding-left: 6;
+  font-family: "Inter";
+  font-style: "normal";
+  font-weight: 700;
+  font-size: 1.4rem;
+  line-height: 2rem;
+  letter-spacing: 0.1px;
+  color: #ffffff;
+  right: 0;
+`
+
+const FlexBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+`
