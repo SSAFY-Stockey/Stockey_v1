@@ -7,7 +7,6 @@ import { accessTokenSelector } from "../../stores/atoms"
 import customAxios from "../../utils/customAxios"
 import { useQuery } from "react-query"
 import { useEffect, useState } from "react"
-import NewsSection from "../StockDetailPage/SubPanel/KeywordPanel/NewsSection"
 import KeywordChartArea from "./KeywordChartArea"
 import NewsArea from "./NewsArea"
 

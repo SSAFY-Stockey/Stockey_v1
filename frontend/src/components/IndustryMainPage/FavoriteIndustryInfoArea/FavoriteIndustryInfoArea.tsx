@@ -38,13 +38,16 @@ const FavoriteIndustryInfoArea = () => {
   return (
     <AreaDiv>
       <TitleDiv>
-        {!!nickname
-          ? (
-              <HighlightedSpan color="var(--custom-gradient-pink)">
-                {nickname}
-              </HighlightedSpan>
-            ) + " 님의"
-          : ""}
+        {!!nickname ? (
+          <span>
+            <HighlightedSpan color="var(--custom-gradient-pink)">
+              {nickname}
+            </HighlightedSpan>
+            {" 님의"}
+          </span>
+        ) : (
+          ""
+        )}
         관심 산업
       </TitleDiv>
       {isLoading ? (

@@ -3,6 +3,7 @@ import styled, { keyframes } from "styled-components"
 const NotFoundPage = () => {
   return (
     <PageWrapper>
+      <ErrorCode>404</ErrorCode>
       <ErrorMessage>
         {`찾을 수 없는 페이지입니다.
         요청하신 페이지가 사라졌거나, 주소가 잘못 입력되었습니다.
@@ -16,9 +17,23 @@ export default NotFoundPage
 
 const PageWrapper = styled.div`
   padding: 36px;
+  height: 100%;
   display: flex;
+  gap: 3rem;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+
+  // 드래그 방지
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+`
+
+const ErrorCode = styled.div`
+  font-size: 6rem;
+  text-align: center;
 `
 
 const ErrorMessage = styled.div`

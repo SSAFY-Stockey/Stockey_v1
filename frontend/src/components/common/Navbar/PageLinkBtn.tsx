@@ -25,7 +25,7 @@ const PageLinkBtn = ({ name, selected, isNarrow }: PageLinkBtnProps) => {
         ? "/industry"
         : name === "키워드"
         ? "/keyword"
-        : "/"
+        : "/my"
     )
   }
 

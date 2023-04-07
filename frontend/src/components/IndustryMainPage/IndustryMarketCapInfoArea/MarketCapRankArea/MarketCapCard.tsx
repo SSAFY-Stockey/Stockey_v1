@@ -87,17 +87,17 @@ const CardDiv = styled.div`
 const RankDiv = styled.div`
   width: 2.4rem;
   height: auto;
-  font-size: calc(1rem);
+  font-size: calc(1rem + 0.2vw);
   text-align: center;
 `
 
 const StockNameDiv = styled.div`
   flex-grow: 1;
-  font-size: calc(0.6rem);
+  font-size: calc(1rem + 0.2vw);
 `
 
 const MarketCapDiv = styled.div`
   flex-grow: 1;
-  font-size: calc(0.6rem);
+  font-size: calc(1rem + 0.2vw);
   text-align: right;
 `

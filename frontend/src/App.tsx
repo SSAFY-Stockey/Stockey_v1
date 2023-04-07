@@ -1,7 +1,7 @@
 import "./App.css"
 import { useEffect, useState } from "react"
 import styled from "styled-components"
-import { Routes, Route, useLocation } from "react-router-dom"
+import { Routes, Route, useLocation, Navigate } from "react-router-dom"
 
 // 페이지 컴포넌트
 import MyPage from "./pages/MyPage"
@@ -22,8 +22,7 @@ import Navbar from "./components/common/Navbar/Navbar"
 import NotFoundPage from "./pages/NotFoundPage"
 
 function App() {
-  const location = useLocation()
-  const curPath = location.pathname
+  const curPath = useLocation().pathname
 
   // 가로 길이 확인 => navbar 형태 전달
   // 현재 화면 크기 state
@@ -50,8 +49,7 @@ function App() {
           className={
             curPath === "/user/login" ||
             curPath === "/user/signup" ||
-            curPath === "/oauth/kakao" ||
-            location.key === "default"
+            curPath === "/oauth/kakao"
               ? "login"
               : isNarrow
               ? "narrow"
@@ -64,8 +62,7 @@ function App() {
           className={
             curPath === "/user/login" ||
             curPath === "/user/signup" ||
-            curPath === "/oauth/kakao" ||
-            location.key === "default"
+            curPath === "/oauth/kakao"
               ? "login"
               : isNarrow
               ? "narrow"
@@ -74,9 +71,10 @@ function App() {
         >
           <MainSection>
             <Routes>
-              <Route path="/" element={<MyPage />} />
+              <Route path="/" element={<Navigate to="/stock" />} />
               <Route path="/stock" element={<StockMainPage />} />
               <Route path="/stock/:stockId" element={<StockDetailPage />} />
+              <Route path="/my" element={<MyPage />} />
               <Route path="/industry" element={<IndustryMainPage />} />
               <Route
                 path="/industry/:industryName"

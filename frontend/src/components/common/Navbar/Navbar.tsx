@@ -13,8 +13,7 @@ interface Props {
 }
 
 const Navbar = ({ isNarrow }: Props) => {
-  const location = useLocation()
-  const curPath = location.pathname
+  const curPath = useLocation().pathname
   const isLogin = useRecoilValue(logInState)
   const nickname = useRecoilValue(nicknameState)
 
@@ -25,7 +24,7 @@ const Navbar = ({ isNarrow }: Props) => {
       return true
     } else if (curPath.startsWith("/keyword") && name === "키워드") {
       return true
-    } else if (curPath === "/" && name === "북마크") {
+    } else if (curPath === "/my" && name === "북마크") {
       return true
     } else {
       return false
@@ -42,8 +41,7 @@ const Navbar = ({ isNarrow }: Props) => {
           className={
             curPath === "/user/login" ||
             curPath === "/user/signup" ||
-            curPath === "/oauth/kakao" ||
-            location.key === "default"
+            curPath === "/oauth/kakao"
               ? "login"
               : undefined
           }
