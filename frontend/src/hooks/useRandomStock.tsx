@@ -24,11 +24,11 @@ export interface StockType {
   name: string
   todayDailyStock: {
     changeRate: number
-    closePrice: number
+    closePrice: number // 현재가
     highPrice: number
     lowPrice: number
     openPrice: number
-    volume: number // 현재가
+    volume: number
     stockDate: string // "2023-03-02"
     id: number // 특정 일자의 주식 가격 정보에 대한 고유 id
   }
@@ -40,7 +40,7 @@ const select = (response: any) => {
     id: stock.id,
     name: stock.name,
     changeRate: stock.todayDailyStock.changeRate * 100,
-    currentPrice: stock.todayDailyStock.volume,
+    currentPrice: stock.todayDailyStock.closePrice,
   }))
   console.log("selectedData >> ", selectedData)
   return selectedData
