@@ -10,8 +10,9 @@ const KeywordChartSection = ({ keywordId, keyword }: KeywordPanelProps) => {
       <Suspense fallback={<></>}>
         <KeywordChart keywordId={keywordId} keyword={keyword} />
       </Suspense>
+
       <CorrelationResult keywordId={keywordId} keyword={keyword} />
-      <HighlyRelatedStockList />
+      <HighlyRelatedStockList keywordId={keywordId} keyword={keyword} />
     </>
   )
 }

@@ -15,28 +15,21 @@ const HighlyRelatedStockSwitch = ({ stockName, color }: Props) => {
     setIsSelected((isSelected) => !isSelected)
   }
   return (
-    <Tooltip
-      title="클릭해서 주가 그래프를 확인해보세요!"
-      TransitionComponent={Zoom}
-      placement="top"
-      arrow
+    <StockSwitchBtn
+      disabled={false}
+      size="large"
+      colorTone={color}
+      onClick={btnClickHandler}
     >
-      <StockSwitchBtn
-        disabled={false}
-        size="large"
-        colorTone={color}
-        onClick={btnClickHandler}
-      >
-        <SwitchLayout isSelected={isSelected}>
-          <CircleIcon
-            sx={{ color: `var(--custom-${color}-1)` }}
-            fontSize="large"
-          />
+      <SwitchLayout isSelected={isSelected}>
+        <CircleIcon
+          sx={{ color: `var(--custom-${color}-1)` }}
+          fontSize="large"
+        />
 
-          <BtnText isSelected={isSelected}>{stockName}</BtnText>
-        </SwitchLayout>
-      </StockSwitchBtn>
-    </Tooltip>
+        <BtnText isSelected={isSelected}>{stockName}</BtnText>
+      </SwitchLayout>
+    </StockSwitchBtn>
   )
   //
 }
