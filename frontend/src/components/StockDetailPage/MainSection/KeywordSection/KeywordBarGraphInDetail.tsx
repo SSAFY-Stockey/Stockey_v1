@@ -8,6 +8,7 @@ import {
   panelTypeState,
 } from "../../../../stores/StockDetailAtoms"
 import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil"
+import { useState, useEffect } from "react"
 
 const KeywordBarGraphInDetail = () => {
   const keywordParams = useRecoilValue(keywordAnalysisParamsState)
@@ -21,100 +22,100 @@ const KeywordBarGraphInDetail = () => {
 
   // keyword 순위 읽어오기
   const { data: keywordRankData, isLoading } = useKeywordRank(keywordParams)
-  const {
-    top3: chartData,
-    others,
-    totalNewsCount,
-    yAxisMax,
-  } = { ...keywordRankData }
+  const { top3: chartData, others, totalNewsCount } = { ...keywordRankData }
 
-  const options: Highcharts.Options = {
-    title: { text: undefined },
-    chart: {
-      type: "column",
-      backgroundColor: "var(--custom-background)",
-      borderRadius: 20,
-      height: 300,
-      // width: chartSize.width,
-    },
-    colors: [
-      "var(--custom-orange-1)",
-      "var(--custom-pink-1)",
-      "var(--custom-purple-2)",
-    ],
-    credits: {
-      enabled: false,
-    },
-    legend: {
-      enabled: false,
-    },
-    xAxis: {
-      type: "category",
-      crosshair: true,
-      labels: {
-        enabled: false,
-      },
-    },
-    yAxis: {
-      title: {
-        text: null,
-      },
-      gridLineWidth: 0,
-      tickWidth: 0,
-      labels: {
-        enabled: false,
-      },
-      max: 20,
-      // max: isLoading ? 200 : yAxisMax,
-      // max: yAxisMax,
-    },
-    plotOptions: {
-      column: {
-        pointPadding: 0,
-        dataLabels: {
-          enabled: true,
-          align: "center",
-          useHTML: true,
-          className: "custom-label",
-          formatter: function (this: any) {
-            return (
-              '<div><p class="label-title">' +
-              this.point.name +
-              '</p><p class="label-value">' +
-              this.y.toFixed(1) +
-              '%</p><p class="label-rank">' +
-              this.point.rank +
-              "</p></div>"
-            )
+  const [chartOptions, setChartOptions] = useState<Highcharts.Options>({})
+  useEffect(() => {
+    if (chartData !== undefined) {
+      setChartOptions({
+        title: { text: undefined },
+        chart: {
+          type: "column",
+          backgroundColor: "var(--custom-background)",
+          borderRadius: 20,
+          height: 300,
+          // width: chartSize.width,
+        },
+        colors: [
+          "var(--custom-orange-1)",
+          "var(--custom-pink-1)",
+          "var(--custom-purple-2)",
+        ],
+        credits: {
+          enabled: false,
+        },
+        legend: {
+          enabled: false,
+        },
+        xAxis: {
+          type: "category",
+          crosshair: true,
+          labels: {
+            enabled: false,
           },
         },
         events: {
           click: function (event: any) {
             showKeywordPanel(event.point.keywordId, event.point.name)
           },
+          gridLineWidth: 0,
+          tickWidth: 0,
+          labels: {
+            enabled: false,
+          },
+          max: 20,
+          // max: isLoading ? 200 : yAxisMax,
+          // max: yAxisMax,
         },
-        borderRadius: 10,
-      },
-      series: {
-        borderWidth: 0,
-      },
-    },
-    tooltip: {
-      enabled: false,
-    },
-    series: [
-      {
-        name: "Keyword",
-        type: "column",
-        data: chartData,
-        colorByPoint: true,
-      },
-    ],
-  }
+        plotOptions: {
+          column: {
+            pointPadding: 0,
+            dataLabels: {
+              enabled: true,
+              align: "center",
+              useHTML: true,
+              className: "custom-label",
+              formatter: function (this: any) {
+                return (
+                  '<div><p class="label-title">' +
+                  this.point.name +
+                  '</p><p class="label-value">' +
+                  this.y.toFixed(1) +
+                  '%</p><p class="label-rank">' +
+                  this.point.rank +
+                  "</p></div>"
+                )
+              },
+            },
+            events: {
+              click: function (event: any) {
+                showKeywordPanel()
+              },
+            },
+            borderRadius: 10,
+          },
+          series: {
+            borderWidth: 0,
+          },
+        },
+        tooltip: {
+          enabled: false,
+        },
+        series: [
+          {
+            name: "Keyword",
+            type: "column",
+            data: chartData,
+            colorByPoint: true,
+          },
+        ],
+      })
+    }
+  }, [chartData, isLoading])
 
   return (
     <GraphWrapper>
-      <HighchartsReact highcharts={Highcharts} options={options} />
+      <HighchartsReact highcharts={Highcharts} options={chartOptions} />
     </GraphWrapper>
   )
 }

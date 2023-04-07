@@ -48,7 +48,7 @@ interface KeyphraseType {
     title: string
     url: string
     date: string // yyyy-mm-dd
-  }
+  }[]
 }
 const select = (response: any) => {
   const rawData: KeyphraseType[] = response.data.data
