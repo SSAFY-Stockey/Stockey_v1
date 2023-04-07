@@ -26,5 +26,6 @@ const select = (response: any) => {
 }
 
 const onError = (err: any) => {
-  console.warn("onError >> ", err)
+  // console.warn("onError >> ", err)
+  return err
 }

@@ -1,6 +1,6 @@
 import Grid from "@mui/material/Grid"
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { useIndustryList } from "../hooks/useIndustryList"
 import Spinner from "../components/common/Spinner/Spinner"
 import {
@@ -17,10 +17,17 @@ const IndustryDetailPage = () => {
 
   const industryId = industryName ? industryList.indexOf(industryName) + 1 : 0
 
-  const { isLoading, data: industryInfo } = useIndustryList(industryId)
+  const { isLoading, data: industryInfo, error } = useIndustryList(industryId)
 
   const [mode, setMode] = useState<string>("def")
   const [className, setClassName] = useState<string>("")
+
+  const navigate = useNavigate()
+  useEffect(() => {
+    if (error) {
+      navigate("/not-found")
+    }
+  }, [error, navigate])
 
   const changeLayout = (toggleMode: string) => {
     switch (toggleMode) {

@@ -44,7 +44,7 @@ const StockGraphBar = ({ price, rate, name, stockId }: Props) => {
           />
           <RateDiv className={rate >= 0 ? "increase" : "decrease"}>
             {rate >= 0 ? "▲" : "▼"}
-            {rate}%
+            {Math.round(rate * 100) / 100}%
           </RateDiv>
         </GraphBarDiv>
         <StockName name={name} />
@@ -61,7 +61,7 @@ const IncreaseAnime = (len: number) => keyframes`
     height: 0px;
   }
   100% {
-    height: ${(Math.abs(len) * 100) / 30}%
+    height: ${(Math.abs(len) * 100) / 15}%
   }
 `
 

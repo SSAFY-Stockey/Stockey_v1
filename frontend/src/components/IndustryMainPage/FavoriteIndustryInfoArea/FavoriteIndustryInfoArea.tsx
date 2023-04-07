@@ -15,8 +15,6 @@ export interface MyIndustryType {
 }
 
 const FavoriteIndustryInfoArea = () => {
-  // nickname 받아오는 코드로 변경
-  const userName = "OOO"
   const nickname = useRecoilValue(nicknameState)
   const [accessToken, setAccessToken] = useRecoilState(accessTokenSelector)
   const axios = customAxios(accessToken, setAccessToken)
@@ -40,13 +38,16 @@ const FavoriteIndustryInfoArea = () => {
   return (
     <AreaDiv>
       <TitleDiv>
-        {!!nickname
-          ? (
-              <HighlightedSpan color="var(--custom-gradient-pink)">
-                {nickname}
-              </HighlightedSpan>
-            ) + " 님의"
-          : ""}
+        {!!nickname ? (
+          <span>
+            <HighlightedSpan color="var(--custom-gradient-pink)">
+              {nickname}
+            </HighlightedSpan>
+            {" 님의"}
+          </span>
+        ) : (
+          ""
+        )}
         관심 산업
       </TitleDiv>
       {isLoading ? (

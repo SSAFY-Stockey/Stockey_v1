@@ -4,9 +4,9 @@ const StockAxis = () => {
   return (
     <>
       <AxisWrapper>
-        <div>30%</div>
-        <div>20%</div>
+        <div>15%</div>
         <div>10%</div>
+        <div>5%</div>
         <div>0%</div>
       </AxisWrapper>
     </>

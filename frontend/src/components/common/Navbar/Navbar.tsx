@@ -24,7 +24,7 @@ const Navbar = ({ isNarrow }: Props) => {
       return true
     } else if (curPath.startsWith("/keyword") && name === "키워드") {
       return true
-    } else if (curPath === "/" && name === "북마크") {
+    } else if (curPath === "/my" && name === "북마크") {
       return true
     } else {
       return false
