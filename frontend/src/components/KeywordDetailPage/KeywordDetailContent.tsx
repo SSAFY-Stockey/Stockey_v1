@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { TitleDiv } from "../IndustryDetailPage/PageLayouts/AnimatedComponent"
 import BookmarkBtn from "../common/Bookmark/BookmarkBtn"
-import { useRecoilState } from "recoil"
+import { useRecoilState, useSetRecoilState } from "recoil"
 import { KeywordType } from "../../stores/KeywordPageAtoms"
 import { accessTokenSelector } from "../../stores/atoms"
 import customAxios from "../../utils/customAxios"
@@ -10,6 +10,11 @@ import { Suspense, useEffect, useState } from "react"
 import KeywordChartArea from "./KeywordChartArea"
 import NewsArea from "./NewsArea"
 import LoadingComponent from "../common/Loading/LoadingComponent"
+import {
+  keywordAnalysisParamsState,
+  selectedKeywordState,
+} from "../../stores/StockDetailAtoms"
+import dayjs from "dayjs"
 
 const KeywordDetailContent = ({
   keywordInfo,
@@ -44,6 +49,21 @@ const KeywordDetailContent = ({
     setIsBookmarked(bookmarked)
   }, [bookmarked])
 
+  const setKeywordAnalysisParamsState = useSetRecoilState(
+    keywordAnalysisParamsState
+  )
+  const setSelectedKeywordState = useSetRecoilState(selectedKeywordState)
+  useEffect(() => {
+    setSelectedKeywordState(keywordInfo)
+    setKeywordAnalysisParamsState({
+      topN: 6,
+      typeId: -1,
+      newsType: "ECONOMY",
+      startDate: dayjs("2022-01-01").format("YYMMDD"),
+      endDate: dayjs("2022-12-31").format("YYMMDD"),
+    })
+  }, [setKeywordAnalysisParamsState, setSelectedKeywordState, keywordInfo])
+
   return (
     <PageWrapper>
       <TitleDiv>
@@ -63,7 +83,9 @@ const KeywordDetailContent = ({
             keywordId={keywordInfo.id}
           />
         </Suspense>
-        <NewsArea keywordId={keywordInfo.id} keyword={keywordInfo.name} />
+        <Suspense fallback={<></>}>
+          <NewsArea keywordId={keywordInfo.id} keyword={keywordInfo.name} />
+        </Suspense>
       </ContentWrapper>
     </PageWrapper>
   )
