@@ -22,6 +22,8 @@ import { selectedKeywordState } from "../../../stores/StockDetailAtoms"
 import customAxios from "../../../utils/customAxios"
 import { accessTokenSelector } from "../../../stores/atoms"
 import { useQuery } from "react-query"
+import styled from "styled-components"
+import Button from "@mui/material/Button"
 
 const OnKeywordPanelLayout = ({
   changeLayout,
@@ -63,7 +65,6 @@ const OnKeywordPanelLayout = ({
       <Grid item xs={7}>
         <LeftSection className="kwd">
           <ButtonDiv id="btn">
-            {/* <button onClick={() => changeLayout("kwd")}>keywordPanel</button> */}
             <IndustrySelectorToggleBtn
               changeLayout={(mode) => {
                 changeLayout(mode)
@@ -71,6 +72,9 @@ const OnKeywordPanelLayout = ({
               status={className}
               industryName={industryInfo.name}
             />
+            <StyledButton onClick={() => changeLayout("kwd")}>
+              키워드 패널 닫기
+            </StyledButton>
           </ButtonDiv>
           <LeftSlider className={`kwd ${className}`}>
             <TitleDiv>
@@ -114,3 +118,19 @@ const OnKeywordPanelLayout = ({
 }
 
 export default OnKeywordPanelLayout
+
+const StyledButton = styled(Button)({
+  width: "180px",
+  height: "4.8rem",
+  background: "var(--custom-gradient-pink)",
+  borderRadius: 24,
+  paddingLeft: 6,
+  fontFamily: "Inter",
+  fontStyle: "normal",
+  fontWeight: 700,
+  fontSize: "1.4rem",
+  lineHeight: "2rem",
+  letterSpacing: "0.1px",
+  color: "#FFFFFF",
+  right: 0,
+})

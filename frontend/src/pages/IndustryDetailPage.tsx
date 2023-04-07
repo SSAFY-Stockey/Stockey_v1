@@ -9,7 +9,10 @@ import {
   OnKeywordPanelLayout,
 } from "../components/IndustryDetailPage/PageLayouts"
 import { useRecoilValue, useSetRecoilState } from "recoil"
-import { selectedKeywordState } from "../stores/StockDetailAtoms"
+import {
+  panelTypeState,
+  selectedKeywordState,
+} from "../stores/StockDetailAtoms"
 
 const IndustryDetailPage = () => {
   const params = useParams()
@@ -21,6 +24,7 @@ const IndustryDetailPage = () => {
 
   const [mode, setMode] = useState<string>("def")
   const [className, setClassName] = useState<string>("")
+  const panelType = useRecoilValue(panelTypeState)
 
   const navigate = useNavigate()
   useEffect(() => {
