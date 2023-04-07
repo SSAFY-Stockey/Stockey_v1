@@ -22,7 +22,7 @@ const KeywordChartArea = ({ keywordId, keyword }: Props) => {
         <KeywordChart keywordId={keywordId} keyword={keyword} />
       </ChartWrapper>
       <ListWrapper>
-        <HighlyRelatedStockList />
+        <HighlyRelatedStockList keywordId={keywordId} keyword={keyword} />
       </ListWrapper>
     </AreaDiv>
   )
