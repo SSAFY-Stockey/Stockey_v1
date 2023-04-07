@@ -29,7 +29,7 @@ const IndustryDetailPage = () => {
 
   const [mode, setMode] = useState<string>("def")
   const [className, setClassName] = useState<string>("")
-  const panelType = useRecoilValue(panelTypeState)
+  const [panelType, setPanelType] = useRecoilState(panelTypeState)
 
   const navigate = useNavigate()
   useEffect(() => {
@@ -66,12 +66,12 @@ const IndustryDetailPage = () => {
         break
       case "kwd":
         switch (mode) {
-          case "kwd":
-            setClassName("kwd-to-def")
-            setTimeout(() => {
-              setMode("def")
-            }, 400)
-            break
+          // case "kwd":
+          //   setClassName("kwd-to-def")
+          //   setTimeout(() => {
+          //     setMode("def")
+          //   }, 400)
+          //   break
           case "def":
             setClassName("def-to-kwd")
             setTimeout(() => {
@@ -88,26 +88,51 @@ const IndustryDetailPage = () => {
             break
         }
         break
+      case "def":
+        switch (mode) {
+          case "kwd":
+            setClassName("kwd-to-def")
+            setTimeout(() => {
+              setMode("def")
+            }, 400)
+            break
+          default:
+            setMode("def")
+            break
+        }
+        break
       default:
         break
     }
   }
+  const { name: keyword } = useRecoilValue(selectedKeywordState)
+  // useEffect(() => {
+  //   if (!!keyword) {
+  //     changeLayout("kwd")
+  //     // setPanelType()
+  //   } else {
+  //     changeLayout("def")
+  //   }
+  // }, [keyword])
+
   const setSelectedKeyword = useSetRecoilState(selectedKeywordState)
   useEffect(() => {
     setSelectedKeyword({
       id: 0,
       name: "",
     })
-  }, [setSelectedKeyword])
-  const { name: keyword } = useRecoilValue(selectedKeywordState)
-  useEffect(() => {
-    if (keyword) {
-      changeLayout("kwd")
-    }
-  }, [keyword])
-  useEffect(() => {
+    setPanelType("subInfo")
     changeLayout("def")
   }, [])
+
+  useEffect(() => {
+    if (panelType === "subInfo") {
+      changeLayout("def")
+    } else {
+      changeLayout("kwd")
+    }
+  }, [panelType])
+
   const [keywordAnalysisParams, setKeywordAnalysisParams] = useRecoilState(
     keywordAnalysisParamsState
   )
@@ -126,6 +151,16 @@ const IndustryDetailPage = () => {
   )
   const setStockDetail = useSetRecoilState(stockDetailState)
   setStockDetail(stockDetail)
+
+  // 최초 마운트 시 초기화
+  useEffect(() => {
+    setPanelType("subInfo")
+    setMode("def")
+    setSelectedKeyword({
+      id: 0,
+      name: "",
+    })
+  }, [])
 
   return (
     <Grid container rowSpacing={2} columnSpacing={4.5} minWidth="1200px">

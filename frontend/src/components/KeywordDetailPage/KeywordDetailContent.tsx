@@ -26,13 +26,13 @@ const KeywordDetailContent = ({
   const axios = customAxios(accessToken, setAccessToken)
   const fetchMyKeywordCheck = ({ queryKey }: any) => {
     const keywordId = queryKey[1]
-    return axios.get(`industry/keywordlist/my/${keywordId}`)
+    return axios.get(`/keywords/keywordlist/my/${keywordId}`)
   }
   const select = (response: any) => {
     return response.data.data
   }
 
-  const useMyKeywordCheck = (keywordId: number | undefined) => {
+  const useMyKeywordCheck = (keywordId: number) => {
     return useQuery(["myKeywordCheck", keywordId], fetchMyKeywordCheck, {
       refetchOnWindowFocus: false,
       select,
@@ -83,7 +83,7 @@ const KeywordDetailContent = ({
             keywordId={keywordInfo.id}
           />
         </Suspense>
-        <Suspense fallback={<></>}>
+        <Suspense fallback={<LoadingComponent />}>
           <NewsArea keywordId={keywordInfo.id} keyword={keywordInfo.name} />
         </Suspense>
       </ContentWrapper>

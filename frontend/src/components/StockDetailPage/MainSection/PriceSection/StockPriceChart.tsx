@@ -291,9 +291,9 @@ const StockPriceChart = () => {
 
   return (
     <ChartWrapper id="stock-price-chart">
-      <button onClick={handleChartType}>
+      {/* <button onClick={handleChartType}>
         {isCandle ? "간단히" : "자세히"}
-      </button>
+      </button> */}
       {isLoading ? (
         <Spinner />
       ) : (

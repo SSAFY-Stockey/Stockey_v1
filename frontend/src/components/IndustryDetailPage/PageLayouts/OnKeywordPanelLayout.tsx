@@ -18,7 +18,10 @@ import { useEffect, useState } from "react"
 import AnalysisSection from "../../StockDetailPage/MainSection/KeywordSection/AnalysisSection"
 import AllIncludedStockListArea from "../AllIncludedStockListArea/AllIncludedStockListArea"
 import { useRecoilState, useRecoilValue } from "recoil"
-import { selectedKeywordState } from "../../../stores/StockDetailAtoms"
+import {
+  panelTypeState,
+  selectedKeywordState,
+} from "../../../stores/StockDetailAtoms"
 import customAxios from "../../../utils/customAxios"
 import { accessTokenSelector } from "../../../stores/atoms"
 import { useQuery } from "react-query"
@@ -73,7 +76,7 @@ const OnKeywordPanelLayout = ({
                 status={className}
                 industryName={industryInfo.name}
               />
-              <StyledButton onClick={() => changeLayout("kwd")}>
+              <StyledButton onClick={() => changeLayout("def")}>
                 키워드 패널 닫기
               </StyledButton>
             </FlexBox>
