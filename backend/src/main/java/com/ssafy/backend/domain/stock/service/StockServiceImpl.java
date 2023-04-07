@@ -4,6 +4,7 @@ import com.ssafy.backend.domain.favorites.entity.Favorite;
 import com.ssafy.backend.domain.favorites.repository.FavoriteRepository;
 import com.ssafy.backend.domain.favorites.service.FavoriteService;
 import com.ssafy.backend.domain.industry.dto.IndustryDto;
+import com.ssafy.backend.domain.industry.entity.Industry;
 import com.ssafy.backend.domain.industry.mapper.IndustryMapper;
 import com.ssafy.backend.domain.industry.repository.IndustryRepository;
 import com.ssafy.backend.domain.keyword.dto.StockKeywordDto;
@@ -227,6 +228,7 @@ public class StockServiceImpl implements StockService{
                 new KeywordException(KeywordExceptionType.KEYWORD_NOT_EXIST));
         LocalDate startDate = getCorrelationRequest.getStartDate();
         LocalDate endDate = getCorrelationRequest.getEndDate();
+        System.out.println("stock. = " + stock.getName()+" "+keyword.getName());
         List<CorrelationDto> test = stockRepository.getTest(stock, keyword,startDate, endDate);
         List<Double> priceList = new ArrayList<>();
         List<Double> countList = new ArrayList<>();
@@ -240,10 +242,10 @@ public class StockServiceImpl implements StockService{
     }
     public List<ResultCorrelationDto> getAllStockCorrelation(Long id ,GetCorrelationRequest getCorrelationRequest){
         Stock stock = getStockEntity(id);
-
+//        Industry industry = industryRepository.findById(id).orElseThrow(() -> new IndustryException(IndustryExceptionType.NOT_FOUND));
+        Industry industry = stock.getIndustry();
         List<StockCorrelationDto> stockList = new ArrayList<>();
-        List<Stock> stocksExceptMe = stockRepository.getStocksExceptMe(stock);
-
+        List<Stock> stocksExceptMe = stockRepository.getStocksExceptMe(stock,industry);
         // 해당 종목을 제외한 주식들에 대하여 상관분석
         for(Stock s : stocksExceptMe){
             Double correlation = getCorrelation(s.getId(), getCorrelationRequest);
@@ -263,6 +265,7 @@ public class StockServiceImpl implements StockService{
                     .build();
             result.add(resultCorrelationDto);
         }
+        System.out.println("result = " + result);
         return result;
     }
 
