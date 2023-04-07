@@ -8,11 +8,13 @@ import {
   OnIndustrySelectorLayout,
   OnKeywordPanelLayout,
 } from "../components/IndustryDetailPage/PageLayouts"
-import { useRecoilValue, useSetRecoilState } from "recoil"
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil"
 import {
+  keywordAnalysisParamsState,
   panelTypeState,
   selectedKeywordState,
 } from "../stores/StockDetailAtoms"
+import dayjs from "dayjs"
 
 const IndustryDetailPage = () => {
   const params = useParams()
@@ -100,6 +102,18 @@ const IndustryDetailPage = () => {
       changeLayout("kwd")
     }
   }, [keyword])
+  const [keywordAnalysisParams, setKeywordAnalysisParams] = useRecoilState(
+    keywordAnalysisParamsState
+  )
+  useEffect(() => {
+    setKeywordAnalysisParams({
+      ...keywordAnalysisParams,
+      typeId: -1,
+      newsType: "ECONOMY",
+      startDate: dayjs("2022-01-01").format("YYMMDD"),
+      endDate: dayjs("2022-12-31").format("YYMMDD"),
+    })
+  }, [])
 
   return (
     <Grid container rowSpacing={2} columnSpacing={4.5} minWidth="1200px">
