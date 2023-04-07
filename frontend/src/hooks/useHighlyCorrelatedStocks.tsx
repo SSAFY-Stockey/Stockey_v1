@@ -3,26 +3,26 @@ import customAxios from "../utils/customAxios"
 
 const axios = customAxios()
 
-const fetchCorrelationResult = ({ queryKey }: any) => {
+const fetchHighlyCorrStocks = ({ queryKey }: any) => {
   const stockId = queryKey[1]
   const params = {
     keywordId: queryKey[2],
     startDate: queryKey[3],
     endDate: queryKey[4],
   }
-  console.log("fetchCorrelationResult")
-  return axios.get(`stock/keyword/correlation/${stockId}`, { params })
+  console.log("fetchHighlyCorrStocks")
+  return axios.get(`stock/keyword/correlation/${stockId}/high`, { params })
 }
 
-export const useCorrelationResult = (
+export const useHighlyCorrStocks = (
   stockId: number | undefined,
   keywordId: number,
   startDate: string,
   endDate: string
 ) => {
   return useQuery(
-    ["correlationResult", stockId, keywordId, startDate, endDate],
-    fetchCorrelationResult,
+    ["highlyCorrStocks", stockId, keywordId, startDate, endDate],
+    fetchHighlyCorrStocks,
     {
       staleTime: 60 * 60, // 1시간 동안만 fresh
       cacheTime: Infinity,
@@ -33,10 +33,14 @@ export const useCorrelationResult = (
     }
   )
 }
-
+interface CorrDataType {
+  id: number
+  name: string
+  correlation: number
+}
 const select = (response: any) => {
-  const rawData: number = response.data.data
-  console.log("correlationResult >> ", rawData)
+  const rawData: CorrDataType[] = response.data.data
+  console.log("HighlyCorrStocks >> ", rawData)
   return rawData
 }
 

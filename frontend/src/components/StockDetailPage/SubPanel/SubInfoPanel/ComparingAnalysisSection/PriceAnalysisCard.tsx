@@ -18,8 +18,14 @@ const PriceAnalysisCard = ({
   industryAvgChangeRate = industryAvgChangeRate * 100
   changeRate = changeRate * 100
 
+  console.log(stockName, industry, industryAvgChangeRate, changeRate)
   let [result, title, description]: string[] = ["", "", ""]
 
+  if (changeRate === 0) {
+    title = "아직도 자는거니...?"
+    description = `오늘은 아직 주가변동이 없네요.`
+    result = "sleep"
+  }
   // 산업 평균은 하락했는데 종목은 상승한 경우
   if (changeRate > 0 && industryAvgChangeRate < 0) {
     title = "진정한 승리자"
