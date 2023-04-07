@@ -108,6 +108,7 @@ const KeywordBarGraphInDetail = () => {
             type: "column",
             data: chartData,
             colorByPoint: true,
+            cursor: "pointer",
           },
         ],
       })
