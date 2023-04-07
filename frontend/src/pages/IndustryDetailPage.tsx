@@ -13,8 +13,11 @@ import {
   keywordAnalysisParamsState,
   panelTypeState,
   selectedKeywordState,
+  stockDetailState,
 } from "../stores/StockDetailAtoms"
 import dayjs from "dayjs"
+import { useStockDetail } from "../hooks/useStockDetail"
+import { useIndustryStockList } from "../hooks/useIndustryStockList"
 
 const IndustryDetailPage = () => {
   const params = useParams()
@@ -102,6 +105,9 @@ const IndustryDetailPage = () => {
       changeLayout("kwd")
     }
   }, [keyword])
+  useEffect(() => {
+    changeLayout("def")
+  }, [])
   const [keywordAnalysisParams, setKeywordAnalysisParams] = useRecoilState(
     keywordAnalysisParamsState
   )
@@ -109,11 +115,17 @@ const IndustryDetailPage = () => {
     setKeywordAnalysisParams({
       ...keywordAnalysisParams,
       typeId: -1,
-      newsType: "ECONOMY",
+      newsType: "INDUSTRY",
       startDate: dayjs("2022-01-01").format("YYMMDD"),
       endDate: dayjs("2022-12-31").format("YYMMDD"),
     })
   }, [])
+  const { data: includedStock } = useIndustryStockList(industryId)
+  const { data: stockDetail } = useStockDetail(
+    !!includedStock?.length ? includedStock[0].id : 1
+  )
+  const setStockDetail = useSetRecoilState(stockDetailState)
+  setStockDetail(stockDetail)
 
   return (
     <Grid container rowSpacing={2} columnSpacing={4.5} minWidth="1200px">

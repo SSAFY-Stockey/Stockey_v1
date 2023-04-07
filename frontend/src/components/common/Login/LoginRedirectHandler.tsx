@@ -43,7 +43,7 @@ const LoginRedirectHandler = () => {
 
   useEffect(() => {
     if (accessToken) {
-      navigate("/keyword", { replace: true })
+      navigate("/stock", { replace: true })
     }
   })
 
