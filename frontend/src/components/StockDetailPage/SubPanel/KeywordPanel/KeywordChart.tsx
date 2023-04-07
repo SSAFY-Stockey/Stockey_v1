@@ -7,6 +7,8 @@ import { useRecoilValue } from "recoil"
 import { useState, useEffect } from "react"
 import { keywordAnalysisParamsState } from "../../../../stores/StockDetailAtoms"
 import { KeywordPanelProps } from "./KeywordPanel"
+// import { useStockPriceList } from "../../../../hooks/useStockPriceList"
+// import { useParams } from "react-router"
 
 Highcharts.setOptions({
   lang: {
@@ -15,6 +17,8 @@ Highcharts.setOptions({
 })
 
 const KeywordChart = ({ keywordId, keyword }: KeywordPanelProps) => {
+  // const params = useParams()
+  // const stockId = Number(params?.stockId)
   const { data: keywordFrequency } = useKeywordFrequency(keywordId)
   const keywordAnalysisParams = useRecoilValue(keywordAnalysisParamsState)
   const [chartOptions, setChartOptions] = useState<Highcharts.Options>({})
