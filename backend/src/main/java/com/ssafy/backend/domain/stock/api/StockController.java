@@ -196,7 +196,7 @@ public class StockController {
         return new ResponseEntity<>(new ResponseDto("OK",correlation),HttpStatus.OK);
     }
 
-    @Operation(summary = "종목과 키워드 추이 상관분석", description = "모든종목과 키워드 추이 상관분석 결과를 상위 3개를 보여줍니다.")
+    @Operation(summary = "같은 산업내 종목과 키워드 추이 상관분석", description = "모든종목과 키워드 추이 상관분석 결과를 상위 3개를 보여줍니다.")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "요청 성공"),

@@ -82,6 +82,6 @@ public interface StockRepository extends JpaRepository<Stock,Long> {
             " AND ks.keyword = :keyword")
     List<CorrelationDto> getTest(Stock stock, Keyword keyword, LocalDate startDate, LocalDate endDate);
 
-    @Query("select s from Stock s where s != :stock")
-    List<Stock> getStocksExceptMe(Stock stock);
+    @Query("select s from Stock s where s != :stock and s.industry = :industry ")
+    List<Stock> getStocksExceptMe(Stock stock,Industry industry);
 }
