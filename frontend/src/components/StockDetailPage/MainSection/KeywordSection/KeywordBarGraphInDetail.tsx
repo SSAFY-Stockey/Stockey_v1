@@ -54,9 +54,9 @@ const KeywordBarGraphInDetail = () => {
             enabled: false,
           },
         },
-        events: {
-          click: function (event: any) {
-            showKeywordPanel(event.point.keywordId, event.point.name)
+        yAxis: {
+          title: {
+            text: null,
           },
           gridLineWidth: 0,
           tickWidth: 0,
@@ -89,7 +89,8 @@ const KeywordBarGraphInDetail = () => {
             },
             events: {
               click: function (event: any) {
-                showKeywordPanel()
+                console.log(event.point, event.point.name)
+                showKeywordPanel(event.point.keywordId, event.point.name)
               },
             },
             borderRadius: 10,
@@ -111,7 +112,16 @@ const KeywordBarGraphInDetail = () => {
         ],
       })
     }
-  }, [chartData, isLoading])
+  }, [
+    chartData,
+    isLoading,
+    others,
+    totalNewsCount,
+    keywordParams,
+    keywordRankData,
+    setChartOptions,
+    setSelectedKeyword,
+  ])
 
   return (
     <GraphWrapper>
