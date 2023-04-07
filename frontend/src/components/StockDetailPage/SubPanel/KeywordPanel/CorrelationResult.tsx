@@ -5,7 +5,7 @@ import styled, { keyframes } from "styled-components"
 import { Grid } from "@mui/material"
 
 const CorrelationResult = ({ keywordId, keyword }: KeywordPanelProps) => {
-  const stockDetail = useRecoilValue(stockDetailState)
+  // const stockDetail = useRecoilValue(stockDetailState)
   return (
     <ResultDiv>
       <MinValueDiv color="pink" resultValue={-0.3}>
