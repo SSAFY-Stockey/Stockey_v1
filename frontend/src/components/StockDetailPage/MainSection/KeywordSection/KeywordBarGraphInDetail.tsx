@@ -24,6 +24,22 @@ const KeywordBarGraphInDetail = () => {
   const { data: keywordRankData, isLoading } = useKeywordRank(keywordParams)
   const { top3: chartData, others, totalNewsCount } = { ...keywordRankData }
 
+  const [chartWidth, setChartWidth] = useState<number>(754)
+  const handleResize = () => {
+    const chartWrapper = document.getElementById("keyword-bar-graph")
+    if (chartWrapper) {
+      setChartWidth(chartWrapper.clientWidth)
+    }
+  }
+
+  useEffect(() => {
+    handleResize()
+    window.addEventListener("resize", handleResize)
+    return () => {
+      window.removeEventListener("resize", handleResize)
+    }
+  }, [])
+
   const [chartOptions, setChartOptions] = useState<Highcharts.Options>({})
   useEffect(() => {
     if (chartData !== undefined) {
@@ -34,7 +50,7 @@ const KeywordBarGraphInDetail = () => {
           backgroundColor: "var(--custom-background)",
           borderRadius: 20,
           height: 300,
-          // width: chartSize.width,
+          width: chartWidth,
         },
         colors: [
           "var(--custom-orange-1)",
@@ -108,6 +124,7 @@ const KeywordBarGraphInDetail = () => {
             type: "column",
             data: chartData,
             colorByPoint: true,
+            cursor: "pointer",
           },
         ],
       })
@@ -124,7 +141,7 @@ const KeywordBarGraphInDetail = () => {
   ])
 
   return (
-    <GraphWrapper>
+    <GraphWrapper id="keyword-bar-graph">
       <HighchartsReact highcharts={Highcharts} options={chartOptions} />
     </GraphWrapper>
   )
@@ -137,6 +154,9 @@ const GraphWrapper = styled.div`
   height: 60%;
   & div {
     height: 100%;
+  }
+  & svg {
+    width: 100% !important;
   }
   & .custom-label {
     text-align: center;

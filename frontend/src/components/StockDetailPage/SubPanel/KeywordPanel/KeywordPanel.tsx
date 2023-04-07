@@ -10,6 +10,7 @@ import customAxios from "../../../../utils/customAxios"
 import { accessTokenSelector } from "../../../../stores/atoms"
 import { HighlightedSpan } from "../../MainSection/PriceSection/PriceSection"
 import { Suspense } from "react"
+import LoadingComponent from "../../../common/Loading/LoadingComponent"
 
 export interface KeywordPanelProps {
   keywordId: number
@@ -63,7 +64,7 @@ const KeywordPanel = ({ keywordId, keyword }: KeywordPanelProps) => {
       <PanelSubTitle id="newsRef">
         {keyword} 관련 기사 한 눈에 보기
       </PanelSubTitle>
-      <Suspense fallback={<></>}>
+      <Suspense fallback={<LoadingComponent />}>
         <NewsSection keywordId={keywordId} keyword={keyword} />
       </Suspense>
     </PanelWrapper>
