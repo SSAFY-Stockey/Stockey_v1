@@ -116,20 +116,12 @@ const IndustryDetailPage = () => {
   // }, [keyword])
 
   const setSelectedKeyword = useSetRecoilState(selectedKeywordState)
-  useEffect(() => {
-    setSelectedKeyword({
-      id: 0,
-      name: "",
-    })
-    setPanelType("subInfo")
-    changeLayout("def")
-  }, [])
 
   useEffect(() => {
-    if (panelType === "subInfo") {
-      changeLayout("def")
-    } else {
+    if (panelType === "keyword") {
       changeLayout("kwd")
+    } else {
+      changeLayout("def")
     }
   }, [panelType])
 
@@ -160,6 +152,14 @@ const IndustryDetailPage = () => {
       id: 0,
       name: "",
     })
+    return () => {
+      setPanelType("subInfo")
+      setMode("def")
+      setSelectedKeyword({
+        id: 0,
+        name: "",
+      })
+    }
   }, [])
 
   return (
