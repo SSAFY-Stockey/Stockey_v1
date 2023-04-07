@@ -2,7 +2,7 @@ import { KeywordPanelProps, PanelSubTitle } from "./KeywordPanel"
 import { stockDetailState } from "../../../../stores/StockDetailAtoms"
 import { useRecoilValue } from "recoil"
 import styled, { keyframes } from "styled-components"
-import { Grid } from "@mui/material"
+import { Grid, Tooltip, Zoom } from "@mui/material"
 import { useCorrelationResult } from "../../../../hooks/useCorrelationResult"
 import { keywordAnalysisParamsState } from "../../../../stores/StockDetailAtoms"
 import { HighlightedSpan } from "../../MainSection/PriceSection/PriceSection"
@@ -32,7 +32,14 @@ const CorrelationResult = ({ keywordId, keyword }: KeywordPanelProps) => {
             는?
           </PanelSubTitle>
           <ResultText>
-            <ResultBadge badge={badge}>주목</ResultBadge>
+            <Tooltip
+              title="보통 절대값이 0.3 이상일 경우, 상관관계가 꽤 높다고 판단해요!"
+              TransitionComponent={Zoom}
+              placement="left"
+              sx={{ fontSize: "2rem" }}
+            >
+              <ResultBadge badge={badge}>주목</ResultBadge>
+            </Tooltip>
             <CorrValue resultValue={correlationResult}>
               {correlationResult.toFixed(4)}
             </CorrValue>{" "}
