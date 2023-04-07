@@ -6,9 +6,10 @@ import { KeywordType } from "../../stores/KeywordPageAtoms"
 import { accessTokenSelector } from "../../stores/atoms"
 import customAxios from "../../utils/customAxios"
 import { useQuery } from "react-query"
-import { useEffect, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 import KeywordChartArea from "./KeywordChartArea"
 import NewsArea from "./NewsArea"
+import LoadingComponent from "../common/Loading/LoadingComponent"
 
 const KeywordDetailContent = ({
   keywordInfo,
@@ -56,10 +57,12 @@ const KeywordDetailContent = ({
         )}
       </TitleDiv>
       <ContentWrapper>
-        <KeywordChartArea
-          keyword={keywordInfo.name}
-          keywordId={keywordInfo.id}
-        />
+        <Suspense fallback={<LoadingComponent />}>
+          <KeywordChartArea
+            keyword={keywordInfo.name}
+            keywordId={keywordInfo.id}
+          />
+        </Suspense>
         <NewsArea keywordId={keywordInfo.id} keyword={keywordInfo.name} />
       </ContentWrapper>
     </PageWrapper>
