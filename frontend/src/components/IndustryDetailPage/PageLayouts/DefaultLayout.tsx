@@ -68,7 +68,7 @@ const DefaultLayout = ({
     <>
       <Grid item xs={12} marginLeft={4.5}>
         <ButtonDiv id="btn">
-          <button onClick={(e) => changeLayout("kwd")}>keywordPanel</button>
+          {/* <button onClick={(e) => changeLayout("kwd")}>keywordPanel</button> */}
           <IndustrySelectorToggleBtn
             changeLayout={(mode) => {
               changeLayout(mode)

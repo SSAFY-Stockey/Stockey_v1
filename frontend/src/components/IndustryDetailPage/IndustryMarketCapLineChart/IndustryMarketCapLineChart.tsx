@@ -8,6 +8,9 @@ import Spinner from "../../common/Spinner/Spinner"
 import { useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { HighlightedSpan } from "../../StockDetailPage/MainSection/PriceSection/PriceSection"
+import dayjs from "dayjs"
+import { keywordAnalysisParamsState } from "../../../stores/StockDetailAtoms"
+import { useRecoilState } from "recoil"
 
 highchartsStock(Highcharts)
 Highcharts.setOptions({
@@ -36,6 +39,9 @@ const IndustryMarketCapLineChart = ({ industryId }: { industryId: number }) => {
   const { isLoading, data: lineChartData } = useIndustryMarketCap(industryId)
   const params = useParams()
   const stockName = params?.industryName
+  const [keywordAnalysisParams, setKeywordAnalysisParams] = useRecoilState(
+    keywordAnalysisParamsState
+  )
 
   const [chartHeight, setChartHeight] = useState<number>(300)
   const [chartWidth, setChartWidth] = useState<number>(500)
@@ -60,6 +66,10 @@ const IndustryMarketCapLineChart = ({ industryId }: { industryId: number }) => {
       borderRadius: 20,
       borderWidth: 2,
       margin: 20,
+      animation: true,
+      zooming: {
+        type: "x",
+      },
       backgroundColor: "transparent",
       height: chartHeight,
       width: chartWidth,
@@ -176,6 +186,18 @@ const IndustryMarketCapLineChart = ({ industryId }: { industryId: number }) => {
       },
       labels: {
         step: 1,
+      },
+      events: {
+        afterSetExtremes: function (this, event) {
+          console.log("fired!")
+          setKeywordAnalysisParams({
+            ...keywordAnalysisParams,
+            typeId: -1,
+            newsType: "ECONOMY",
+            startDate: dayjs(event.min).format("YYMMDD"),
+            endDate: dayjs(event.max).format("YYMMDD"),
+          })
+        },
       },
     },
     yAxis: {

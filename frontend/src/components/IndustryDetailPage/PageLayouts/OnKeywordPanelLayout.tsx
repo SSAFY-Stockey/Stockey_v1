@@ -63,7 +63,7 @@ const OnKeywordPanelLayout = ({
       <Grid item xs={7}>
         <LeftSection className="kwd">
           <ButtonDiv id="btn">
-            <button onClick={() => changeLayout("kwd")}>keywordPanel</button>
+            {/* <button onClick={() => changeLayout("kwd")}>keywordPanel</button> */}
             <IndustrySelectorToggleBtn
               changeLayout={(mode) => {
                 changeLayout(mode)
