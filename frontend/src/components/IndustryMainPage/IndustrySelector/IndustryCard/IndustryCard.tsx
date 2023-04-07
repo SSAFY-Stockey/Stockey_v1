@@ -89,7 +89,7 @@ const NameTagP = styled.p`
   font-family: "Inter";
   font-style: normal;
   font-weight: 700;
-  font-size: calc(1rem + 0.25vw);
+  font-size: calc(0.5rem + 0.5vw);
 
   display: flex;
   align-items: center;

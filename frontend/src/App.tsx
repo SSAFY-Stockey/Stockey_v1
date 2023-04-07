@@ -1,7 +1,7 @@
 import "./App.css"
 import { useEffect, useState } from "react"
 import styled from "styled-components"
-import { Routes, Route, useLocation } from "react-router-dom"
+import { Routes, Route, useLocation, Navigate } from "react-router-dom"
 
 // 페이지 컴포넌트
 import MyPage from "./pages/MyPage"
@@ -19,6 +19,7 @@ import StockeyErrorPage from "./pages/StockeyErrorPage"
 // 스타일 적용
 import MainSection from "./components/common/Background/MainSection"
 import Navbar from "./components/common/Navbar/Navbar"
+import NotFoundPage from "./pages/NotFoundPage"
 
 function App() {
   const curPath = useLocation().pathname
@@ -70,9 +71,10 @@ function App() {
         >
           <MainSection>
             <Routes>
-              <Route path="/" element={<MyPage />} />
+              <Route path="/" element={<Navigate to="/stock" />} />
               <Route path="/stock" element={<StockMainPage />} />
               <Route path="/stock/:stockId" element={<StockDetailPage />} />
+              <Route path="/my" element={<MyPage />} />
               <Route path="/industry" element={<IndustryMainPage />} />
               <Route
                 path="/industry/:industryName"
@@ -86,7 +88,7 @@ function App() {
               <Route path="/user/login" element={<Login />} />
               <Route path="/oauth/kakao" element={<LoginRedirectHandler />} />
               <Route path="/user/signup" element={<SignupPage />} />
-              <Route path="/stockeyErrorPage" element={<StockeyErrorPage />} />
+              <Route path="/*" element={<NotFoundPage />} />
             </Routes>
           </MainSection>
         </MainDiv>

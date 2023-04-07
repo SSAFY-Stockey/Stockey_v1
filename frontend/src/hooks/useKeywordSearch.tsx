@@ -14,14 +14,24 @@ const fetchKeywordSearch = ({
 }: {
   queryKey: (string | undefined)[]
 }) => {
+  const page = queryKey[2]
   const params = { keyword: queryKey[1] }
-  return axios.get("/keywords/search/", {
-    params,
-  })
+  if (page === "keyword") {
+    return axios.get("/keywords/search/", {
+      params,
+    })
+  } else {
+    return axios.get("/stock/search/", {
+      params,
+    })
+  }
 }
 
-export const useKeywordSearch = (serachValue: string | undefined) => {
-  return useQuery(["searchKeyword", serachValue], fetchKeywordSearch, {
+export const useKeywordSearch = (
+  searchValue: string | undefined,
+  page: string
+) => {
+  return useQuery(["searchKeyword", searchValue, page], fetchKeywordSearch, {
     refetchOnWindowFocus: false,
     enabled: false,
     retry: false,
