@@ -14,8 +14,8 @@ const KeywordBarGraphInDetail = () => {
   const [selectedKeyword, setSelectedKeyword] =
     useRecoilState(selectedKeywordState)
   const setPanelType = useSetRecoilState(panelTypeState)
-  const showKeywordPanel = () => {
-    setSelectedKeyword({ id: selectedKeyword.id, name: selectedKeyword.name })
+  const showKeywordPanel = (keywordId: number, keyword: string) => {
+    setSelectedKeyword({ id: keywordId, name: keyword })
     setPanelType("keyword")
   }
 
@@ -90,7 +90,7 @@ const KeywordBarGraphInDetail = () => {
         },
         events: {
           click: function (event: any) {
-            showKeywordPanel()
+            showKeywordPanel(event.point.keywordId, event.point.name)
           },
         },
         borderRadius: 10,
