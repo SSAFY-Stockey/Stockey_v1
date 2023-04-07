@@ -15,8 +15,8 @@ const KeywordBarGraphInDetail = () => {
   const [selectedKeyword, setSelectedKeyword] =
     useRecoilState(selectedKeywordState)
   const setPanelType = useSetRecoilState(panelTypeState)
-  const showKeywordPanel = () => {
-    setSelectedKeyword({ id: selectedKeyword.id, name: selectedKeyword.name })
+  const showKeywordPanel = (keywordId: number, keyword: string) => {
+    setSelectedKeyword({ id: keywordId, name: keyword })
     setPanelType("keyword")
   }
 
@@ -54,9 +54,9 @@ const KeywordBarGraphInDetail = () => {
             enabled: false,
           },
         },
-        yAxis: {
-          title: {
-            text: null,
+        events: {
+          click: function (event: any) {
+            showKeywordPanel(event.point.keywordId, event.point.name)
           },
           gridLineWidth: 0,
           tickWidth: 0,
