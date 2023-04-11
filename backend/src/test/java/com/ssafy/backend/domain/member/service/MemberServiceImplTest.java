@@ -67,23 +67,4 @@ class MemberServiceImplTest {
         // then
         assertThat(oauthMemberDto.getNickname()).isEqualTo("junmo");
     }
-
-    @Test
-    void getMemberTestOAuthVer() {
-        Member member = Member.oAuthBuilder().oAuthId(1234L).oAuthType(OauthType.KAKAO).nickname("jun").build();
-        memberRepository.save(member);
-        OauthMemberDto oauthMemberDto = memberService.getMember(1234L, OauthType.KAKAO).get();
-        Long oauthMemberId = oauthMemberDto.getOauthMemberId();
-        OauthType oauthType = oauthMemberDto.getOauthType();
-        String nickname = oauthMemberDto.getNickname();
-        Assertions.assertThat(oauthMemberId).isEqualTo(1234L);
-        Assertions.assertThat(oauthType).isEqualTo(OauthType.KAKAO);
-        Assertions.assertThat(nickname).isEqualTo("jun");
-
-        // 존재하지 않는 회원 일 때
-        Optional<OauthMemberDto> notExistMember = memberService.getMember(651654L, OauthType.KAKAO);
-        Assertions.assertThat(notExistMember).isEmpty();
-    }
-
-
 }

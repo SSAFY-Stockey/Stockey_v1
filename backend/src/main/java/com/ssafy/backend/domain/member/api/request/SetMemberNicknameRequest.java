@@ -1,20 +1,20 @@
 package com.ssafy.backend.domain.member.api.request;
 
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Pattern;
 
 
 @Builder
-@Getter
+@Data
 public class SetMemberNicknameRequest {
-    @Pattern(regexp = "^[a-zA-Z0-9가-힣]{4,8}$", message = "닉네임은 한글, 영어, 숫자만 가능합니다")
+    @Pattern(regexp = "^[a-zA-Z0-9가-힣]{4,8}$")
     private String nickname;
-    @Min(value = -1, message = "Number must be greater than -1")
-    @Digits(integer = 10, fraction = 0, message = "Number must have between 1 and 12 digits")
+    @Max(50)
     private Long oauthId;
     @Pattern(regexp = "^(KAKAO)$")
     private String oauthType;
