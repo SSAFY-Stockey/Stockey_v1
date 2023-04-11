@@ -26,7 +26,7 @@ class Keyword(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'keyword'
+        db_table = 'keyword_v2'
 class News(models.Model):
     news_id = models.BigAutoField(primary_key=True)
     category = models.CharField(max_length=45, blank=True, null=True)
@@ -51,7 +51,7 @@ class NewsRelation(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'news_relation'
+        db_table = 'news_relation_v2'
 
 class Stock(models.Model):
     stock_id = models.BigAutoField(primary_key=True)
