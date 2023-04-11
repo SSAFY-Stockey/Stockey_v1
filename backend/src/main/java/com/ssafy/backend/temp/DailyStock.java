@@ -1,6 +1,9 @@
-package com.ssafy.backend.temp;
+package com.ssafy.backend.domain.stock.entity;
 
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -9,6 +12,7 @@ import java.time.LocalDate;
 @Getter
 @Entity
 @Table(name = "daily_stock")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DailyStock {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "daily_stock_id", nullable = false)
@@ -47,4 +51,16 @@ public class DailyStock {
     @JoinColumn(name = "stock_id", nullable = false)
     private Stock stock;
 
+    @Builder
+    public DailyStock(Long id, LocalDate stockDate, Integer openPrice, Integer closePrice, Integer lowPrice, Integer highPrice, Integer volume, Float changeRate, Stock stock) {
+        this.id = id;
+        this.stockDate = stockDate;
+        this.openPrice = openPrice;
+        this.closePrice = closePrice;
+        this.lowPrice = lowPrice;
+        this.highPrice = highPrice;
+        this.volume = volume;
+        this.changeRate = changeRate;
+        this.stock = stock;
+    }
 }
